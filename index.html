@@ -99,6 +99,35 @@
     </div>
   </main>
 
+  <footer class="relative z-30 w-full py-2 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
+    <p>
+      &copy; Nellie B Topic Time &bull; 
+      <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Privacy Policy</button>
+    </p>
+  </footer>
+
+  <div id="privacy-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none opacity-0 transition-opacity duration-300">
+    <div onclick="togglePrivacyModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl pointer-events-auto z-10 text-slate-700 dark:text-slate-300 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-indigo-500"></i> Privacy Policy
+        </h3>
+        <button onclick="togglePrivacyModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="text-xs space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+        <p><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information such as names, email addresses, or phone numbers.</p>
+        <p><strong>Analytics & Cookies:</strong> We use Google Analytics (GA4) to collect standard, anonymous statistics about site traffic (such as overall page views, device types, and generalized visitor locations). Google Analytics utilizes first-party cookies to help measure visitor engagement.</p>
+        <p><strong>Third-Party Data Processing:</strong> Data collected by Google Analytics is handled in accordance with Google's Privacy Policy. You can prevent Google Analytics from collecting data on this site by disabling cookies in your browser or installing the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" class="text-indigo-500 underline">Google Analytics Opt-out Browser Add-on</a>.</p>
+      </div>
+      <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-right">
+        <button onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors">Close</button>
+      </div>
+    </div>
+  </div>
+
   <div id="favorites-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
     <div id="drawer-backdrop" onclick="toggleFavoritesDrawer(false)" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
     <div id="drawer-content" class="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out pointer-events-auto border-l border-slate-200 dark:border-slate-800">
@@ -532,6 +561,18 @@
         drawer.classList.add("opacity-0");
         content.classList.add("translate-x-full");
         setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
+      }
+    }
+
+    function togglePrivacyModal(open) {
+      var modal = document.getElementById("privacy-modal");
+      if (!modal) return;
+      if (open) {
+        modal.classList.remove("pointer-events-none", "opacity-0");
+        modal.classList.add("opacity-100");
+      } else {
+        modal.classList.add("opacity-0");
+        setTimeout(function() { modal.classList.add("pointer-events-none"); }, 300);
       }
     }
 
