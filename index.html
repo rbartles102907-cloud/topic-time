@@ -12,7 +12,7 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nellie B - Topic Time - Topics.FrrFrrr.com to PLAY FOR FREE</title>
+  <title>Nellie B - Topic Time</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -34,16 +34,35 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
     .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
     .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.9); }
-    .dark .glass-card { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.9); }
+    .dark .glass-card { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border: 2px solid rgba(99, 102, 241, 0.3); }
 
     /* Flashing Red Animation */
     @keyframes flash-red {
-      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 12px rgba(239, 68, 68, 0.8); }
+      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
       50% { color: #991b1b; opacity: 0.3; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
     }
     .flashing-follow {
       animation: flash-red 1s infinite;
+    }
+
+    /* Pointing Arrow Horizontal Bounce Animation */
+    @keyframes point-bounce {
+      0%, 100% { transform: translateX(0) scale(1); }
+      50% { transform: translateX(8px) scale(1.1); }
+    }
+    .pointing-arrow {
+      animation: point-bounce 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6));
+    }
+
+    /* High-contrast shadow for video screens */
+    .dark .tiktok-card-text {
+      color: #ffffff !important;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    }
+    .tiktok-card-text {
+      color: #0f172a !important;
     }
   </style>
 </head>
@@ -64,10 +83,13 @@
         </div>
       </div>
 
-      <!-- Flashing Red Text Banner -->
-      <div class="flex-1 text-center hidden xs:block sm:block">
+      <!-- Flashing Red Text Banner + Pointing Finger Arrow -->
+      <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
         <span class="flashing-follow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">
           Follow Me
+        </span>
+        <span class="pointing-arrow text-xl sm:text-2xl text-red-500 inline-block select-none" title="Pointing to TikTok">
+          👉
         </span>
       </div>
 
@@ -346,15 +368,15 @@
     };
 
     var CATEGORY_STYLES = {
-      Philosophy: { bg: "bg-purple-100 dark:bg-purple-950/70", text: "text-purple-700 dark:text-purple-300", border: "border-purple-300 dark:border-purple-800" },
-      "Deep Questions": { bg: "bg-indigo-100 dark:bg-indigo-950/70", text: "text-indigo-700 dark:text-indigo-300", border: "border-indigo-300 dark:border-indigo-800" },
-      "Humor/Fun": { bg: "bg-amber-100 dark:bg-amber-950/70", text: "text-amber-800 dark:text-amber-300", border: "border-amber-300 dark:border-amber-800" },
-      "Current Events": { bg: "bg-blue-100 dark:bg-blue-950/70", text: "text-blue-700 dark:text-blue-300", border: "border-blue-300 dark:border-blue-800" },
-      "Would You Rather": { bg: "bg-emerald-100 dark:bg-emerald-950/70", text: "text-emerald-700 dark:text-emerald-300", border: "border-emerald-300 dark:border-emerald-800" },
-      "Pop Culture": { bg: "bg-pink-100 dark:bg-pink-950/70", text: "text-pink-700 dark:text-pink-300", border: "border-pink-300 dark:border-pink-800" },
-      "Personal Stories": { bg: "bg-cyan-100 dark:bg-cyan-950/70", text: "text-cyan-700 dark:text-cyan-300", border: "border-cyan-300 dark:border-cyan-800" },
-      "Science & Tech": { bg: "bg-violet-100 dark:bg-violet-950/70", text: "text-violet-700 dark:text-violet-300", border: "border-violet-300 dark:border-violet-800" },
-      "Hot Takes": { bg: "bg-rose-100 dark:bg-rose-950/70", text: "text-rose-700 dark:text-rose-300", border: "border-rose-300 dark:border-rose-800" }
+      Philosophy: { bg: "bg-purple-100 dark:bg-purple-950/80", text: "text-purple-700 dark:text-purple-200", border: "border-purple-300 dark:border-purple-600" },
+      "Deep Questions": { bg: "bg-indigo-100 dark:bg-indigo-950/80", text: "text-indigo-700 dark:text-indigo-200", border: "border-indigo-300 dark:border-indigo-600" },
+      "Humor/Fun": { bg: "bg-amber-100 dark:bg-amber-950/80", text: "text-amber-800 dark:text-amber-200", border: "border-amber-300 dark:border-amber-600" },
+      "Current Events": { bg: "bg-blue-100 dark:bg-blue-950/80", text: "text-blue-700 dark:text-blue-200", border: "border-blue-300 dark:border-blue-600" },
+      "Would You Rather": { bg: "bg-emerald-100 dark:bg-emerald-950/80", text: "text-emerald-700 dark:text-emerald-200", border: "border-emerald-300 dark:border-emerald-600" },
+      "Pop Culture": { bg: "bg-pink-100 dark:bg-pink-950/80", text: "text-pink-700 dark:text-pink-200", border: "border-pink-300 dark:border-pink-600" },
+      "Personal Stories": { bg: "bg-cyan-100 dark:bg-cyan-950/80", text: "text-cyan-700 dark:text-cyan-200", border: "border-cyan-300 dark:border-cyan-600" },
+      "Science & Tech": { bg: "bg-violet-100 dark:bg-violet-950/80", text: "text-violet-700 dark:text-violet-200", border: "border-violet-300 dark:border-violet-600" },
+      "Hot Takes": { bg: "bg-rose-100 dark:bg-rose-950/80", text: "text-rose-700 dark:text-rose-200", border: "border-rose-300 dark:border-rose-600" }
     };
 
     var PRESET_MODES = [
@@ -518,9 +540,9 @@
         var isFav = favoritedTopicIds.has(topic.id);
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
 
-        return '<div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between shadow-md hover:shadow-lg transition-all duration-200 relative group animate-card-pop h-full w-full min-h-[160px] border border-slate-200/80 dark:border-slate-800">' +
+        return '<div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between shadow-xl transition-all duration-200 relative group animate-card-pop h-full w-full min-h-[170px] border border-slate-200 dark:border-indigo-500/30">' +
           '<div class="flex items-center justify-between gap-2 mb-3">' +
-            '<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+            '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
               "<span>" + topic.icon + "</span><span>" + topic.category + "</span>" +
             "</span>" +
             '<div class="flex items-center gap-1">' +
@@ -530,8 +552,10 @@
               '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-xs"></i></button>' +
             "</div>" +
           "</div>" +
-          '<div class="my-2 flex-grow flex items-center justify-center"><p class="' + (cardCountView === 1 ? "text-base sm:text-xl text-center" : "text-sm sm:text-base") + ' font-bold leading-relaxed text-slate-800 dark:text-slate-100">&quot;' + topic.text + '&quot;</p></div>' +
-          '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between text-[10px] text-slate-400"><span class="font-medium">' + (cardCountView === 1 ? 'Featured Card' : 'Card #' + (index + 1)) + "</span>" + (isPinned ? '<span class="text-indigo-500 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline cursor-pointer" onclick="refreshCardAtIndex(' + index + ')">Tap ↻ to swap</span>') + "</div>" +
+          '<div class="my-2 flex-grow flex items-center justify-center">' +
+            '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+          '</div>' +
+          '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-400"><span class="font-bold uppercase tracking-wider">' + (cardCountView === 1 ? 'Featured Card' : 'Card #' + (index + 1)) + "</span>" + (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline cursor-pointer" onclick="refreshCardAtIndex(' + index + ')">Tap ↻ to swap</span>') + "</div>" +
         "</div>";
       }).join("");
     }
