@@ -75,13 +75,23 @@
       animation: flash-red-slow 2.5s ease-in-out infinite;
     }
 
-    /* Pointing Arrow Horizontal Bounce Animation */
+    /* Top Header Pointing Arrow (Horizontal Bounce) */
     @keyframes point-bounce-slow {
       0%, 100% { transform: translateX(0) scale(1); }
       50% { transform: translateX(6px) scale(1.08); }
     }
     .pointing-arrow-slow {
       animation: point-bounce-slow 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6));
+    }
+
+    /* Card Pointing Arrow (Angled Up & Right towards the button) */
+    @keyframes point-up-right {
+      0%, 100% { transform: rotate(-45deg) translate(0, 0) scale(1); }
+      50% { transform: rotate(-45deg) translate(5px, -5px) scale(1.1); }
+    }
+    .pointing-up-right {
+      animation: point-up-right 1.2s ease-in-out infinite;
       filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6));
     }
 
@@ -113,7 +123,7 @@
         </div>
       </div>
 
-      <!-- Top Header Follow Me Banner (Always Visible) -->
+      <!-- Top Header Follow Me Banner -->
       <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
         <span class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">
           Follow Me
@@ -570,13 +580,13 @@
         var isFav = favoritedTopicIds.has(topic.id);
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
 
-        /* In 1-card view, show Follow Me next to the category pill on the card */
+        /* In 1-card view, show Follow Me on card pointing UP and RIGHT towards the top button */
         var cardHeaderFollowBanner = (cardCountView === 1) ? 
           '<div class="flex items-center gap-1.5 ml-1">' +
             '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">' +
               'Follow Me' +
             '</span>' +
-            '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 inline-block select-none">' +
+            '<span class="pointing-up-right text-sm sm:text-base text-red-500 inline-block select-none">' +
               '👉' +
             '</span>' +
           '</div>' : '';
