@@ -40,35 +40,53 @@
       perspective: 1000px;
     }
 
-    /* Enhanced 3D Glass Card Effect */
+    /* Stainless Steel / Chrome Metallic Frame with Electric Neon Blue Glow */
     .glass-card { 
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.9)); 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)); 
       backdrop-filter: blur(16px); 
-      border-top: 1px solid rgba(255, 255, 255, 0.9);
-      border-left: 1px solid rgba(255, 255, 255, 0.8);
-      border-bottom: 2px solid rgba(203, 213, 225, 0.8);
-      border-right: 2px solid rgba(203, 213, 225, 0.8);
-      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15), 0 8px 15px -6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      position: relative;
+      border-radius: 1rem;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      /* Neon Blue Outer Drop Shadow Glow */
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.35), 0 0 30px rgba(14, 165, 233, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.8);
       transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.25s ease;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
       touch-action: manipulation;
+    }
+
+    /* Metallic Stainless Steel Edge Effect via Pseudoelement Frame */
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 1.05rem;
+      padding: 2px;
+      background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 30%, #ffffff 50%, #64748b 70%, #cbd5e1 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 10;
     }
     
     .dark .glass-card { 
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98)); 
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98)); 
       backdrop-filter: blur(16px); 
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      border-left: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 2px solid rgba(0, 0, 0, 0.6);
-      border-right: 2px solid rgba(0, 0, 0, 0.6);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 10px 20px -5px rgba(99, 102, 241, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      /* Electric Neon Blue Drop Shadow for Dark Mode */
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.45), 0 0 40px rgba(14, 165, 233, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
+    .dark .glass-card::before {
+      background: linear-gradient(135deg, #cbd5e1 0%, #475569 25%, #f8fafc 48%, #ffffff 52%, #334155 75%, #94a3b8 100%);
+    }
+
+    /* Hover Neon Blue Flare and Chrome Brilliance */
     .glass-card:hover {
-      box-shadow: 0 25px 45px -10px rgba(0, 0, 0, 0.25), 0 12px 20px -6px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.65), 0 0 50px rgba(14, 165, 233, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.9);
     }
     .dark .glass-card:hover {
-      box-shadow: 0 30px 50px -12px rgba(0, 0, 0, 0.9), 0 15px 25px -5px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.75), 0 0 60px rgba(14, 165, 233, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.25);
     }
 
     /* 3D Right-to-Left Card Flip Keyframes */
@@ -136,7 +154,7 @@
       border-radius: 8px;
     }
     .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(99, 102, 241, 0.4);
+      background: rgba(56, 189, 248, 0.6);
       border-radius: 8px;
     }
   </style>
@@ -686,7 +704,9 @@
             '<div class="my-2 flex-grow flex items-center justify-center">' +
               '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
             '</div>' +
-            '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-400"><span class="font-bold uppercase tracking-wider">' + (cardCountView === 1 ? 'Featured Card' : 'Card #' + (index + 1)) + "</span>" + (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline">Tap card to flip ↻</span>') + "</div>" +
+            '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-center text-[11px] font-semibold text-slate-400 dark:text-slate-500">' + 
+              (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-lightbulb text-[10px] text-amber-400"></i> Tap or click card to flip</span>') + 
+            "</div>" +
           "</div>" +
         "</div>";
       }).join("");
