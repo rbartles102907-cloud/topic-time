@@ -335,6 +335,7 @@
       "Hot Takes": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M50 10 Q65 35 75 50 Q85 70 70 85 Q50 100 30 85 Q15 70 25 50 Q35 35 50 10 Z" fill="#f43f5e"/><path d="M50 35 Q60 50 65 60 Q70 72 60 82 Q50 90 40 82 Q30 72 35 60 Z" fill="#fbbf24"/><circle cx="42" cy="58" r="4" fill="#000"/><circle cx="58" cy="58" r="4" fill="#000"/><path d="M42 70 Q50 78 58 70" stroke="#881337" stroke-width="3" fill="none"/></svg>'
     };
 
+    /* Massive Dynamic Template System with Variable Arrays (>50 unique variations per category) */
     var GENERATOR_TEMPLATES = {
       Philosophy: {
         templates: [
@@ -342,17 +343,32 @@
           "Is it ever ethically acceptable to {action} if the outcome guarantees {outcome}?",
           "Would you rather live in a world where {scenario_a} or a world where {scenario_b}?",
           "If every memory of {subject} was erased tomorrow, would {concept} still exist?",
-          "Does true human fulfillment stem from {concept_a} or from {concept_b}?"
+          "Does true human fulfillment stem from {concept_a} or from {concept_b}?",
+          "If a time traveler altered the history of {subject}, would society be fundamentally {outcome_adj}?",
+          "Can an individual truly achieve {concept} without experiencing {hardship}?",
+          "If society replaced all leaders with {subject}, would we eliminate {flaw}?",
+          "Is {concept_a} a construct created to prevent humans from pursuing {concept_b}?",
+          "If you could eliminate one fundamental truth about {subject}, what would it be?",
+          "Should future generations prioritize {action_a} over preserving {concept}?",
+          "Is it better to live a short life filled with {concept_a} or a long life of {concept_b}?",
+          "If you could grant universal access to {concept}, how would human nature change?",
+          "Do humans have a moral responsibility to protect {subject} even at the cost of {sacrifice}?",
+          "Is total {concept} actually a hidden form of {flaw}?"
         ],
         vars: {
-          subject: ["artificial intelligence", "virtual reality", "genetic engineering", "time travel technology", "a synthetic organism", "deep-space colonies"],
-          action: ["grant them legal human rights", "prioritize their survival over humans", "ban their existence entirely", "sacrifice personal privacy for safety"],
-          outcome: ["global peace", "total equality", "infinite technological progress", "elimination of all disease"],
-          scenario_a: ["everyone knows your exact thoughts", "you can never communicate with anyone again"],
-          scenario_b: ["emotions are entirely suppressed", "history resets every hundred years"],
-          concept: ["justice", "morality", "personal identity", "truth", "free will"],
-          concept_a: ["relentless personal ambition", "peaceful contentment"],
-          concept_b: ["unconditional service to others", "mastery of self-knowledge"]
+          subject: ["artificial superintelligence", "virtual reality worlds", "genetic enhancements", "time travel technology", "synthetic consciousness", "deep-space human colonies", "cloned human beings", "automated governance", "neural memory uploads"],
+          action: ["grant them full constitutional rights", "prioritize their survival over humans", "ban their operation entirely", "sacrifice personal privacy for complete safety", "reprogram their core morality", "dismantle their infrastructure"],
+          outcome: ["global harmony", "complete social equality", "unlimited technological progress", "the total elimination of disease", "universal economic stability", "endless creative expansion"],
+          scenario_a: ["everyone can instantly read your mind", "you can never express emotion again", "all your secrets are public knowledge"],
+          scenario_b: ["emotions are entirely suppressed by law", "history completely resets every century", "you live in total physical isolation"],
+          concept: ["absolute justice", "objective morality", "personal identity", "ultimate truth", "free will", "human destiny", "true happiness"],
+          concept_a: ["relentless ambition", "peaceful contentment", "unconditional love", "intellectual curiosity", "stoic discipline"],
+          concept_b: ["service to others", "mastery of self-knowledge", "artistic rebellion", "spiritual awareness"],
+          outcome_adj: ["more peaceful", "dangerously chaotic", "emotionally hollow", "utopian", "dystopian"],
+          hardship: ["profound heartbreak", "complete financial loss", "existential failure", "loneliness"],
+          flaw: ["human greed", "political corruption", "social inequality", "crime and violence"],
+          action_a: ["technological acceleration", "environmental preservation", "space expansion"],
+          sacrifice: ["economic wealth", "personal convenience", "national sovereignty"]
         }
       },
       "Deep Questions": {
@@ -361,12 +377,23 @@
           "What is a harsh truth about {life_topic} that most people choose to ignore?",
           "If you could give your younger self one piece of advice about {life_area}, what would it be?",
           "What is something about {concept} that you only truly understood later in life?",
-          "What legacy surrounding {life_topic} do you most hope to leave behind?"
+          "What legacy surrounding {life_topic} do you most hope to leave behind?",
+          "What personal value regarding {life_area} are you completely unwilling to compromise on?",
+          "When was the last time you experienced a complete shift in your mindset about {life_topic}?",
+          "What fear concerning {life_area} holds you back more than anything else?",
+          "How do you personally measure success when it comes to {life_topic}?",
+          "What lesson from {life_area} took you the longest and most painful time to learn?",
+          "If you could erase one past mistake in {life_area}, would you do it knowing it changes who you are?",
+          "What is the most meaningful act of kindness someone showed you during {hardship_time}?",
+          "What promise to yourself regarding {life_topic} have you kept no matter what?",
+          "What is something about {life_area} that you wish society talked about more openly?",
+          "In what way has your perspective on {concept} evolved over the last five years?"
         ],
         vars: {
-          life_area: ["your career path", "personal relationships", "taking creative risks", "handling sudden failure", "financial independence"],
-          life_topic: ["human friendship", "achieving success", "facing personal loss", "growing older", "staying authentic"],
-          concept: ["patience and timing", "unconditional forgiveness", "setting firm boundaries", "vulnerability"]
+          life_area: ["your career journey", "personal relationships", "taking major creative risks", "handling sudden failure", "achieving financial independence", "navigating family dynamics", "building self-confidence", "facing unexpected change"],
+          life_topic: ["genuine friendship", "lasting success", "facing personal loss", "growing older gracefully", "staying authentic", "finding life purpose", "building self-trust"],
+          concept: ["patience and timing", "unconditional forgiveness", "setting firm boundaries", "vulnerability", "inner peace", "emotional maturity"],
+          hardship_time: ["a career setback", "a time of grief", "a major move", "a period of burnout"]
         }
       },
       "Humor/Fun": {
@@ -375,16 +402,31 @@
           "What is the most absurd excuse you could give for {funny_situation} that someone might actually believe?",
           "If you were forced to replace {body_part} with {item}, what would you pick and why?",
           "What ordinary task like {mundane_task} feels like an epic movie battle when you are exhausted?",
-          "If your life had a theme song that played whenever you entered a room with {situation}, what song is it?"
+          "If your life had a theme song that played whenever you entered a room during {situation}, what song is it?",
+          "What is the weirdest food combination with {food_item} that actually tastes surprisingly good?",
+          "If you were hired to write a terrible self-help book about {funny_topic}, what would the title be?",
+          "What is a bizarre mild superpower like {useless_power} that you would unironically love to have?",
+          "If you were put in charge of designing a movie about {mundane_task}, who plays the main villain?",
+          "What is the absolute worst item to bring to {event_type}?",
+          "If {item_plural} suddenly became the global currency, how rich would you be right now?",
+          "What alien custom regarding {mundane_task} would be hardest to explain to extraterrestrials?",
+          "If you were forced to live inside a world ruled by {animals}, what job would you hold?",
+          "What ridiculous habit did you pick up as a kid that you still do secretly during {situation}?",
+          "What fast food menu item would make the most chaotic weapon in a comedic superhero duel?"
         ],
         vars: {
-          animals: ["pigeons", "house cats", "squirrels", "golden retrievers", "raccoons", "geese"],
-          trait: ["sarcastic", "dramatic", "gossipy", "overly polite", "conspiratorial"],
-          funny_situation: ["showing up 3 hours late to work", "eating an entire birthday cake alone", "wearing pajamas to a formal gala"],
-          body_part: ["your hands", "your feet", "your ears"],
-          item: ["kitchen spatulas", "pool noodles", "swiss army knives", "plungers"],
-          mundane_task: ["doing the laundry", "unloading the dishwasher", "assembling IKEA furniture", "finding lost keys"],
-          situation: ["awkward silence", "dramatic confidence", "total chaos"]
+          animals: ["pigeons", "house cats", "squirrels", "golden retrievers", "raccoons", "seagulls", "geese", "capybaras", "hedgehogs"],
+          trait: ["sarcastic", "dramatic", "gossipy", "overly polite", "conspiratorial", "passive-aggressive", "sassy"],
+          funny_situation: ["showing up 3 hours late to work", "eating an entire birthday cake alone", "wearing pajamas to a formal gala", "accidentally breaking a museum display"],
+          body_part: ["your hands", "your feet", "your ears", "your elbows"],
+          item: ["kitchen spatulas", "pool noodles", "swiss army knives", "toilet plungers", "leaf blowers", "waffle irons"],
+          mundane_task: ["doing the laundry", "unloading the dishwasher", "assembling IKEA furniture", "finding lost keys", "parallel parking", "folding fitted sheets"],
+          situation: ["awkward silences", "entering a room dramatically", "getting caught eating snacks at 2 AM", "walking into work late"],
+          food_item: ["peanut butter", "pickles", "hot sauce", "macaroni and cheese", "ice cream"],
+          funny_topic: ["procrastination techniques", "talking to your plants", "avoiding social calls", "napping efficiently"],
+          useless_power: ["instantly knowing if coffee is too hot", "never dropping a pair of socks", "summoning a single pigeon on demand", "always finding the cooler side of the pillow"],
+          event_type: ["a high-end wedding", "a silent retreat", "a job interview", "a camping trip"],
+          item_plural: ["rubber ducks", "unmatched socks", "empty coffee mugs", "houseplants"]
         }
       },
       "Current Events": {
@@ -392,17 +434,29 @@
           "Will {tech_trend} fundamentally change how humanity handles {domain} within 10 years?",
           "Should society regulate {media_type} to prevent {issue}?",
           "Is the future of {industry} going to be dominated by {approach_a} or {approach_b}?",
-          "How will global culture adapt as {global_shift} becomes more prevalent?"
+          "How will global culture adapt as {global_shift} becomes more prevalent?",
+          "What emerging news story regarding {domain} is not getting nearly enough media coverage?",
+          "Will the rise of {tech_trend} make traditional {job_field} completely obsolete?",
+          "How should governments handle the ethical dilemma of {tech_trend} in public infrastructure?",
+          "Is the shift toward {global_shift} improving our overall quality of life or creating {issue}?",
+          "What impact will {tech_trend} have on the future of global privacy?",
+          "Should {industry} companies be held legally responsible for {issue}?",
+          "What single technological breakthrough in {domain} will define the next decade?",
+          "Are consumer habits around {domain} permanently changing due to {global_shift}?",
+          "How can education systems best prepare students for a job market dominated by {tech_trend}?",
+          "Is remote digital living strengthening local communities or accelerating {issue}?",
+          "What global issue surrounding {domain} requires immediate international cooperation?"
         ],
         vars: {
-          tech_trend: ["generative AI tools", "autonomous robotics", "brain-computer interfaces", "commercial space travel", "quantum computing"],
-          domain: ["higher education", "daily employment", "journalism and news", "personal healthcare", "artistic expression"],
-          media_type: ["social media algorithms", "deepfake imagery", "AI news anchors", "short-form video platforms"],
-          issue: ["widespread misinformation", "shortened attention spans", "loss of public trust"],
-          industry: ["transportation", "entertainment", "healthcare delivery", "renewable energy"],
-          approach_a: ["decentralized technology", "hyper-local production"],
-          approach_b: ["centralized automated networks", "global AI governance"],
-          global_shift: ["remote-first work cultures", "automated labor", "urban urbanization", "digital currency adoption"]
+          tech_trend: ["generative AI models", "autonomous robotics", "brain-computer interfaces", "commercial space exploration", "quantum computing networks", "synthetic biology", "smart grid energy"],
+          domain: ["higher education", "daily employment", "journalism and news media", "healthcare delivery", "artistic creation", "financial systems", "urban planning"],
+          media_type: ["social media algorithms", "deepfake imagery", "AI news anchors", "short-form video feeds", "targeted advertising"],
+          issue: ["widespread misinformation", "shortened attention spans", "loss of public trust", "digital isolation", "job displacement"],
+          industry: ["transportation", "entertainment", "healthcare", "renewable energy", "agriculture", "logistics"],
+          approach_a: ["decentralized tech", "hyper-local production", "human-led labor"],
+          approach_b: ["centralized automated networks", "global AI governance", "fully robotic systems"],
+          global_shift: ["remote-first work cultures", "automated labor", "digital currency adoption", "urban micro-housing"],
+          job_field: ["entry-level coding", "copywriting", "customer support", "graphic design", "data analysis"]
         }
       },
       "Would You Rather": {
@@ -410,17 +464,48 @@
           "Would you rather have the ability to {power_a} or {power_b}?",
           "Would you rather live without {comfort_a} for five years or give up {comfort_b} forever?",
           "Would you rather always know when someone is {condition_a} or never feel {condition_b} again?",
-          "Would you rather travel 100 years into the {direction_a} or 100 years into the {direction_b}?"
+          "Would you rather travel 100 years into the {direction_a} or 100 years into the {direction_b}?",
+          "Would you rather be famous for {feat_a} or anonymously accomplished in {feat_b}?",
+          "Would you rather have a personal chef who cooks {food_type} or a personal driver who takes you to {place_type}?",
+          "Would you rather live in a house located in {location_a} or a luxury apartment in {location_b}?",
+          "Would you rather be able to master {skill_a} instantly or speak every {skill_b} fluently?",
+          "Would you rather lose the ability to read {media_a} or lose the ability to listen to {media_b}?",
+          "Would you rather always be 15 minutes early for {event_a} or always be 5 minutes late for {event_b}?",
+          "Would you rather relive your years in {time_period} or jump ahead to see your life in {future_year}?",
+          "Would you rather have unlimited free {item_a} or unlimited access to {item_b}?",
+          "Would you rather spend a week exploring {place_a} alone or spend a week in {place_b} with strangers?",
+          "Would you rather have the capacity to {power_a} only while sleeping or {power_b} only while running?",
+          "Would you rather know the exact answer to {mystery_a} or solve the dilemma of {mystery_b}?"
         ],
         vars: {
-          power_a: ["read people emotional states", "speak every human language fluently", "instantly master any skill in 10 minutes"],
-          power_b: ["teleport anywhere in the world", "never require sleep again", "pause time for 5 minutes every day"],
-          comfort_a: ["smartphone internet access", "air conditioning and heating", "all video streaming services"],
-          comfort_b: ["coffee and tea", "music and podcasts", "sweets and dessert"],
+          power_a: ["read people's emotional states", "speak every human language", "instantly master any instrument", "remember every detail you see"],
+          power_b: ["teleport anywhere instantly", "never require sleep again", "pause time for 5 minutes daily", "fly at moderate speed"],
+          comfort_a: ["smartphone internet access", "air conditioning and heating", "streaming video services", "social media access"],
+          comfort_b: ["coffee and tea", "music and podcasts", "sweets and chocolate", "freshly baked bread"],
           condition_a: ["lying to you", "secretly impressed by you", "bored by the conversation"],
-          condition_b: ["physical exhaustion", "imposter syndrome", "social anxiety"],
-          direction_a: ["past to observe history", "future to see technology"],
-          direction_b: ["past to meet ancestors", "future to see space exploration"]
+          condition_b: ["physical exhaustion", "imposter syndrome", "social anxiety", "self-doubt"],
+          direction_a: ["past to observe history", "future to see advanced technology"],
+          direction_b: ["past to meet your ancestors", "future to explore deep space"],
+          feat_a: ["discovering a groundbreaking scientific law", "writing an iconic song"],
+          feat_b: ["saving thousands of lives secretly", "building a major humanitarian organization"],
+          food_type: ["gourmet meals", "healthy organic cuisine", "comfort street food"],
+          place_type: ["any destination on earth", "exotic tropical locations"],
+          location_a: ["a quiet mountain forest", "a secluded ocean beach"],
+          location_b: ["a bustling megacity", "a historic European village"],
+          skill_a: ["any coding language", "advanced martial arts", "professional painting"],
+          skill_b: ["foreign language", "musical instrument"],
+          media_a: ["books and articles", "written news stories"],
+          media_b: ["music and songs", "podcasts and audiobooks"],
+          event_a: ["every social gathering", "work meetings"],
+          event_b: ["flights and trains", "dinner dates"],
+          time_period: ["high school", "your early twenties"],
+          future_year: ["2040", "2050"],
+          item_a: ["airline tickets", "concert passes"],
+          item_b: ["five-star hotel stays", "gourmet dining"],
+          place_a: ["the Amazon rainforest", "an ancient Egyptian tomb"],
+          place_b: ["a space station", "a deep-sea submarine"],
+          mystery_a: ["what lies inside a black hole", "how stonehenge was built"],
+          mystery_b: ["whether alien life exists", "how consciousness works"]
         }
       },
       "Pop Culture": {
@@ -428,13 +513,26 @@
           "Which movie or TV show universe would be the absolute worst place to live as a {profession}?",
           "Who is a fictional villain in {genre} who was actually making a valid point?",
           "What music genre or musical era from {decade} deserves a massive modern comeback?",
-          "What is a beloved movie or show that everyone seems to love, but you secretly {opinion}?"
+          "What is a beloved movie or show that everyone seems to love, but you secretly {opinion}?",
+          "Which iconic fictional character in {genre} would make the absolute worst roommate?",
+          "If you could recast the main actor in {movie_type}, who would you choose for total comedic effect?",
+          "What movie soundtrack or album from {decade} can you listen to front-to-back without skipping?",
+          "Which classic board game or video game deserves a high-budget live-action {media_format}?",
+          "What fictional weapon or gadget from {genre} would cause the most chaos in real life?",
+          "Which pop star or band from {decade} had the most underrated influence on modern music?",
+          "If you could enter the world of any {genre} story for 24 hours, where are you going?",
+          "What plot hole in an otherwise great {movie_type} completely ruined the movie for you?",
+          "Which television series had the absolute best series finale in TV history?",
+          "What fictional restaurant or cafe from {movie_type} do you wish actually existed?",
+          "Which hero in {genre} actually caused more damage to their city than the villain did?"
         ],
         vars: {
-          profession: ["regular accountant", "fast food worker", "high school teacher", "cab driver"],
-          genre: ["sci-fi movies", "animated films", "superhero cinema", "classic literature"],
-          decade: ["the 1980s", "the 1990s", "the early 2000s", "the 1970s"],
-          opinion: ["could never finish", "find completely overrated", "think aged horribly"]
+          profession: ["regular accountant", "fast food line cook", "high school teacher", "cab driver", "real estate agent"],
+          genre: ["sci-fi movies", "animated films", "superhero cinema", "classic literature", "fantasy epics", "horror movies"],
+          decade: ["the 1980s", "the 1990s", "the early 2000s", "the 1970s", "the 2010s"],
+          opinion: ["could never finish", "find completely overrated", "think aged horribly", "found completely boring"],
+          movie_type: ["an action blockbuster", "a romantic comedy", "a sci-fi thriller", "a superhero film"],
+          media_format: ["TV series", "feature film", "animated short series"]
         }
       },
       "Personal Stories": {
@@ -442,27 +540,52 @@
           "What was your most memorable moment involving {story_topic} that still makes you laugh?",
           "What is the most impulsive decision you made regarding {impulse_area} that actually turned out great?",
           "What unexpected lesson did you learn from your very first {first_experience}?",
-          "What topic or hobby did you get surprisingly obsessed with after {trigger_event}?"
+          "What topic or hobby did you get surprisingly obsessed with after {trigger_event}?",
+          "What is the funniest miscommunication you have ever experienced at {place_event}?",
+          "What item in your house has the most interesting or bizarre back-story?",
+          "When was a time you took a risk on {impulse_area} and it completely backfired?",
+          "What childhood memory involving {story_topic} feels like a movie scene when you look back?",
+          "What is the most unusual place you have ever visited, and what brought you there?",
+          "What is a strange talent or skill you developed during {life_phase}?",
+          "When was a time you were hopelessly lost during {first_experience} and how did you navigate out?",
+          "What tradition with your friends or family surrounding {story_topic} do you treasure most?",
+          "What is the best piece of spontaneous advice someone gave you at {place_event}?",
+          "What project or task in {impulse_area} took twice as long as you originally planned?",
+          "What is a story about {story_topic} that your friends never let you live down?"
         ],
         vars: {
-          story_topic: ["a failed culinary attempt", "a terrible road trip", "a childhood misunderstanding", "a miscommunication at work"],
-          impulse_area: ["a weekend getaway", "buying an unusual item", "trying a random hobby", "saying yes to an invitation"],
-          first_experience: ["part-time job", "solo travel experience", "public speaking opportunity", "major move to a new place"],
-          trigger_event: ["watching a random documentary", "a recommendation from a friend", "a rainy weekend with nothing to do"]
+          story_topic: ["a failed culinary attempt", "a terrible road trip", "a childhood misunderstanding", "a miscommunication at work", "assembly instructions gone wrong", "a DIY home repair"],
+          impulse_area: ["a weekend getaway", "buying an unusual item", "trying a random hobby", "saying yes to an invitation", "a sudden hair style change"],
+          first_experience: ["part-time job", "solo travel experience", "public speaking opportunity", "major move to a new city", "car driving test"],
+          trigger_event: ["watching a random documentary", "a recommendation from a friend", "a rainy weekend with nothing to do", "a random rabbit hole on the internet"],
+          place_event: ["a family dinner", "a job interview", "a concert venue", "an airport gate"],
+          life_phase: ["your college years", "a summer break", "your first apartment stay"]
         }
       },
       "Science & Tech": {
         templates: [
-          "If humanity discovered evidence of {discovery}, how would daily life change over night?",
+          "If humanity discovered evidence of {discovery}, how would daily life change overnight?",
           "What futuristic invention in {tech_field} do you think will exist within our lifetimes?",
           "Would you ever trust a robot to perform {sensitive_task} on you or a loved one?",
-          "Is the human brain capable of understanding {cosmic_mystery}, or are we fundamentally limited?"
+          "Is the human brain capable of understanding {cosmic_mystery}, or are we fundamentally limited?",
+          "What scientific discovery regarding {tech_field} surprised you the most when you learned it?",
+          "If we successfully colonized {space_place}, what basic human habit would be hardest to maintain?",
+          "Will {tech_field} ultimately solve environmental challenges or create new ones?",
+          "Would you volunteer for the first manned mission to explore {space_place} if it was one-way?",
+          "What piece of sci-fi technology from {tech_field} are we closest to realizing today?",
+          "How will quantum breakthroughs in {tech_field} redefine digital security?",
+          "What medical breakthrough in {sensitive_task} would have the biggest impact on human life expectancy?",
+          "Should humanity actively try to transmit signals to locate {cosmic_mystery}?",
+          "If you could receive a cybernetic upgrade for {sensitive_task}, would you do it?",
+          "What fundamental law of physics or chemistry surrounding {cosmic_mystery} baffles you most?",
+          "What technology in {tech_field} seems like magic to someone from 50 years ago?"
         ],
         vars: {
-          discovery: ["microscopic alien life on Mars", "a proven method for nuclear fusion energy", "a cure for human aging"],
-          tech_field: ["clean energy storage", "virtual reality neural links", "autonomous flying transport", "personalized genetic medicine"],
-          sensitive_task: ["complex surgery", "drive through a blizzard at high speed", "manage your lifetime financial savings"],
-          cosmic_mystery: ["the true nature of dark matter", "what existed before the Big Bang", "higher spatial dimensions"]
+          discovery: ["microscopic alien life on Mars", "a proven method for nuclear fusion energy", "a cure for human aging", "room-temperature superconductors", "ancient subterranean structures"],
+          tech_field: ["clean energy storage", "virtual reality neural links", "autonomous flying transport", "personalized genetic medicine", "deep-sea oceanography", "nanotechnology"],
+          sensitive_task: ["complex brain surgery", "driving through a blizzard at top speed", "managing your lifetime retirement savings", "raising and educating children"],
+          cosmic_mystery: ["the true nature of dark matter", "what existed before the Big Bang", "higher spatial dimensions", "the Fermi paradox"],
+          space_place: ["the Moon", "Mars", "an orbital space station", "Europa"]
         }
       },
       "Hot Takes": {
@@ -470,14 +593,36 @@
           "Hot Take: {hot_take_food} is vastly overrated and people only like it because of social pressure.",
           "Hot Take: {hot_take_tech} has actually made our social lives worse, not better.",
           "Hot Take: {hot_take_opinion} is far superior to {hot_take_alternative}.",
-          "Hot Take: Most people only pretend to enjoy {hot_take_activity}."
+          "Hot Take: Most people only pretend to enjoy {hot_take_activity}.",
+          "Hot Take: {media_item} is actually much better than {media_alternative}.",
+          "Hot Take: We would all be significantly happier if we completely stopped {activity_stop}.",
+          "Hot Take: {everyday_item} is completely unnecessary and should be phased out.",
+          "Hot Take: Modern {design_trend} has ruined the cozy charm of homes.",
+          "Hot Take: People who complain about {hot_take_activity} are just doing it wrong.",
+          "Hot Take: {food_item_take} tastes vastly better when served at room temperature.",
+          "Hot Take: The best era for {genre_take} was actually during {decade_take}.",
+          "Hot Take: Spending money on {splurge_item} is a total waste of funds.",
+          "Hot Take: {work_habit} is actually counterproductive to getting actual work done.",
+          "Hot Take: Most movie remakes of {genre_take} are actually better than the original.",
+          "Hot Take: {season_item} is by far the worst season of the year."
         ],
         vars: {
-          hot_take_food: ["Avocado toast", "Boba tea", "Fancy craft beer", "Truffle oil on everything"],
-          hot_take_tech: ["Smart home voice assistants", "Constant text messaging", "Smartwatches notifying us 24/7"],
-          hot_take_opinion: ["Physical books", "Working in quiet coffee shops", "Traveling by train"],
-          hot_take_alternative: ["Kindles and e-readers", "Working from home alone", "Flying on airplanes"],
-          hot_take_activity: ["going to crowded music festivals", "waking up at 5:00 AM", "networking events"]
+          hot_take_food: ["Avocado toast", "Boba tea", "Fancy craft beer", "Truffle oil on everything", "Sparkling water", "Matcha lattes"],
+          hot_take_tech: ["Smart home voice assistants", "Constant text messaging", "Smartwatches notifying us 24/7", "Push notifications"],
+          hot_take_opinion: ["Physical paper books", "Working in quiet coffee shops", "Traveling long distances by train"],
+          hot_take_alternative: ["Kindles and e-readers", "Working from home alone", "Flying on commercial airplanes"],
+          hot_take_activity: ["going to crowded music festivals", "waking up at 5:00 AM", "networking events", "camping in tents", "running marathons"],
+          media_item: ["Physical DVDs", "Listening to radio", "Watching cable TV"],
+          media_alternative: ["Streaming services", "Social media feeds", "Short-form clips"],
+          activity_stop: ["checking emails after hours", "following celebrity drama", "reading online comment sections"],
+          everyday_item: ["Physical business cards", "Paper receipts", "Landline phones"],
+          design_trend: ["open-concept minimalist design", "all-white modern decor"],
+          food_item_take: ["Pizza", "Leftover pasta", "Chocolate cake"],
+          genre_take: ["action movies", "pop music", "sci-fi cinema"],
+          decade_take: ["the 1990s", "the 2000s", "the 1980s"],
+          splurge_item: ["designer clothes", "brand-new cars", "expensive coffee machines"],
+          work_habit: ["having daily team check-ins", "open office spaces"],
+          season_item: ["Summer heat", "Winter snow", "Autumn crispness"]
         }
       }
     };
@@ -543,11 +688,14 @@
       var template = catData.templates[Math.floor(Math.random() * catData.templates.length)];
       var text = template;
 
-      Object.keys(catData.vars).forEach(function(varKey) {
-        var options = catData.vars[varKey];
-        var choice = options[Math.floor(Math.random() * options.length)];
-        text = text.replace(new RegExp("\\{" + varKey + "\\}", "g"), choice);
-      });
+      /* Variable Interpolation with Multi-pass Randomization */
+      if (catData.vars) {
+        Object.keys(catData.vars).forEach(function(varKey) {
+          var options = catData.vars[varKey];
+          var choice = options[Math.floor(Math.random() * options.length)];
+          text = text.replace(new RegExp("\\{" + varKey + "\\}", "g"), choice);
+        });
+      }
 
       topicCounter++;
       return {
