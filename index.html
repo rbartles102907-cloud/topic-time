@@ -35,7 +35,12 @@
     .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
     .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
     
-    /* Enhanced 3D Glass Card Effect for Light & Dark Modes */
+    /* 3D Perspective Container for Card Flipping */
+    .card-container {
+      perspective: 1000px;
+    }
+
+    /* Enhanced 3D Glass Card Effect */
     .glass-card { 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.9)); 
       backdrop-filter: blur(16px); 
@@ -44,8 +49,8 @@
       border-bottom: 2px solid rgba(203, 213, 225, 0.8);
       border-right: 2px solid rgba(203, 213, 225, 0.8);
       box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15), 0 8px 15px -6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-      transform: translateY(0);
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.25s ease;
     }
     
     .dark .glass-card { 
@@ -59,11 +64,27 @@
     }
 
     .glass-card:hover {
-      transform: translateY(-4px) scale(1.01);
       box-shadow: 0 25px 45px -10px rgba(0, 0, 0, 0.25), 0 12px 20px -6px rgba(0, 0, 0, 0.15);
     }
     .dark .glass-card:hover {
       box-shadow: 0 30px 50px -12px rgba(0, 0, 0, 0.9), 0 15px 25px -5px rgba(99, 102, 241, 0.4);
+    }
+
+    /* 3D Right-to-Left Card Flip Keyframes */
+    @keyframes flip-right-to-left {
+      0% {
+        transform: rotateY(0deg) scale(1);
+      }
+      50% {
+        transform: rotateY(-90deg) scale(0.92);
+      }
+      100% {
+        transform: rotateY(-180deg) scale(1);
+      }
+    }
+
+    .card-flipping {
+      animation: flip-right-to-left 0.5s ease-in-out forwards;
     }
 
     /* Slower Flashing Red Animation (2.5s) */
@@ -516,22 +537,6 @@
       }).join("");
     }
 
-    function toggleCategory(cat) {
-      activePreset = "custom";
-      if (selectedCategories.has(cat)) {
-        if (selectedCategories.size === 1) {
-          showToast("At least one category must remain selected!", "warning");
-          return;
-        }
-        selectedCategories.delete(cat);
-      } else {
-        selectedCategories.add(cat);
-      }
-      renderModePills();
-      renderCategoryPills();
-      generateTopics();
-    }
-
     function generateTopics() {
       if (selectedCategories.size === 0) return;
       var genIcon = document.getElementById("generate-icon");
@@ -540,17 +545,24 @@
         setTimeout(function() { genIcon.classList.remove("animate-spin-once"); }, 400);
       }
 
-      var nextTopics = [];
+      var indicesToFlip = [];
       for (var i = 0; i < cardCountView; i++) {
-        if (pinnedIndices.has(i) && currentTopics[i]) {
-          nextTopics[i] = currentTopics[i];
-        } else {
-          nextTopics[i] = generateSingleTopic();
+        if (!pinnedIndices.has(i)) {
+          indicesToFlip.push(i);
         }
       }
 
-      currentTopics = nextTopics;
-      renderTopicCards();
+      triggerCardFlip(indicesToFlip, function() {
+        var nextTopics = [];
+        for (var i = 0; i < cardCountView; i++) {
+          if (pinnedIndices.has(i) && currentTopics[i]) {
+            nextTopics[i] = currentTopics[i];
+          } else {
+            nextTopics[i] = generateSingleTopic();
+          }
+        }
+        currentTopics = nextTopics;
+      });
     }
 
     function refreshCardAtIndex(index) {
@@ -558,9 +570,32 @@
         showToast("Unpin card first to refresh it!", "warning");
         return;
       }
-      currentTopics[index] = generateSingleTopic();
-      renderTopicCards();
+
+      triggerCardFlip([index], function() {
+        currentTopics[index] = generateSingleTopic();
+      });
       showToast("Topic refreshed!", "info");
+    }
+
+    function triggerCardFlip(indices, dataUpdateFn) {
+      var cardEls = indices.map(function(idx) {
+        return document.getElementById("card-inner-" + idx);
+      }).filter(Boolean);
+
+      if (cardEls.length === 0) {
+        dataUpdateFn();
+        renderTopicCards();
+        return;
+      }
+
+      cardEls.forEach(function(el) {
+        el.classList.add("card-flipping");
+      });
+
+      setTimeout(function() {
+        dataUpdateFn();
+        renderTopicCards();
+      }, 250);
     }
 
     function renderTopicCards() {
@@ -591,25 +626,27 @@
             '</span>' +
           '</div>' : '';
 
-        return '<div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group animate-card-pop h-full w-full min-h-[170px]">' +
-          '<div class="flex items-center justify-between gap-2 mb-3">' +
-            '<div class="flex items-center gap-2">' +
-              '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
-                "<span>" + topic.icon + "</span><span>" + topic.category + "</span>" +
-              "</span>" +
-              cardHeaderFollowBanner +
-            '</div>' +
-            '<div class="flex items-center gap-1">' +
-              '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-xs"></i></button>' +
-              '<button onclick="togglePin(' + index + ')" title="' + (isPinned ? "Unpin Card" : "Pin Card") + '" class="p-1.5 rounded-lg transition-all ' + (isPinned ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-xs ' + (isPinned ? "rotate-45" : "") + '"></i></button>' +
-              '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Save Topic" class="p-1.5 rounded-lg transition-all ' + (isFav ? "text-pink-500 bg-pink-50 dark:bg-pink-950/40" : "text-slate-400 hover:text-pink-500 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-heart text-xs"></i></button>' +
-              '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-xs"></i></button>' +
+        return '<div class="card-container h-full w-full min-h-[170px]">' +
+          '<div id="card-inner-' + index + '" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full">' +
+            '<div class="flex items-center justify-between gap-2 mb-3">' +
+              '<div class="flex items-center gap-2">' +
+                '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+                  "<span>" + topic.icon + "</span><span>" + topic.category + "</span>" +
+                "</span>" +
+                cardHeaderFollowBanner +
+              '</div>' +
+              '<div class="flex items-center gap-1">' +
+                '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-xs"></i></button>' +
+                '<button onclick="togglePin(' + index + ')" title="' + (isPinned ? "Unpin Card" : "Pin Card") + '" class="p-1.5 rounded-lg transition-all ' + (isPinned ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-xs ' + (isPinned ? "rotate-45" : "") + '"></i></button>' +
+                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Save Topic" class="p-1.5 rounded-lg transition-all ' + (isFav ? "text-pink-500 bg-pink-50 dark:bg-pink-950/40" : "text-slate-400 hover:text-pink-500 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-heart text-xs"></i></button>' +
+                '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-xs"></i></button>' +
+              "</div>" +
             "</div>" +
+            '<div class="my-2 flex-grow flex items-center justify-center">' +
+              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+            '</div>' +
+            '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-400"><span class="font-bold uppercase tracking-wider">' + (cardCountView === 1 ? 'Featured Card' : 'Card #' + (index + 1)) + "</span>" + (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline cursor-pointer" onclick="refreshCardAtIndex(' + index + ')">Tap ↻ to swap</span>') + "</div>" +
           "</div>" +
-          '<div class="my-2 flex-grow flex items-center justify-center">' +
-            '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
-          '</div>' +
-          '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-400"><span class="font-bold uppercase tracking-wider">' + (cardCountView === 1 ? 'Featured Card' : 'Card #' + (index + 1)) + "</span>" + (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline cursor-pointer" onclick="refreshCardAtIndex(' + index + ')">Tap ↻ to swap</span>') + "</div>" +
         "</div>";
       }).join("");
 
