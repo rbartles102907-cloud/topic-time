@@ -34,35 +34,65 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
     .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
     .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.9); }
-    .dark .glass-card { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border: 2px solid rgba(99, 102, 241, 0.3); }
-
-    /* Flashing Red Animation */
-    @keyframes flash-red {
-      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
-      50% { color: #991b1b; opacity: 0.3; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
+    
+    /* Enhanced 3D Glass Card Effect for Light & Dark Modes */
+    .glass-card { 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.9)); 
+      backdrop-filter: blur(16px); 
+      border-top: 1px solid rgba(255, 255, 255, 0.9);
+      border-left: 1px solid rgba(255, 255, 255, 0.8);
+      border-bottom: 2px solid rgba(203, 213, 225, 0.8);
+      border-right: 2px solid rgba(203, 213, 225, 0.8);
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.15), 0 8px 15px -6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      transform: translateY(0);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .flashing-follow {
-      animation: flash-red 1s infinite;
+    
+    .dark .glass-card { 
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98)); 
+      backdrop-filter: blur(16px); 
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.6);
+      border-right: 2px solid rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 10px 20px -5px rgba(99, 102, 241, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    }
+
+    .glass-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 25px 45px -10px rgba(0, 0, 0, 0.25), 0 12px 20px -6px rgba(0, 0, 0, 0.15);
+    }
+    .dark .glass-card:hover {
+      box-shadow: 0 30px 50px -12px rgba(0, 0, 0, 0.9), 0 15px 25px -5px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Slower Flashing Red Animation (2.5s) */
+    @keyframes flash-red-slow {
+      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
+      50% { color: #991b1b; opacity: 0.35; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
+    }
+    .flashing-follow-slow {
+      animation: flash-red-slow 2.5s ease-in-out infinite;
     }
 
     /* Pointing Arrow Horizontal Bounce Animation */
-    @keyframes point-bounce {
+    @keyframes point-bounce-slow {
       0%, 100% { transform: translateX(0) scale(1); }
-      50% { transform: translateX(8px) scale(1.1); }
+      50% { transform: translateX(6px) scale(1.08); }
     }
-    .pointing-arrow {
-      animation: point-bounce 0.8s ease-in-out infinite;
+    .pointing-arrow-slow {
+      animation: point-bounce-slow 1.2s ease-in-out infinite;
       filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6));
     }
 
-    /* High-contrast shadow for video screens */
+    /* High-contrast text styles for light and dark modes */
     .dark .tiktok-card-text {
       color: #ffffff !important;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
     }
     .tiktok-card-text {
       color: #0f172a !important;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }
   </style>
 </head>
@@ -83,12 +113,12 @@
         </div>
       </div>
 
-      <!-- Flashing Red Text Banner + Pointing Finger Arrow -->
+      <!-- Top Header Follow Me Banner (Always Visible) -->
       <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
-        <span class="flashing-follow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">
+        <span class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">
           Follow Me
         </span>
-        <span class="pointing-arrow text-xl sm:text-2xl text-red-500 inline-block select-none" title="Pointing to TikTok">
+        <span class="pointing-arrow-slow text-xl sm:text-2xl text-red-500 inline-block select-none" title="Pointing to TikTok">
           👉
         </span>
       </div>
@@ -124,7 +154,7 @@
         </div>
 
         <!-- 1 Card vs 4 Cards Layout Toggle -->
-        <div class="flex items-center bg-slate-200/80 dark:bg-slate-800/80 p-0.5 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700">
+        <div class="flex items-center bg-slate-200/80 dark:bg-slate-800/80 p-0.5 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
           <button id="view-btn-1" onclick="setLayoutView(1)" class="px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1">
             <i class="fa-solid fa-square text-[10px]"></i> 1 Card
           </button>
@@ -533,18 +563,32 @@
         grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 my-auto flex-grow items-center w-full py-2";
       }
 
-      grid.innerHTML = currentTopics.map(function(topic, index) {
+      var cardsHtml = currentTopics.map(function(topic, index) {
         if (!topic) return "";
 
         var isPinned = pinnedIndices.has(index);
         var isFav = favoritedTopicIds.has(topic.id);
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
 
-        return '<div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between shadow-xl transition-all duration-200 relative group animate-card-pop h-full w-full min-h-[170px] border border-slate-200 dark:border-indigo-500/30">' +
+        /* In 1-card view, show Follow Me next to the category pill on the card */
+        var cardHeaderFollowBanner = (cardCountView === 1) ? 
+          '<div class="flex items-center gap-1.5 ml-1">' +
+            '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">' +
+              'Follow Me' +
+            '</span>' +
+            '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 inline-block select-none">' +
+              '👉' +
+            '</span>' +
+          '</div>' : '';
+
+        return '<div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group animate-card-pop h-full w-full min-h-[170px]">' +
           '<div class="flex items-center justify-between gap-2 mb-3">' +
-            '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
-              "<span>" + topic.icon + "</span><span>" + topic.category + "</span>" +
-            "</span>" +
+            '<div class="flex items-center gap-2">' +
+              '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+                "<span>" + topic.icon + "</span><span>" + topic.category + "</span>" +
+              "</span>" +
+              cardHeaderFollowBanner +
+            '</div>' +
             '<div class="flex items-center gap-1">' +
               '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-xs"></i></button>' +
               '<button onclick="togglePin(' + index + ')" title="' + (isPinned ? "Unpin Card" : "Pin Card") + '" class="p-1.5 rounded-lg transition-all ' + (isPinned ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-xs ' + (isPinned ? "rotate-45" : "") + '"></i></button>' +
@@ -558,6 +602,8 @@
           '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-400"><span class="font-bold uppercase tracking-wider">' + (cardCountView === 1 ? 'Featured Card' : 'Card #' + (index + 1)) + "</span>" + (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline cursor-pointer" onclick="refreshCardAtIndex(' + index + ')">Tap ↻ to swap</span>') + "</div>" +
         "</div>";
       }).join("");
+
+      grid.innerHTML = cardsHtml;
     }
 
     function togglePin(index) {
