@@ -40,7 +40,7 @@
       perspective: 1000px;
     }
 
-    /* Stainless Steel / Chrome Metallic Frame with Electric Neon Blue Glow */
+    /* Stainless Steel / Chrome Metallic Frame with Bottom-Right Neon Blue Drop Shadow */
     .glass-card { 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)); 
       backdrop-filter: blur(16px); 
@@ -48,8 +48,8 @@
       border-radius: 1rem;
       border: 2px solid transparent;
       background-clip: padding-box;
-      /* Neon Blue Outer Drop Shadow Glow */
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.35), 0 0 30px rgba(14, 165, 233, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      /* Bottom-Right Only Neon Blue Drop Shadow */
+      box-shadow: 10px 14px 22px rgba(56, 189, 248, 0.35), 18px 22px 36px rgba(14, 165, 233, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.8);
       transform-style: preserve-3d;
       transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
       touch-action: manipulation;
@@ -73,20 +73,20 @@
     .dark .glass-card { 
       background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98)); 
       backdrop-filter: blur(16px); 
-      /* Electric Neon Blue Drop Shadow for Dark Mode */
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.45), 0 0 40px rgba(14, 165, 233, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      /* Bottom-Right Only Neon Blue Drop Shadow for Dark Mode */
+      box-shadow: 12px 16px 26px rgba(56, 189, 248, 0.45), 20px 24px 44px rgba(14, 165, 233, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     .dark .glass-card::before {
       background: linear-gradient(135deg, #cbd5e1 0%, #475569 25%, #f8fafc 48%, #ffffff 52%, #334155 75%, #94a3b8 100%);
     }
 
-    /* Hover Neon Blue Flare and Chrome Brilliance */
+    /* Hover Bottom-Right Neon Blue Flare */
     .glass-card:hover {
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.65), 0 0 50px rgba(14, 165, 233, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+      box-shadow: 14px 18px 30px rgba(56, 189, 248, 0.65), 22px 28px 50px rgba(14, 165, 233, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.9);
     }
     .dark .glass-card:hover {
-      box-shadow: 0 0 30px rgba(56, 189, 248, 0.75), 0 0 60px rgba(14, 165, 233, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+      box-shadow: 16px 20px 34px rgba(56, 189, 248, 0.75), 24px 30px 58px rgba(14, 165, 233, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.25);
     }
 
     /* 3D Right-to-Left Card Flip Keyframes */
@@ -104,6 +104,19 @@
 
     .card-flipping {
       animation: flip-right-to-left 0.5s ease-in-out forwards;
+    }
+
+    /* Whimsical Character Bounce & Wobble Animation on Flip */
+    @keyframes character-pop {
+      0% { transform: scale(0.5) rotate(-15deg); opacity: 0; }
+      40% { transform: scale(1.25) rotate(10deg); opacity: 1; }
+      60% { transform: scale(0.95) rotate(-5deg); }
+      80% { transform: scale(1.1) rotate(3deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .character-animated {
+      animation: character-pop 2.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
     }
 
     /* Slower Flashing Red Animation (2.5s) */
@@ -309,9 +322,21 @@
   </div>
 
   <script>
+    /* Custom SVG Whimsical Characters (3x Pill Height) */
+    var WHIMSICAL_CHARACTERS = {
+      Philosophy: '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#a855f7"/><circle cx="36" cy="42" r="12" fill="#fff"/><circle cx="64" cy="42" r="12" fill="#fff"/><circle cx="36" cy="42" r="5" fill="#1e1b4b"/><circle cx="64" cy="42" r="5" fill="#1e1b4b"/><polygon points="50,48 43,62 57,62" fill="#f59e0b"/><polygon points="20,22 80,22 50,2" fill="#312e81"/><rect x="42" y="18" width="16" height="6" fill="#f59e0b"/></svg>',
+      "Deep Questions": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#6366f1"/><ellipse cx="50" cy="50" rx="30" ry="10" fill="none" stroke="#a5b4fc" stroke-width="4"/><circle cx="40" cy="42" r="6" fill="#fff"/><circle cx="60" cy="42" r="6" fill="#fff"/><circle cx="40" cy="42" r="3" fill="#000"/><circle cx="60" cy="42" r="3" fill="#000"/><path d="M42 62 Q50 72 58 62" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>',
+      "Humor/Fun": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="50" rx="15" fill="#f59e0b"/><circle cx="38" cy="48" r="8" fill="#fff"/><circle cx="62" cy="48" r="8" fill="#fff"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><path d="M35 65 Q50 80 65 65" stroke="#78350f" stroke-width="5" fill="none"/><path d="M25 25 L35 5 L50 20 L65 5 L75 25" fill="#ef4444"/><circle cx="35" cy="5" r="4" fill="#fbbf24"/><circle cx="65" cy="5" r="4" fill="#fbbf24"/></svg>',
+      "Current Events": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#3b82f6"/><path d="M25 35 Q50 15 75 35 Q50 55 25 35" fill="#38bdf8"/><circle cx="40" cy="45" r="6" fill="#fff"/><circle cx="60" cy="45" r="6" fill="#fff"/><circle cx="40" cy="45" r="3" fill="#000"/><circle cx="60" cy="45" r="3" fill="#000"/><polygon points="50,52 35,68 65,68" fill="#f97316"/><rect x="20" y="10" width="25" height="15" rx="3" fill="#fff" transform="rotate(-15 30 15)"/></svg>',
+      "Would You Rather": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><rect x="15" y="35" width="70" height="45" rx="20" fill="#10b981"/><circle cx="33" cy="50" r="7" fill="#fff"/><circle cx="67" cy="50" r="7" fill="#fff"/><circle cx="33" cy="50" r="3" fill="#000"/><circle cx="67" cy="50" r="3" fill="#000"/><path d="M38 68 Q50 55 62 68" stroke="#064e3b" stroke-width="5" fill="none"/><path d="M25 30 Q35 10 30 5 Q45 15 40 30" fill="#047857"/><path d="M75 30 Q65 10 70 5 Q55 15 60 30" fill="#047857"/></svg>',
+      "Pop Culture": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M25 40 L75 40 L68 90 L32 90 Z" fill="#ec4899"/><path d="M25 40 L35 90 M45 40 L48 90 M65 40 L58 90" stroke="#fff" stroke-width="4"/><circle cx="35" cy="30" r="10" fill="#fde047"/><circle cx="50" cy="22" r="12" fill="#fde047"/><circle cx="65" cy="30" r="10" fill="#fde047"/><polygon points="35,55 42,48 49,55 46,65 38,65" fill="#1e1b4b"/><polygon points="55,55 62,48 69,55 66,65 58,65" fill="#1e1b4b"/></svg>',
+      "Personal Stories": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M30 85 Q30 30 50 20 Q70 30 70 85 Z" fill="#06b6d4"/><circle cx="42" cy="45" r="5" fill="#fff"/><circle cx="58" cy="45" r="5" fill="#fff"/><circle cx="42" cy="45" r="2.5" fill="#000"/><circle cx="58" cy="45" r="2.5" fill="#000"/><path d="M44 60 Q50 68 56 60" stroke="#155e75" stroke-width="3" fill="none"/><rect x="62" y="55" width="22" height="28" rx="3" fill="#fbbf24" transform="rotate(15 70 65)"/></svg>',
+      "Science & Tech": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M40 20 L60 20 L60 40 L80 80 A10 10 0 0 1 70 90 L30 90 A10 10 0 0 1 20 80 L40 40 Z" fill="#8b5cf6"/><ellipse cx="50" cy="75" rx="20" ry="8" fill="#c084fc"/><circle cx="42" cy="65" r="5" fill="#fff"/><circle cx="58" cy="65" r="5" fill="#fff"/><circle cx="42" cy="65" r="2.5" fill="#000"/><circle cx="58" cy="65" r="2.5" fill="#000"/><circle cx="50" cy="45" r="4" fill="#a7f3d0"/></svg>',
+      "Hot Takes": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M50 10 Q65 35 75 50 Q85 70 70 85 Q50 100 30 85 Q15 70 25 50 Q35 35 50 10 Z" fill="#f43f5e"/><path d="M50 35 Q60 50 65 60 Q70 72 60 82 Q50 90 40 82 Q30 72 35 60 Z" fill="#fbbf24"/><circle cx="42" cy="58" r="4" fill="#000"/><circle cx="58" cy="58" r="4" fill="#000"/><path d="M42 70 Q50 78 58 70" stroke="#881337" stroke-width="3" fill="none"/></svg>'
+    };
+
     var GENERATOR_TEMPLATES = {
       Philosophy: {
-        icon: "🏛️",
         templates: [
           "If {subject} achieved full sentience, would human society be morally obligated to {action}?",
           "Is it ever ethically acceptable to {action} if the outcome guarantees {outcome}?",
@@ -331,7 +356,6 @@
         }
       },
       "Deep Questions": {
-        icon: "🌌",
         templates: [
           "What single decision regarding {life_area} completely reshaped who you are today?",
           "What is a harsh truth about {life_topic} that most people choose to ignore?",
@@ -346,7 +370,6 @@
         }
       },
       "Humor/Fun": {
-        icon: "🎭",
         templates: [
           "If {animals} could suddenly speak English, which one would be the most {trait}?",
           "What is the most absurd excuse you could give for {funny_situation} that someone might actually believe?",
@@ -365,7 +388,6 @@
         }
       },
       "Current Events": {
-        icon: "📰",
         templates: [
           "Will {tech_trend} fundamentally change how humanity handles {domain} within 10 years?",
           "Should society regulate {media_type} to prevent {issue}?",
@@ -384,7 +406,6 @@
         }
       },
       "Would You Rather": {
-        icon: "🔀",
         templates: [
           "Would you rather have the ability to {power_a} or {power_b}?",
           "Would you rather live without {comfort_a} for five years or give up {comfort_b} forever?",
@@ -403,7 +424,6 @@
         }
       },
       "Pop Culture": {
-        icon: "🍿",
         templates: [
           "Which movie or TV show universe would be the absolute worst place to live as a {profession}?",
           "Who is a fictional villain in {genre} who was actually making a valid point?",
@@ -418,7 +438,6 @@
         }
       },
       "Personal Stories": {
-        icon: "📖",
         templates: [
           "What was your most memorable moment involving {story_topic} that still makes you laugh?",
           "What is the most impulsive decision you made regarding {impulse_area} that actually turned out great?",
@@ -433,7 +452,6 @@
         }
       },
       "Science & Tech": {
-        icon: "🧪",
         templates: [
           "If humanity discovered evidence of {discovery}, how would daily life change over night?",
           "What futuristic invention in {tech_field} do you think will exist within our lifetimes?",
@@ -448,7 +466,6 @@
         }
       },
       "Hot Takes": {
-        icon: "🔥",
         templates: [
           "Hot Take: {hot_take_food} is vastly overrated and people only like it because of social pressure.",
           "Hot Take: {hot_take_tech} has actually made our social lives worse, not better.",
@@ -536,7 +553,6 @@
       return {
         id: "topic-" + topicCounter + "-" + Date.now() + "-" + Math.floor(Math.random()*1000),
         category: category,
-        icon: catData.icon,
         text: text
       };
     }
@@ -673,6 +689,7 @@
         var isPinned = pinnedIndices.has(index);
         var isFav = favoritedTopicIds.has(topic.id);
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
+        var charSvg = WHIMSICAL_CHARACTERS[topic.category] || WHIMSICAL_CHARACTERS["Philosophy"];
 
         /* In 1-card view, show Follow Me on card pointing UP and RIGHT towards the top button */
         var cardHeaderFollowBanner = (cardCountView === 1) ? 
@@ -688,13 +705,17 @@
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             '<div class="flex items-center justify-between gap-2 mb-3">' +
-              '<div class="flex items-center gap-2">' +
-                '<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
-                  "<span>" + topic.icon + "</span><span>" + topic.category + "</span>" +
+              '<div class="flex items-center gap-1.5 relative z-20">' +
+                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+                  "<span>" + topic.category + "</span>" +
                 "</span>" +
+                /* Whimsical Character Placed to the Right of Category Name & Scaled ~3x Pill Height */
+                '<div class="relative -my-6 -ml-1 transition-transform group-hover:scale-110">' +
+                  charSvg +
+                '</div>' +
                 cardHeaderFollowBanner +
               '</div>' +
-              '<div class="flex items-center gap-1.5">' +
+              '<div class="flex items-center gap-1.5 relative z-20">' +
                 '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
                 '<button onclick="togglePin(' + index + ')" title="' + (isPinned ? "Unpin Card" : "Pin Card") + '" class="p-2 rounded-xl transition-all ' + (isPinned ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isPinned ? "rotate-45" : "") + '"></i></button>' +
                 '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Save Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-pink-500 bg-pink-50 dark:bg-pink-950/40" : "text-slate-400 hover:text-pink-500 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-heart text-sm"></i></button>' +
@@ -762,12 +783,12 @@
       }
 
       var savedList = Array.from(favoritedTopicIds).map(function(id) {
-        return (window.savedTopicCache && window.savedTopicCache[id]) || { id: id, category: "Saved", icon: "💬", text: "Saved topic item" };
+        return (window.savedTopicCache && window.savedTopicCache[id]) || { id: id, category: "Saved", text: "Saved topic item" };
       });
 
       listContainer.innerHTML = savedList.map(function(topic) {
         return '<div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex flex-col gap-1.5 relative">' +
-          '<div class="flex items-center justify-between"><span class="text-[9px] font-bold px-2 py-0.5 rounded ' + (CATEGORY_STYLES[topic.category] ? CATEGORY_STYLES[topic.category].bg : "bg-indigo-100") + " " + (CATEGORY_STYLES[topic.category] ? CATEGORY_STYLES[topic.category].text : "text-indigo-700") + '">' + (topic.icon || "💬") + " " + topic.category + "</span>" +
+          '<div class="flex items-center justify-between"><span class="text-[9px] font-bold px-2 py-0.5 rounded ' + (CATEGORY_STYLES[topic.category] ? CATEGORY_STYLES[topic.category].bg : "bg-indigo-100") + " " + (CATEGORY_STYLES[topic.category] ? CATEGORY_STYLES[topic.category].text : "text-indigo-700") + '">' + topic.category + "</span>" +
           '<div class="flex items-center gap-1"><button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-regular fa-copy text-xs"></i></button>' +
           '<button onclick="removeFavorite(\'' + topic.id + '\')" class="p-1 text-pink-500 hover:text-red-600"><i class="fa-solid fa-xmark text-xs"></i></button></div></div>' +
           '<p class="text-xs font-semibold text-slate-800 dark:text-slate-200 leading-snug">&quot;' + topic.text + "&quot;</p></div>";
