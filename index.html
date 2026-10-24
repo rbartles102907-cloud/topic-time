@@ -191,10 +191,10 @@
 
   <main class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden">
     <div class="space-y-2.5 shrink-0 mb-2">
-      <!-- 1 Card vs 4 Cards Layout Toggle (MOVED TO THE LEFT FOR EASY MOBILE TOUCH) & Presets -->
+      <!-- 1 Card vs 4 Cards Layout Toggle & Presets -->
       <div class="flex items-center gap-3 overflow-x-auto custom-scroll py-1.5 px-0.5 text-xs">
         
-        <!-- Mode Toggle First (Left Side) -->
+        <!-- Mode Toggle (Left Side) -->
         <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
           <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
             <i class="fa-solid fa-square text-[11px]"></i> 1 Card
@@ -213,7 +213,7 @@
         </div>
       </div>
 
-      <!-- Categories Pills with Larger Spacing and Touch Targets -->
+      <!-- Categories Pills -->
       <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1.5 px-0.5 text-xs font-medium"></div>
     </div>
 
@@ -616,7 +616,6 @@
       triggerCardFlip([index], function() {
         currentTopics[index] = generateSingleTopic();
       });
-      showToast("Topic refreshed!", "info");
     }
 
     function triggerCardFlip(indices, dataUpdateFn) {
