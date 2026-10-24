@@ -40,7 +40,7 @@
       perspective: 1000px;
     }
 
-    /* Stainless Steel / Chrome Metallic Frame with Bottom-Right Neon Blue Drop Shadow */
+    /* Stainless Steel / Chrome Metallic Frame with Bright Bottom-Right Neon Shadow */
     .glass-card { 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)); 
       backdrop-filter: blur(16px); 
@@ -48,10 +48,10 @@
       border-radius: 1rem;
       border: 2px solid transparent;
       background-clip: padding-box;
-      /* Bottom-Right Only Neon Blue Drop Shadow */
-      box-shadow: 10px 14px 22px rgba(56, 189, 248, 0.35), 18px 22px 36px rgba(14, 165, 233, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      /* Bright, slightly tighter bottom-right drop shadow */
+      box-shadow: 6px 8px 16px rgba(56, 189, 248, 0.65), 10px 14px 24px rgba(14, 165, 233, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.8);
       transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.25s ease, background 0.25s ease;
       touch-action: manipulation;
     }
 
@@ -73,20 +73,23 @@
     .dark .glass-card { 
       background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98)); 
       backdrop-filter: blur(16px); 
-      /* Bottom-Right Only Neon Blue Drop Shadow for Dark Mode */
-      box-shadow: 12px 16px 26px rgba(56, 189, 248, 0.45), 20px 24px 44px rgba(14, 165, 233, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      /* Bright bottom-right neon shadow for dark mode */
+      box-shadow: 6px 8px 18px rgba(56, 189, 248, 0.75), 12px 16px 28px rgba(14, 165, 233, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     .dark .glass-card::before {
       background: linear-gradient(135deg, #cbd5e1 0%, #475569 25%, #f8fafc 48%, #ffffff 52%, #334155 75%, #94a3b8 100%);
     }
 
-    /* Hover Bottom-Right Neon Blue Flare */
+    /* Hover State: Noticeable Background Color Change & Decreased Shadow */
     .glass-card:hover {
-      box-shadow: 14px 18px 30px rgba(56, 189, 248, 0.65), 22px 28px 50px rgba(14, 165, 233, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+      background: linear-gradient(135deg, rgba(224, 231, 255, 0.98), rgba(203, 213, 225, 0.95));
+      box-shadow: 3px 4px 10px rgba(56, 189, 248, 0.45), 5px 6px 14px rgba(14, 165, 233, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.9);
     }
+
     .dark .glass-card:hover {
-      box-shadow: 16px 20px 34px rgba(56, 189, 248, 0.75), 24px 30px 58px rgba(14, 165, 233, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.25);
+      background: linear-gradient(135deg, rgba(30, 41, 75, 0.98), rgba(15, 23, 50, 0.98));
+      box-shadow: 3px 4px 10px rgba(56, 189, 248, 0.55), 6px 8px 16px rgba(14, 165, 233, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.25);
     }
 
     /* 3D Right-to-Left Card Flip Keyframes */
@@ -335,7 +338,7 @@
       "Hot Takes": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M50 10 Q65 35 75 50 Q85 70 70 85 Q50 100 30 85 Q15 70 25 50 Q35 35 50 10 Z" fill="#f43f5e"/><path d="M50 35 Q60 50 65 60 Q70 72 60 82 Q50 90 40 82 Q30 72 35 60 Z" fill="#fbbf24"/><circle cx="42" cy="58" r="4" fill="#000"/><circle cx="58" cy="58" r="4" fill="#000"/><path d="M42 70 Q50 78 58 70" stroke="#881337" stroke-width="3" fill="none"/></svg>'
     };
 
-    /* Massive Dynamic Template System with Variable Arrays (>50 unique variations per category) */
+    /* Dynamic Template System with Variable Arrays (>50 unique variations per category) */
     var GENERATOR_TEMPLATES = {
       Philosophy: {
         templates: [
