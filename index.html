@@ -12,7 +12,7 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nellie B - Topic Time</title>
+  <title>Nellie B - Topic Time - Topics.FrrFrrr.com to PLAY FOR FREE</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -36,6 +36,15 @@
     .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
     .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.9); }
     .dark .glass-card { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+
+    /* Flashing Red Animation */
+    @keyframes flash-red {
+      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 12px rgba(239, 68, 68, 0.8); }
+      50% { color: #991b1b; opacity: 0.3; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
+    }
+    .flashing-follow {
+      animation: flash-red 1s infinite;
+    }
   </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
@@ -43,8 +52,9 @@
   <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-      <div class="flex items-center gap-2.5 cursor-pointer" onclick="resetToInitial()">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
+      <!-- Title & Avatar -->
+      <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="resetToInitial()">
         <img src="PXL_20260822_051409870.jpg" alt="Nellie B" class="w-9 h-9 rounded-full object-cover border-2 border-indigo-500 shadow-sm shrink-0">
         <div>
           <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
@@ -54,10 +64,19 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
+      <!-- Flashing Red Text Banner -->
+      <div class="flex-1 text-center hidden xs:block sm:block">
+        <span class="flashing-follow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">
+          Follow Me
+        </span>
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-2 shrink-0">
         <a href="https://www.tiktok.com/@nellie.b5" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
           <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
-          <span>Go to My TikTok</span>
+          <span class="hidden sm:inline">Go to My TikTok</span>
+          <span class="sm:hidden">TikTok</span>
         </a>
 
         <button id="open-favorites-btn" onclick="toggleFavoritesDrawer(true)" class="relative p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95" title="Saved Topics">
@@ -75,24 +94,39 @@
 
   <main class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden">
     <div class="space-y-2 shrink-0 mb-2">
-      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1 hidden sm:inline">Presets:</span>
-        <div id="mode-pills" class="flex gap-1.5"></div>
+      <!-- Presets & View Mode Toggle -->
+      <div class="flex items-center justify-between gap-2 overflow-x-auto pb-1 text-xs">
+        <div class="flex items-center gap-1.5">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1 hidden sm:inline">Presets:</span>
+          <div id="mode-pills" class="flex gap-1.5"></div>
+        </div>
+
+        <!-- 1 Card vs 4 Cards Layout Toggle -->
+        <div class="flex items-center bg-slate-200/80 dark:bg-slate-800/80 p-0.5 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700">
+          <button id="view-btn-1" onclick="setLayoutView(1)" class="px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1">
+            <i class="fa-solid fa-square text-[10px]"></i> 1 Card
+          </button>
+          <button id="view-btn-4" onclick="setLayoutView(4)" class="px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1">
+            <i class="fa-solid fa-border-all text-[10px]"></i> 4 Cards
+          </button>
+        </div>
       </div>
+
       <div id="category-pills" class="flex gap-1.5 overflow-x-auto pb-1 text-xs font-medium"></div>
     </div>
 
-    <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 my-auto flex-grow items-center"></div>
+    <!-- Topic Grid Container -->
+    <div id="topics-grid" class="my-auto flex-grow flex items-center justify-center w-full py-2"></div>
 
     <div class="shrink-0 pt-2 pb-1 flex flex-col items-center justify-center gap-1.5">
       <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
         <i id="generate-icon" class="fa-solid fa-dice text-lg group-hover:rotate-180 transition-transform duration-300"></i>
-        <span>Generate 4 Random Topics</span>
-        <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold ml-0.5">4 Cards</span>
+        <span id="generate-btn-text">Generate Topics</span>
+        <span id="generate-btn-badge" class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold ml-0.5">4 Cards</span>
       </button>
 
       <p class="text-[10px] text-slate-400 dark:text-slate-500 text-center">
-        Press <kbd class="px-1 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[9px]">Spacebar</kbd> or click any card&#39;s <i class="fa-solid fa-rotate text-[10px] text-indigo-400"></i> icon to swap just that card.
+        Press <kbd class="px-1 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[9px]">Spacebar</kbd> or click any card&#39;s <i class="fa-solid fa-rotate text-[10px] text-indigo-400"></i> icon to swap topics.
       </p>
     </div>
   </main>
@@ -332,11 +366,38 @@
     ];
 
     var currentTopics = [];
+    var cardCountView = 4; // Default to 4 cards mode
     var activePreset = "all";
     var selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
     var pinnedIndices = new Set();
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
     var topicCounter = 1000;
+
+    function setLayoutView(count) {
+      cardCountView = count;
+      pinnedIndices.clear();
+      updateToggleUI();
+      generateTopics();
+    }
+
+    function updateToggleUI() {
+      var btn1 = document.getElementById("view-btn-1");
+      var btn4 = document.getElementById("view-btn-4");
+      var badge = document.getElementById("generate-btn-badge");
+      var btnText = document.getElementById("generate-btn-text");
+
+      if (cardCountView === 1) {
+        btn1.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1 bg-indigo-600 text-white shadow-sm";
+        btn4.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+        if (badge) badge.innerText = "1 Card";
+        if (btnText) btnText.innerText = "Generate Random Topic";
+      } else {
+        btn4.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1 bg-indigo-600 text-white shadow-sm";
+        btn1.className = "px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+        if (badge) badge.innerText = "4 Cards";
+        if (btnText) btnText.innerText = "Generate 4 Random Topics";
+      }
+    }
 
     function generateSingleTopic(categoryOverride) {
       var availCategories = Array.from(selectedCategories);
@@ -418,7 +479,7 @@
       }
 
       var nextTopics = [];
-      for (var i = 0; i < 4; i++) {
+      for (var i = 0; i < cardCountView; i++) {
         if (pinnedIndices.has(i) && currentTopics[i]) {
           nextTopics[i] = currentTopics[i];
         } else {
@@ -444,6 +505,12 @@
       var grid = document.getElementById("topics-grid");
       if (!grid) return;
       
+      if (cardCountView === 1) {
+        grid.className = "my-auto flex-grow flex items-center justify-center w-full max-w-2xl mx-auto py-2";
+      } else {
+        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 my-auto flex-grow items-center w-full py-2";
+      }
+
       grid.innerHTML = currentTopics.map(function(topic, index) {
         if (!topic) return "";
 
@@ -451,9 +518,9 @@
         var isFav = favoritedTopicIds.has(topic.id);
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
 
-        return '<div class="glass-card rounded-xl p-4 sm:p-5 flex flex-col justify-between shadow-md hover:shadow-lg transition-all duration-200 relative group animate-card-pop h-full min-h-[140px] border border-slate-200/80 dark:border-slate-800">' +
-          '<div class="flex items-center justify-between gap-2 mb-2">' +
-            '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+        return '<div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between shadow-md hover:shadow-lg transition-all duration-200 relative group animate-card-pop h-full w-full min-h-[160px] border border-slate-200/80 dark:border-slate-800">' +
+          '<div class="flex items-center justify-between gap-2 mb-3">' +
+            '<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
               "<span>" + topic.icon + "</span><span>" + topic.category + "</span>" +
             "</span>" +
             '<div class="flex items-center gap-1">' +
@@ -463,8 +530,8 @@
               '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-xs"></i></button>' +
             "</div>" +
           "</div>" +
-          '<div class="my-1 flex-grow flex items-center"><p class="text-sm sm:text-base font-bold leading-snug text-slate-800 dark:text-slate-100">&quot;' + topic.text + '&quot;</p></div>' +
-          '<div class="mt-2 pt-2 border-t border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between text-[10px] text-slate-400"><span class="font-medium">Card #' + (index + 1) + "</span>" + (isPinned ? '<span class="text-indigo-500 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline cursor-pointer" onclick="refreshCardAtIndex(' + index + ')">Tap ↻ to swap</span>') + "</div>" +
+          '<div class="my-2 flex-grow flex items-center justify-center"><p class="' + (cardCountView === 1 ? "text-base sm:text-xl text-center" : "text-sm sm:text-base") + ' font-bold leading-relaxed text-slate-800 dark:text-slate-100">&quot;' + topic.text + '&quot;</p></div>' +
+          '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between text-[10px] text-slate-400"><span class="font-medium">' + (cardCountView === 1 ? 'Featured Card' : 'Card #' + (index + 1)) + "</span>" + (isPinned ? '<span class="text-indigo-500 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline cursor-pointer" onclick="refreshCardAtIndex(' + index + ')">Tap ↻ to swap</span>') + "</div>" +
         "</div>";
       }).join("");
     }
@@ -472,10 +539,10 @@
     function togglePin(index) {
       if (pinnedIndices.has(index)) {
         pinnedIndices.delete(index);
-        showToast("Card #" + (index + 1) + " unpinned", "info");
+        showToast("Card unpinned", "info");
       } else {
         pinnedIndices.add(index);
-        showToast("Card #" + (index + 1) + " locked!", "success");
+        showToast("Card locked!", "success");
       }
       renderTopicCards();
     }
@@ -626,6 +693,7 @@
       return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
     }
 
+    updateToggleUI();
     renderModePills();
     renderCategoryPills();
     generateTopics();
