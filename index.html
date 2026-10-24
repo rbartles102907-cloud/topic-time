@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nellie B - Topic Time</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#f0f5ff', 100: '#e0ebff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' }
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
+    .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
+    .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.9); }
+    .dark .glass-card { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+  </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
+
+  <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="resetToInitial()">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+          <i class="fa-solid fa-comments text-sm"></i>
+        </div>
+        <div>
+          <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
+            Nellie B &#8211; Topic Time
+          </h1>
+          <p class="text-[10px] font-bold tracking-widest uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">LET&#39;S CHAT IT UP</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="open-favorites-btn" onclick="toggleFavoritesDrawer(true)" class="relative p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95" title="Saved Topics">
+          <i class="fa-solid fa-bookmark text-sm"></i>
+          <span id="favorites-badge" class="hidden absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+        </button>
+
+        <button onclick="toggleDarkMode()" title="Toggle Theme" class="p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95">
+          <i class="fa-solid fa-sun text-amber-500 dark:hidden text-sm"></i>
+          <i class="fa-solid fa-moon hidden dark:block text-indigo-400 text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden">
+    <div class="space-y-2 shrink-0 mb-2">
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1 hidden sm:inline">Presets:</span>
+        <div id="mode-pills" class="flex gap-1.5"></div>
+      </div>
+      <div id="category-pills" class="flex gap-1.5 overflow-x-auto pb-1 text-xs font-medium"></div>
+    </div>
+
+    <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 my-auto flex-grow items-center"></div>
+
+    <div class="shrink-0 pt-2 pb-1 flex flex-col items-center justify-center gap-1.5">
+      <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm sm:text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+        <i id="generate-icon" class="fa-solid fa-dice text-lg group-hover:rotate-180 transition-transform duration-300"></i>
+        <span>Generate 4 Random Topics</span>
+        <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold ml-0.5">4 Cards</span>
+      </button>
+
+      <p class="text-[10px] text-slate-400 dark:text-slate-500 text-center">
+        Press <kbd class="px-1 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[9px]">Spacebar</kbd> or click any card&#39;s <i class="fa-solid fa-rotate text-[10px] text-indigo-400"></i> icon to swap just that card.
+      </p>
+    </div>
+  </main>
+
+  <div id="favorites-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+    <div id="drawer-backdrop" onclick="toggleFavoritesDrawer(false)" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+    <div id="drawer-content" class="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out pointer-events-auto border-l border-slate-200 dark:border-slate-800">
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-3">
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 rounded-lg bg-pink-100 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400">
+              <i class="fa-solid fa-bookmark text-sm"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-base text-slate-900 dark:text-white">Saved Topics</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Bookmarked prompts</p>
+            </div>
+          </div>
+          <button onclick="toggleFavoritesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div id="saved-topics-list" class="space-y-2.5 overflow-y-auto max-h-[70vh] pr-1"></div>
+      </div>
+      <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+        <button onclick="clearAllFavorites()" class="w-full py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-trash-can"></i> Clear Saved
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var GENERATOR_TEMPLATES = {
+      Philosophy: {
+        icon: "🏛️",
+        templates: [
+          "If {subject} achieved full sentience, would human society be morally obligated to {action}?",
+          "Is it ever ethically acceptable to {action} if the outcome guarantees {outcome}?",
+          "Would you rather live in a world where {scenario_a} or a world where {scenario_b}?",
+          "If every memory of {subject} was erased tomorrow, would {concept} still exist?",
+          "Does true human fulfillment stem from {concept_a} or from {concept_b}?"
+        ],
+        vars: {
+          subject: ["artificial intelligence", "virtual reality", "genetic engineering", "time travel technology", "a synthetic organism", "deep-space colonies"],
+          action: ["grant them legal human rights", "prioritize their survival over humans", "ban their existence entirely", "sacrifice personal privacy for safety"],
+          outcome: ["global peace", "total equality", "infinite technological progress", "elimination of all disease"],
+          scenario_a: ["everyone knows your exact thoughts", "you can never communicate with anyone again"],
+          scenario_b: ["emotions are entirely suppressed", "history resets every hundred years"],
+          concept: ["justice", "morality", "personal identity", "truth", "free will"],
+          concept_a: ["relentless personal ambition", "peaceful contentment"],
+          concept_b: ["unconditional service to others", "mastery of self-knowledge"]
+        }
+      },
+      "Deep Questions": {
+        icon: "🌌",
+        templates: [
+          "What single decision regarding {life_area} completely reshaped who you are today?",
+          "What is a harsh truth about {life_topic} that most people choose to ignore?",
+          "If you could give your younger self one piece of advice about {life_area}, what would it be?",
+          "What is something about {concept} that you only truly understood later in life?",
+          "What legacy surrounding {life_topic} do you most hope to leave behind?"
+        ],
+        vars: {
+          life_area: ["your career path", "personal relationships", "taking creative risks", "handling sudden failure", "financial independence"],
+          life_topic: ["human friendship", "achieving success", "facing personal loss", "growing older", "staying authentic"],
+          concept: ["patience and timing", "unconditional forgiveness", "setting firm boundaries", "vulnerability"]
+        }
+      },
+      "Humor/Fun": {
+        icon: "🎭",
+        templates: [
+          "If {animals} could suddenly speak English, which one would be the most {trait}?",
+          "What is the most absurd excuse you could give for {funny_situation} that someone might actually believe?",
+          "If you were forced to replace {body_part} with {item}, what would you pick and why?",
+          "What ordinary task like {mundane_task} feels like an epic movie battle when you are exhausted?",
+          "If your life had a theme song that played whenever you entered a room with {situation}, what song is it?"
+        ],
+        vars: {
+          animals: ["pigeons", "house cats", "squirrels", "golden retrievers", "raccoons", "geese"],
+          trait: ["sarcastic", "dramatic", "gossipy", "overly polite", "conspiratorial"],
+          funny_situation: ["showing up 3 hours late to work", "eating an entire birthday cake alone", "wearing pajamas to a formal gala"],
+          body_part: ["your hands", "your feet", "your ears"],
+          item: ["kitchen spatulas", "pool noodles", "swiss army knives", "plungers"],
+          mundane_task: ["doing the laundry", "unloading the dishwasher", "assembling IKEA furniture", "finding lost keys"],
+          situation: ["awkward silence", "dramatic confidence", "total chaos"]
+        }
+      },
+      "Current Events": {
+        icon: "📰",
+        templates: [
+          "Will {tech_trend} fundamentally change how humanity handles {domain} within 10 years?",
+          "Should society regulate {media_type} to prevent {issue}?",
+          "Is the future of {industry} going to be dominated by {approach_a} or {approach_b}?",
+          "How will global culture adapt as {global_shift} becomes more prevalent?"
+        ],
+        vars: {
+          tech_trend: ["generative AI tools", "autonomous robotics", "brain-computer interfaces", "commercial space travel", "quantum computing"],
+          domain: ["higher education", "daily employment", "journalism and news", "personal healthcare", "artistic expression"],
+          media_type: ["social media algorithms", "deepfake imagery", "AI news anchors", "short-form video platforms"],
+          issue: ["widespread misinformation", "shortened attention spans", "loss of public trust"],
+          industry: ["transportation", "entertainment", "healthcare delivery", "renewable energy"],
+          approach_a: ["decentralized technology", "hyper-local production"],
+          approach_b: ["centralized automated networks", "global AI governance"],
+          global_shift: ["remote-first work cultures", "automated labor", "urban urbanization", "digital currency adoption"]
+        }
+      },
+      "Would You Rather": {
+        icon: "🔀",
+        templates: [
+          "Would you rather have the ability to {power_a} or {power_b}?",
+          "Would you rather live without {comfort_a} for five years or give up {comfort_b} forever?",
+          "Would you rather always know when someone is {condition_a} or never feel {condition_b} again?",
+          "Would you rather travel 100 years into the {direction_a} or 100 years into the {direction_b}?"
+        ],
+        vars: {
+          power_a: ["read people emotional states", "speak every human language fluently", "instantly master any skill in 10 minutes"],
+          power_b: ["teleport anywhere in the world", "never require sleep again", "pause time for 5 minutes every day"],
+          comfort_a: ["smartphone internet access", "air conditioning and heating", "all video streaming services"],
+          comfort_b: ["coffee and tea", "music and podcasts", "sweets and dessert"],
+          condition_a: ["lying to you", "secretly impressed by you", "bored by the conversation"],
+          condition_b: ["physical exhaustion", "imposter syndrome", "social anxiety"],
+          direction_a: ["past to observe history", "future to see technology"],
+          direction_b: ["past to meet ancestors", "future to see space exploration"]
+        }
+      },
+      "Pop Culture": {
+        icon: "🍿",
+        templates: [
+          "Which movie or TV show universe would be the absolute worst place to live as a {profession}?",
+          "Who is a fictional villain in {genre} who was actually making a valid point?",
+          "What music genre or musical era from {decade} deserves a massive modern comeback?",
+          "What is a beloved movie or show that everyone seems to love, but you secretly {opinion}?"
+        ],
+        vars: {
+          profession: ["regular accountant", "fast food worker", "high school teacher", "cab driver"],
+          genre: ["sci-fi movies", "animated films", "superhero cinema", "classic literature"],
+          decade: ["the 1980s", "the 1990s", "the early 2000s", "the 1970s"],
+          opinion: ["could never finish", "find completely overrated", "think aged horribly"]
+        }
+      },
+      "Personal Stories": {
+        icon: "📖",
+        templates: [
+          "What was your most memorable moment involving {story_topic} that still makes you laugh?",
+          "What is the most impulsive decision you made regarding {impulse_area} that actually turned out great?",
+          "What unexpected lesson did you learn from your very first {first_experience}?",
+          "What topic or hobby did you get surprisingly obsessed with after {trigger_event}?"
+        ],
+        vars: {
+          story_topic: ["a failed culinary attempt", "a terrible road trip", "a childhood misunderstanding", "a miscommunication at work"],
+          impulse_area: ["a weekend getaway", "buying an unusual item", "trying a random hobby", "saying yes to an invitation"],
+          first_experience: ["part-time job", "solo travel experience", "public speaking opportunity", "major move to a new place"],
+          trigger_event: ["watching a random documentary", "a recommendation from a friend", "a rainy weekend with nothing to do"]
+        }
+      },
+      "Science & Tech": {
+        icon: "🧪",
+        templates: [
+          "If humanity discovered evidence of {discovery}, how would daily life change over night?",
+          "What futuristic invention in {tech_field} do you think will exist within our lifetimes?",
+          "Would you ever trust a robot to perform {sensitive_task} on you or a loved one?",
+          "Is the human brain capable of understanding {cosmic_mystery}, or are we fundamentally limited?"
+        ],
+        vars: {
+          discovery: ["microscopic alien life on Mars", "a proven method for nuclear fusion energy", "a cure for human aging"],
+          tech_field: ["clean energy storage", "virtual reality neural links", "autonomous flying transport", "personalized genetic medicine"],
+          sensitive_task: ["complex surgery", "drive through a blizzard at high speed", "manage your lifetime financial savings"],
+          cosmic_mystery: ["the true nature of dark matter", "what existed before the Big Bang", "higher spatial dimensions"]
+        }
+      },
+      "Hot Takes": {
+        icon: "🔥",
+        templates: [
+          "Hot Take: {hot_take_food} is vastly overrated and people only like it because of social pressure.",
+          "Hot Take: {hot_take_tech} has actually made our social lives worse, not better.",
+          "Hot Take: {hot_take_opinion} is far superior to {hot_take_alternative}.",
+          "Hot Take: Most people only pretend to enjoy {hot_take_activity}."
+        ],
+        vars: {
+          hot_take_food: ["Avocado toast", "Boba tea", "Fancy craft beer", "Truffle oil on everything"],
+          hot_take_tech: ["Smart home voice assistants", "Constant text messaging", "Smartwatches notifying us 24/7"],
+          hot_take_opinion: ["Physical books", "Working in quiet coffee shops", "Traveling by train"],
+          hot_take_alternative: ["Kindles and e-readers", "Working from home alone", "Flying on airplanes"],
+          hot_take_activity: ["going to crowded music festivals", "waking up at 5:00 AM", "networking events"]
+        }
+      }
+    };
+
+    var CATEGORY_STYLES = {
+      Philosophy: { bg: "bg-purple-100 dark:bg-purple-950/70", text: "text-purple-700 dark:text-purple-300", border: "border-purple-300 dark:border-purple-800" },
+      "Deep Questions": { bg: "bg-indigo-100 dark:bg-indigo-950/70", text: "text-indigo-700 dark:text-indigo-300", border: "border-indigo-300 dark:border-indigo-800" },
+      "Humor/Fun": { bg: "bg-amber-100 dark:bg-amber-950/70", text: "text-amber-800 dark:text-amber-300", border: "border-amber-300 dark:border-amber-800" },
+      "Current Events": { bg: "bg-blue-100 dark:bg-blue-950/70", text: "text-blue-700 dark:text-blue-300", border: "border-blue-300 dark:border-blue-800" },
+      "Would You Rather": { bg: "bg-emerald-100 dark:bg-emerald-950/70", text: "text-emerald-700 dark:text-emerald-300", border: "border-emerald-300 dark:border-emerald-800" },
+      "Pop Culture": { bg: "bg-pink-100 dark:bg-pink-950/70", text: "text-pink-700 dark:text-pink-300", border: "border-pink-300 dark:border-pink-800" },
+      "Personal Stories": { bg: "bg-cyan-100 dark:bg-cyan-950/70", text: "text-cyan-700 dark:text-cyan-300", border: "border-cyan-300 dark:border-cyan-800" },
+      "Science & Tech": { bg: "bg-violet-100 dark:bg-violet-950/70", text: "text-violet-700 dark:text-violet-300", border: "border-violet-300 dark:border-violet-800" },
+      "Hot Takes": { bg: "bg-rose-100 dark:bg-rose-950/70", text: "text-rose-700 dark:text-rose-300", border: "border-rose-300 dark:border-rose-800" }
+    };
+
+    var PRESET_MODES = [
+      { id: "all", name: "Balanced Mix", categories: Object.keys(CATEGORY_STYLES) },
+      { id: "icebreaker", name: "Casual Icebreakers", categories: ["Humor/Fun", "Would You Rather", "Pop Culture", "Personal Stories"] },
+      { id: "deep", name: "Deep Discussions", categories: ["Philosophy", "Deep Questions", "Science & Tech"] },
+      { id: "latenight", name: "Late Night Debates", categories: ["Philosophy", "Hot Takes", "Current Events", "Science & Tech"] },
+      { id: "funny", name: "Funny & Silly", categories: ["Humor/Fun", "Would You Rather", "Hot Takes"] }
+    ];
+
+    var currentTopics = [];
+    var activePreset = "all";
+    var selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
+    var pinnedIndices = new Set();
+    var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
+    var topicCounter = 1000;
+
+    function generateSingleTopic(categoryOverride) {
+      var availCategories = Array.from(selectedCategories);
+      var category = categoryOverride || availCategories[Math.floor(Math.random() * availCategories.length)] || "Philosophy";
+      var catData = GENERATOR_TEMPLATES[category] || GENERATOR_TEMPLATES["Philosophy"];
+      var template = catData.templates[Math.floor(Math.random() * catData.templates.length)];
+      var text = template;
+
+      Object.keys(catData.vars).forEach(function(varKey) {
+        var options = catData.vars[varKey];
+        var choice = options[Math.floor(Math.random() * options.length)];
+        text = text.replace(new RegExp("\\{" + varKey + "\\}", "g"), choice);
+      });
+
+      topicCounter++;
+      return {
+        id: "topic-" + topicCounter + "-" + Date.now() + "-" + Math.floor(Math.random()*1000),
+        category: category,
+        icon: catData.icon,
+        text: text
+      };
+    }
+
+    function renderModePills() {
+      var container = document.getElementById("mode-pills");
+      if (!container) return;
+      container.innerHTML = PRESET_MODES.map(function(mode) {
+        return '<button onclick="selectPreset(\'' + mode.id + '\')" class="px-2.5 py-1 rounded-lg font-bold text-[11px] transition-all whitespace-nowrap ' +
+          (activePreset === mode.id ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/20" : "bg-slate-200/60 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700") +
+          '">' + mode.name + "</button>";
+      }).join("");
+    }
+
+    function selectPreset(modeId) {
+      activePreset = modeId;
+      var preset = PRESET_MODES.find(function(m) { return m.id === modeId; });
+      if (preset) {
+        selectedCategories = new Set(preset.categories);
+      }
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+    }
+
+    function renderCategoryPills() {
+      var container = document.getElementById("category-pills");
+      if (!container) return;
+      container.innerHTML = Object.keys(CATEGORY_STYLES).map(function(cat) {
+        var isSelected = selectedCategories.has(cat);
+        var style = CATEGORY_STYLES[cat];
+        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-2 py-0.5 rounded-lg border font-semibold text-[11px] whitespace-nowrap transition-all flex items-center gap-1 ' +
+          (isSelected ? (style.bg + " " + style.text + " " + style.border + " scale-100") : "bg-slate-200/40 dark:bg-slate-800/30 text-slate-400 border-transparent opacity-50 hover:opacity-100") +
+          '"><span>' + cat + "</span>" + (isSelected ? '<i class="fa-solid fa-check text-[9px]"></i>' : "") + "</button>";
+      }).join("");
+    }
+
+    function toggleCategory(cat) {
+      activePreset = "custom";
+      if (selectedCategories.has(cat)) {
+        if (selectedCategories.size === 1) {
+          showToast("At least one category must remain selected!", "warning");
+          return;
+        }
+        selectedCategories.delete(cat);
+      } else {
+        selectedCategories.add(cat);
+      }
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+    }
+
+    function generateTopics() {
+      if (selectedCategories.size === 0) return;
+      var genIcon = document.getElementById("generate-icon");
+      if (genIcon) {
+        genIcon.classList.add("animate-spin-once");
+        setTimeout(function() { genIcon.classList.remove("animate-spin-once"); }, 400);
+      }
+
+      var nextTopics = [];
+      for (var i = 0; i < 4; i++) {
+        if (pinnedIndices.has(i) && currentTopics[i]) {
+          nextTopics[i] = currentTopics[i];
+        } else {
+          nextTopics[i] = generateSingleTopic();
+        }
+      }
+
+      currentTopics = nextTopics;
+      renderTopicCards();
+    }
+
+    function refreshCardAtIndex(index) {
+      if (pinnedIndices.has(index)) {
+        showToast("Unpin card first to refresh it!", "warning");
+        return;
+      }
+      currentTopics[index] = generateSingleTopic();
+      renderTopicCards();
+      showToast("Topic refreshed!", "info");
+    }
+
+    function renderTopicCards() {
+      var grid = document.getElementById("topics-grid");
+      if (!grid) return;
+      
+      grid.innerHTML = currentTopics.map(function(topic, index) {
+        if (!topic) return "";
+
+        var isPinned = pinnedIndices.has(index);
+        var isFav = favoritedTopicIds.has(topic.id);
+        var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
+
+        return '<div class="glass-card rounded-xl p-4 sm:p-5 flex flex-col justify-between shadow-md hover:shadow-lg transition-all duration-200 relative group animate-card-pop h-full min-h-[140px] border border-slate-200/80 dark:border-slate-800">' +
+          '<div class="flex items-center justify-between gap-2 mb-2">' +
+            '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+              "<span>" + topic.icon + "</span><span>" + topic.category + "</span>" +
+            "</span>" +
+            '<div class="flex items-center gap-1">' +
+              '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-xs"></i></button>' +
+              '<button onclick="togglePin(' + index + ')" title="' + (isPinned ? "Unpin Card" : "Pin Card") + '" class="p-1.5 rounded-lg transition-all ' + (isPinned ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-xs ' + (isPinned ? "rotate-45" : "") + '"></i></button>' +
+              '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Save Topic" class="p-1.5 rounded-lg transition-all ' + (isFav ? "text-pink-500 bg-pink-50 dark:bg-pink-950/40" : "text-slate-400 hover:text-pink-500 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-heart text-xs"></i></button>' +
+              '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-xs"></i></button>' +
+            "</div>" +
+          "</div>" +
+          '<div class="my-1 flex-grow flex items-center"><p class="text-sm sm:text-base font-bold leading-snug text-slate-800 dark:text-slate-100">&quot;' + topic.text + '&quot;</p></div>' +
+          '<div class="mt-2 pt-2 border-t border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between text-[10px] text-slate-400"><span class="font-medium">Card #' + (index + 1) + "</span>" + (isPinned ? '<span class="text-indigo-500 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="hover:underline cursor-pointer" onclick="refreshCardAtIndex(' + index + ')">Tap ↻ to swap</span>') + "</div>" +
+        "</div>";
+      }).join("");
+    }
+
+    function togglePin(index) {
+      if (pinnedIndices.has(index)) {
+        pinnedIndices.delete(index);
+        showToast("Card #" + (index + 1) + " unpinned", "info");
+      } else {
+        pinnedIndices.add(index);
+        showToast("Card #" + (index + 1) + " locked!", "success");
+      }
+      renderTopicCards();
+    }
+
+    function toggleFavorite(topicId, cardIndex) {
+      var topic = currentTopics[cardIndex];
+      if (!topic) return;
+
+      if (favoritedTopicIds.has(topic.id)) {
+        favoritedTopicIds.delete(topic.id);
+        showToast("Removed from saved topics", "info");
+      } else {
+        favoritedTopicIds.add(topic.id);
+        window.savedTopicCache = window.savedTopicCache || {};
+        window.savedTopicCache[topic.id] = topic;
+        showToast("Saved to favorites!", "success");
+      }
+
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      renderTopicCards();
+      updateFavoritesUI();
+    }
+
+    function updateFavoritesUI() {
+      var badge = document.getElementById("favorites-badge");
+      var listContainer = document.getElementById("saved-topics-list");
+      if (!badge || !listContainer) return;
+
+      badge.innerText = favoritedTopicIds.size;
+      if (favoritedTopicIds.size > 0) {
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+
+      if (favoritedTopicIds.size === 0) {
+        listContainer.innerHTML = '<div class="text-center py-10 px-4 text-slate-400"><i class="fa-regular fa-bookmark text-3xl mb-2 opacity-40"></i><p class="font-semibold text-xs">No saved topics yet.</p><p class="text-[10px] mt-1">Tap heart icon on any card to save it!</p></div>';
+        return;
+      }
+
+      var savedList = Array.from(favoritedTopicIds).map(function(id) {
+        return (window.savedTopicCache && window.savedTopicCache[id]) || { id: id, category: "Saved", icon: "💬", text: "Saved topic item" };
+      });
+
+      listContainer.innerHTML = savedList.map(function(topic) {
+        return '<div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 flex flex-col gap-1.5 relative">' +
+          '<div class="flex items-center justify-between"><span class="text-[9px] font-bold px-2 py-0.5 rounded ' + (CATEGORY_STYLES[topic.category] ? CATEGORY_STYLES[topic.category].bg : "bg-indigo-100") + " " + (CATEGORY_STYLES[topic.category] ? CATEGORY_STYLES[topic.category].text : "text-indigo-700") + '">' + (topic.icon || "💬") + " " + topic.category + "</span>" +
+          '<div class="flex items-center gap-1"><button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-regular fa-copy text-xs"></i></button>' +
+          '<button onclick="removeFavorite(\'' + topic.id + '\')" class="p-1 text-pink-500 hover:text-red-600"><i class="fa-solid fa-xmark text-xs"></i></button></div></div>' +
+          '<p class="text-xs font-semibold text-slate-800 dark:text-slate-200 leading-snug">&quot;' + topic.text + "&quot;</p></div>";
+      }).join("");
+    }
+
+    function removeFavorite(id) {
+      favoritedTopicIds.delete(id);
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast("Removed topic", "info");
+    }
+
+    function clearAllFavorites() {
+      if (favoritedTopicIds.size === 0) return;
+      favoritedTopicIds.clear();
+      localStorage.removeItem("nellieb_favs");
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast("Cleared all saved topics", "info");
+    }
+
+    function toggleFavoritesDrawer(open) {
+      var drawer = document.getElementById("favorites-drawer");
+      var content = document.getElementById("drawer-content");
+      if (!drawer || !content) return;
+
+      if (open) {
+        drawer.classList.remove("pointer-events-none", "opacity-0");
+        drawer.classList.add("opacity-100");
+        content.classList.remove("translate-x-full");
+      } else {
+        drawer.classList.add("opacity-0");
+        content.classList.add("translate-x-full");
+        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
+      }
+    }
+
+    function copyTopicText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      showToast("Topic copied to clipboard!", "success");
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function showToast(message, type) {
+      var container = document.getElementById("toast-container");
+      if (!container) return;
+
+      var toast = document.createElement("div");
+      var icons = {
+        success: "fa-circle-check text-emerald-400",
+        warning: "fa-triangle-exclamation text-amber-400",
+        info: "fa-circle-info text-indigo-400"
+      };
+
+      toast.className = "px-3.5 py-2 rounded-xl bg-slate-900/90 text-white text-xs font-semibold shadow-xl backdrop-blur border border-slate-700 flex items-center gap-2 pointer-events-auto transition-all duration-200 translate-x-6 opacity-0";
+      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + message + "</span>";
+
+      container.appendChild(toast);
+      requestAnimationFrame(function() {
+        toast.classList.remove("translate-x-6", "opacity-0");
+      });
+
+      setTimeout(function() {
+        toast.classList.add("translate-x-6", "opacity-0");
+        setTimeout(function() { toast.remove(); }, 200);
+      }, 2500);
+    }
+
+    function resetToInitial() {
+      pinnedIndices.clear();
+      selectPreset("all");
+    }
+
+    function escapeQuotes(str) {
+      return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    renderModePills();
+    renderCategoryPills();
+    generateTopics();
+    updateFavoritesUI();
+
+    document.addEventListener("keydown", function(e) {
+      if (e.code === "Space" && !["INPUT", "BUTTON", "TEXTAREA"].includes(e.target.tagName)) {
+        e.preventDefault();
+        generateTopics();
+      }
+    });
+  </script>
+</body>
+</html>
