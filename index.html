@@ -114,11 +114,11 @@
     }
     .pointing-arrow-slow { animation: point-bounce-slow 1.2s ease-in-out infinite; filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); }
 
-    @keyframes point-up-right {
-      0%, 100% { transform: rotate(-45deg) translate(0, 0) scale(1); }
-      50% { transform: rotate(-45deg) translate(5px, -5px) scale(1.1); }
+    @keyframes point-forward-pulse {
+      0%, 100% { transform: scale(1) translateZ(0); filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)); }
+      50% { transform: scale(1.15) translateZ(0); filter: drop-shadow(0 4px 10px rgba(239, 68, 68, 0.8)); }
     }
-    .pointing-up-right { animation: point-up-right 1.2s ease-in-out infinite; filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); }
+    .pointing-forward-thick { animation: point-forward-pulse 1.2s ease-in-out infinite; display: inline-block; }
 
     .dark .tiktok-card-text { color: #ffffff !important; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9); }
     .tiktok-card-text { color: #0f172a !important; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8); }
@@ -272,7 +272,6 @@
       "Hot Takes": '<svg class="w-12 h-12 anim-grow-shrink shrink-0 drop-shadow-xl" viewBox="0 0 100 100" fill="none"><path d="M50 12 Q66 32 70 46 Q78 64 64 72 Q50 82 36 72 Q22 64 30 46 Q34 32 50 12 Z" fill="#f43f5e"/><path d="M50 34 Q58 48 62 54 Q66 62 58 68 Q50 74 42 68 Q34 62 38 54 Q42 48 50 34 Z" fill="#fbbf24"/><circle cx="43" cy="50" r="3" fill="#000"/><circle cx="57" cy="50" r="3" fill="#000"/><rect x="28" y="76" width="44" height="20" rx="8" fill="#991b1b"/></svg>'
     };
 
-    /* Category-based styling filters for Nellie B's photo avatar */
     var CATEGORY_PHOTO_STYLES = {
       Philosophy: { filter: "sepia(0.3) hue-rotate(250deg) saturate(1.4)", border: "border-purple-500" },
       "Deep Questions": { filter: "sepia(0.2) hue-rotate(210deg) saturate(1.5)", border: "border-indigo-500" },
@@ -604,16 +603,18 @@
         var charSvg = WHIMSICAL_CHARACTERS[topic.category] || WHIMSICAL_CHARACTERS["Philosophy"];
         var photoStyle = CATEGORY_PHOTO_STYLES[topic.category] || { filter: "", border: "border-indigo-500" };
 
+        var thickPointerSvg = '<svg class="w-5 h-5 pointing-forward-thick text-white inline-block" viewBox="0 0 24 24" fill="currentColor" stroke="#000000" stroke-width="2.5" stroke-linejoin="round"><path d="M10 2v7l-3.5-1.5L5 10l6 7h6a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2V2h-4z"/></svg>';
+
         var cardHeaderFollowBanner = (cardCountView === 1) ? 
           '<div class="flex items-center gap-1.5 ml-1">' +
             '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">Follow Me</span>' +
-            '<span class="pointing-up-right text-sm sm:text-base text-red-500 inline-block select-none">👉</span>' +
+            thickPointerSvg +
           '</div>' : '';
 
         var cardFooterFollowBanner = (cardCountView > 1) ? 
           '<div class="flex items-center gap-1.5 ml-1">' +
             '<span class="flashing-follow-slow font-black text-[10px] sm:text-xs tracking-wider uppercase drop-shadow">Follow Me</span>' +
-            '<span class="pointing-up-right text-xs text-red-500 inline-block select-none">👉</span>' +
+            thickPointerSvg +
           '</div>' : '';
 
         return '<div class="card-container h-full w-full min-h-[175px]">' +
