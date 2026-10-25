@@ -48,14 +48,12 @@
       border-radius: 1rem;
       border: 2px solid transparent;
       background-clip: padding-box;
-      /* Bright, slightly tighter bottom-right drop shadow */
       box-shadow: 6px 8px 16px rgba(56, 189, 248, 0.65), 10px 14px 24px rgba(14, 165, 233, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.8);
       transform-style: preserve-3d;
       transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.25s ease, background 0.25s ease;
       touch-action: manipulation;
     }
 
-    /* Metallic Stainless Steel Edge Effect via Pseudoelement Frame */
     .glass-card::before {
       content: '';
       position: absolute;
@@ -73,7 +71,6 @@
     .dark .glass-card { 
       background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98)); 
       backdrop-filter: blur(16px); 
-      /* Bright bottom-right neon shadow for dark mode */
       box-shadow: 6px 8px 18px rgba(56, 189, 248, 0.75), 12px 16px 28px rgba(14, 165, 233, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
@@ -81,7 +78,6 @@
       background: linear-gradient(135deg, #cbd5e1 0%, #475569 25%, #f8fafc 48%, #ffffff 52%, #334155 75%, #94a3b8 100%);
     }
 
-    /* Hover State: Noticeable Background Color Change & Decreased Shadow */
     .glass-card:hover {
       background: linear-gradient(135deg, rgba(224, 231, 255, 0.98), rgba(203, 213, 225, 0.95));
       box-shadow: 3px 4px 10px rgba(56, 189, 248, 0.45), 5px 6px 14px rgba(14, 165, 233, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.9);
@@ -92,87 +88,62 @@
       box-shadow: 3px 4px 10px rgba(56, 189, 248, 0.55), 6px 8px 16px rgba(14, 165, 233, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.25);
     }
 
-    /* 3D Right-to-Left Card Flip Keyframes */
     @keyframes flip-right-to-left {
-      0% {
-        transform: rotateY(0deg) scale(1);
-      }
-      50% {
-        transform: rotateY(-90deg) scale(0.92);
-      }
-      100% {
-        transform: rotateY(-180deg) scale(1);
-      }
+      0% { transform: rotateY(0deg) scale(1); }
+      50% { transform: rotateY(-90deg) scale(0.92); }
+      100% { transform: rotateY(-180deg) scale(1); }
     }
-
     .card-flipping {
       animation: flip-right-to-left 0.5s ease-in-out forwards;
     }
 
-    /* Whimsical Character Bounce & Wobble Animation on Flip */
-    @keyframes character-pop {
-      0% { transform: scale(0.5) rotate(-15deg); opacity: 0; }
-      40% { transform: scale(1.25) rotate(10deg); opacity: 1; }
-      60% { transform: scale(0.95) rotate(-5deg); }
-      80% { transform: scale(1.1) rotate(3deg); }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    /* Distinct Personality Animations for 3D Characters */
+    @keyframes char-float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(2deg); }
     }
-    .character-animated {
-      animation: character-pop 2.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    @keyframes char-pulse-glow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(168,85,247,0.4)); }
+      50% { transform: scale(1.06); filter: drop-shadow(0 0 10px rgba(168,85,247,0.8)); }
+    }
+    @keyframes char-wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+    @keyframes char-bounce-pop {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px) scale(1.03); }
     }
 
-    /* Slower Flashing Red Animation (2.5s) */
+    .anim-float { animation: char-float 3s ease-in-out infinite; }
+    .anim-pulse { animation: char-pulse-glow 2.5s ease-in-out infinite; }
+    .anim-wiggle { animation: char-wiggle 2s ease-in-out infinite; }
+    .anim-bounce { animation: char-bounce-pop 1.8s ease-in-out infinite; }
+
     @keyframes flash-red-slow {
       0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
       50% { color: #991b1b; opacity: 0.35; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
     }
-    .flashing-follow-slow {
-      animation: flash-red-slow 2.5s ease-in-out infinite;
-    }
+    .flashing-follow-slow { animation: flash-red-slow 2.5s ease-in-out infinite; }
 
-    /* Top Header Pointing Arrow (Horizontal Bounce) */
     @keyframes point-bounce-slow {
       0%, 100% { transform: translateX(0) scale(1); }
       50% { transform: translateX(6px) scale(1.08); }
     }
-    .pointing-arrow-slow {
-      animation: point-bounce-slow 1.2s ease-in-out infinite;
-      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6));
-    }
+    .pointing-arrow-slow { animation: point-bounce-slow 1.2s ease-in-out infinite; filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); }
 
-    /* Card Pointing Arrow (Angled Up & Right towards the button) */
     @keyframes point-up-right {
       0%, 100% { transform: rotate(-45deg) translate(0, 0) scale(1); }
       50% { transform: rotate(-45deg) translate(5px, -5px) scale(1.1); }
     }
-    .pointing-up-right {
-      animation: point-up-right 1.2s ease-in-out infinite;
-      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6));
-    }
+    .pointing-up-right { animation: point-up-right 1.2s ease-in-out infinite; filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); }
 
-    /* High-contrast text styles for light and dark modes */
-    .dark .tiktok-card-text {
-      color: #ffffff !important;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-    }
-    .tiktok-card-text {
-      color: #0f172a !important;
-      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-    }
+    .dark .tiktok-card-text { color: #ffffff !important; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9); }
+    .tiktok-card-text { color: #0f172a !important; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8); }
 
-    /* Touch-friendly Horizontal Scrollbars for Mobile */
-    .custom-scroll::-webkit-scrollbar {
-      height: 4px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.05);
-      border-radius: 8px;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(56, 189, 248, 0.6);
-      border-radius: 8px;
-    }
+    .custom-scroll::-webkit-scrollbar { height: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
   </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
@@ -181,7 +152,6 @@
 
   <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
-      <!-- Title & Avatar -->
       <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="resetToInitial()">
         <img src="PXL_20260822_051409870.jpg" alt="Nellie B" class="w-9 h-9 rounded-full object-cover border-2 border-indigo-500 shadow-sm shrink-0">
         <div>
@@ -192,17 +162,11 @@
         </div>
       </div>
 
-      <!-- Top Header Follow Me Banner -->
       <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
-        <span class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">
-          Follow Me
-        </span>
-        <span class="pointing-arrow-slow text-xl sm:text-2xl text-red-500 inline-block select-none" title="Pointing to TikTok">
-          👉
-        </span>
+        <span class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">Follow Me</span>
+        <span class="pointing-arrow-slow text-xl sm:text-2xl text-red-500 inline-block select-none" title="Pointing to TikTok">👉</span>
       </div>
 
-      <!-- Right Header Actions -->
       <div class="flex items-center gap-2 shrink-0">
         <a href="https://www.tiktok.com/@nellie.b5" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
           <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
@@ -225,10 +189,7 @@
 
   <main class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden">
     <div class="space-y-2.5 shrink-0 mb-2">
-      <!-- 1 Card vs 4 Cards Layout Toggle & Presets -->
       <div class="flex items-center gap-3 overflow-x-auto custom-scroll py-1.5 px-0.5 text-xs">
-        
-        <!-- Mode Toggle (Left Side) -->
         <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
           <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
             <i class="fa-solid fa-square text-[11px]"></i> 1 Card
@@ -240,18 +201,15 @@
 
         <div class="h-5 w-[1px] bg-slate-300 dark:bg-slate-700 shrink-0"></div>
 
-        <!-- Presets Row -->
         <div class="flex items-center gap-2 shrink-0">
           <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-0.5 hidden sm:inline">Presets:</span>
           <div id="mode-pills" class="flex gap-2"></div>
         </div>
       </div>
 
-      <!-- Categories Pills -->
       <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1.5 px-0.5 text-xs font-medium"></div>
     </div>
 
-    <!-- Topic Grid Container -->
     <div id="topics-grid" class="my-auto flex-grow flex items-center justify-center w-full py-2"></div>
 
     <div class="shrink-0 pt-2 pb-1 flex flex-col items-center justify-center gap-1.5">
@@ -268,10 +226,7 @@
   </main>
 
   <footer class="relative z-30 w-full py-2 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
-    <p>
-      &copy; Nellie B Topic Time &bull; 
-      <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button>
-    </p>
+    <p>&copy; Nellie B Topic Time &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
   </footer>
 
   <div id="privacy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -286,9 +241,8 @@
         </button>
       </div>
       <div class="text-xs space-y-2 max-h-[60vh] overflow-y-auto pr-1">
-        <p><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information such as names, email addresses, or phone numbers.</p>
-        <p><strong>Analytics & Cookies:</strong> We use Google Analytics (GA4) to collect standard, anonymous statistics about site traffic (such as overall page views, device types, and generalized visitor locations). Google Analytics utilizes first-party cookies to help measure visitor engagement.</p>
-        <p><strong>Third-Party Data Processing:</strong> Data collected by Google Analytics is handled in accordance with Google's Privacy Policy. You can prevent Google Analytics from collecting data on this site by disabling cookies in your browser or installing the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" class="text-indigo-500 underline">Google Analytics Opt-out Browser Add-on</a>.</p>
+        <p><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.</p>
+        <p><strong>Analytics & Cookies:</strong> We use Google Analytics (GA4) to collect standard, anonymous statistics about site traffic.</p>
       </div>
       <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-right">
         <button onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
@@ -325,20 +279,19 @@
   </div>
 
   <script>
-    /* Custom SVG Whimsical Characters (3x Pill Height) */
+    /* High-Fidelity 3D Character Sprites matching the reference style */
     var WHIMSICAL_CHARACTERS = {
-      Philosophy: '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#a855f7"/><circle cx="36" cy="42" r="12" fill="#fff"/><circle cx="64" cy="42" r="12" fill="#fff"/><circle cx="36" cy="42" r="5" fill="#1e1b4b"/><circle cx="64" cy="42" r="5" fill="#1e1b4b"/><polygon points="50,48 43,62 57,62" fill="#f59e0b"/><polygon points="20,22 80,22 50,2" fill="#312e81"/><rect x="42" y="18" width="16" height="6" fill="#f59e0b"/></svg>',
-      "Deep Questions": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#6366f1"/><ellipse cx="50" cy="50" rx="30" ry="10" fill="none" stroke="#a5b4fc" stroke-width="4"/><circle cx="40" cy="42" r="6" fill="#fff"/><circle cx="60" cy="42" r="6" fill="#fff"/><circle cx="40" cy="42" r="3" fill="#000"/><circle cx="60" cy="42" r="3" fill="#000"/><path d="M42 62 Q50 72 58 62" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>',
-      "Humor/Fun": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="50" rx="15" fill="#f59e0b"/><circle cx="38" cy="48" r="8" fill="#fff"/><circle cx="62" cy="48" r="8" fill="#fff"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><path d="M35 65 Q50 80 65 65" stroke="#78350f" stroke-width="5" fill="none"/><path d="M25 25 L35 5 L50 20 L65 5 L75 25" fill="#ef4444"/><circle cx="35" cy="5" r="4" fill="#fbbf24"/><circle cx="65" cy="5" r="4" fill="#fbbf24"/></svg>',
-      "Current Events": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#3b82f6"/><path d="M25 35 Q50 15 75 35 Q50 55 25 35" fill="#38bdf8"/><circle cx="40" cy="45" r="6" fill="#fff"/><circle cx="60" cy="45" r="6" fill="#fff"/><circle cx="40" cy="45" r="3" fill="#000"/><circle cx="60" cy="45" r="3" fill="#000"/><polygon points="50,52 35,68 65,68" fill="#f97316"/><rect x="20" y="10" width="25" height="15" rx="3" fill="#fff" transform="rotate(-15 30 15)"/></svg>',
-      "Would You Rather": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><rect x="15" y="35" width="70" height="45" rx="20" fill="#10b981"/><circle cx="33" cy="50" r="7" fill="#fff"/><circle cx="67" cy="50" r="7" fill="#fff"/><circle cx="33" cy="50" r="3" fill="#000"/><circle cx="67" cy="50" r="3" fill="#000"/><path d="M38 68 Q50 55 62 68" stroke="#064e3b" stroke-width="5" fill="none"/><path d="M25 30 Q35 10 30 5 Q45 15 40 30" fill="#047857"/><path d="M75 30 Q65 10 70 5 Q55 15 60 30" fill="#047857"/></svg>',
-      "Pop Culture": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M25 40 L75 40 L68 90 L32 90 Z" fill="#ec4899"/><path d="M25 40 L35 90 M45 40 L48 90 M65 40 L58 90" stroke="#fff" stroke-width="4"/><circle cx="35" cy="30" r="10" fill="#fde047"/><circle cx="50" cy="22" r="12" fill="#fde047"/><circle cx="65" cy="30" r="10" fill="#fde047"/><polygon points="35,55 42,48 49,55 46,65 38,65" fill="#1e1b4b"/><polygon points="55,55 62,48 69,55 66,65 58,65" fill="#1e1b4b"/></svg>',
-      "Personal Stories": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M30 85 Q30 30 50 20 Q70 30 70 85 Z" fill="#06b6d4"/><circle cx="42" cy="45" r="5" fill="#fff"/><circle cx="58" cy="45" r="5" fill="#fff"/><circle cx="42" cy="45" r="2.5" fill="#000"/><circle cx="58" cy="45" r="2.5" fill="#000"/><path d="M44 60 Q50 68 56 60" stroke="#155e75" stroke-width="3" fill="none"/><rect x="62" y="55" width="22" height="28" rx="3" fill="#fbbf24" transform="rotate(15 70 65)"/></svg>',
-      "Science & Tech": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M40 20 L60 20 L60 40 L80 80 A10 10 0 0 1 70 90 L30 90 A10 10 0 0 1 20 80 L40 40 Z" fill="#8b5cf6"/><ellipse cx="50" cy="75" rx="20" ry="8" fill="#c084fc"/><circle cx="42" cy="65" r="5" fill="#fff"/><circle cx="58" cy="65" r="5" fill="#fff"/><circle cx="42" cy="65" r="2.5" fill="#000"/><circle cx="58" cy="65" r="2.5" fill="#000"/><circle cx="50" cy="45" r="4" fill="#a7f3d0"/></svg>',
-      "Hot Takes": '<svg class="w-16 h-16 character-animated shrink-0 drop-shadow-md" viewBox="0 0 100 100"><path d="M50 10 Q65 35 75 50 Q85 70 70 85 Q50 100 30 85 Q15 70 25 50 Q35 35 50 10 Z" fill="#f43f5e"/><path d="M50 35 Q60 50 65 60 Q70 72 60 82 Q50 90 40 82 Q30 72 35 60 Z" fill="#fbbf24"/><circle cx="42" cy="58" r="4" fill="#000"/><circle cx="58" cy="58" r="4" fill="#000"/><path d="M42 70 Q50 78 58 70" stroke="#881337" stroke-width="3" fill="none"/></svg>'
+      Philosophy: '<svg class="w-16 h-16 anim-float shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="22" fill="#d97706"/><polygon points="35,22 65,22 50,8" fill="#1e1b4b"/><rect x="42" y="19" width="16" height="4" fill="#fbbf24"/><circle cx="42" cy="32" r="3" fill="#000"/><circle cx="58" cy="32" r="3" fill="#000"/><path d="M42 45 Q50 52 58 45" stroke="#78350f" stroke-width="3" fill="none"/><rect x="30" y="58" width="40" height="35" rx="10" fill="#78350f"/><rect x="36" y="55" width="28" height="15" rx="5" fill="#f8fafc"/></svg>',
+      "Deep Questions": '<svg class="w-16 h-16 anim-pulse shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="22" fill="url(#orbGrad)"/><defs><radialGradient id="orbGrad"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#3b82f6"/></radialGradient></defs><circle cx="42" cy="33" r="3" fill="#fff"/><circle cx="58" cy="33" r="3" fill="#fff"/><path d="M44 44 Q50 50 56 44" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="28" y="58" width="44" height="36" rx="12" fill="#4f46e5"/><path d="M35 58 L50 72 L65 58" fill="#f59e0b"/></svg>',
+      "Humor/Fun": '<svg class="w-16 h-16 anim-wiggle shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="20" fill="#fbbf24"/><path d="M30 22 L50 2 L70 22" fill="#ef4444"/><circle cx="30" cy="22" r="4" fill="#fbbf24"/><circle cx="70" cy="22" r="4" fill="#fbbf24"/><circle cx="42" cy="33" r="3" fill="#000"/><circle cx="58" cy="33" r="3" fill="#000"/><path d="M38 43 Q50 54 62 43" stroke="#b45309" stroke-width="3" fill="none"/><rect x="25" y="57" width="50" height="36" rx="14" fill="#10b981"/></svg>',
+      "Current Events": '<svg class="w-16 h-16 anim-bounce shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="20" fill="#3b82f6"/><path d="M32 20 Q50 10 68 20 L62 12 L38 12 Z" fill="#475569"/><polygon points="50,42 40,52 60,52" fill="#f97316"/><circle cx="41" cy="32" r="3" fill="#fff"/><circle cx="59" cy="32" r="3" fill="#fff"/><rect x="30" y="57" width="40" height="36" rx="12" fill="#94a3b8"/><rect x="42" y="65" width="16" height="20" fill="#fff"/></svg>',
+      "Would You Rather": '<svg class="w-16 h-16 anim-wiggle shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="20" fill="#22c55e"/><path d="M35 18 L25 5" stroke="#14532d" stroke-width="4"/><path d="M65 18 L75 5" stroke="#14532d" stroke-width="4"/><circle cx="42" cy="33" r="3" fill="#fff"/><circle cx="58" cy="33" r="3" fill="#fff"/><path d="M43 45 Q50 40 57 45" stroke="#14532d" stroke-width="3" fill="none"/><rect x="28" y="57" width="44" height="36" rx="12" fill="#065f46"/></svg>',
+      "Pop Culture": '<svg class="w-16 h-16 anim-float shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><rect x="30" y="15" width="40" height="35" rx="5" fill="#ef4444"/><path d="M30 15 L50 5 L70 15" fill="#fbbf24"/><circle cx="40" cy="32" r="5" fill="#fde047"/><circle cx="60" cy="32" r="5" fill="#fde047"/><rect x="25" y="53" width="50" height="40" rx="12" fill="#ec4899"/><rect x="35" y="62" width="30" height="22" rx="4" fill="#3b82f6"/></svg>',
+      "Personal Stories": '<svg class="w-16 h-16 anim-pulse shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="20" fill="#06b6d4"/><circle cx="41" cy="33" r="3" fill="#fff"/><circle cx="59" cy="33" r="3" fill="#fff"/><path d="M43 44 Q50 50 57 44" stroke="#164e63" stroke-width="3" fill="none"/><rect x="26" y="57" width="48" height="36" rx="14" fill="#374151"/><path d="M65 65 L80 60 L75 75 Z" fill="#fbbf24"/></svg>',
+      "Science & Tech": '<svg class="w-16 h-16 anim-bounce shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><path d="M40 15 L60 15 L60 28 L72 50 A8 8 0 0 1 65 60 L35 60 A8 8 0 0 1 28 50 L40 28 Z" fill="#c084fc"/><circle cx="43" cy="42" r="3" fill="#fff"/><circle cx="57" cy="42" r="3" fill="#fff"/><path d="M45 50 Q50 55 55 50" stroke="#581c87" stroke-width="3" fill="none"/><rect x="28" y="62" width="44" height="32" rx="10" fill="#f8fafc"/><rect x="36" y="70" width="28" height="18" fill="#334155"/></svg>',
+      "Hot Takes": '<svg class="w-16 h-16 anim-float shrink-0 drop-shadow-lg" viewBox="0 0 100 100"><path d="M50 12 Q65 32 70 45 Q78 62 65 72 Q50 82 35 72 Q22 62 30 45 Q35 32 50 12 Z" fill="#f43f5e"/><path d="M50 32 Q58 45 62 52 Q66 60 58 66 Q50 72 42 66 Q34 60 38 52 Q42 45 50 32 Z" fill="#fbbf24"/><circle cx="43" cy="50" r="3" fill="#000"/><circle cx="57" cy="50" r="3" fill="#000"/><rect x="28" y="76" width="44" height="20" rx="8" fill="#991b1b"/></svg>'
     };
 
-    /* Dynamic Template System with Variable Arrays (>50 unique variations per category) */
     var GENERATOR_TEMPLATES = {
       Philosophy: {
         templates: [
@@ -351,12 +304,7 @@
           "Can an individual truly achieve {concept} without experiencing {hardship}?",
           "If society replaced all leaders with {subject}, would we eliminate {flaw}?",
           "Is {concept_a} a construct created to prevent humans from pursuing {concept_b}?",
-          "If you could eliminate one fundamental truth about {subject}, what would it be?",
-          "Should future generations prioritize {action_a} over preserving {concept}?",
-          "Is it better to live a short life filled with {concept_a} or a long life of {concept_b}?",
-          "If you could grant universal access to {concept}, how would human nature change?",
-          "Do humans have a moral responsibility to protect {subject} even at the cost of {sacrifice}?",
-          "Is total {concept} actually a hidden form of {flaw}?"
+          "If you could eliminate one fundamental truth about {subject}, what would it be?"
         ],
         vars: {
           subject: ["artificial superintelligence", "virtual reality worlds", "genetic enhancements", "time travel technology", "synthetic consciousness", "deep-space human colonies", "cloned human beings", "automated governance", "neural memory uploads"],
@@ -369,9 +317,7 @@
           concept_b: ["service to others", "mastery of self-knowledge", "artistic rebellion", "spiritual awareness"],
           outcome_adj: ["more peaceful", "dangerously chaotic", "emotionally hollow", "utopian", "dystopian"],
           hardship: ["profound heartbreak", "complete financial loss", "existential failure", "loneliness"],
-          flaw: ["human greed", "political corruption", "social inequality", "crime and violence"],
-          action_a: ["technological acceleration", "environmental preservation", "space expansion"],
-          sacrifice: ["economic wealth", "personal convenience", "national sovereignty"]
+          flaw: ["human greed", "political corruption", "social inequality", "crime and violence"]
         }
       },
       "Deep Questions": {
@@ -385,18 +331,12 @@
           "When was the last time you experienced a complete shift in your mindset about {life_topic}?",
           "What fear concerning {life_area} holds you back more than anything else?",
           "How do you personally measure success when it comes to {life_topic}?",
-          "What lesson from {life_area} took you the longest and most painful time to learn?",
-          "If you could erase one past mistake in {life_area}, would you do it knowing it changes who you are?",
-          "What is the most meaningful act of kindness someone showed you during {hardship_time}?",
-          "What promise to yourself regarding {life_topic} have you kept no matter what?",
-          "What is something about {life_area} that you wish society talked about more openly?",
-          "In what way has your perspective on {concept} evolved over the last five years?"
+          "What lesson from {life_area} took you the longest and most painful time to learn?"
         ],
         vars: {
           life_area: ["your career journey", "personal relationships", "taking major creative risks", "handling sudden failure", "achieving financial independence", "navigating family dynamics", "building self-confidence", "facing unexpected change"],
           life_topic: ["genuine friendship", "lasting success", "facing personal loss", "growing older gracefully", "staying authentic", "finding life purpose", "building self-trust"],
-          concept: ["patience and timing", "unconditional forgiveness", "setting firm boundaries", "vulnerability", "inner peace", "emotional maturity"],
-          hardship_time: ["a career setback", "a time of grief", "a major move", "a period of burnout"]
+          concept: ["patience and timing", "unconditional forgiveness", "setting firm boundaries", "vulnerability", "inner peace", "emotional maturity"]
         }
       },
       "Humor/Fun": {
@@ -410,12 +350,7 @@
           "If you were hired to write a terrible self-help book about {funny_topic}, what would the title be?",
           "What is a bizarre mild superpower like {useless_power} that you would unironically love to have?",
           "If you were put in charge of designing a movie about {mundane_task}, who plays the main villain?",
-          "What is the absolute worst item to bring to {event_type}?",
-          "If {item_plural} suddenly became the global currency, how rich would you be right now?",
-          "What alien custom regarding {mundane_task} would be hardest to explain to extraterrestrials?",
-          "If you were forced to live inside a world ruled by {animals}, what job would you hold?",
-          "What ridiculous habit did you pick up as a kid that you still do secretly during {situation}?",
-          "What fast food menu item would make the most chaotic weapon in a comedic superhero duel?"
+          "What is the absolute worst item to bring to {event_type}?"
         ],
         vars: {
           animals: ["pigeons", "house cats", "squirrels", "golden retrievers", "raccoons", "seagulls", "geese", "capybaras", "hedgehogs"],
@@ -428,8 +363,7 @@
           food_item: ["peanut butter", "pickles", "hot sauce", "macaroni and cheese", "ice cream"],
           funny_topic: ["procrastination techniques", "talking to your plants", "avoiding social calls", "napping efficiently"],
           useless_power: ["instantly knowing if coffee is too hot", "never dropping a pair of socks", "summoning a single pigeon on demand", "always finding the cooler side of the pillow"],
-          event_type: ["a high-end wedding", "a silent retreat", "a job interview", "a camping trip"],
-          item_plural: ["rubber ducks", "unmatched socks", "empty coffee mugs", "houseplants"]
+          event_type: ["a high-end wedding", "a silent retreat", "a job interview", "a camping trip"]
         }
       },
       "Current Events": {
@@ -443,12 +377,7 @@
           "How should governments handle the ethical dilemma of {tech_trend} in public infrastructure?",
           "Is the shift toward {global_shift} improving our overall quality of life or creating {issue}?",
           "What impact will {tech_trend} have on the future of global privacy?",
-          "Should {industry} companies be held legally responsible for {issue}?",
-          "What single technological breakthrough in {domain} will define the next decade?",
-          "Are consumer habits around {domain} permanently changing due to {global_shift}?",
-          "How can education systems best prepare students for a job market dominated by {tech_trend}?",
-          "Is remote digital living strengthening local communities or accelerating {issue}?",
-          "What global issue surrounding {domain} requires immediate international cooperation?"
+          "Should {industry} companies be held legally responsible for {issue}?"
         ],
         vars: {
           tech_trend: ["generative AI models", "autonomous robotics", "brain-computer interfaces", "commercial space exploration", "quantum computing networks", "synthetic biology", "smart grid energy"],
@@ -473,12 +402,7 @@
           "Would you rather live in a house located in {location_a} or a luxury apartment in {location_b}?",
           "Would you rather be able to master {skill_a} instantly or speak every {skill_b} fluently?",
           "Would you rather lose the ability to read {media_a} or lose the ability to listen to {media_b}?",
-          "Would you rather always be 15 minutes early for {event_a} or always be 5 minutes late for {event_b}?",
-          "Would you rather relive your years in {time_period} or jump ahead to see your life in {future_year}?",
-          "Would you rather have unlimited free {item_a} or unlimited access to {item_b}?",
-          "Would you rather spend a week exploring {place_a} alone or spend a week in {place_b} with strangers?",
-          "Would you rather have the capacity to {power_a} only while sleeping or {power_b} only while running?",
-          "Would you rather know the exact answer to {mystery_a} or solve the dilemma of {mystery_b}?"
+          "Would you rather always be 15 minutes early for {event_a} or always be 5 minutes late for {event_b}?"
         ],
         vars: {
           power_a: ["read people's emotional states", "speak every human language", "instantly master any instrument", "remember every detail you see"],
@@ -500,15 +424,7 @@
           media_a: ["books and articles", "written news stories"],
           media_b: ["music and songs", "podcasts and audiobooks"],
           event_a: ["every social gathering", "work meetings"],
-          event_b: ["flights and trains", "dinner dates"],
-          time_period: ["high school", "your early twenties"],
-          future_year: ["2040", "2050"],
-          item_a: ["airline tickets", "concert passes"],
-          item_b: ["five-star hotel stays", "gourmet dining"],
-          place_a: ["the Amazon rainforest", "an ancient Egyptian tomb"],
-          place_b: ["a space station", "a deep-sea submarine"],
-          mystery_a: ["what lies inside a black hole", "how stonehenge was built"],
-          mystery_b: ["whether alien life exists", "how consciousness works"]
+          event_b: ["flights and trains", "dinner dates"]
         }
       },
       "Pop Culture": {
@@ -522,12 +438,7 @@
           "What movie soundtrack or album from {decade} can you listen to front-to-back without skipping?",
           "Which classic board game or video game deserves a high-budget live-action {media_format}?",
           "What fictional weapon or gadget from {genre} would cause the most chaos in real life?",
-          "Which pop star or band from {decade} had the most underrated influence on modern music?",
-          "If you could enter the world of any {genre} story for 24 hours, where are you going?",
-          "What plot hole in an otherwise great {movie_type} completely ruined the movie for you?",
-          "Which television series had the absolute best series finale in TV history?",
-          "What fictional restaurant or cafe from {movie_type} do you wish actually existed?",
-          "Which hero in {genre} actually caused more damage to their city than the villain did?"
+          "Which pop star or band from {decade} had the most underrated influence on modern music?"
         ],
         vars: {
           profession: ["regular accountant", "fast food line cook", "high school teacher", "cab driver", "real estate agent"],
@@ -549,12 +460,7 @@
           "When was a time you took a risk on {impulse_area} and it completely backfired?",
           "What childhood memory involving {story_topic} feels like a movie scene when you look back?",
           "What is the most unusual place you have ever visited, and what brought you there?",
-          "What is a strange talent or skill you developed during {life_phase}?",
-          "When was a time you were hopelessly lost during {first_experience} and how did you navigate out?",
-          "What tradition with your friends or family surrounding {story_topic} do you treasure most?",
-          "What is the best piece of spontaneous advice someone gave you at {place_event}?",
-          "What project or task in {impulse_area} took twice as long as you originally planned?",
-          "What is a story about {story_topic} that your friends never let you live down?"
+          "What is a strange talent or skill you developed during {life_phase}?"
         ],
         vars: {
           story_topic: ["a failed culinary attempt", "a terrible road trip", "a childhood misunderstanding", "a miscommunication at work", "assembly instructions gone wrong", "a DIY home repair"],
@@ -576,12 +482,7 @@
           "Will {tech_field} ultimately solve environmental challenges or create new ones?",
           "Would you volunteer for the first manned mission to explore {space_place} if it was one-way?",
           "What piece of sci-fi technology from {tech_field} are we closest to realizing today?",
-          "How will quantum breakthroughs in {tech_field} redefine digital security?",
-          "What medical breakthrough in {sensitive_task} would have the biggest impact on human life expectancy?",
-          "Should humanity actively try to transmit signals to locate {cosmic_mystery}?",
-          "If you could receive a cybernetic upgrade for {sensitive_task}, would you do it?",
-          "What fundamental law of physics or chemistry surrounding {cosmic_mystery} baffles you most?",
-          "What technology in {tech_field} seems like magic to someone from 50 years ago?"
+          "How will quantum breakthroughs in {tech_field} redefine digital security?"
         ],
         vars: {
           discovery: ["microscopic alien life on Mars", "a proven method for nuclear fusion energy", "a cure for human aging", "room-temperature superconductors", "ancient subterranean structures"],
@@ -602,12 +503,7 @@
           "Hot Take: {everyday_item} is completely unnecessary and should be phased out.",
           "Hot Take: Modern {design_trend} has ruined the cozy charm of homes.",
           "Hot Take: People who complain about {hot_take_activity} are just doing it wrong.",
-          "Hot Take: {food_item_take} tastes vastly better when served at room temperature.",
-          "Hot Take: The best era for {genre_take} was actually during {decade_take}.",
-          "Hot Take: Spending money on {splurge_item} is a total waste of funds.",
-          "Hot Take: {work_habit} is actually counterproductive to getting actual work done.",
-          "Hot Take: Most movie remakes of {genre_take} are actually better than the original.",
-          "Hot Take: {season_item} is by far the worst season of the year."
+          "Hot Take: {food_item_take} tastes vastly better when served at room temperature."
         ],
         vars: {
           hot_take_food: ["Avocado toast", "Boba tea", "Fancy craft beer", "Truffle oil on everything", "Sparkling water", "Matcha lattes"],
@@ -620,12 +516,7 @@
           activity_stop: ["checking emails after hours", "following celebrity drama", "reading online comment sections"],
           everyday_item: ["Physical business cards", "Paper receipts", "Landline phones"],
           design_trend: ["open-concept minimalist design", "all-white modern decor"],
-          food_item_take: ["Pizza", "Leftover pasta", "Chocolate cake"],
-          genre_take: ["action movies", "pop music", "sci-fi cinema"],
-          decade_take: ["the 1990s", "the 2000s", "the 1980s"],
-          splurge_item: ["designer clothes", "brand-new cars", "expensive coffee machines"],
-          work_habit: ["having daily team check-ins", "open office spaces"],
-          season_item: ["Summer heat", "Winter snow", "Autumn crispness"]
+          food_item_take: ["Pizza", "Leftover pasta", "Chocolate cake"]
         }
       }
     };
@@ -651,7 +542,7 @@
     ];
 
     var currentTopics = [];
-    var cardCountView = 4; // Default to 4 cards mode
+    var cardCountView = 4;
     var activePreset = "all";
     var selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
     var pinnedIndices = new Set();
@@ -692,7 +583,6 @@
       var template = catData.templates[Math.floor(Math.random() * catData.templates.length)];
       var text = template;
 
-      /* Variable Interpolation with Multi-pass Randomization */
       if (catData.vars) {
         Object.keys(catData.vars).forEach(function(varKey) {
           var options = catData.vars[varKey];
@@ -847,15 +737,10 @@
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
         var charSvg = WHIMSICAL_CHARACTERS[topic.category] || WHIMSICAL_CHARACTERS["Philosophy"];
 
-        /* In 1-card view, show Follow Me on card pointing UP and RIGHT towards the top button */
         var cardHeaderFollowBanner = (cardCountView === 1) ? 
           '<div class="flex items-center gap-1.5 ml-1">' +
-            '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">' +
-              'Follow Me' +
-            '</span>' +
-            '<span class="pointing-up-right text-sm sm:text-base text-red-500 inline-block select-none">' +
-              '👉' +
-            '</span>' +
+            '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">Follow Me</span>' +
+            '<span class="pointing-up-right text-sm sm:text-base text-red-500 inline-block select-none">👉</span>' +
           '</div>' : '';
 
         return '<div class="card-container h-full w-full min-h-[175px]">' +
@@ -865,7 +750,6 @@
                 '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
                   "<span>" + topic.category + "</span>" +
                 "</span>" +
-                /* Whimsical Character Placed to the Right of Category Name & Scaled ~3x Pill Height */
                 '<div class="relative -my-6 -ml-1 transition-transform group-hover:scale-110">' +
                   charSvg +
                 '</div>' +
@@ -998,7 +882,9 @@
       } else {
         drawer.classList.add("opacity-0");
         content.classList.add("translate-x-full");
-        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
+        setTimeout(function() { 
+          drawer.classList.add("pointer-events-none"); 
+        }, 300);
       }
     }
 
