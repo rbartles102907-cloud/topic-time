@@ -260,7 +260,6 @@
   </div>
 
   <script>
-    /* Restored Previous Whimsical SVG Character Set */
     var WHIMSICAL_CHARACTERS = {
       Philosophy: '<svg class="w-14 h-14 anim-grow-shrink shrink-0 drop-shadow-xl" viewBox="0 0 100 100" fill="none"><path d="M38 52 C35 52 32 50 32 44 C32 32 40 24 50 24 C60 24 68 32 68 44 C68 50 65 52 62 52 Z" fill="#b45309"/><ellipse cx="50" cy="42" rx="16" ry="14" fill="#d97706"/><circle cx="43" cy="40" r="3.5" fill="#fff"/><circle cx="43" cy="40" r="1.5" fill="#000"/><circle cx="57" cy="40" r="3.5" fill="#fff"/><circle cx="57" cy="40" r="1.5" fill="#000"/><polygon points="50,44 46,48 54,48" fill="#b45309"/><polygon points="32,28 68,28 50,12" fill="#1e1b4b"/><rect x="42" y="25" width="16" height="4" fill="#fbbf24"/><rect x="34" y="62" width="32" height="32" rx="10" fill="#78350f"/><rect x="40" y="58" width="20" height="14" rx="4" fill="#fff"/><path d="M48 58 L48 72 M52 58 L52 72" stroke="#b45309" stroke-width="2"/></svg>',
       "Deep Questions": '<svg class="w-14 h-14 anim-grow-shrink shrink-0 drop-shadow-xl" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="38" r="18" fill="url(#cosmicGrad)"/><defs><radialGradient id="cosmicGrad"><stop offset="0%" stop-color="#c084fc"/><stop offset="60%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#1e1b4b"/></radialGradient></defs><circle cx="43" cy="36" r="3" fill="#fff"/><circle cx="57" cy="36" r="3" fill="#fff"/><circle cx="43" cy="36" r="1" fill="#000"/><circle cx="57" cy="36" r="1" fill="#000"/><path d="M43 45 Q50 51 57 45" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M25 45 C25 25 75 25 75 45 C75 60 25 60 25 45 Z" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.6"/><rect x="30" y="60" width="40" height="34" rx="12" fill="#4f46e5"/><path d="M38 60 L50 74 L62 60" fill="#f59e0b"/></svg>',
@@ -597,9 +596,35 @@
             '<span class="pointing-up-right text-sm sm:text-base text-red-500 inline-block select-none">👉</span>' +
           '</div>' : '';
 
+        var cardFooterFollowBanner = (cardCountView > 1) ? 
+          '<div class="flex items-center gap-1.5 ml-1">' +
+            '<span class="flashing-follow-slow font-black text-[10px] sm:text-xs tracking-wider uppercase drop-shadow">Follow Me</span>' +
+            '<span class="pointing-up-right text-xs text-red-500 inline-block select-none">👉</span>' +
+          '</div>' : '';
+
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
-            '<div class="flex items-center justify-between gap-2 mb-3">' +
+            
+            /* Top Section: Flip hint & Action Icons */
+            '<div class="flex items-center justify-between gap-2 mb-2">' +
+              '<div class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 flex items-center gap-1">' +
+                '<i class="fa-solid fa-lightbulb text-[10px] text-amber-400"></i> Tap or click card to flip' +
+              '</div>' +
+              '<div class="flex items-center gap-1.5 relative z-20">' +
+                '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
+                '<button onclick="togglePin(' + index + ')" title="' + (isPinned ? "Unpin Card" : "Pin Card") + '" class="p-2 rounded-xl transition-all ' + (isPinned ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isPinned ? "rotate-45" : "") + '"></i></button>' +
+                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Save Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-pink-500 bg-pink-50 dark:bg-pink-950/40" : "text-slate-400 hover:text-pink-500 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-heart text-sm"></i></button>' +
+                '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
+              '</div>' +
+            '</div>' +
+
+            /* Middle Section: Question text */
+            '<div class="my-2 flex-grow flex items-center justify-center">' +
+              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+            '</div>' +
+
+            /* Bottom Section: Category Badge, Character & Status */
+            '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between gap-2">' +
               '<div class="flex items-center gap-1.5 relative z-20">' +
                 '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
                   "<span>" + topic.category + "</span>" +
@@ -608,22 +633,15 @@
                   charSvg +
                 '</div>' +
                 cardHeaderFollowBanner +
+                cardFooterFollowBanner +
               '</div>' +
-              '<div class="flex items-center gap-1.5 relative z-20">' +
-                '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
-                '<button onclick="togglePin(' + index + ')" title="' + (isPinned ? "Unpin Card" : "Pin Card") + '" class="p-2 rounded-xl transition-all ' + (isPinned ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isPinned ? "rotate-45" : "") + '"></i></button>' +
-                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Save Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-pink-500 bg-pink-50 dark:bg-pink-950/40" : "text-slate-400 hover:text-pink-500 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-heart text-sm"></i></button>' +
-                '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
-              "</div>" +
-            "</div>" +
-            '<div class="my-2 flex-grow flex items-center justify-center">' +
-              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+              '<div>' +
+                (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1 text-[11px]"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '') +
+              '</div>' +
             '</div>' +
-            '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-center text-[11px] font-semibold text-slate-400 dark:text-slate-500">' + 
-              (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '<span class="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-lightbulb text-[10px] text-amber-400"></i> Tap or click card to flip</span>') + 
-            "</div>" +
-          "</div>" +
-        "</div>";
+
+          '</div>' +
+        '</div>';
       }).join("");
 
       grid.innerHTML = cardsHtml;
