@@ -103,6 +103,26 @@
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
     }
 
+    /* Container that crops the image to show ONLY the woman's face/wig on the left side */
+    .character-crop-container {
+      width: 75px;
+      height: 75px;
+      overflow: hidden;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      background: #0f172a;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .character-crop-container img {
+      width: 220px;
+      max-width: none;
+      position: absolute;
+      left: -8px;
+      top: -12px;
+    }
+
     @keyframes flash-red-slow {
       0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
       50% { color: #991b1b; opacity: 0.35; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
@@ -130,40 +150,9 @@
   <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="resetToInitial()">
-        <svg class="w-9 h-9 rounded-full border-2 border-indigo-500 shadow-sm shrink-0 bg-slate-900" viewBox="0 0 120 120">
-          <defs>
-            <linearGradient id="wigGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#94a3b8"/>
-              <stop offset="50%" stop-color="#cbd5e1"/>
-              <stop offset="100%" stop-color="#475569"/>
-            </linearGradient>
-            <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#fbcfe8"/>
-              <stop offset="100%" stop-color="#e2e8f0"/>
-            </linearGradient>
-          </defs>
-          <!-- Wavy Grey Hair Background -->
-          <path d="M20 60 C20 30 50 15 80 25 C100 32 105 60 100 85 C95 105 75 110 60 110 C40 110 20 90 20 60 Z" fill="url(#wigGrad)" stroke="#1e293b" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M25 45 Q15 65 30 85 Q20 70 25 45 Z" fill="#94a3b8"/>
-          <path d="M95 50 Q105 70 90 90 Q100 75 95 50 Z" fill="#64748b"/>
-          <!-- Face Shape -->
-          <ellipse cx="60" cy="62" rx="22" ry="26" fill="url(#skinGrad)" stroke="#1e293b" stroke-width="4"/>
-          <!-- Eyes & Lashes -->
-          <ellipse cx="50" cy="56" rx="3.5" ry="4" fill="#0f172a"/>
-          <ellipse cx="70" cy="56" rx="3.5" ry="4" fill="#0f172a"/>
-          <circle cx="51" cy="55" r="1.5" fill="#ffffff"/>
-          <circle cx="71" cy="55" r="1.5" fill="#ffffff"/>
-          <path d="M45 51 Q50 48 55 52" stroke="#1e293b" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <path d="M65 52 Q70 48 75 51" stroke="#1e293b" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <!-- Nose & Cheeks -->
-          <path d="M60 58 Q62 65 58 67" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" fill="none"/>
-          <circle cx="44" cy="65" r="4" fill="#f43f5e" opacity="0.4"/>
-          <circle cx="76" cy="65" r="4" fill="#f43f5e" opacity="0.4"/>
-          <!-- Big Friendly Smile -->
-          <path d="M48 72 Q60 82 72 72" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round" fill="#ffffff"/>
-          <!-- Wavy Foreground Hair Fringe -->
-          <path d="M35 35 Q50 25 65 30 Q80 25 90 40 Q75 35 60 40 Q45 35 35 35 Z" fill="url(#wigGrad)" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
-        </svg>
+        <div class="character-crop-container w-9 h-9 border-indigo-500">
+          <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/character_final.png" alt="Nellie B">
+        </div>
         <div>
           <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
             Nellie B &#8211; Topic Time
@@ -428,34 +417,9 @@
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
     var topicCounter = 1000;
 
-    var avatarSvgMarkup = '<svg class="w-16 h-16 sm:w-20 sm:h-20 anim-grow-shrink" viewBox="0 0 120 120" style="filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));">' +
-      '<defs>' +
-        '<linearGradient id="cardWigGrad" x1="0%" y1="0%" x2="100%" y2="100%">' +
-          '<stop offset="0%" stop-color="#94a3b8"/>' +
-          '<stop offset="50%" stop-color="#cbd5e1"/>' +
-          '<stop offset="100%" stop-color="#475569"/>' +
-        '</linearGradient>' +
-        '<linearGradient id="cardSkinGrad" x1="0%" y1="0%" x2="0%" y2="100%">' +
-          '<stop offset="0%" stop-color="#fbcfe8"/>' +
-          '<stop offset="100%" stop-color="#e2e8f0"/>' +
-        '</linearGradient>' +
-      '</defs>' +
-      '<path d="M20 60 C20 30 50 15 80 25 C100 32 105 60 100 85 C95 105 75 110 60 110 C40 110 20 90 20 60 Z" fill="url(#cardWigGrad)" stroke="#1e293b" stroke-width="4" stroke-linejoin="round"/>' +
-      '<path d="M25 45 Q15 65 30 85 Q20 70 25 45 Z" fill="#94a3b8"/>' +
-      '<path d="M95 50 Q105 70 90 90 Q100 75 95 50 Z" fill="#64748b"/>' +
-      '<ellipse cx="60" cy="62" rx="22" ry="26" fill="url(#cardSkinGrad)" stroke="#1e293b" stroke-width="4"/>' +
-      '<ellipse cx="50" cy="56" rx="3.5" ry="4" fill="#0f172a"/>' +
-      '<ellipse cx="70" cy="56" rx="3.5" ry="4" fill="#0f172a"/>' +
-      '<circle cx="51" cy="55" r="1.5" fill="#ffffff"/>' +
-      '<circle cx="71" cy="55" r="1.5" fill="#ffffff"/>' +
-      '<path d="M45 51 Q50 48 55 52" stroke="#1e293b" stroke-width="2" stroke-linecap="round" fill="none"/>' +
-      '<path d="M65 52 Q70 48 75 51" stroke="#1e293b" stroke-width="2" stroke-linecap="round" fill="none"/>' +
-      '<path d="M60 58 Q62 65 58 67" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" fill="none"/>' +
-      '<circle cx="44" cy="65" r="4" fill="#f43f5e" opacity="0.4"/>' +
-      '<circle cx="76" cy="65" r="4" fill="#f43f5e" opacity="0.4"/>' +
-      '<path d="M48 72 Q60 82 72 72" stroke="#1e293b" stroke-width="3.5" stroke-linecap="round" fill="#ffffff"/>' +
-      '<path d="M35 35 Q50 25 65 30 Q80 25 90 40 Q75 35 60 40 Q45 35 35 35 Z" fill="url(#cardWigGrad)" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>' +
-    '</svg>';
+    var avatarCroppedMarkup = '<div class="character-crop-container anim-grow-shrink">' +
+      '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/character_final.png" alt="Nellie B">' +
+    '</div>';
 
     function setLayoutView(count) {
       cardCountView = count;
@@ -666,7 +630,7 @@
                 (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1 text-[11px]"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '') +
               '</div>' +
               '<div class="absolute -bottom-4 right-2 z-30 pointer-events-none">' +
-                avatarSvgMarkup +
+                avatarCroppedMarkup +
               '</div>' +
             '</div>' +
 
