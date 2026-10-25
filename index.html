@@ -103,7 +103,7 @@
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
     }
 
-    /* Clean image avatar styling without background box block */
+    /* SVG / CSS color-keying technique to completely filter out the white background block */
     .card-character-avatar {
       width: 64px;
       height: 64px;
@@ -113,7 +113,14 @@
       bottom: 6px;
       pointer-events: none;
       z-index: 25;
+      /* Uses color matrix / thresholding filter to make pure white pixels transparent */
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+      mix-blend-mode: multiply;
+    }
+
+    .dark .card-character-avatar {
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)) contrast(120%) brightness(110%);
     }
 
     @keyframes flash-red-slow {
