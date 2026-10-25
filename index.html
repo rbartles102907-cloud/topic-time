@@ -97,6 +97,15 @@
       animation: flip-right-to-left 0.5s ease-in-out forwards;
     }
 
+    @keyframes pseudo-3d-float {
+      0%, 100% { transform: scale(1) translateY(0) rotate(0deg); }
+      50% { transform: scale(1.08) translateY(-3px) rotate(1deg); }
+    }
+    .anim-pseudo-3d {
+      animation: pseudo-3d-float 3s ease-in-out infinite;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+
     @keyframes flash-red-slow {
       0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
       50% { color: #991b1b; opacity: 0.35; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
@@ -181,6 +190,87 @@
         <div class="flex items-center gap-2 shrink-0">
           <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-0.5 hidden sm:inline">Presets:</span>
           <div id="mode-pills" class="flex gap-2"></div>
+        </div>
+      </div>
+
+      <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1.5 px-0.5 text-xs font-medium"></div>
+    </div>
+
+    <div id="topics-grid" class="my-auto flex-grow flex items-center justify-center w-full py-2"></div>
+
+    <div class="shrink-0 pt-2 pb-1 flex flex-col items-center justify-center gap-1.5">
+      <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+        <i id="generate-icon" class="fa-solid fa-dice text-xl group-hover:rotate-180 transition-transform duration-300"></i>
+        <span id="generate-btn-text">Generate Topics</span>
+        <span id="generate-btn-badge" class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full font-bold ml-1">4 Cards</span>
+      </button>
+
+      <p class="text-[11px] text-slate-400 dark:text-slate-500 text-center">
+        Tap or click any card, press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[10px]">Spacebar</kbd>, or use <i class="fa-solid fa-rotate text-xs text-indigo-400"></i> to flip topics.
+      </p>
+    </div>
+  </main>
+
+  <footer class="relative z-30 w-full py-2 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
+    <p>&copy; Nellie B Topic Time &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
+  </footer>
+
+  <div id="privacy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="togglePrivacyModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-indigo-500"></i> Privacy Policy
+        </h3>
+        <button onclick="togglePrivacyModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="text-xs space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+        <p><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.</p>
+      </div>
+      <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-right">
+        <button onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="favorites-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+    <div id="drawer-backdrop" onclick="toggleFavoritesDrawer(false)" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+    <div id="drawer-content" class="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out pointer-events-auto border-l border-slate-200 dark:border-slate-800">
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-3">
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 rounded-lg bg-pink-100 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400">
+              <i class="fa-solid fa-bookmark text-sm"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-base text-slate-900 dark:text-white">Saved Topics</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Click any prompt to load it</p>
+            </div>
+          </div>
+          <button onclick="toggleFavoritesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div id="saved-topics-list" class="space-y-2.5 overflow-y-auto max-h-[70vh] pr-1"></div>
+      </div>
+      <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+        <button onclick="clearAllFavorites()" class="w-full py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-trash-can"></i> Clear Saved
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Multi-layered Pseudo-3D Rendered Character SVGs */
+    var WHIMSICAL_CHARACTERS = {
+      Philosophy: '<svg class="w-14 h-14 anim-pseudo-3d shrink-0" viewBox="0 0 100 100" fill="none"><defs><radialGradient id="owlHead" cx="40%" cy="30%" r="70%"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#b45309"/></radialGradient></defs><ellipse cx="50" cy="42" rx="18" ry="16" fill="url(#owlHead)"/><circle cx="43" cy="40" r="5" fill="#fff"/><circle cx="43" cy="40" r="2" fill="#000"/><circle cx="57" cy="40" r="5" fill="#fff"/><circle cx="57" cy="40" r="2" fill="#000"/><polygon points="50,45 45,50 55,50" fill="#78350f"/><polygon points="32,30 68,30 50,14" fill="#312e81"/><rect x="42" y="27" width="16" height="4" fill="#fbbf24"/><rect x="33" y="60" width="34" height="32" rx="10" fill="#78350f"/><rect x="40" y="56" width="20" height="14" rx="4" fill="#f8fafc"/></svg>',
+      "Deep Questions": '<svg class="w-14 h-14 anim-pseudo-3d shrink-0" viewBox="0 0 100 100" fill="none"><defs><radialGradient id="magicOrb" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#e879f9"/><stop offset="50%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#312e81"/></radialGradient></defs><circle cx="50" cy="38" r="18" fill="url(#magicOrb)"/><circle cx="43" cy="36" r="3.5" fill="#fff"/><circle cx="57" cy="36" r="3.5" fill="#fff"/><circle cx="43" cy="36" r="1.2" fill="#000"/><circle cx="57" cy="36" r="1.2" fill="#000"/><path d="M43 45 Q50 52 57 45" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="50" cy="38" rx="21" ry="8" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.8"/><rect x="28" y="58" width="44" height="34" rx="14" fill="#4f46e5"/><path d="M35 58 L50 74 L65 58" fill="#f59e0b"/></svg>',
+      "Humor/Fun": '<svg class="w-14 h-14 anim-pseudo-3d shrink-0" viewBox="0 0 100 100" fill="none"><defs><radialGradient id="jesterFace" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#eab308"/></radialGradient></defs><circle cx="50" cy="40" r="17" fill="url(#jesterFace)"/><path d="M32 28 L50 6 L68 28 Z" fill="#ef4444"/><circle cx="32" cy="28" r="4.5" fill="#fbbf24"/><circle cx="68" cy="28" r="4.5" fill="#fbbf24"/><circle cx="43" cy="38" r="4" fill="#fff"/><circle cx="43" cy="38" r="1.5" fill="#000"/><circle cx="57" cy="38" r="4" fill="#fff"/><circle cx="57" cy="38" r="1.5" fill="#000"/><path d="M40" cy="46" d="M40 46 Q50 56 60 46" stroke="#b45309" stroke-width="3" stroke-linecap="round"/><rect x="28" y="60" width="44" height="34" rx="12" fill="#10b981"/><path d="M35 60 L50 72 L65 60" fill="#ef4444"/></svg>',
+      "Current Events": '<svg class="w-14 h-14 anim-pseudo-3d shrink-0" viewBox="0 0 100 100" fill="none"><defs><radialGradient id="birdFace" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#0284c7"/></radialGradient></defs><ellipse cx="50" cy="40" rx="17" ry="16" fill="url(#birdFace)"/><path d="M34 26 Q50 14 66 26 L60 18 L40 18 Z" fill="#475569"/><polygon points="50,44 43,38 43,32 57,32 57,38" fill="#f97316"/><circle cx="43" cy="42" r="3.5" fill="#fff"/><circle cx="43" cy="42" r="1.2" fill="#000"/><circle cx="57" cy="42" r="3.5" fill="#fff"/><circle cx="57" cy="42" r="1.2" fill="#000"/><rect x="30" y="60" width="40" height="34" rx="12" fill="#94a3b8"/><rect x="42" y="68" width="16" height="20" fill="#fff"/></svg>',
+      "Would You Rather": '<svg class="w-14 h-14 anim-pseudo-3d shrink-0" viewBox="0 0 100 100" fill="none"><defs><radialGradient id="greenFace" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#15803d"/></radialGradient></defs><circle cx="50" cy="40" r="17" fill="url(#greenFace)"/><path d="M36 22 L26 8" stroke="#14532d" stroke-width="4" stroke-linecap="round"/><path d="M64 22 L74 8" stroke="#14532d" stroke-width="4" stroke-linecap="round"/><circle cx="43" cy="38" r="3.5" fill="#fff"/><circle cx="43" cy="38" r="1.2" fill="#000"/><circle cx="57" cy="38" r="3.5" fill="#fff"/><circle cx="57" cy="38" r="1.2" fill="#000"/><path d="M43" cy="48" d="M43 48 Q50 42 57 48" stroke="#14532d" stroke-width="2.5" stroke-linecap="round"/><rect x="28" y="60" width="44" hiv id="mode-pills" class="flex gap-2"></div>
         </div>
       </div>
 
