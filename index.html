@@ -103,24 +103,17 @@
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
     }
 
-    /* SVG / CSS color-keying technique to completely filter out the white background block */
+    /* Clean character avatar positioned closer to bottom edge */
     .card-character-avatar {
       width: 64px;
       height: 64px;
       object-fit: contain;
       position: absolute;
-      right: 10px;
-      bottom: 6px;
+      right: 12px;
+      bottom: 2px;
       pointer-events: none;
       z-index: 25;
-      /* Uses color matrix / thresholding filter to make pure white pixels transparent */
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-      mix-blend-mode: multiply;
-    }
-
-    .dark .card-character-avatar {
-      mix-blend-mode: screen;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)) contrast(120%) brightness(110%);
     }
 
     @keyframes flash-red-slow {
@@ -190,9 +183,10 @@
     </div>
   </header>
 
-  <main class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden">
-    <div class="space-y-2.5 shrink-0 mb-2">
-      <div class="flex items-center gap-3 overflow-x-auto custom-scroll py-1.5 px-0.5 text-xs">
+  <!-- Main content wrapper with tighter spacing for single-card view -->
+  <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-1 sm:py-2 flex-grow w-full flex flex-col justify-between overflow-hidden">
+    <div class="space-y-2 shrink-0 mb-1">
+      <div class="flex items-center gap-3 overflow-x-auto custom-scroll py-1 px-0.5 text-xs">
         <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
           <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
             <i class="fa-solid fa-square text-[11px]"></i> 1 Card
@@ -210,13 +204,13 @@
         </div>
       </div>
 
-      <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1.5 px-0.5 text-xs font-medium"></div>
+      <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1 px-0.5 text-xs font-medium"></div>
     </div>
 
-    <div id="topics-grid" class="my-auto flex-grow flex items-center justify-center w-full py-2"></div>
+    <div id="topics-grid" class="my-auto flex-grow flex items-center justify-center w-full py-1"></div>
 
-    <div class="shrink-0 pt-2 pb-1 flex flex-col items-center justify-center gap-1.5">
-      <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+    <div class="shrink-0 pt-1 pb-1 flex flex-col items-center justify-center gap-1">
+      <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
         <i id="generate-icon" class="fa-solid fa-dice text-xl group-hover:rotate-180 transition-transform duration-300"></i>
         <span id="generate-btn-text">Generate Topics</span>
         <span id="generate-btn-badge" class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full font-bold ml-1">4 Cards</span>
@@ -228,7 +222,7 @@
     </div>
   </main>
 
-  <footer class="relative z-30 w-full py-2 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
+  <footer class="relative z-30 w-full py-1.5 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
     <p>&copy; Nellie B Topic Time &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
   </footer>
 
@@ -1020,17 +1014,20 @@
       var btn4 = document.getElementById("view-btn-4");
       var badge = document.getElementById("generate-btn-badge");
       var btnText = document.getElementById("generate-btn-text");
+      var mainArea = document.getElementById("main-content-area");
 
       if (cardCountView === 1) {
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
         btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
         if (badge) badge.innerText = "1 Card";
         if (btnText) btnText.innerText = "Generate Random Topic";
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-0.5 sm:py-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
       } else {
         btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
         if (badge) badge.innerText = "4 Cards";
         if (btnText) btnText.innerText = "Generate 4 Random Topics";
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden";
       }
     }
 
@@ -1173,7 +1170,7 @@
       if (!grid) return;
       
       if (cardCountView === 1) {
-        grid.className = "my-auto flex-grow flex items-center justify-center w-full max-w-2xl mx-auto py-2";
+        grid.className = "my-auto flex-grow flex items-center justify-center w-full max-w-2xl mx-auto py-1";
       } else {
         grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 my-auto flex-grow items-center w-full py-2";
       }
@@ -1188,8 +1185,8 @@
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             
-            /* Top Section: Flip hint & Action Icons */
-            '<div class="flex items-center justify-between gap-2 mb-2">' +
+            /* Top Section: Flip hint on left, Action Icons on right */
+            '<div class="flex items-center justify-between gap-2 mb-2 relative">' +
               '<div class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 flex items-center gap-1">' +
                 '<i class="fa-solid fa-lightbulb text-[10px] text-amber-400"></i> Tap or click card to flip' +
               '</div>' +
@@ -1201,20 +1198,20 @@
               '</div>' +
             '</div>' +
 
-            /* Middle Section: Question text */
+            /* Middle Section: Question text with increased font size */
             '<div class="my-2 flex-grow flex items-center justify-center">' +
-              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-xl sm:text-3xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
             '</div>' +
 
-            /* Bottom Section: Category Badge & Clean Image Avatar at Bottom Right */
+            /* Bottom Section: Category Badge centered at bottom, Avatar closer to bottom edge */
             '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between gap-2 relative">' +
               '<div class="flex items-center gap-2 relative z-20">' +
+                '<span class="text-indigo-400 font-bold flex items-center gap-1 text-[11px]">' + (isPinned ? '<i class="fa-solid fa-lock text-[9px]"></i> Locked' : '') + '</span>' +
+              '</div>' +
+              '<div class="absolute left-1/2 -translate-x-1/2 z-20">' +
                 '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
                   "<span>" + topic.category + "</span>" +
                 '</span>' +
-              '</div>' +
-              '<div class="flex items-center gap-2">' +
-                (isPinned ? '<span class="text-indigo-400 font-bold flex items-center gap-1 text-[11px]"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>' : '') +
               '</div>' +
               characterElementMarkup +
             '</div>' +
