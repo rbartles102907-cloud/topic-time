@@ -103,14 +103,14 @@
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
     }
 
-    /* Clean character avatar positioned closer to bottom edge */
+    /* Clean character avatar positioned further right and tucked to the bottom edge */
     .card-character-avatar {
-      width: 64px;
-      height: 64px;
+      width: 60px;
+      height: 60px;
       object-fit: contain;
       position: absolute;
-      right: 12px;
-      bottom: 2px;
+      right: 4px;
+      bottom: -2px;
       pointer-events: none;
       z-index: 25;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
@@ -1203,12 +1203,12 @@
               '</div>' +
             '</div>' +
 
-            /* Middle Section: Question text with increased font size */
+            /* Middle Section: Question text with reduced font size (-1 step) */
             '<div class="my-2 flex-grow flex items-center justify-center">' +
-              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-xl sm:text-3xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
             '</div>' +
 
-            /* Bottom Section: Lock state indicator & Avatar closer to bottom edge */
+            /* Bottom Section: Lock state indicator & Avatar moved right & tucked closer to bottom */
             '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between gap-2 relative">' +
               '<div class="flex items-center gap-2 relative z-20">' +
                 '<span class="text-indigo-400 font-bold flex items-center gap-1 text-[11px]">' + (isPinned ? '<i class="fa-solid fa-lock text-[9px]"></i> Locked' : '') + '</span>' +
