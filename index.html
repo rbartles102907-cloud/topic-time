@@ -134,14 +134,68 @@
       filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
     }
 
-    /* Solid black card text with bottom-right white fading shadow (100% to 70% opacity) */
+    /* Solid black card text with bottom-right white fading shadow, thin white inner outline, and solid black outer border outline */
     .tiktok-card-text { 
       color: #000000 !important; 
-      text-shadow: 1px 1px 2px rgba(255, 255, 255, 1), 2px 2px 4px rgba(255, 255, 255, 0.9), 3px 3px 8px rgba(255, 255, 255, 0.8), 4px 4px 12px rgba(255, 255, 255, 0.7); 
+      text-shadow: 
+        /* White fading drop shadow (bottom-right) */
+        1px 1px 2px rgba(255, 255, 255, 1), 
+        2px 2px 4px rgba(255, 255, 255, 0.9), 
+        3px 3px 8px rgba(255, 255, 255, 0.8), 
+        4px 4px 12px rgba(255, 255, 255, 0.7),
+        /* Thin inner white highlight outline */
+        -1px -1px 0 rgba(255, 255, 255, 0.9), 
+         1px -1px 0 rgba(255, 255, 255, 0.9), 
+        -1px  1px 0 rgba(255, 255, 255, 0.9), 
+         1px  1px 0 rgba(255, 255, 255, 0.9),
+        /* Solid black outer edge border outline */
+        -2px -2px 0 #000000, 
+        -1px -2px 0 #000000, 
+         0px -2px 0 #000000, 
+         1px -2px 0 #000000, 
+         2px -2px 0 #000000,
+        -2px -1px 0 #000000, 
+         2px -1px 0 #000000,
+        -2px  0px 0 #000000, 
+         2px  0px 0 #000000,
+        -2px  1px 0 #000000, 
+         2px  1px 0 #000000,
+        -2px  2px 0 #000000, 
+        -1px  2px 0 #000000, 
+         0px  2px 0 #000000, 
+         1px  2px 0 #000000, 
+         2px  2px 0 #000000;
     }
     .dark .tiktok-card-text { 
       color: #000000 !important; 
-      text-shadow: 1px 1px 2px rgba(255, 255, 255, 1), 2px 2px 4px rgba(255, 255, 255, 0.9), 3px 3px 8px rgba(255, 255, 255, 0.8), 4px 4px 12px rgba(255, 255, 255, 0.7); 
+      text-shadow: 
+        /* White fading drop shadow (bottom-right) */
+        1px 1px 2px rgba(255, 255, 255, 1), 
+        2px 2px 4px rgba(255, 255, 255, 0.9), 
+        3px 3px 8px rgba(255, 255, 255, 0.8), 
+        4px 4px 12px rgba(255, 255, 255, 0.7),
+        /* Thin inner white highlight outline */
+        -1px -1px 0 rgba(255, 255, 255, 0.9), 
+         1px -1px 0 rgba(255, 255, 255, 0.9), 
+        -1px  1px 0 rgba(255, 255, 255, 0.9), 
+         1px  1px 0 rgba(255, 255, 255, 0.9),
+        /* Solid black outer edge border outline */
+        -2px -2px 0 #000000, 
+        -1px -2px 0 #000000, 
+         0px -2px 0 #000000, 
+         1px -2px 0 #000000, 
+         2px -2px 0 #000000,
+        -2px -1px 0 #000000, 
+         2px -1px 0 #000000,
+        -2px  0px 0 #000000, 
+         2px  0px 0 #000000,
+        -2px  1px 0 #000000, 
+         2px  1px 0 #000000,
+        -2px  2px 0 #000000, 
+        -1px  2px 0 #000000, 
+         0px  2px 0 #000000, 
+         1px  2px 0 #000000, 
+         2px  2px 0 #000000;
     }
 
     .custom-scroll::-webkit-scrollbar { height: 4px; }
