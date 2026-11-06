@@ -134,14 +134,10 @@
       filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
     }
 
-    /* Solid black card text with closer black bottom-right drop shadow (~60% depth), inner white highlight, and black outer border */
+    /* Solid black card text with inner white highlight and solid black outer border (drop shadow removed) */
     .tiktok-card-text { 
       color: #000000 !important; 
       text-shadow: 
-        /* Solid black drop shadow (bottom-right, closer ~60% offset) */
-        1px 1px 0px #000000, 
-        2px 2px 0px #000000, 
-        3px 3px 0px #000000,
         /* Thin inner white highlight outline */
         -1px -1px 0 rgba(255, 255, 255, 0.9), 
          1px -1px 0 rgba(255, 255, 255, 0.9), 
@@ -168,10 +164,6 @@
     .dark .tiktok-card-text { 
       color: #000000 !important; 
       text-shadow: 
-        /* Solid black drop shadow (bottom-right, closer ~60% offset) */
-        1px 1px 0px #000000, 
-        2px 2px 0px #000000, 
-        3px 3px 0px #000000,
         /* Thin inner white highlight outline */
         -1px -1px 0 rgba(255, 255, 255, 0.9), 
          1px -1px 0 rgba(255, 255, 255, 0.9), 
