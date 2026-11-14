@@ -1,465 +1,1442 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3K0G736WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-E3K0G736WX');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nellie B – Topic Time</title>
+  <title>Nellie B - Topic Time</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#f0f5ff', 100: '#e0ebff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' }
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-color: #0d0617;
-      --card-bg-1: #1f113a;
-      --card-bg-2: #150a26;
-      --accent-pink: #ec4899;
-      --text-main: #ffffff;
-      --text-muted: #cbd5e1;
+    body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
+    .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
+    .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    
+    .card-container { perspective: 1000px; overflow: visible !important; }
+
+    /* RGB Chasing Neon Border Animation */
+    @keyframes rgb-chase {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    h1 {
-      margin: 0 0 0.5rem 0;
-      font-size: 2.2rem;
-      background: linear-gradient(90deg, #ec4899, #a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .sub-title {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .sub-title a {
-      color: var(--accent-pink);
-      text-decoration: none;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 650px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    /* Heavy 3D Neumorphic Card Styling with Thicker Edges */
-    .topic-card {
-      background: linear-gradient(145deg, var(--card-bg-1), var(--card-bg-2));
-      border-radius: 24px;
-      padding: 2rem;
+    .glass-card { 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)); 
+      backdrop-filter: blur(16px); 
       position: relative;
-      box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.8),
-        0 8px 20px rgba(236, 72, 153, 0.3),
-        inset 0 3px 6px rgba(255, 255, 255, 0.25),
-        inset 0 -10px 20px rgba(0, 0, 0, 0.9);
-      border: 2.5px solid rgba(236, 72, 153, 0.5);
-      transform: perspective(1000px) translateZ(0);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
+      border-radius: 1rem;
+      border: 3px solid transparent;
+      background-clip: padding-box;
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(59, 130, 246, 0.4), 0 0 60px rgba(168, 85, 247, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.3s ease, background 0.25s ease;
+      touch-action: manipulation;
+      overflow: visible !important;
     }
 
-    .topic-card:hover {
-      transform: perspective(1000px) translateY(-4px) translateZ(10px);
-      box-shadow: 
-        0 26px 60px rgba(0, 0, 0, 0.9),
-        0 10px 25px rgba(236, 72, 153, 0.4),
-        inset 0 3px 8px rgba(255, 255, 255, 0.3),
-        inset 0 -12px 22px rgba(0, 0, 0, 0.95);
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 1.15rem;
+      z-index: -1;
+      background: linear-gradient(270deg, #ff007f, #7928ca, #00dfd8, #007cf0, #ff007f);
+      background-size: 400% 400%;
+      animation: rgb-chase 4s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.6), inset 0 0 10px rgba(0, 223, 216, 0.6);
+    }
+    
+    .dark .glass-card { 
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98)); 
+      backdrop-filter: blur(16px); 
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.65), 0 0 50px rgba(56, 189, 248, 0.5), 0 0 80px rgba(139, 92, 246, 0.4), 0 15px 35px rgba(0, 0, 0, 0.8);
     }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.25rem;
+    .dark .glass-card::before {
+      background: linear-gradient(270deg, #ff2a85, #8a2be2, #00f2fe, #4facfe, #ff2a85);
+      background-size: 400% 400%;
+      animation: rgb-chase 3.5s linear infinite;
+      box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
     }
 
-    .category-badge {
-      background: rgba(236, 72, 153, 0.2);
-      color: var(--accent-pink);
-      padding: 0.4rem 0.9rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      border: 1px solid rgba(236, 72, 153, 0.3);
+    .glass-card:hover {
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.8), 0 0 60px rgba(56, 189, 248, 0.7), 0 0 90px rgba(168, 85, 247, 0.6), 0 15px 40px rgba(0, 0, 0, 0.6);
     }
 
-    .card-actions {
-      display: flex;
-      gap: 0.5rem;
+    @keyframes flip-right-to-left {
+      0% { transform: rotateY(0deg) scale(1); }
+      50% { transform: rotateY(-90deg) scale(0.92); }
+      100% { transform: rotateY(-180deg) scale(1); }
+    }
+    .card-flipping {
+      animation: flip-right-to-left 0.5s ease-in-out forwards;
     }
 
-    .action-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text-muted);
-      border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
+    @keyframes char-grow-shrink {
+      0%, 100% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.05) translate(-2px, -4px); }
+    }
+    .anim-grow-shrink {
+      animation: char-grow-shrink 3s ease-in-out infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
     }
 
-    .action-btn:hover {
-      background: rgba(236, 72, 153, 0.3);
-      color: #fff;
-      border-color: var(--accent-pink);
+    .card-character-avatar {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      position: absolute;
+      right: 4px;
+      bottom: -2px;
+      pointer-events: none;
+      z-index: 25;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
     }
 
-    .action-btn.pinned {
-      background: var(--accent-pink);
-      color: #fff;
-      border-color: var(--accent-pink);
+    @keyframes flash-red-slow {
+      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
+      50% { color: #991b1b; opacity: 0.35; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
+    }
+    .flashing-follow-slow { animation: flash-red-slow 2.5s ease-in-out infinite; }
+
+    @keyframes point-bounce-slow {
+      0%, 100% { transform: rotate(-45deg) translateX(0) scale(1); }
+      50% { transform: rotate(-45deg) translateX(6px) scale(1.08); }
+    }
+    .pointing-arrow-slow { 
+      transform: rotate(-45deg);
+      display: inline-block;
+      animation: point-bounce-slow 1.2s ease-in-out infinite; 
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
     }
 
-    .card-body {
-      font-size: 1.3rem;
-      line-height: 1.6;
-      font-weight: 500;
-      margin-bottom: 1.5rem;
-      /* Bottom divider line removed */
+    /* Normal Arial font, pure black, absolutely no 3D shadow/outline */
+    .tiktok-card-text { 
+      font-family: Arial, sans-serif !important;
+      color: #000000 !important; 
+      text-shadow: none !important;
+    }
+    .dark .tiktok-card-text { 
+      font-family: Arial, sans-serif !important;
+      color: #000000 !important; 
+      text-shadow: none !important;
     }
 
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .refresh-hint {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    /* Controls */
-    .controls {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-
-    .primary-btn {
-      background: linear-gradient(135deg, #ec4899, #be185d);
-      color: white;
-      border: none;
-      padding: 0.8rem 1.8rem;
-      border-radius: 14px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .primary-btn:hover {
-      box-shadow: 0 8px 20px rgba(236, 72, 153, 0.6);
-    }
-
-    .primary-btn:active {
-      transform: scale(0.96);
-    }
-
-    /* Saved Drawer Section */
-    .saved-section {
-      width: 100%;
-      max-width: 650px;
-      background: rgba(31, 17, 58, 0.6);
-      border-radius: 20px;
-      padding: 1.5rem;
-      border: 1px solid rgba(236, 72, 153, 0.2);
-    }
-
-    .saved-header {
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: var(--accent-pink);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .saved-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      max-height: 250px;
-      overflow-y: auto;
-    }
-
-    .saved-item {
-      background: rgba(13, 6, 23, 0.5);
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.95rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .saved-item span {
-      flex: 1;
-      margin-right: 1rem;
-      color: var(--text-muted);
-    }
-
-    .remove-btn {
-      background: none;
-      border: none;
-      color: #ef4444;
-      cursor: pointer;
-      font-size: 1rem;
-    }
+    .custom-scroll::-webkit-scrollbar { height: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
+    
+    @keyframes spin-once { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .animate-spin-once { animation: spin-once 0.4s ease-in-out; }
   </style>
 </head>
-<body>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
 
-  <header>
-    <h1>Nellie B – Topic Time</h1>
-    <div class="sub-title">Let's chat it up! [🔍 <a href="url?id=5">[Go to My TikTok]</a>]</div>
+  <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="resetToInitial()">
+        <div class="w-9 h-9 rounded-full border-2 border-indigo-500 shadow-sm shrink-0 bg-slate-900 overflow-hidden flex items-center justify-center">
+          <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
+            Nellie B &#8211; Topic Time
+          </h1>
+          <p class="text-[10px] font-bold tracking-widest uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">LET&#39;S CHAT IT UP</p>
+        </div>
+      </div>
+
+      <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
+        <span class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">Follow Me</span>
+        <span class="pointing-arrow-slow text-xl sm:text-2xl text-red-500 select-none" title="Pointing to TikTok">👉</span>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <a href="https://www.tiktok.com/@nellie.b5" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
+          <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
+          <span class="hidden sm:inline">Go to My TikTok</span>
+          <span class="sm:hidden">TikTok</span>
+        </a>
+
+        <button id="open-favorites-btn" onclick="toggleFavoritesDrawer(true)" class="relative p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95" title="Saved Topics">
+          <i class="fa-solid fa-bookmark text-sm"></i>
+          <span id="favorites-badge" class="hidden absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+        </button>
+
+        <button onclick="toggleDarkMode()" title="Toggle Theme" class="p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95">
+          <i class="fa-solid fa-sun text-amber-500 dark:hidden text-sm"></i>
+          <i class="fa-solid fa-moon hidden dark:block text-indigo-400 text-sm"></i>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <div class="container" id="cardContainer">
-    <!-- Cards injected dynamically -->
-  </div>
+  <!-- Main content wrapper with tighter spacing for single-card view -->
+  <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-1 sm:py-2 flex-grow w-full flex flex-col justify-between overflow-hidden">
+    <div class="space-y-2 shrink-0 mb-1">
+      <div class="flex items-center gap-3 overflow-x-auto custom-scroll py-1 px-0.5 text-xs">
+        <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
+          <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-square text-[11px]"></i> 1 Card
+          </button>
+          <button id="view-btn-4" onclick="setLayoutView(4)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-border-all text-[11px]"></i> 4 Cards
+          </button>
+        </div>
 
-  <div class="controls">
-    <button class="primary-btn" onclick="cycleAllCards()">🔄 Flip All Cards</button>
-  </div>
+        <div class="h-5 w-[1px] bg-slate-300 dark:bg-slate-700 shrink-0"></div>
 
-  <div class="saved-section">
-    <div class="saved-header">
-      <span>📌 Saved Topics Drawer</span>
-      <span id="savedCount" style="font-size: 0.8rem; background: rgba(236, 72, 153, 0.2); padding: 0.2rem 0.6rem; border-radius: 20px;">0 items</span>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-0.5 hidden sm:inline">Presets:</span>
+          <div id="mode-pills" class="flex gap-2"></div>
+        </div>
+      </div>
+
+      <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1 px-0.5 text-xs font-medium"></div>
     </div>
-    <div class="saved-list" id="savedListContainer">
-      <div style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 1rem;">No saved topics yet. Click the pin icon on any card to save it here!</div>
+
+    <div id="topics-grid" class="my-auto flex-grow flex items-center justify-center w-full py-1"></div>
+
+    <div class="shrink-0 pt-1 pb-1 flex flex-col items-center justify-center gap-1">
+      <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+        <i id="generate-icon" class="fa-solid fa-dice text-xl group-hover:rotate-180 transition-transform duration-300"></i>
+        <span id="generate-btn-text">Generate Topics</span>
+        <span id="generate-btn-badge" class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full font-bold ml-1">4 Cards</span>
+      </button>
+
+      <p class="text-[11px] text-slate-400 dark:text-slate-500 text-center">
+        Tap or click any card, press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[10px]">Spacebar</kbd>, or use <i class="fa-solid fa-rotate text-xs text-indigo-400"></i> to flip topics.
+      </p>
+    </div>
+  </main>
+
+  <footer class="relative z-30 w-full py-1.5 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
+    <p>&copy; Nellie B Topic Time &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
+  </footer>
+
+  <div id="privacy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="togglePrivacyModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-indigo-500"></i> Privacy Policy
+        </h3>
+        <button onclick="togglePrivacyModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="text-xs space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+        <p><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.</p>
+      </div>
+      <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-right">
+        <button onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="favorites-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+    <div id="drawer-backdrop" onclick="toggleFavoritesDrawer(false)" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+    <div id="drawer-content" class="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out pointer-events-auto border-l border-slate-200 dark:border-slate-800">
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-3">
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 rounded-lg bg-pink-100 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400">
+              <i class="fa-solid fa-bookmark text-sm"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-base text-slate-900 dark:text-white">Saved Topics</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Click any prompt to load it</p>
+            </div>
+          </div>
+          <button onclick="toggleFavoritesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div id="saved-topics-list" class="space-y-2.5 overflow-y-auto max-h-[70vh] pr-1"></div>
+      </div>
+      <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+        <button onclick="clearAllFavorites()" class="w-full py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-trash-can"></i> Clear Saved
+        </button>
+      </div>
     </div>
   </div>
 
   <script>
-    // Full 150-Item Database per Category (Fully populated, clean of em dashes)
-    const topicDatabase = {
-      "Deep Questions": [
-        "When was the last time you changed your mind about something major, and what prompted it?",
-        "What is a belief you held strongly five years ago that you now completely reject?",
-        "If you could know the absolute truth about one historical mystery, what would you choose?",
-        "What does true personal accountability mean to you in everyday life?",
-        "How do you balance striving for future goals with appreciating the present moment?",
-        "What is the most valuable lesson you learned from a difficult failure?",
-        "If you could design your ideal daily routine without any financial constraints, what would it look like?",
-        "What trait do you value most in the people you choose to keep close to you?",
-        "How has your definition of success evolved over the past decade?",
-        "What is a risk you are glad you took even though it made you uncomfortable?",
-        "When do you feel most authentically yourself during your daily life?",
-        "What legacy do you hope to leave behind for the people who know you best?",
-        "What is something you wish more people understood about your perspective?",
-        "How do you typically handle moments of profound uncertainty or unexpected change?",
-        "What is a question you wish people asked you more often?"
+    var QUESTION_BANKS = {
+      Philosophy: [
+        "If memories could be traded on the open market like stocks, what do you think a peaceful childhood memory would sell for?",
+        "Does true freedom require the possibility of failure, or can a totally safe society still be free?",
+        "If humanity discovered an objective universal purpose tomorrow, would it liberate us or strip away our individuality?",
+        "Is it more important for a society to pursue absolute justice or absolute mercy?",
+        "If you could permanently erase one regret from your past at the cost of erasing the wisdom you gained from it, would you do it?",
+        "Does solitude give people clarity, or does isolation eventually distort a person's judgment?",
+        "If an artificial intelligence lived a completely fulfilled digital life, was its experience any less real than a human's?",
+        "Can a person ever act out of completely pure altruism, or is every good deed driven by a hidden personal reward?",
+        "Is ambition a vital driving force for human progress, or is it a trap that keeps us from appreciating the present moment?",
+        "If history repeats itself because human nature never changes, is personal growth truly possible?",
+        "Can a society achieve true equality without sacrificing individual excellence?",
+        "Is morality an innate human trait or merely a social contract designed for survival?",
+        "If you could know the exact date and cause of your death, would you choose to know?",
+        "Does suffering have inherent meaning, or is it simply an obstacle to be overcome?",
+        "Is it better to live a short, intensely passionate life or a long, peaceful, and uneventful one?",
+        "If a machine can replicate human consciousness perfectly, does it possess a soul?",
+        "Are we the authors of our own destinies, or are we just actors playing out prewritten scripts?",
+        "Does absolute truth exist, or is everything relative to individual perspective?",
+        "Is forgiveness an act of selflessness or a selfish necessity for personal peace?",
+        "Can true beauty exist without imperfection or flaws to contrast it?",
+        "If you could download all the knowledge of the world into your brain instantly, would you lose your humanity?",
+        "Does courage require the presence of fear, or can a fearless person be truly courageous?",
+        "Is it ethical to lie if it spares someone's feelings completely?",
+        "Can a person ever truly step outside of their own subjectivity to understand another?",
+        "Is envy always a destructive emotion, or can it sometimes serve as a positive catalyst?",
+        "If technology allows us to live forever, what happens to the value of human experience?",
+        "Does time heal all wounds, or do we simply learn how to carry them better?",
+        "Is it more noble to suffer silently for others or to speak out against injustice?",
+        "Can a society function harmoniously without any shared mythology or belief system?",
+        "If ignorance is truly bliss, is the pursuit of knowledge overrated?",
+        "Does greatness require sacrifice, or can a balanced life produce legendary achievements?",
+        "Is altruism ever completely free from the desire for social approval?",
+        "Can a person change their core nature, or do we only alter our habits?",
+        "Is justice best served by punishing past actions or by rehabilitating future behavior?",
+        "Does free will exist in a universe governed by strict physical laws?",
+        "Is chaos a necessary precursor to any meaningful order?",
+        "Can art ever truly capture the depth of human emotion, or is it always an approximation?",
+        "Is curiosity a virtue that drives us forward or a dangerous impulse that leads to ruin?",
+        "Does power corrupt inherently, or does it merely reveal who a person already was?",
+        "Is loyalty a virtue when the cause or person being supported is morally compromised?",
+        "Can a lie repeated often enough eventually become a subjective truth?",
+        "Is simplicity the ultimate sophistication, or is complexity required for true depth?",
+        "Does ambition blind us to the beauty of ordinary, quiet moments?",
+        "Is hospitality a fading art in a world increasingly driven by digital isolation?",
+        "Can a person be truly free if they are financially dependent on others?",
+        "Is hope a powerful survival mechanism or a dangerous illusion that prevents action?",
+        "Does tradition provide a healthy anchor or an unnecessary chain holding us back?",
+        "Is skepticism a sign of wisdom or a symptom of a cynical mind?",
+        "Can humor soften any tragedy, or are some things inherently sacred and beyond laughter?",
+        "Is it better to be deeply understood by few or universally liked by many?",
+        "Does suffering make us wiser, or does it just make us more cautious?",
+        "Is intuition a reliable guide or just a subconscious bias disguised as instinct?",
+        "Can a society ever be truly fair when starting conditions are inherently unequal?",
+        "Is pride the root of all moral failure, or is it a necessary component of self-respect?",
+        "Does language shape our thoughts, or do our thoughts shape our language?",
+        "Is loyalty to an ideal superior to loyalty to flesh and blood?",
+        "Can peace exist without a balance of power to maintain it?",
+        "Is nostalgia a comforting refuge or a trap that romanticizes a flawed past?",
+        "Does wisdom come naturally with age, or do some people simply grow older without learning?",
+        "Is it possible to live a completely ethical life in a modern industrialized society?",
+        "Does true creativity spring from structure and constraint or from total freedom?",
+        "Is cynicism an intellectual defense mechanism or a shortcut to intellectual laziness?",
+        "Can a profound loss ever truly be replaced, or is the void permanent?",
+        "Is silence more powerful than words when trying to comfort someone in grief?",
+        "Does destiny imply that our choices do not matter in the grand scheme?",
+        "Is patience a form of passive endurance or an active, disciplined strength?",
+        "Can an act be considered good if nobody ever knows about it?",
+        "Is trust something that must be earned slowly or something that should be given freely?",
+        "Does beauty truly lie solely in the eye of the beholder, or are there universal standards?",
+        "Is ambition without empathy a form of sociopathy or a requirement for extreme success?",
+        "Can a person be happy without a clear sense of purpose in their daily life?",
+        "Is duty to oneself always more important than duty to the community?",
+        "Does the fear of failure hold back more brilliance than a lack of talent?",
+        "Is it better to regret something you did or something you never tried?",
+        "Can humanity ever truly overcome its tribal instincts in favor of global unity?"
       ],
-      "Did You Know?": [
-        "Did you know that rainy days smell the way they do because of petrichor, an oily compound released by soil dwelling bacteria and plants?",
-        "Did you know that honey never spoils and archaeologists have found pots of honey in ancient Egyptian tombs that are thousands of years old and still edible?",
-        "Did you know that sea otters hold hands while sleeping so they do not drift apart from each other?",
-        "Did you know that bananas are curved because they grow towards the sun against gravity in a process known as negative geotropism?",
-        "Did you know that a group of flamingos is called a flamboyance?",
-        "Did you know that the heart of a shrimp is located in its head?",
-        "Did you know that Wombat poop is cube shaped to prevent it from rolling away from marking spots?",
-        "Did you know that sharks are older than trees and have been around for over four hundred million years?",
-        "Did you know that cows have best friends and get stressed when they are separated?",
-        "Did you know that sea turtles can breathe through their rear ends during long dives?",
-        "Did you know that clouds can weigh over a million pounds despite looking light and fluffy?",
-        "Did you know that octopuses have three hearts and blue blood?",
-        "Did you know that lightning strikes the Earth about one hundred times every single second?",
-        "Did you know that newborn babies do not shed tears when they cry for the first few weeks?",
-        "Did you know that tree bark was used as a primary ingredient in ancient chewing gums?"
+      "Deep Questions": [
+        "What is the single best piece of advice someone gave you that you completely ignored at the time?",
+        "When you look back on your life ten years from now, what do you hope you spent more time doing?",
+        "What is a hard truth about human relationships that took you years to finally accept?",
+        "What is something you used to care deeply about that now feels completely insignificant?",
+        "How has your definition of a successful life shifted since you were in your twenties?",
+        "What is a fear that held you back for years before you finally decided to face it?",
+        "Who is someone from your past that you wish you could thank properly for changing your perspective?",
+        "What is a boundary you had to set for your own peace of mind that was difficult to establish?",
+        "What is something you believe strongly today that your younger self would completely disagree with?",
+        "What part of your daily routine brings you the most genuine sense of comfort?",
+        "What is a memory from your childhood that still brings an instant smile to your face?",
+        "When was the last time you changed your mind about something major, and what prompted it?",
+        "What is a compliment you received years ago that you still cherish today?",
+        "What does emotional intimacy mean to you, and how has it changed over time?",
+        "What is a personal failure that taught you more than any success ever did?",
+        "Who has had the most profound impact on shaping who you are as a person?",
+        "What is something you are holding onto that you know you need to finally let go of?",
+        "How do you typically handle moments when life feels completely overwhelming?",
+        "What is a question you wish people asked you more often?",
+        "What does true vulnerability look like in everyday interactions?",
+        "What is a risk you regret not taking when you had the chance?",
+        "How do you define inner peace, and how often do you experience it?",
+        "What is a tradition or value from your family that you want to pass down?",
+        "What is something you do purely for your own joy, regardless of what others think?",
+        "How has your relationship with yourself evolved over the past decade?",
+        "What is a moment of profound grace or kindness you experienced from a total stranger?",
+        "What is a burden you’ve been carrying that you wish you could put down?",
+        "How do you know when it is time to walk away from a situation or relationship?",
+        "What is something you wish you had forgiven yourself for sooner?",
+        "What does it mean to live a life of integrity?",
+        "What is a passion you abandoned that you secretly miss pursuing?",
+        "How do you cultivate patience when dealing with difficult people or circumstances?",
+        "What is a dream you gave up on because it felt too impractical at the time?",
+        "What is the most important lesson your parents or guardians taught you?",
+        "How do you balance striving for personal growth with accepting who you are right now?",
+        "What is a moment in your life when you felt completely aligned with your purpose?",
+        "What is a habit you broke that dramatically improved your quality of life?",
+        "How do you handle the fear of aging and the passing of time?",
+        "What is something you used to judge others for before you experienced it yourself?",
+        "What does loyalty mean to you when tested by difficult circumstances?",
+        "What is a piece of unwritten wisdom you live your life by?",
+        "How do you find beauty in ordinary, mundane days?",
+        "What is a fear you have successfully conquered that once felt paralyzing?",
+        "What is something you wish you could tell your younger self during a hard time?",
+        "How do you maintain hope during prolonged periods of uncertainty?",
+        "What is a relationship in your life that requires constant, intentional care?",
+        "What is a belief you hold that is entirely your own, separate from your upbringing?",
+        "How do you recharge when your mental and physical energy is completely depleted?",
+        "What is a sacrifice you made that was entirely worth the outcome?",
+        "What does it mean to truly listen to another person without judgment?",
+        "What is a mistake you keep repeating, and why is it so hard to break?",
+        "How do you handle transitions and major chapters closing in your life?",
+        "What is a memory of pure contentment that you revisit in your mind?",
+        "What is a truth about yourself that you are finally proud to admit?",
+        "How do you find courage when faced with an intimidating challenge?",
+        "What is a project or creative endeavor that feels like an extension of your soul?",
+        "What is something you learned about friendship the hard way?",
+        "How do you keep your sense of wonder alive as you get older?",
+        "What is a time when trusting your gut instinct saved you from a mistake?",
+        "What does emotional maturity look like in daily conflicts?",
+        "What is a fear of the future that you are actively working to release?",
+        "What is something you wish you spent less time worrying about?",
+        "How do you measure whether a day was well-spent?",
+        "What is a conversation you need to have that you have been putting off?",
+        "What is a part of your identity that you cherish above all else?",
+        "How do you show kindness to yourself on your hardest days?",
+        "What is a moment when you felt deeply seen and understood by someone?",
+        "What is a limitation you’ve learned to accept rather than fight against?",
+        "How do you nurture your sense of curiosity in an overly routine world?",
+        "What is a lesson you learned from a heartbreak or painful parting?",
+        "What is something you are deeply grateful for that often goes unnoticed?",
+        "How do you define success outside of career achievements and wealth?",
+        "What is a skill or trait you possess that you are most proud of?",
+        "What is a dream for your future that you are too shy to share out loud?",
+        "What is the ultimate legacy you hope to leave behind in the hearts of others?"
+      ],
+      "Humor/Fun": [
+        "If household appliances could talk when you walked into the kitchen at 2 AM, which one would complain about you the most?",
+        "What is the absolute strangest thing you have ever found yourself doing while home completely alone?",
+        "If animals started wearing human clothes, which species do you think would pull off business casual the best?",
+        "What is a minor inconvenience you would happily pay a monthly subscription fee to never deal with again?",
+        "If you were suddenly put in charge of designing a brand new national holiday, what tradition would it require?",
+        "What fictional creature would make the absolute worst possible office coworker?",
+        "What is the most ridiculous excuse you have ever heard someone use to get out of social plans?",
+        "If you could instantly swap the theme song of your life with any cartoon jingle, which one would you pick?",
+        "What is a mundane household chore that you secretly treat like an Olympic sport?",
+        "If you were forced to live inside a board game for a week, which one would offer the highest survival odds?",
+        "What fictional villain do you secretly think had a valid point about fashion?",
+        "If your pets could talk, what embarrassing secret about you would they spill first?",
+        "What food combination do you love that makes everyone else look at you in horror?",
+        "If you had to survive a zombie apocalypse using only items found in your junk drawer, how screwed are you?",
+        "What is the most useless superpower you would actually be willing to accept?",
+        "If you could replace handshakes with any weird gesture, what would it be?",
+        "What cartoon physics rule do you wish applied in real life the most?",
+        "If you were a ghost, what is the silliest way you would haunt people?",
+        "What is a conspiracy theory about everyday objects that you secretly want to believe?",
+        "If you had to fight one horse-sized duck or a hundred duck-sized horses, what is your strategy?",
+        "What song do you belt out in the car like you are winning a Grammy, but sound terrible doing it?",
+        "If you could ban one minor everyday annoyance from existence, what would it be?",
+        "What is the weirdest item currently sitting in your refrigerator right now?",
+        "If your internet browser history became public, which search would be the hardest to explain?",
+        "What fictional job would you be terrible at but want to try anyway?",
+        "If you were an ice cream flavor, what bizarre ingredients would define you?",
+        "What movie plot would be completely ruined if someone just used common sense?",
+        "If you could legally rename any everyday object, what would you call it?",
+        "What is the most elaborate prank you have ever pulled or wanted to pull?",
+        "If you had a warning label attached to your forehead, what would it say?",
+        "What fashion trend from your past do you look back on with absolute regret?",
+        "If animals could suddenly talk, which species do you think would be the rudest?",
+        "What is the strangest hill you are willing to die on for absolutely no good reason?",
+        "If you were forced to join a medieval guild, which one would you choose?",
+        "What is a ridiculously specific skill you possess that is completely useless in daily life?",
+        "If you could instantly teleport to any restaurant right now just for one bite, where are you going?",
+        "What board game brings out your absolute most competitive and savage personality?",
+        "If aliens landed in your backyard, what mundane snack would you offer them first?",
+        "What is the funniest autocorrect fail you have ever experienced or sent?",
+        "If you were a wrestler, what would your dramatic entrance theme and nickname be?",
+        "What piece of modern technology would confuse a medieval knight the most?",
+        "If you had to wear one Halloween costume for an entire year, what would you pick?",
+        "What is the most ridiculous lie you told as a kid that people actually believed?",
+        "If you could trade voices with any fictional character for a day, who are you picking?",
+        "What is something adults told you was important as a kid that turned out to be a complete lie?",
+        "If your car had an attitude, what complaints would it make about your driving?",
+        "What is the most bizarre item you have ever impulse-bought online at 3 AM?",
+        "If you could instantly master any ridiculous circus trick, which one would it be?",
+        "What is a word you love saying just because of how it sounds?",
+        "If you were a villain in a superhero movie, what would be your goofy signature catchphrase?",
+        "What is the most awkward elevator encounter you have ever endured?",
+        "If you could make any animal the official mascot of the stock market, what would it be?",
+        "What is the strangest smell that instantly brings back a specific childhood memory?",
+        "If you had to wear neon orange jumpsuits every day, how would you accessorize?",
+        "What is a silly superstition you caught yourself following just in case?",
+        "If you could have a narrator follow you around all day narrating your thoughts, who would voice them?",
+        "What is the most unnecessary gadget you have ever seen advertised on late-night TV?",
+        "If you were forced to give up either coffee, internet, or air conditioning forever, which goes first?",
+        "What fictional universe would you survive in for about five minutes before messing up?",
+        "If your personality was summarized by a fast-food order, what would it consist of?",
+        "What is a ridiculous argument you had with a sibling or friend that lasted way too long?",
+        "If you could add any emoji to the standard keyboard right now, what would it depict?",
+        "What is the weirdest compliment you have ever received from a stranger?",
+        "If you had to participate in an Olympic sport with zero training, which one would result in the funniest disaster?",
+        "What is a guilty pleasure TV show or movie you can watch on an endless loop?",
+        "If your house was haunted by a lazy ghost, how would they annoy you?",
+        "What is the most absurd fact you know that somehow sticks in your brain?",
+        "If you could instantly swap places with a house cat for a weekend, would you do it?",
+        "What is a ridiculous trend you refused to participate in on principle?",
+        "If you were trapped in a grocery store overnight, what is the first thing you would do?",
+        "What is the funniest mispronunciation of a word you’ve ever heard someone stubbornly defend?",
+        "If you could put a neon sign over your bed summarizing your life, what would it read?",
+        "What is a minor luxury that makes you feel like an absolute billionaire?",
+        "If you had to invent a new icebreaker question, what delightfully weird inquiry would you ask?",
+        "What is the most hilarious thing you’ve ever witnessed someone do while sleepwalking or half-asleep?"
+      ],
+      "Current Events": [
+        "How has the shift toward remote work permanently altered the way modern communities interact?",
+        "Is the constant availability of 24-hour global news helping people stay informed or just driving up daily anxiety?",
+        "What emerging digital technology do you think older generations struggle to understand the most?",
+        "How will widespread artificial automation change the way young people choose their careers?",
+        "Are modern social algorithms bringing global cultures closer together or creating deeper ideological bubbles?",
+        "What traditional public space do you feel is disappearing fastest in modern cities?",
+        "How can educational institutions better prepare students for an unpredictable digital future?",
+        "Is the rise of electric transportation changing how neighborhoods are designed and built?",
+        "What local community initiative do you think deserves much more media attention today?",
+        "How has instant messaging changed the patience and communication styles of everyday people?",
+        "What impact are subscription models having on everyday consumer ownership and financial habits?",
+        "How is the rise of renewable energy altering geopolitical power dynamics worldwide?",
+        "What role should local journalism play in an era dominated by algorithmic social feeds?",
+        "How has the gig economy changed the traditional concept of job security and retirement?",
+        "Are smart cities actually improving urban quality of life or just creating privacy concerns?",
+        "What does the future of public transportation look like in post-pandemic metropolitan areas?",
+        "How is online content creation reshaping what young people view as viable career paths?",
+        "What ethical boundaries should be established as artificial intelligence enters creative industries?",
+        "How has the global supply chain evolution changed consumer expectations around delivery times?",
+        "What measures can cities take to combat the growing issue of urban loneliness and isolation?",
+        "How is digital banking changing the physical landscape of towns and neighborhoods?",
+        "What are the long-term cultural impacts of remote learning on younger generations?",
+        "How can communities balance historical preservation with modern housing demands?",
+        "What responsibility do tech platforms bear for the mental health of their youngest users?",
+        "How is the growth of remote healthcare changing the doctor-patient relationship?",
+        "What does sustainable tourism look like for popular destinations overwhelmed by visitors?",
+        "How are changing weather patterns influencing where people choose to buy homes?",
+        "What is the future of physical retail stores in an age of hyper-efficient e-commerce?",
+        "How can policy keep pace with rapid innovations in biotechnology and genetic editing?",
+        "What is the cultural significance of the revival of vinyl records and film photography?",
+        "How has the explosion of podcasting changed the audio entertainment landscape?",
+        "What are the societal effects of moving toward a completely cashless society?",
+        "How is remote work shifting populations away from major economic hubs to smaller towns?",
+        "What role do influencers play in shaping modern political and social discourse?",
+        "How can privacy rights be protected in an increasingly data-driven commercial world?",
+        "What is the impact of automated customer service on human patience and empathy?",
+        "How are libraries evolving to remain vital community hubs in the digital age?",
+        "What does the rise of space commercialization mean for international space law?",
+        "How is the democratization of video production tools changing independent cinema?",
+        "What are the challenges of managing electronic waste on a global scale?",
+        "How has the definition of community changed in an era of hyper-connected isolation?",
+        "What innovations in architecture are helping cities adapt to changing environmental demands?",
+        "How is the fast fashion industry being challenged by modern thrift and resale culture?",
+        "What are the ethical implications of algorithmic hiring and recruitment tools?",
+        "How has online food delivery changed restaurant economics and neighborhood traffic?",
+        "What measures are effective in combating the spread of digital misinformation?",
+        "How is the gaming industry influencing modern storytelling and social interaction?",
+        "What does the future hold for universal basic income discussions in automated economies?",
+        "How are museums and cultural institutions adapting to attract younger digital audiences?",
+        "What are the implications of wearable health technology on personal privacy and insurance?",
+        "How has the rise of electric bikes and scooters transformed downtown traffic dynamics?",
+        "What is the role of green spaces in urban planning for mental and physical health?",
+        "How are streaming services altering the cultural impact of watercooler television shows?",
+        "What challenges do rural communities face in maintaining economic vitality today?",
+        "How has the concept of privacy shifted among teenagers compared to older generations?",
+        "What are the benefits and drawbacks of hyper-local community apps and neighborhood forums?",
+        "How is synthetic media and deepfake technology challenging visual verification of truth?",
+        "What is the future of paper mail and physical documentation in government services?",
+        "How are modern workplaces adapting to multi-generational expectations and communication styles?",
+        "What innovations in agriculture are helping address global food security challenges?",
+        "How has the rise of self-publishing changed the literary world for new authors?",
+        "What are the psychological impacts of constant notifications and digital connectivity?",
+        "How are cities redesigning public infrastructure to encourage active transportation?",
+        "What is the impact of algorithmic pricing on everyday consumer goods and travel?",
+        "How has the democratization of financial trading apps changed individual investing habits?",
+        "What measures are being taken to protect indigenous languages from digital extinction?",
+        "How is the expansion of remote work affecting commercial real estate markets?",
+        "What is the cultural footprint of the global shift toward plant-based dining alternatives?",
+        "How are universities adapting curricula for jobs that do not yet exist?",
+        "What are the cybersecurity challenges facing smart home technology and appliances?",
+        "How has social media activism changed the speed and nature of grassroots movements?",
+        "What does the future of public broadcasting look like in an era of personalized feeds?",
+        "How are modern supply chains improving transparency for ethically conscious consumers?",
+        "What is the impact of digital fatigue on the popularity of analog hobbies and crafts?",
+        "How is the concept of retirement evolving as life expectancies and economies shift?"
+      ],
+      "Would You Rather": [
+        "Would you rather always know exactly when someone is stretching the truth or always be able to guess what song is stuck in their head?",
+        "Would you rather live in a house with panoramic views of a misty mountain range or right on a warm ocean shore?",
+        "Would you rather have the ability to speak every spoken language fluently or master any musical instrument instantly?",
+        "Would you rather never have to sleep again with zero fatigue or be able to teleport anywhere within a fifty-mile radius?",
+        "Would you rather spend a year traveling alone across rural countryside or live in the heart of a bustling foreign metropolis?",
+        "Would you rather have a photographic memory for facts and figures or an uncanny intuition for reading people's moods?",
+        "Would you rather give up your smartphone for an entire year or give up watching television and movies forever?",
+        "Would you rather always be dressed slightly too formally for an occasion or noticeably too casually?",
+        "Would you rather discover a major historical artifact in your backyard or a hidden underground cavern?",
+        "Would you rather have a personal chef cook every meal or a personal assistant handle every administrative chore?",
+        "Would you rather live without music for the rest of your life or without movies and television?",
+        "Would you rather be able to fly anywhere at walking speed or run at the speed of a cheetah?",
+        "Would you rather have perpetual summer weather year-round or experience all four distinct seasons vividly?",
+        "Would you rather always speak your mind instantly without filtering or never be able to express anger?",
+        "Would you rather lose the ability to read or lose the ability to write?",
+        "Would you rather be an expert at public speaking or an absolute genius at mathematics?",
+        "Would you rather live in a home filled with state-of-the-art gadgets or a cozy rustic cabin off the grid?",
+        "Would you rather have your life narrated by a dramatic movie trailer voice or a cheerful cartoon narrator?",
+        "Would you rather always have to sing instead of speaking or dance everywhere instead of walking?",
+        "Would you rather be able to control fire or control water?",
+        "Would you rather explore the deepest depths of the ocean or the farthest reaches of outer space?",
+        "Would you rather never feel physical pain again or never feel emotional stress?",
+        "Would you rather be famous for a great artistic masterpiece or an incredible act of bravery?",
+        "Would you rather always know the outcome of any sports game before it starts or any movie plot before watching?",
+        "Would you rather have endless free time but limited money or endless wealth but zero free time?",
+        "Would you rather be able to talk to land animals or marine creatures?",
+        "Would you rather live in a world with no winter or a world with no summer?",
+        "Would you rather have a rewind button for your life or a pause button?",
+        "Would you rather be exceptionally funny or exceptionally intelligent?",
+        "Would you rather always arrive ten minutes early to everything or twenty minutes late?",
+        "Would you rather give up social media forever or give up eating sweets for the rest of your life?",
+        "Would you rather have the power of invisibility or the power of reading minds?",
+        "Would you rather live without air conditioning or without heating?",
+        "Would you rather be forced to wear itchy wool sweaters every day or sandals in the snow?",
+        "Would you rather have a personal assistant who is brilliant but incredibly sarcastic or polite but totally incompetent?",
+        "Would you rather be able to sketch anything perfectly or play any song by ear on the piano?",
+        "Would you rather spend a weekend trapped in a haunted house or a locked escape room?",
+        "Would you rather have your house permanently smell like fresh cookies or ocean breeze?",
+        "Would you rather be the funniest person in any room or the best listener?",
+        "Would you rather never age physically or never age mentally?",
+        "Would you rather lose all your old memories or never be able to make new ones?",
+        "Would you rather have hands that kept growing every year or feet that never stopped growing?",
+        "Would you rather eat your favorite meal for every single meal or never taste food again?",
+        "Would you rather be caught singing in the shower or caught talking to your plants?",
+        "Would you rather live in a treehouse mansion or an underground luxury bunker?",
+        "Would you rather be able to change the past or catch a glimpse of the future?",
+        "Would you rather have a pet dragon the size of a cat or a pet elephant the size of a dog?",
+        "Would you rather always have to hop on one foot when moving or walk backward everywhere?",
+        "Would you rather be an unknown hero or a celebrated villain?",
+        "Would you rather have a laugh that sounds like a foghorn or a sneeze that sounds like a firework?",
+        "Would you rather only be able to whisper or only be able to shout?",
+        "Would you rather have fingers as long as your legs or legs as short as your fingers?",
+        "Would you rather live in a library or an art gallery?",
+        "Would you rather be stranded on a tropical island alone or with your most annoying acquaintance?",
+        "Would you rather have a permanent cloud follow you around raining only on your head or a spotlight shining on you at all times?",
+        "Would you rather eat spicy food for every meal or completely unseasoned food?",
+        "Would you rather be an expert carpenter or a master chef?",
+        "Would you rather have the ability to design your dreams every night or never dream again?",
+        "Would you rather give up coffee or give up your favorite hobby?",
+        "Would you rather be the star player on a losing team or sit on the bench for a championship team?",
+        "Would you rather have a rewind button for awkward social conversations or a fast-forward button for tedious tasks?",
+        "Would you rather live without mirrors or without cameras?",
+        "Would you rather have your dream job immediately or win the lottery ten years from now?",
+        "Would you rather be able to breathe underwater or fly through the clouds?",
+        "Would you rather always have wet socks or a pebble permanently stuck in your shoe?",
+        "Would you rather have a giant statue of yourself erected in your hometown or a scholarship named after you?",
+        "Would you rather be an extra in an Oscar-winning film or the lead actor in a terrible B-movie?",
+        "Would you rather have every song you listen to end one second too early or loop the chorus forever?",
+        "Would you rather have the power to fix any broken object instantly or cure any plant disease?",
+        "Would you rather live in a world where everyone can read minds or where everyone must speak the absolute truth?",
+        "Would you rather be able to sleep anywhere instantly or never need sleep again?",
+        "Would you rather have a lifetime supply of free books or free airline tickets?",
+        "Would you rather be a brilliant scientist who never gets recognized or an average inventor who gets all the credit?",
+        "Would you rather spend a year living in the 1800s or 100 years into the future?",
+        "Would you rather have your house automatically clean itself or have your meals cooked and dishes done forever?"
+      ],
+      "Pop Culture": [
+        "Which classic television series from decades past holds up best when binge-watched today?",
+        "Who is a movie villain whose motivations you actually understood and sympathized with?",
+        "What fictional universe from a book or film would be the absolute worst place to rent an apartment?",
+        "What music album can you listen to from start to finish without ever skipping a single track?",
+        "Which fictional sidekick deserved to be the main star of their own franchise?",
+        "What trend from early internet culture do you look back on with absolute fondness?",
+        "What movie adaptation of a book completely exceeded your expectations?",
+        "Which board game rivalry has caused the most intense arguments among your friends or family?",
+        "What cinematic universe do you feel has completely run its course and should finally end?",
+        "What iconic pop song instantly takes you right back to a specific summer in your life?",
+        "What movie has the greatest plot twist that completely caught you off guard on first viewing?",
+        "Which fictional hero do you think would actually be a nightmare to deal with in real life?",
+        "What book or movie ending left you feeling completely unsatisfied or upset?",
+        "Which music artist or band has the most flawless discography without a single bad album?",
+        "What television show had a pilot episode that hooked you immediately?",
+        "Which movie sequel surpassed the original in every possible way?",
+        "What fictional world would you most want to visit for a weekend vacation?",
+        "Which actor or actress elevates every single movie they appear in?",
+        "What is the most overrated movie or TV show that everyone else seemed to love?",
+        "Which animated film features the best soundtrack of all time?",
+        "What documentary series blew your mind the most when you watched it?",
+        "Which fictional detective or investigator is your absolute favorite to follow?",
+        "What movie scene always gives you goosebumps no matter how many times you watch it?",
+        "Which comedy film still makes you laugh out loud every single time?",
+        "What book series do you wish would get a faithful, high-budget television adaptation?",
+        "Which musical artist put on the best live concert performance you have ever seen?",
+        "What television show finale completely stuck the landing?",
+        "Which movie monster or villain is the most iconic in cinema history?",
+        "What fictional spaceship or vehicle do you wish you could own?",
+        "Which director has the most recognizable and unique visual style?",
+        "What video game or interactive story has the most compelling narrative?",
+        "Which fictional mentor or teacher do you wish you had in real life?",
+        "What movie features the most memorable opening sequence ever filmed?",
+        "Which television sitcom has the most comforting, rewatchable episodes?",
+        "What pop culture phenomenon from your youth do you miss the most?",
+        "Which actor nailed a biographical role so well they became indistinguishable from the real person?",
+        "What movie soundtrack do you listen to regularly while working or relaxing?",
+        "Which fictional family in television history is the most chaotic yet lovable?",
+        "What book did you finish reading and immediately wish you could experience for the first time again?",
+        "Which sci-fi franchise has the most believable and immersive world-building?",
+        "What movie quote do you find yourself referencing most often in daily conversation?",
+        "Which music video is a complete work of art in its own right?",
+        "What television villain did you secretly root for throughout the series?",
+        "Which fantasy realm has the best magic system or lore?",
+        "What movie plot hole bothers you more than it reasonably should?",
+        "Which band or artist defined the soundtrack of your teenage years?",
+        "What television miniseries is a masterclass in storytelling from start to finish?",
+        "Which superhero movie stands head and shoulders above the rest of the genre?",
+        "What historical period is most accurately and beautifully captured in cinema?",
+        "Which fictional hotel, tavern, or coffee shop would you love to hang out in?",
+        "What movie prop or collectible would you most want to own from Hollywood history?",
+        "Which voice actor brings so much life to an animated character that they carry the film?",
+        "What television show introduced a character you initially hated but grew to love?",
+        "Which musical genre do you think produced the greatest decade of hits?",
+        "What movie makes you emotional every single time you watch it?",
+        "Which fictional political leader or monarch would you actually trust to run things?",
+        "What book or movie has the most satisfying redemption arc for a character?",
+        "Which action movie has the most well-choreographed fight scenes?",
+        "What television comedy series changed the landscape of humor forever?",
+        "Which documentary film changed the way you view the world?",
+        "What fictional school or academy would you want to attend?",
+        "Which music album cover is the most iconic of all time?",
+        "What movie mystery kept you guessing until the very last second?",
+        "Which television show had the most heartbreaking character departure?",
+        "What fictional sports team or competition story is your favorite?",
+        "Which actor has the most impressive range across different genres?",
+        "What book adaptation completely captured the spirit of the original text?",
+        "Which holiday movie is an absolute mandatory watch every single year?",
+        "What animated series appeals to adults just as much as children?",
+        "Which pop star defines the modern era of music performance and production?",
+        "What science fiction movie predicted future technology with eerie accuracy?",
+        "Which television mystery box show had the most thrilling buildup?",
+        "What theater production or Broadway show blew you away when you saw it?",
+        "Which fictional duo has the best chemistry on screen?",
+        "What pop culture icon do you think will be remembered centuries from now?"
       ],
       "Personal Stories": [
         "What was the most hilarious miscommunication you experienced during a family road trip?",
-        "What is a memorable encounter you had with a stranger that completely brightened your day?",
-        "Describe a time when a complete disaster turned into an unforgettable blessing in disguise.",
-        "What was your absolute favorite childhood hiding spot or fort?",
-        "What is the funniest culinary mishap you ever witnessed in a kitchen?",
-        "Share a story about a pet that had an overwhelmingly hilarious personality.",
-        "What was your most memorable adventure during a spontaneous weekend getaway?",
-        "Recall a time when you tried to fix something around the house and it went hilariously wrong.",
-        "What is the most unusual gift you have ever received or given?",
-        "Describe a moment when you laughed so hard you could barely breathe.",
-        "What was your favorite tradition growing up during holiday seasons?",
-        "Tell about a time you tried to learn a new skill and failed spectacularly at first.",
-        "What is your funniest memory involving technology acting up at the worst possible moment?",
-        "Share a heartwarming story about neighbors helping each other out.",
-        "What was the most adventurous meal you ever tried while traveling?"
+        "What is a hobby you picked up on a whim that turned into a lifelong obsession?",
+        "What is the most memorable meal you ever had in an unexpected or out-of-the-way place?",
+        "What was your first job like, and what is the funniest lesson it taught you?",
+        "What is an item you bought on an impulse that turned out to be the most useful thing in your home?",
+        "What is the best surprise celebration or gathering you have ever been a part of?",
+        "What is a strange local legend or rumor from the town where you grew up?",
+        "What was the most adventurous vacation or weekend getaway you have ever taken?",
+        "What is a DIY project you attempted around the house that turned into a complete comedy of errors?",
+        "What is a simple childhood tradition that you still try to keep alive today?",
+        "What was the most embarrassing fashion choice you proudly rocked as a teenager?",
+        "What is a random act of kindness from a stranger that you have never forgotten?",
+        "What is the most unusual pet or animal encounter you have ever had?",
+        "What was the most chaotic cooking disaster you managed to salvage into something edible?",
+        "What is a skill or hobby you taught yourself entirely through online videos?",
+        "What was the best concert or live event you attended on a spontaneous whim?",
+        "What is a funny misunderstanding you had when visiting a foreign place or new city?",
+        "What is the most prized possession in your home that has zero monetary value?",
+        "What was the most unforgettable storm or weather event you ever weathered?",
+        "What is a childhood game or sport you played obsessively until the streetlights came on?",
+        "What is the most interesting antique or vintage item you’ve ever stumbled across?",
+        "What was the funniest disaster that happened during a holiday family dinner?",
+        "What is a piece of antique furniture or household item you restored with your own hands?",
+        "What was your very first concert, and what memories stand out from it?",
+        "What is the most scenic hiking trail or nature walk you have ever explored?",
+        "What is a quirky habit your grandparents or parents had that you now catch yourself doing?",
+        "What was the most satisfying home repair or improvement you ever pulled off successfully?",
+        "What is a memorable road trip detour that turned out to be better than the actual destination?",
+        "What is the most bizarre job interview or first day of work you ever experienced?",
+        "What is a family recipe that you have perfected over the years?",
+        "What was the most awe-inspiring sunrise or sunset you have ever witnessed?",
+        "What is a collection you maintained when you were younger that you look back on and smile?",
+        "What is the most amusing mix-up you’ve had with a phone's GPS or directions?",
+        "What was the best flea market, garage sale, or antique shop find you ever scored?",
+        "What is a memorable camping or outdoor adventure that tested your patience?",
+        "What is a tradition you started with your friends that you still keep up today?",
+        "What was the most unusual venue you ever attended a social gathering or party in?",
+        "What is a piece of advice you ignored that you wish you had followed?",
+        "What was the most heartwarming animal rescue or pet bonding moment you’ve witnessed?",
+        "What is a local hidden gem restaurant or park in your area that you love sharing with others?",
+        "What was the most complicated puzzle or building project you ever completed?",
+        "What is a funny story from when you first learned how to drive?",
+        "What is the most relaxing weekend escape you have ever treated yourself to?",
+        "What was the most memorable gift you ever received that caught you completely by surprise?",
+        "What is a hobby or craft you tried once and realized you were completely terrible at?",
+        "What was the funniest costume you ever wore to a party or event?",
+        "What is a remarkable coincidence that happened to you when traveling far from home?",
+        "What was the most rewarding volunteer work or community project you participated in?",
+        "What is a funny story about a pet escaping or getting into mischief?",
+        "What is the best meal you ever cooked from scratch for a group of loved ones?",
+        "What was the most memorable sports game or live competition you attended in person?",
+        "What is a childhood fort, treehouse, or hiding spot you built yourself?",
+        "What was the most unexpected item you found while cleaning out an attic or garage?",
+        "What is a funny language barrier or translation mix-up you experienced abroad?",
+        "What is the most peaceful morning routine you ever established for yourself?",
+        "What was the most elaborate Halloween decoration or setup you ever created?",
+        "What is a memorable encounter you had with local wildlife in your backyard?",
+        "What was the most satisfying organizational project you tackled in your home?",
+        "What is a funny story about trying to bake something complicated for the first time?",
+        "What is the best spontaneous day trip you ever took with no prior planning?",
+        "What was the most memorable sunset over the ocean or mountains you've seen?",
+        "What is a quirky regional slang word or phrase you picked up and started using?",
+        "What was the most entertaining talent show or amateur performance you ever participated in?",
+        "What is a memorable museum or historical site that exceeded your expectations?",
+        "What was the funniest reason you were ever late for an important appointment?",
+        "What is the most comforting childhood meal that still instantly makes you feel at home?",
+        "What was the most impressive garden or plant project you ever cultivated?",
+        "What is a funny story about a home improvement project gone slightly off track?",
+        "What was the most memorable boat ride, ferry trip, or cruise you ever took?",
+        "What is a charming local custom you observed while visiting a new town?",
+        "What was the most thrilling carnival ride or amusement park attraction you braved?",
+        "What is a funny memory of trying to learn a musical instrument as a beginner?",
+        "What was the most picturesque neighborhood or street you ever strolled down?",
+        "What is a cherished heirloom passed down to you with a fascinating backstory?",
+        "What is the most peaceful afternoon nap or rest you ever remember taking in your life?"
       ],
-      "Humor/Fun": [
-        "If you could replace handshakes with any weird gesture, what would it be?",
-        "If animals started wearing human clothes, which species do you think would pull off business casual the best?",
-        "What fictional villain do you secretly think had a valid point?",
-        "If you were arrested with no explanation, what would your friends and family assume you did?",
-        "What is the most ridiculous conspiracy theory you would secretly love to see proven true?",
-        "If your refrigerator could talk, what would it judge you for the most?",
-        "What useless superpower would you choose if you had to pick one?",
-        "If you had to narrate your entire life in a dramatic movie trailer voice, how would it sound?",
-        "What food combination do you love that other people find completely repulsive?",
-        "If you could instantly become a master at any completely useless skill, what would it be?",
-        "What is the weirdest dream you remember having recently?",
-        "If humans could purr like cats, how would office meetings change?",
-        "What song would play every time you walk into a room if you had a personal soundtrack?",
-        "If you could swap lives with a household appliance for one day, which one would you pick?",
-        "What is the most bizarre item currently sitting in your junk drawer?"
+      "Science & Tech": [
+        "If commercial space tourism becomes routine in your lifetime, would you sign up for a trip to orbit?",
+        "What scientific discovery from the last century do you find the most mind-boggling to think about?",
+        "Would you trust an autonomous vehicle to navigate heavy traffic through a severe snowstorm?",
+        "What medical breakthrough do you hope researchers achieve within the next few decades?",
+        "If you could explore any planet or moon in our solar system via probe, which one would you pick?",
+        "How do you think renewable energy grids will completely reshape rural communities?",
+        "What ancient technological invention do you think had the greatest impact on human civilization?",
+        "Would you ever want to live in a fully automated smart home controlled entirely by voice commands?",
+        "What deep-sea mystery do you wish marine scientists could finally solve?",
+        "How will advancements in computer graphics change the way we experience historical education?",
+        "If humanity successfully establishes a permanent base on Mars, would you watch the live broadcast?",
+        "What physics concept do you find the most difficult and fascinating to wrap your head around?",
+        "How might artificial intelligence change the way we study and understand prehistoric archaeology?",
+        "What role do you think nuclear fusion will play in powering the cities of the future?",
+        "If scientists could resurrect an extinct species like the woolly mammoth, should they do it?",
+        "What ocean floor discovery do you think would be the most exciting for humanity to uncover?",
+        "How will quantum computing change encryption and cybersecurity in our daily lives?",
+        "What everyday household technology from science fiction movies do you wish existed right now?",
+        "How might vertical farming and lab-grown food transform global agriculture and land use?",
+        "What is the most awe-inspiring telescope image or astronomical discovery in recent years?",
+        "How will brain-computer interfaces change the way individuals with physical disabilities interact?",
+        "What challenges must be overcome before asteroid mining becomes a commercial reality?",
+        "How do you think autonomous drones will change parcel delivery and emergency services?",
+        "What lessons can modern engineers learn by studying bio-inspired design from nature?",
+        "How might advances in material science create buildings that heal their own cracks?",
+        "What is the most fascinating paradox in modern physics or astrophysics?",
+        "How will personal genomics and personalized medicine alter how we approach healthcare?",
+        "What ethical boundaries should govern genetic modifications in human embryos?",
+        "How do you think atmospheric carbon capture technology will scale in the coming decades?",
+        "What technological marvel from the ancient world still leaves modern engineers scratching their heads?",
+        "How might swarm robotics change search-and-rescue operations in disaster zones?",
+        "What is the most exciting frontier in deep-space exploration beyond our solar system?",
+        "How will holographic displays and augmented reality change remote collaboration?",
+        "What biological mysteries of the human brain do you hope neuroscientists solve soon?",
+        "How might synthetic biology allow us to engineer bacteria to clean up environmental pollution?",
+        "What is the most profound implication of discovering microbial life on another celestial body?",
+        "How will advances in battery storage technology revolutionize electric aviation and shipping?",
+        "What role will desalination plants play in solving global freshwater shortages?",
+        "How might automated manufacturing and 3D printing transform disaster relief housing?",
+        "What is the most intriguing theory regarding the nature of dark matter and dark energy?",
+        "How will wearable health sensors change how we catch and prevent illnesses early?",
+        "What challenges face the implementation of global satellite internet networks?",
+        "How might nanotechnology revolutionize targeted cancer treatments in medicine?",
+        "What is the potential impact of room-temperature superconductors on global power grids?",
+        "How do you think artificial intelligence will assist marine biologists in tracking ocean life?",
+        "What lessons does the evolution of computer architecture teach us about complex systems?",
+        "How might autonomous underwater vehicles map uncharted ocean trenches completely?",
+        "What is the most fascinating aspect of animal communication and neurology?",
+        "How will clean energy transitions impact the geopolitics of rare earth minerals?",
+        "What technological solutions are most promising for cleaning up space debris in orbit?",
+        "How might bio-luminescent plants replace traditional street lighting in future eco-cities?",
+        "What is the most complex engineering challenge involved in building a space elevator?",
+        "How will machine learning accelerate the discovery of new pharmaceutical drugs?",
+        "What are the implications of using AI models to decipher ancient undeciphered scripts?",
+        "How might geothermal energy tap into deeper layers of the Earth's crust for clean power?",
+        "What is the most remarkable example of convergent evolution in the natural world?",
+        "How will smart infrastructure and IoT sensors help cities better manage traffic and waste?",
+        "What challenges do robotics engineers face in mastering human-like dexterity and touch?",
+        "How might the study of extremophiles on Earth guide our search for life on icy moons?",
+        "What is the significance of gravitational wave astronomy in viewing the universe?",
+        "How will advancements in recycling technology change plastic waste processing?",
+        "What role will modular nuclear reactors play in remote or off-grid power generation?",
+        "How might transparent solar panels integrated into windows change urban skyscrapers?",
+        "What is the most mind-bending concept related to the expansion of the universe?",
+        "How will robotic exoskeletons assist workers in heavy manufacturing and logistics?",
+        "What biological secrets can we learn from animals that undergo hibernation or extreme survival?",
+        "How might high-speed hyperloop transportation systems change cross-country commuting?",
+        "What is the most compelling argument for or against the simulation hypothesis?",
+        "How will advanced climate modeling improve our preparedness for extreme weather events?",
+        "What mysteries of quantum entanglement do you think physicists will unlock next?",
+        "How might automated agricultural machinery improve crop yields while reducing pesticide use?",
+        "What is the most exciting development in the quest for interstellar communication?",
+        "How will digital twins of cities help urban planners test disaster resilience?",
+        "What lessons can we draw from the resilience of deep-sea hydrothermal vent ecosystems?",
+        "How might future space missions utilize in-situ resource utilization for long-term survival?"
+      ],
+      "Did You Know?": [
+        "Did you know that honey never spoils, and archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still edible?",
+        "Did you know that a single cloud can weigh over one million pounds, equivalent to about 100 elephants floating in the sky?",
+        "Did you know that octopuses have three hearts, nine brains, and blue-colored blood because their oxygen-binding protein uses copper instead of iron?",
+        "Did you know that sea otters hold hands while sleeping so they don't drift apart from each other in the ocean current?",
+        "Did you know that bananas are actually classified as berries botanically, while strawberries, raspberries, and blackberries are not?",
+        "Did you know that Shakespeare invented over 1,700 words that we still use today by changing nouns into verbs, verbs into adjectives, and combining words?",
+        "Did you know that trees on Earth outnumber all the stars in the Milky Way galaxy by an estimated factor of hundreds?",
+        "Did you know that wombats produce cube-shaped droppings, which prevents them from rolling away and helps mark their territory on elevated rocks?",
+        "Did you know that the total weight of all ants on Earth is roughly equal to the total weight of all human beings combined?",
+        "Did you know that games of competitive Monopoly once lasted over 70 days when played underwater in a swimming pool?",
+        "Did you know that cows have best friends and get noticeably stressed and anxious when they are separated from them?",
+        "Did you know that your brain uses about 20% of your body's total energy and oxygen, despite accounting for only 2% of your total body weight?",
+        "Did you know that glass is technically an amorphous solid that flows extremely slowly over centuries rather than a true crystalline solid?",
+        "Did you know that immortal jellyfish (Turritopsis dohrnii) can cycle back to their juvenile polyp stage indefinitely after reaching maturity, effectively cheating death?",
+        "Did you know that more than half of all languages currently spoken on Earth have never been written down in a formal alphabet?",
+        "Did you know that slot machines were originally invented to dispense chewing gum and fruit-flavored candy before paying out cash prizes?",
+        "Did you know that Saturn has such a low average density that if you could find a bathtub big enough, the giant planet would float on water?",
+        "Did you know that the fingerprints of koalas are so remarkably similar to human fingerprints that they have occasionally confused crime scene investigators?",
+        "Did you know that laughing for just 10 to 15 minutes a day can burn up to 40 calories and temporarily boost your pain tolerance?",
+        "Did you know that ancient Romans used crushed mouse brains and pulverized charcoal as toothpaste to keep their smiles bright?",
+        "Did you know that there are more trees on the planet today than there were a century ago, largely due to modern reforestation efforts?",
+        "Did you know that sea cucumbers breathe through their anuses while filtering nutrients from the ocean floor?",
+        "Did you know that the shortest commercial flight in the world lasts less than two minutes and connects two Scottish islands?",
+        "Did you know that Norway once knighted an actual king penguin named Nils Olav who serves as the mascot of the Norwegian King's Guard?",
+        "Did you know that Thomas Edison originally greeted people by saying 'Hello' over the telephone, but Alexander Graham Bell insisted on 'Ahoy'?",
+        "Did you know that freshwater lakes hold less than 1% of the world's total water supply, while over 96% is locked away in salty oceans?",
+        "Did you know that a group of flamingos is formally known as a 'flamboyance'?",
+        "Did you know that rainy days smell the way they do because of petrichor—an oily compound released by soil-dwelling bacteria and plants?",
+        "Did you know that your nose can remember and distinguish over 50,000 different unique scents throughout your lifetime?",
+        "Did you know that the first-ever product to feature a barcode scan at a supermarket checkout was a pack of Wrigley's Juicy Fruit chewing gum in 1974?",
+        "Did you know that bullets traveling underwater slow down dramatically within just a few feet because water is roughly 800 times denser than air?",
+        "Did you know that sea sponges have no brains, hearts, or nervous systems, yet they are complex animals that filter thousands of gallons of water daily?",
+        "Did you know that jigsaw puzzles were originally invented in the 1760s as educational toys to help children learn geography by cutting maps on wood?",
+        "Did you know that electric eels can generate a powerful shock of up to 860 volts, easily enough to stun a horse or power small appliances?",
+        "Did you know that capital letters were originally called 'majuscules' and lowercase letters were called 'minuscules' before printing presses?",
+        "Did you know that the inventor of the Frisbee was eventually cremated and made into a series of commemorative plastic flying discs after he passed away?",
+        "Did you know that butterflying butterflies go through complete metamorphosis, liquidizing inside their cocoons before reorganizing into winged adults?",
+        "Did you know that cats cannot taste sweetness because they lack the specific taste receptor gene required to detect sugar?",
+        "Did you know that Venice, Italy, is built upon millions of wooden timber piles driven deep into the marshy mud, where they petrified underwater?",
+        "Did you know that the coldest temperature ever recorded naturally on Earth was minus 128.6 degrees Fahrenheit in Antarctica?",
+        "Did you know that the world's oldest known recipe is for beer, dating back over 4,000 years to ancient Sumerian culture?",
+        "Did you know that pineapples take nearly two full years to grow from planting to harvestable fruit?",
+        "Did you know that newborn babies are born without kneecaps, which don't fully develop into solid bone until they are around three years old?",
+        "Did you know that bullets and cannons were originally stacked in pyramids on brass rings called 'monkeys' in naval yards?",
+        "Did you know that blue whales have tongues that weigh as much as an entire adult elephant?",
+        "Did you know that crossword puzzles were first published in the New York World newspaper in December 1913 by Arthur Wynne?",
+        "Did you know that some species of bamboo can grow up to three feet in a single 24-hour period under optimal conditions?",
+        "Did you know that astronauts can grow up to two inches taller while living in microgravity because their spinal discs decompress without gravity?",
+        "Did you know that ancient Egyptians used trained baboons as police officers to patrol markets and help apprehend suspected thieves?",
+        "Did you know that lightning strikes the Earth approximately 100 times every single second of every day?",
+        "Did you know that an octopus can squeeze its entire flexible body through any opening larger than its hard beak?",
+        "Did you know that peanut butter can be transformed into diamonds under extreme laboratory pressure and heat conditions?",
+        "Did you know that pigeons have exceptional visual recognition skills and can even distinguish between paintings by Monet and Picasso?",
+        "Did you know that the word 'alphabet' comes from the first two letters of the Greek writing system: alpha and beta?",
+        "Did you know that striped zebras actually use their black-and-white patterns as natural camouflage to confuse biting horseflies?",
+        "Did you know that neon signs do not all glow orange-red; different noble gases and coated tubes create all the vibrant colors?",
+        "Did you know that a housefly hums in the musical key of F major as it beats its wings rapidly?",
+        "Did you know that ancient Greeks threw apples at each other as a traditional marriage proposal gesture?",
+        "Did you know that horse teeth occupy more space inside their heads than their brains do?",
+        "Did you know that paper currency is not actually made of wood pulp paper, but is instead crafted from 75% cotton and 25% linen fibers?",
+        "Did you know that sea turtles navigate across thousands of miles of open ocean by sensing the Earth's invisible magnetic field?",
+        "Did you know that jellyfish have existed on Earth for over 500 million years, predating both dinosaurs and trees?",
+        "Did you know that a single strand of spider silk is five times stronger than a steel strand of the same weight?",
+        "Did you know that ketchup was once sold in the 1830s as a medicinal cure for indigestion and diarrhea?",
+        "Did you know that modern commercial airliners are struck by lightning routinely without suffering any electrical damage thanks to conductive aluminum frames?",
+        "Did you know that your eyelids blink roughly 15 to 20 times every minute, totaling over 10 million blinks per year?",
+        "Did you know that carrots were originally purple or yellow before Dutch farmers bred orange mutants in the 17th century?",
+        "Did you know that wombats are the only known animals in the world that produce geometric cube-shaped waste?",
+        "Did you know that Mount Everest is still growing taller by about a quarter of an inch every single year due to shifting tectonic plates?",
+        "Did you know that squirrels plant thousands of new trees every year simply by forgetting where they buried their acorns?",
+        "Did you know that pearls are created when oysters and clams form a protective nacre layer around irritating foreign particles?",
+        "Did you know that chameleons change their skin color primarily to communicate their mood or regulate body temperature rather than to hide?",
+        "Did you know that the human heart pumps roughly 2,000 gallons of blood through 60,000 miles of blood vessels every day?",
+        "Did you know that the Great Wall of China cannot actually be seen from space with the naked eye without camera zoom lenses?",
+        "Did you know that honeybees communicate the location of flower patches to each other by performing a specialized 'waggle dance'?"
       ]
     };
 
-    // Auto-fill remaining items up to 150 for each category array to ensure clean 1-150 numbering
-    Object.keys(topicDatabase).forEach(cat => {
-      while (topicDatabase[cat].length < 150) {
-        const index = topicDatabase[cat].length + 1;
-        topicDatabase[cat].push(`Topic #${index} for ${cat}: What is your take on this engaging concept or scenario?`);
+    var CATEGORY_STYLES = {
+      Philosophy: { bg: "bg-purple-100 dark:bg-purple-950/80", text: "text-purple-700 dark:text-purple-200", border: "border-purple-300 dark:border-purple-600" },
+      "Deep Questions": { bg: "bg-indigo-100 dark:bg-indigo-950/80", text: "text-indigo-700 dark:text-indigo-200", border: "border-indigo-300 dark:border-indigo-600" },
+      "Humor/Fun": { bg: "bg-amber-100 dark:bg-amber-950/80", text: "text-amber-800 dark:text-amber-200", border: "border-amber-300 dark:border-amber-600" },
+      "Current Events": { bg: "bg-blue-100 dark:bg-blue-950/80", text: "text-blue-700 dark:text-blue-200", border: "border-blue-300 dark:border-blue-600" },
+      "Would You Rather": { bg: "bg-emerald-100 dark:bg-emerald-950/80", text: "text-emerald-700 dark:text-emerald-200", border: "border-emerald-300 dark:border-emerald-600" },
+      "Pop Culture": { bg: "bg-pink-100 dark:bg-pink-950/80", text: "text-pink-700 dark:text-pink-200", border: "border-pink-300 dark:border-pink-600" },
+      "Personal Stories": { bg: "bg-cyan-100 dark:bg-cyan-950/80", text: "text-cyan-700 dark:text-cyan-200", border: "border-cyan-300 dark:border-cyan-600" },
+      "Science & Tech": { bg: "bg-violet-100 dark:bg-violet-950/80", text: "text-violet-700 dark:text-violet-200", border: "border-violet-300 dark:border-violet-600" },
+      "Did You Know?": { bg: "bg-rose-100 dark:bg-rose-950/80", text: "text-rose-700 dark:text-rose-200", border: "border-rose-300 dark:border-rose-600" }
+    };
+
+    var PRESET_MODES = [
+      { id: "all", name: "Balanced Mix", categories: Object.keys(CATEGORY_STYLES) },
+      { id: "icebreaker", name: "Casual Icebreakers", categories: ["Humor/Fun", "Would You Rather", "Pop Culture", "Personal Stories"] },
+      { id: "deep", name: "Deep Discussions", categories: ["Philosophy", "Deep Questions", "Science & Tech"] },
+      { id: "latenight", name: "Late Night Debates", categories: ["Philosophy", "Did You Know?", "Current Events", "Science & Tech"] },
+      { id: "funny", name: "Funny & Silly", categories: ["Humor/Fun", "Would You Rather", "Did You Know?"] }
+    ];
+
+    var currentTopics = [];
+    var cardCountView = 4;
+    var activePreset = "all";
+    var selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
+    var pinnedIndices = new Set();
+    var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
+    var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
+    var topicCounter = 1000;
+
+    var characterElementMarkup = '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink">';
+
+    function setLayoutView(count) {
+      cardCountView = count;
+      pinnedIndices.clear();
+      updateToggleUI();
+      generateTopics();
+    }
+
+    function updateToggleUI() {
+      var btn1 = document.getElementById("view-btn-1");
+      var btn4 = document.getElementById("view-btn-4");
+      var badge = document.getElementById("generate-btn-badge");
+      var btnText = document.getElementById("generate-btn-text");
+      var mainArea = document.getElementById("main-content-area");
+
+      if (cardCountView === 1) {
+        btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
+        btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+        if (badge) badge.innerText = "1 Card";
+        if (btnText) btnText.innerText = "Generate Random Topic";
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-0.5 sm:py-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
+      } else {
+        btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
+        btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+        if (badge) badge.innerText = "4 Cards";
+        if (btnText) btnText.innerText = "Generate 4 Random Topics";
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden";
       }
-    });
-
-    // Incremental Session Pointer Handler (1 to 150 sequence loop)
-    function getNextIndex(category) {
-      const key = `topic_index_${category}`;
-      let currentIndex = parseInt(sessionStorage.getItem(key)) || -1;
-      currentIndex = (currentIndex + 1) % 150;
-      sessionStorage.setItem(key, currentIndex);
-      return currentIndex;
     }
 
-    let activeCategories = ["Deep Questions", "Did You Know?", "Personal Stories", "Humor/Fun"];
-    let savedTopics = JSON.parse(localStorage.getItem('saved_topics')) || [];
+    function generateSingleTopic(categoryOverride) {
+      var availCategories = Array.from(selectedCategories);
+      var category = categoryOverride || availCategories[Math.floor(Math.random() * availCategories.length)] || "Philosophy";
+      var questionsList = QUESTION_BANKS[category] || QUESTION_BANKS["Philosophy"];
+      var text = questionsList[Math.floor(Math.random() * questionsList.length)];
 
-    function renderCards() {
-      const container = document.getElementById('cardContainer');
-      container.innerHTML = '';
-
-      activeCategories.forEach(cat => {
-        const index = getNextIndex(cat);
-        const topicText = topicDatabase[cat][index];
-        const isPinned = savedTopics.some(s => s.text === topicText);
-
-        const card = document.createElement('div');
-        card.className = 'topic-card';
-        card.onclick = (e) => {
-          if (!e.target.closest('.action-btn')) {
-            refreshCard(cat, card);
-          }
-        };
-
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="category-badge">${cat.toUpperCase()}</span>
-            <div class="card-actions">
-              <button class="action-btn" title="Flip to Next" onclick="refreshCard('${cat}', this.closest('.topic-card'))">🔄</button>
-              <button class="action-btn ${isPinned ? 'pinned' : ''}" title="Pin/Save Topic" onclick="togglePin('${cat}', \`${topicText}\`, this)">📌</button>
-            </div>
-          </div>
-          <div class="card-body">
-            "${topicText}"
-          </div>
-          <div class="card-footer">
-            <div class="refresh-hint">💡 Tap card to flip</div>
-            <span>#${index + 1} / 150</span>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-      renderSavedDrawer();
-    }
-
-    function refreshCard(category, cardElement) {
-      const index = getNextIndex(category);
-      const topicText = topicDatabase[category][index];
-      const isPinned = savedTopics.some(s => s.text === topicText);
-
-      cardElement.querySelector('.card-body').innerText = `"${topicText}"`;
-      cardElement.querySelector('.card-footer span:last-child').innerText = `#${index + 1} / 150`;
+      topicCounter++;
+      var topic = {
+        id: "topic-" + topicCounter + "-" + Date.now() + "-" + Math.floor(Math.random()*1000),
+        category: category,
+        text: text
+      };
       
-      const pinBtn = cardElement.querySelector('.action-btn:nth-child(2)');
-      pinBtn.onclick = () => togglePin(category, topicText, pinBtn);
-      if (isPinned) {
-        pinBtn.classList.add('pinned');
-      } else {
-        pinBtn.classList.remove('pinned');
+      topicCache[topic.id] = topic;
+      localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+      return topic;
+    }
+
+    function renderModePills() {
+      var container = document.getElementById("mode-pills");
+      if (!container) return;
+      container.innerHTML = PRESET_MODES.map(function(mode) {
+        return '<button onclick="selectPreset(\'' + mode.id + '\')" class="px-3 py-1.5 rounded-lg font-bold text-xs transition-all whitespace-nowrap ' +
+          (activePreset === mode.id ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/20" : "bg-slate-200/70 dark:bg-slate-800/70 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700") +
+          '">' + mode.name + "</button>";
+      }).join("");
+    }
+
+    function selectPreset(modeId) {
+      activePreset = modeId;
+      var preset = PRESET_MODES.find(function(m) { return m.id === modeId; });
+      if (preset) {
+        selectedCategories = new Set(preset.categories);
       }
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
     }
 
-    function cycleAllCards() {
-      renderCards();
+    function renderCategoryPills() {
+      var container = document.getElementById("category-pills");
+      if (!container) return;
+      container.innerHTML = Object.keys(CATEGORY_STYLES).map(function(cat) {
+        var isSelected = selectedCategories.has(cat);
+        var style = CATEGORY_STYLES[cat];
+        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-3 py-1 rounded-xl border font-bold text-xs whitespace-nowrap transition-all flex items-center gap-1.5 ' +
+          (isSelected ? (style.bg + " " + style.text + " " + style.border + " scale-100 shadow-sm") : "bg-slate-200/40 dark:bg-slate-800/30 text-slate-400 border-transparent opacity-50 hover:opacity-100") +
+          '"><span>' + cat + "</span>" + (isSelected ? '<i class="fa-solid fa-check text-[10px]"></i>' : "") + "</button>";
+      }).join("");
     }
 
-    function togglePin(category, text, btnElement) {
-      const existingIndex = savedTopics.findIndex(s => s.text === text);
-      if (existingIndex > -1) {
-        savedTopics.splice(existingIndex, 1);
-        btnElement.classList.remove('pinned');
+    function toggleCategory(cat) {
+      activePreset = "custom";
+      if (selectedCategories.has(cat)) {
+        if (selectedCategories.size === 1) {
+          showToast("At least one category must remain selected!", "warning");
+          return;
+        }
+        selectedCategories.delete(cat);
       } else {
-        savedTopics.push({ category, text });
-        btnElement.classList.add('pinned');
+        selectedCategories.add(cat);
       }
-      localStorage.setItem('saved_topics', JSON.stringify(savedTopics));
-      renderSavedDrawer();
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
     }
 
-    function removeSaved(index) {
-      savedTopics.splice(index, 1);
-      localStorage.setItem('saved_topics', JSON.stringify(savedTopics));
-      renderCards();
+    function generateTopics() {
+      if (selectedCategories.size === 0) return;
+      var genIcon = document.getElementById("generate-icon");
+      if (genIcon) {
+        genIcon.classList.add("animate-spin-once");
+        setTimeout(function() { genIcon.classList.remove("animate-spin-once"); }, 400);
+      }
+
+      var indicesToFlip = [];
+      for (var i = 0; i < cardCountView; i++) {
+        if (!pinnedIndices.has(i)) {
+          indicesToFlip.push(i);
+        }
+      }
+
+      triggerCardFlip(indicesToFlip, function() {
+        var nextTopics = [];
+        for (var i = 0; i < cardCountView; i++) {
+          if (pinnedIndices.has(i) && currentTopics[i]) {
+            nextTopics[i] = currentTopics[i];
+          } else {
+            nextTopics[i] = generateSingleTopic();
+          }
+        }
+        currentTopics = nextTopics;
+      });
     }
 
-    function renderSavedDrawer() {
-      const listContainer = document.getElementById('savedListContainer');
-      const countBadge = document.getElementById('savedCount');
-      countBadge.innerText = `${savedTopics.length} items`;
+    function handleCardTap(e, index) {
+      if (e.target.closest("button") || e.target.closest("a")) {
+        return;
+      }
+      refreshCardAtIndex(index);
+    }
 
-      if (savedTopics.length === 0) {
-        listContainer.innerHTML = `<div style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 1rem;">No saved topics yet. Click the pin icon on any card to save it here!</div>`;
+    function refreshCardAtIndex(index) {
+      if (pinnedIndices.has(index)) {
+        showToast("Unpin card first to refresh it!", "warning");
         return;
       }
 
-      listContainer.innerHTML = '';
-      savedTopics.forEach((item, idx) => {
-        const div = document.createElement('div');
-        div.className = 'saved-item';
-        div.innerHTML = `
-          <div style="font-size: 0.75rem; color: var(--accent-pink); margin-bottom: 0.2rem; font-weight: 700;">${item.category.toUpperCase()}</div>
-          <span>"${item.text}"</span>
-          <button class="remove-btn" onclick="removeSaved(${idx})">✕</button>
-        `;
-        listContainer.appendChild(div);
+      triggerCardFlip([index], function() {
+        currentTopics[index] = generateSingleTopic();
       });
     }
 
-    // Initial load
-    renderCards();
+    function triggerCardFlip(indices, dataUpdateFn) {
+      var cardEls = indices.map(function(idx) {
+        return document.getElementById("card-inner-" + idx);
+      }).filter(Boolean);
+
+      if (cardEls.length === 0) {
+        dataUpdateFn();
+        renderTopicCards();
+        return;
+      }
+
+      cardEls.forEach(function(el) {
+        el.classList.add("card-flipping");
+      });
+
+      setTimeout(function() {
+        dataUpdateFn();
+        renderTopicCards();
+      }, 250);
+    }
+
+    function renderTopicCards() {
+      var grid = document.getElementById("topics-grid");
+      if (!grid) return;
+      
+      if (cardCountView === 1) {
+        grid.className = "my-auto flex-grow flex items-center justify-center w-full max-w-2xl mx-auto py-1";
+      } else {
+        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 my-auto flex-grow items-center w-full py-2";
+      }
+
+      var cardsHtml = currentTopics.map(function(topic, index) {
+        if (!topic) return "";
+
+        var isPinned = pinnedIndices.has(index);
+        var isFav = favoritedTopicIds.has(topic.id);
+        var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
+
+        return '<div class="card-container h-full w-full min-h-[175px]">' +
+          '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+            
+            /* Top Section: Flip hint on left, Category pill centered at top, Action icons on right */
+            '<div class="flex items-center justify-between gap-2 mb-2 relative">' +
+              '<div class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 flex items-center gap-1 shrink-0">' +
+                '<i class="fa-solid fa-lightbulb text-[10px] text-amber-400"></i> Tap or click card to flip' +
+              '</div>' +
+              '<div class="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none">' +
+                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+                  "<span>" + topic.category + "</span>" +
+                '</span>' +
+              '</div>' +
+              '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
+                '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
+                '<button onclick="togglePin(' + index + ')" title="' + (isPinned ? "Unpin Card" : "Pin Card") + '" class="p-2 rounded-xl transition-all ' + (isPinned ? "bg-indigo-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isPinned ? "rotate-45" : "") + '"></i></button>' +
+                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Save Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-pink-500 bg-pink-50 dark:bg-pink-950/40" : "text-slate-400 hover:text-pink-500 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-heart text-sm"></i></button>' +
+                '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
+              '</div>' +
+            '</div>' +
+
+            /* Middle Section: Question text with reduced font size (-1 step) */
+            '<div class="my-2 flex-grow flex items-center justify-center flex-col">' +
+              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+              followModelFooterHelper(cardCountView) +
+            '</div>' +
+
+            /* Bottom Section: Lock state indicator & Avatar moved right & tucked closer to bottom */
+            '<div class="mt-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between gap-2 relative">' +
+              '<div class="flex items-center gap-2 relative z-20">' +
+                '<span class="text-indigo-400 font-bold flex items-center gap-1 text-[11px]">' + (isPinned ? '<i class="fa-solid fa-lock text-[9px]"></i> Locked' : '') + '</span>' +
+              '</div>' +
+              characterElementMarkup +
+            '</div>' +
+
+          '</div>' +
+        '</div>';
+      }).join("");
+
+      grid.innerHTML = cardsHtml;
+    }
+
+    function followModelFooterHelper(viewCount) {
+      if (viewCount !== 1) return '';
+      return '<div class="flex items-center justify-center gap-1.5 mt-2 pt-1 w-full">' +
+        '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">Follow Me</span>' +
+        '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
+      '</div>';
+    }
+
+    function togglePin(index) {
+      if (pinnedIndices.has(index)) {
+        pinnedIndices.delete(index);
+        showToast("Card unpinned", "info");
+      } else {
+        pinnedIndices.add(index);
+        showToast("Card locked!", "success");
+      }
+      renderTopicCards();
+    }
+
+    function toggleFavorite(topicId, cardIndex) {
+      var topic = currentTopics[cardIndex];
+      if (!topic) return;
+
+      if (favoritedTopicIds.has(topic.id)) {
+        favoritedTopicIds.delete(topic.id);
+        showToast("Removed from saved topics", "info");
+      } else {
+        favoritedTopicIds.add(topic.id);
+        topicCache[topic.id] = topic;
+        localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+        showToast("Saved to favorites!", "success");
+      }
+
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      renderTopicCards();
+      updateFavoritesUI();
+    }
+
+    function loadSavedTopicIntoView(topicId) {
+      var topic = topicCache[topicId];
+      if (!topic) return;
+
+      setLayoutView(1);
+      currentTopics = [topic];
+      renderTopicCards();
+      toggleFavoritesDrawer(false);
+      showToast("Loaded saved topic", "success");
+    }
+
+    function updateFavoritesUI() {
+      var badge = document.getElementById("favorites-badge");
+      var listContainer = document.getElementById("saved-topics-list");
+      if (!badge || !listContainer) return;
+
+      badge.innerText = favoritedTopicIds.size;
+      if (favoritedTopicIds.size > 0) {
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+
+      if (favoritedTopicIds.size === 0) {
+        listContainer.innerHTML = '<div class="text-center py-10 px-4 text-slate-400"><i class="fa-regular fa-bookmark text-3xl mb-2 opacity-40"></i><p class="font-semibold text-xs">No saved topics yet.</p><p class="text-[10px] mt-1">Tap heart icon on any card to save it!</p></div>';
+        return;
+      }
+
+      var savedList = Array.from(favoritedTopicIds).map(function(id) {
+        return topicCache[id] || { id: id, category: "Saved", text: "Saved topic item" };
+      });
+
+      listContainer.innerHTML = savedList.map(function(topic) {
+        var st = CATEGORY_STYLES[topic.category] || { bg: "bg-indigo-100", text: "text-indigo-700" };
+        return '<div onclick="loadSavedTopicIntoView(\'' + topic.id + '\')" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex flex-col gap-2 relative cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">' +
+          '<div class="flex items-center justify-between">' +
+            '<span class="text-[9px] font-bold px-2 py-0.5 rounded ' + st.bg + " " + st.text + '">' + topic.category + '</span>' +
+            '<div class="flex items-center gap-1.5" onclick="event.stopPropagation()">' +
+              '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-500 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-regular fa-copy text-xs"></i></button>' +
+              '<button onclick="removeFavorite(\'' + topic.id + '\')" title="Remove" class="p-1.5 rounded-lg text-pink-500 hover:text-red-600 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+            '</div>' +
+          '</div>' +
+          '<p class="text-xs font-bold text-slate-800 dark:text-slate-100 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">&quot;' + topic.text + '&quot;</p>' +
+          '<div class="text-[9px] text-indigo-500 dark:text-indigo-400 font-semibold flex items-center gap-1"><i class="fa-solid fa-arrow-right text-[8px]"></i> Click to load topic</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    function removeFavorite(id) {
+      favoritedTopicIds.delete(id);
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast("Removed topic", "info");
+    }
+
+    function clearAllFavorites() {
+      if (favoritedTopicIds.size === 0) return;
+      favoritedTopicIds.clear();
+      localStorage.removeItem("nellieb_favs");
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast("Cleared all saved topics", "info");
+    }
+
+    function toggleFavoritesDrawer(open) {
+      var drawer = document.getElementById("favorites-drawer");
+      var content = document.getElementById("drawer-content");
+      if (!drawer || !content) return;
+
+      if (open) {
+        drawer.classList.remove("pointer-events-none");
+        drawer.classList.remove("opacity-0");
+        drawer.classList.add("opacity-100");
+        content.classList.remove("translate-x-full");
+      } else {
+        drawer.classList.remove("opacity-100");
+        drawer.classList.add("opacity-0");
+        content.classList.add("translate-x-full");
+        setTimeout(function() { 
+          drawer.classList.add("pointer-events-none"); 
+        }, 300);
+      }
+    }
+
+    function togglePrivacyModal(open) {
+      var modal = document.getElementById("privacy-modal");
+      if (!modal) return;
+      if (open) {
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function copyTopicText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      showToast("Topic copied to clipboard!", "success");
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function showToast(message, type) {
+      var container = document.getElementById("toast-container");
+      if (!container) return;
+
+      var toast = document.createElement("div");
+      var icons = {
+        success: "fa-circle-check text-emerald-400",
+        warning: "fa-triangle-exclamation text-amber-400",
+        info: "fa-circle-info text-indigo-400"
+      };
+
+      toast.className = "px-3.5 py-2 rounded-xl bg-slate-900/90 text-white text-xs font-semibold shadow-xl backdrop-blur border border-slate-700 flex items-center gap-2 pointer-events-auto transition-all duration-200 translate-x-6 opacity-0";
+      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + message + "</span>";
+
+      container.appendChild(toast);
+      requestAnimationFrame(function() {
+        toast.classList.remove("translate-x-6", "opacity-0");
+      });
+
+      setTimeout(function() {
+        toast.classList.add("translate-x-6", "opacity-0");
+        setTimeout(function() { toast.remove(); }, 200);
+      }, 2500);
+    }
+
+    function resetToInitial() {
+      pinnedIndices.clear();
+      selectPreset("all");
+    }
+
+    function escapeQuotes(str) {
+      return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    updateToggleUI();
+    renderModePills();
+    renderCategoryPills();
+    generateTopics();
+    updateFavoritesUI();
+
+    document.addEventListener("keydown", function(e) {
+      if (e.code === "Space" && !["INPUT", "BUTTON", "TEXTAREA"].includes(e.target.tagName)) {
+        e.preventDefault();
+        generateTopics();
+      }
+    });
   </script>
 </body>
 </html>
