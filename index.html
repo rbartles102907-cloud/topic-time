@@ -123,6 +123,18 @@
     }
     .flashing-follow-slow { animation: flash-red-slow 2.5s ease-in-out infinite; }
 
+    /* Upper header pointing arrow: pointing straight right (no angle) with gentle horizontal bounce */
+    @keyframes point-right-bounce {
+      0%, 100% { transform: translateX(0) scale(1); }
+      50% { transform: translateX(6px) scale(1.08); }
+    }
+    .pointing-arrow-right { 
+      display: inline-block;
+      animation: point-right-bounce 1.2s ease-in-out infinite; 
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
+    }
+
+    /* 1-Card view footer arrow: angled bounce */
     @keyframes point-bounce-slow {
       0%, 100% { transform: rotate(-45deg) translateX(0) scale(1); }
       50% { transform: rotate(-45deg) translateX(6px) scale(1.08); }
@@ -192,7 +204,7 @@
 
       <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
         <span class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">Follow Me</span>
-        <span class="pointing-arrow-slow text-xl sm:text-2xl text-red-500 select-none" title="Pointing to TikTok">👉</span>
+        <span class="pointing-arrow-right text-xl sm:text-2xl text-red-500 select-none" title="Pointing to TikTok">👉</span>
       </div>
 
       <div class="flex items-center gap-2 shrink-0">
@@ -801,7 +813,7 @@
         "35. How can privacy rights be protected in an increasingly data-driven commercial world?",
         "36. What is the impact of automated customer service on human patience and empathy?",
         "37. How are libraries evolving to remain vital community hubs in the digital age?",
-        "38. What does the rise of space commercialization mean for international space law?",
+        "38. What does the future of space commercialization mean for international space law?",
         "39. How is the democratization of video production tools changing independent cinema?",
         "40. What are the challenges of managing electronic waste on a global scale?",
         "41. How has the definition of community changed in an era of hyper-connected isolation?",
@@ -1928,7 +1940,6 @@
     }
 
     function triggerMarqueeLoop() {
-      // Trigger marquee animation immediately on render, then repeat every 30 seconds
       runMarqueeCycle();
       if (window.marqueeInterval) clearInterval(window.marqueeInterval);
       window.marqueeInterval = setInterval(runMarqueeCycle, 30000);
@@ -1940,7 +1951,6 @@
         if (el) {
           el.style.opacity = "1";
           el.style.animationPlayState = "running";
-          // Reset animation by cloning or restarting
           el.style.animation = 'none';
           el.offsetHeight; /* trigger reflow */
           el.style.animation = 'scroll-marquee 12s linear forwards';
