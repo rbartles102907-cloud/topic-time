@@ -123,7 +123,6 @@
     }
     .flashing-follow-slow { animation: flash-red-slow 2.5s ease-in-out infinite; }
 
-    /* Upper header pointing arrow: pointing straight right (no angle) with gentle horizontal bounce */
     @keyframes point-right-bounce {
       0%, 100% { transform: translateX(0) scale(1); }
       50% { transform: translateX(6px) scale(1.08); }
@@ -134,7 +133,6 @@
       filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
     }
 
-    /* 1-Card view footer arrow: angled bounce */
     @keyframes point-bounce-slow {
       0%, 100% { transform: rotate(-45deg) translateX(0) scale(1); }
       50% { transform: rotate(-45deg) translateX(6px) scale(1.08); }
@@ -157,18 +155,33 @@
       text-shadow: none !important;
     }
 
-    .custom-scroll::-webkit-scrollbar { height: 4px; }
+    .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
     
     @keyframes spin-once { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .animate-spin-once { animation: spin-once 0.4s ease-in-out; }
+
+    /* Leaderboard Marquee Ticker Animation */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 25s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
   </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
 
   <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
+  <!-- Header -->
   <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="resetToInitial()">
@@ -189,6 +202,12 @@
       </div>
 
       <div class="flex items-center gap-2 shrink-0">
+        <!-- Manage Scores Button -->
+        <button onclick="toggleScoresModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
+          <i class="fa-solid fa-trophy text-sm text-yellow-200"></i>
+          <span class="hidden sm:inline">Scores</span>
+        </button>
+
         <a href="https://www.tiktok.com/@nellie.b5" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
           <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
           <span class="hidden sm:inline">Go to My TikTok</span>
@@ -207,6 +226,20 @@
       </div>
     </div>
   </header>
+
+  <!-- Live Scrolling Leaderboard Ticker -->
+  <div class="relative z-30 w-full bg-slate-900/90 dark:bg-slate-900/95 border-b border-indigo-500/30 overflow-hidden py-1.5 shadow-inner">
+    <div class="flex items-center">
+      <div class="bg-indigo-600 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1 shadow-md">
+        <i class="fa-solid fa-crown text-yellow-300"></i> Top Streamers
+      </div>
+      <div class="overflow-hidden whitespace-nowrap flex-grow relative">
+        <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-xs font-bold text-slate-200">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-1 sm:py-2 flex-grow w-full flex flex-col justify-between overflow-hidden">
     <div class="space-y-2 shrink-0 mb-1">
@@ -250,6 +283,52 @@
     <p>&copy; Nellie B Topic Time &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
   </footer>
 
+  <!-- Manage Session Scores Modal -->
+  <div id="scores-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="toggleScoresModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-trophy text-amber-500"></i> Manage Session Leaderboard Scores
+        </h3>
+        <button onclick="toggleScoresModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500 dark:text-slate-400">
+        Enter user names and their session points below. Changes instantly update the bottom scrolling ticker!
+      </p>
+
+      <!-- Score Table Editor -->
+      <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden max-h-[50vh] overflow-y-auto custom-scroll">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 sticky top-0 z-10">
+            <tr>
+              <th class="p-2.5 font-bold">Username</th>
+              <th class="p-2.5 font-bold w-28">Session Points</th>
+              <th class="p-2.5 font-bold w-12 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="scores-table-body" class="divide-y divide-slate-200 dark:divide-slate-800">
+            <!-- Dynamically injected rows -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button onclick="addScoreRow('', '')" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+          <i class="fa-solid fa-plus text-indigo-500"></i> Add User
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="clearAllScores()" class="px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors cursor-pointer">Clear All</button>
+          <button onclick="saveAndApplyScores()" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer shadow">Save & Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Modal -->
   <div id="privacy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div onclick="togglePrivacyModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
     <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-3">
@@ -270,6 +349,7 @@
     </div>
   </div>
 
+  <!-- Favorites Drawer -->
   <div id="favorites-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
     <div id="drawer-backdrop" onclick="toggleFavoritesDrawer(false)" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
     <div id="drawer-content" class="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out pointer-events-auto border-l border-slate-200 dark:border-slate-800">
@@ -1504,7 +1584,7 @@
         "137. What role do deep-earth microbiological communities play in global geochemical cycles?",
         "138. How will machine learning algorithms improve weather radar precipitation nowcasting?",
         "139. What are the engineering hurdles of developing reusable heavy-lift orbital rocket stages?",
-        "140. How might synthetic RNA vaccines expand beyond infectious diseases into oncology?",
+        "140. What is the potential of synthetic RNA vaccines expand beyond infectious diseases into oncology?",
         "141. What role will advanced flywheels play in short-term grid frequency stabilization?",
         "142. How will smart wearable textiles monitor cardiovascular health during daily routines?",
         "143. What are the implications of utilizing asteroid resources for in-space manufacturing?",
@@ -1697,6 +1777,13 @@
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
 
+    // Leaderboard session state
+    var sessionScores = JSON.parse(localStorage.getItem("nellieb_scores") || JSON.stringify([
+      { name: "Zach", points: 150 },
+      { name: "Nelly", points: 240 },
+      { name: "Rick", points: 300 }
+    ]));
+
     var categoryPointers = {};
     Object.keys(QUESTION_BANKS).forEach(function(cat) {
       categoryPointers[cat] = 0;
@@ -1825,9 +1912,7 @@
     }
 
     function handleCardTap(e, index) {
-      if (e.target.closest("button") || e.target.closest("a")) {
-        return;
-      }
+      if (e.target.closest("button") || e.target.closest("a")) return;
       refreshCardAtIndex(index);
     }
 
@@ -1848,9 +1933,7 @@
         return;
       }
 
-      cardEls.forEach(function(el) {
-        el.classList.add("card-flipping");
-      });
+      cardEls.forEach(function(el) { el.classList.add("card-flipping"); });
 
       setTimeout(function() {
         dataUpdateFn();
@@ -1877,7 +1960,6 @@
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             
-            /* Top Section: Category pill centered, Action icons on right */
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
               '<div></div>' +
               '<div class="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none">' +
@@ -1892,21 +1974,17 @@
               '</div>' +
             '</div>' +
 
-            /* Horizontal Divider (100% Transparent) */
             '<div class="w-full h-[1px] bg-transparent my-1"></div>' +
 
-            /* Static Text Subheader */
             '<div class="w-full text-center my-0.5 h-6 flex items-center justify-center">' +
               '<span class="text-xs font-extrabold tracking-tight opacity-70">Click or Tap to Change</span>' +
             '</div>' +
 
-            /* Middle Section: Question text */
             '<div class="my-1 flex-grow flex items-center justify-center flex-col">' +
               '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
               followModelFooterHelper(cardCountView) +
             '</div>' +
 
-            /* Bottom Section: Avatar tucked closer to bottom */
             '<div class="mt-2 pt-1 border-t border-transparent flex items-center justify-between gap-2 relative h-10">' +
               '<div></div>' +
               characterElementMarkup +
@@ -1926,6 +2004,115 @@
         '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
       '</div>';
     }
+
+    // --- LEADERBOARD & SESSION SCORES LOGIC ---
+
+    function toggleScoresModal(open) {
+      var modal = document.getElementById("scores-modal");
+      if (!modal) return;
+      if (open) {
+        populateScoresTable();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function populateScoresTable() {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+
+      if (sessionScores.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">No users added yet. Click "Add User" below!</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = sessionScores.map(function(item, idx) {
+        return '<tr class="score-row">' +
+          '<td class="p-2"><input type="text" value="' + escapeQuotes(item.name) + '" placeholder="Username" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2"><input type="number" value="' + item.points + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="Remove"><i class="fa-solid fa-trash-can text-xs"></i></button></td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    function addScoreRow(name, points) {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+
+      if (tbody.querySelector("tr td[colspan]")) {
+        tbody.innerHTML = "";
+      }
+
+      var tr = document.createElement("tr");
+      tr.className = "score-row";
+      tr.innerHTML = '<td class="p-2"><input type="text" value="' + escapeQuotes(name || "") + '" placeholder="Username" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2"><input type="number" value="' + (points !== undefined ? points : 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="Remove"><i class="fa-solid fa-trash-can text-xs"></i></button></td>';
+      tbody.appendChild(tr);
+    }
+
+    function removeScoreRow(btn) {
+      var row = btn.closest("tr");
+      if (row) row.remove();
+    }
+
+    function clearAllScores() {
+      sessionScores = [];
+      localStorage.removeItem("nellieb_scores");
+      populateScoresTable();
+      renderLeaderboardTicker();
+      showToast("Cleared leaderboard scores", "info");
+    }
+
+    function saveAndApplyScores() {
+      var rows = document.querySelectorAll("#scores-table-body .score-row");
+      var updated = [];
+
+      rows.forEach(function(row) {
+        var nameInput = row.querySelector(".score-name");
+        var ptsInput = row.querySelector(".score-pts");
+        if (nameInput && ptsInput) {
+          var name = nameInput.value.trim();
+          var points = parseInt(ptsInput.value) || 0;
+          if (name !== "") {
+            updated.push({ name: name, points: points });
+          }
+        }
+      });
+
+      sessionScores = updated;
+      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+      
+      renderLeaderboardTicker();
+      toggleScoresModal(false);
+      showToast("Leaderboard updated successfully!", "success");
+    }
+
+    function renderLeaderboardTicker() {
+      var ticker = document.getElementById("leaderboard-ticker");
+      if (!ticker) return;
+
+      var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 10);
+
+      if (sorted.length === 0) {
+        ticker.innerHTML = '<span class="text-slate-400 italic">No leaderboard scores entered yet. Click "Scores" to add session users!</span>';
+        return;
+      }
+
+      var itemsHtml = sorted.map(function(item, idx) {
+        var rankMedal = idx === 0 ? "🥇" : (idx === 1 ? "🥈" : (idx === 2 ? "🥉" : "#" + (idx + 1)));
+        return '<div class="flex items-center gap-2 bg-slate-800/80 dark:bg-slate-950/80 border border-slate-700/60 px-3 py-1 rounded-lg shrink-0 shadow-sm">' +
+          '<span class="text-amber-400 font-extrabold">' + rankMedal + '</span>' +
+          '<span class="text-white font-bold">' + escapeHtml(item.name) + '</span>' +
+          '<span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-md font-extrabold">' + item.points + ' pts</span>' +
+        '</div>';
+      });
+
+      ticker.innerHTML = itemsHtml.concat(itemsHtml).join("");
+    }
+
+    // --- FAVORITES & UTILS ---
 
     function toggleFavorite(topicId, cardIndex) {
       var topic = currentTopics[cardIndex];
@@ -2025,20 +2212,15 @@
         drawer.classList.remove("opacity-100");
         drawer.classList.add("opacity-0");
         content.classList.add("translate-x-full");
-        setTimeout(function() { 
-          drawer.classList.add("pointer-events-none"); 
-        }, 300);
+        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
       }
     }
 
     function togglePrivacyModal(open) {
       var modal = document.getElementById("privacy-modal");
       if (!modal) return;
-      if (open) {
-        modal.classList.remove("hidden");
-      } else {
-        modal.classList.add("hidden");
-      }
+      if (open) modal.classList.remove("hidden");
+      else modal.classList.add("hidden");
     }
 
     function copyTopicText(text) {
@@ -2076,9 +2258,7 @@
       toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + message + "</span>";
 
       container.appendChild(toast);
-      requestAnimationFrame(function() {
-        toast.classList.remove("translate-x-6", "opacity-0");
-      });
+      requestAnimationFrame(function() { toast.classList.remove("translate-x-6", "opacity-0"); });
 
       setTimeout(function() {
         toast.classList.add("translate-x-6", "opacity-0");
@@ -2086,12 +2266,14 @@
       }, 2500);
     }
 
-    function resetToInitial() {
-      selectPreset("all");
-    }
+    function resetToInitial() { selectPreset("all"); }
 
     function escapeQuotes(str) {
       return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
     updateToggleUI();
@@ -2099,6 +2281,7 @@
     renderCategoryPills();
     generateTopics();
     updateFavoritesUI();
+    renderLeaderboardTicker();
 
     document.addEventListener("keydown", function(e) {
       if (e.code === "Space" && !["INPUT", "BUTTON", "TEXTAREA"].includes(e.target.tagName)) {
