@@ -37,7 +37,7 @@
     
     .card-container { perspective: 1000px; overflow: visible !important; }
 
-    /* RGB Chasing Neon Border Animation */
+    /* RGB Chasing Neon Border Animation (Slower speed: 8s / 7s) */
     @keyframes rgb-chase {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -66,7 +66,7 @@
       z-index: -1;
       background: linear-gradient(270deg, #ff007f, #7928ca, #00dfd8, #007cf0, #ff007f);
       background-size: 400% 400%;
-      animation: rgb-chase 4s linear infinite;
+      animation: rgb-chase 8s linear infinite;
       box-shadow: 0 0 15px rgba(255, 0, 127, 0.6), inset 0 0 10px rgba(0, 223, 216, 0.6);
     }
     
@@ -79,7 +79,7 @@
     .dark .glass-card::before {
       background: linear-gradient(270deg, #ff2a85, #8a2be2, #00f2fe, #4facfe, #ff2a85);
       background-size: 400% 400%;
-      animation: rgb-chase 3.5s linear infinite;
+      animation: rgb-chase 7s linear infinite;
       box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
     }
 
@@ -1200,8 +1200,8 @@
               '</div>' +
             '</div>' +
 
-            /* Horizontal Divider */
-            '<div class="w-full h-[1px] bg-slate-200/80 dark:bg-slate-800/80 my-1"></div>' +
+            /* Horizontal Divider (100% Transparent) */
+            '<div class="w-full h-[1px] bg-transparent my-1"></div>' +
 
             /* Tap/Click to flip hint centered directly under the divider */
             '<div class="flex items-center justify-center gap-1 text-[11px] font-semibold text-slate-400 dark:text-slate-500 my-0.5">' +
@@ -1215,7 +1215,7 @@
             '</div>' +
 
             /* Bottom Section: Avatar tucked closer to bottom */
-            '<div class="mt-2 pt-1 border-t border-slate-200/50 dark:border-slate-800/80 flex items-center justify-between gap-2 relative h-10">' +
+            '<div class="mt-2 pt-1 border-t border-transparent flex items-center justify-between gap-2 relative h-10">' +
               '<div></div>' +
               characterElementMarkup +
             '</div>' +
@@ -1381,7 +1381,6 @@
       };
 
       toast.className = "px-3.5 py-2 rounded-xl bg-slate-900/90 text-white text-xs font-semibold shadow-xl backdrop-blur border border-slate-700 flex items-center gap-2 pointer-events-auto transition-all duration-200 translate-x-6 opacity-0";
-      toast.html = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + message + "</span>";
       toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + message + "</span>";
 
       container.appendChild(toast);
