@@ -145,6 +145,25 @@
       text-shadow: none !important;
     }
 
+    /* Medium-speed smooth scrolling marquee container */
+    .marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+      position: relative;
+    }
+    .marquee-content {
+      display: inline-block;
+      animation: scroll-marquee 12s linear infinite;
+      font-family: Arial, sans-serif !important;
+      color: #000000 !important;
+      text-shadow: none !important;
+    }
+    @keyframes scroll-marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
     .custom-scroll::-webkit-scrollbar { height: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
@@ -393,7 +412,7 @@
         "102. Does an act of kindness lose its value if it is done out of a sense of strict duty rather than genuine warmth?",
         "103. Is time an objective dimension of the universe or a psychological construct created by human memory?",
         "104. Can a person be truly courageous if they have never experienced deep, paralyzing doubt?",
-        "105. Is the concept of fate Woven by the universe or forged entirely by our own choices?",
+        "105. Is the concept of fate woven by the universe or forged entirely by our own choices?",
         "106. Does true leadership mean standing out in front or empowering those in the back?",
         "107. Is it possible to love someone completely without ever fully understanding them?",
         "108. Can a philosophy be considered successful if it only works in theory but fails in daily practice?",
@@ -417,7 +436,7 @@
         "126. Does an individual have a moral duty to rebel against unjust laws?",
         "127. Is beauty in nature superior to beauty created by human hands?",
         "128. Can silence ever be interpreted as a form of communication just as powerful as words?",
-        "129. Is patience a virtue that solves problems or a passive acceptance of stagnation?",
+        "129. Is patience a form of passive endurance or an active, disciplined strength?",
         "130. Does wealth amplify a person's true nature or distort it beyond recognition?",
         "131. Is compromise a noble sign of maturity or a cowardly dilution of core principles?",
         "132. Can a society achieve true innovation without embracing elements of chaos and risk?",
@@ -712,7 +731,7 @@
         "117. What is the most amusingly useless invention you would pitch on a late-night infomercial?",
         "118. If you could summon a mild breeze to blow your hair dramatically indoors, how often would you use it?",
         "119. What is the funniest autocorrect mishap that completely changed the meaning of a text?",
-        "120. If you had to wear a neon neon-green wig every April Fool's Day, how would you style it?",
+        "120. If you had to wear a neon green wig every April Fool's Day, how would you style it?",
         "121. What is the most absurd prize you would want to win at a local county fair?",
         "122. If your refrigerator could judge your midnight snacking choices out loud, what would it say?",
         "123. What is the strangest place you've ever fallen asleep upright?",
@@ -845,7 +864,7 @@
         "98. How are modern architectural designs incorporating biophilic principles for wellness?",
         "99. What role do citizen science projects play in tracking global biodiversity changes?",
         "100. How has digital archiving altered the way historians preserve contemporary culture?",
-        "101. What challenges arise when balancing open-source AI models with national security regulations?",
+        "101. What challenges challenges arise when balancing open-source AI models with national security regulations?",
         "102. How are urban planners addressing the urban heat island effect in modern metropolitan design?",
         "103. What is the cultural impact of the maker movement and DIY repair culture?",
         "104. How has the evolution of e-sports influenced traditional athletic entertainment models?",
@@ -1014,7 +1033,7 @@
         "115. Would you rather have a pocket-sized dragon or a pocket-sized phoenix?",
         "116. Would you rather live in a world with no alarm clocks or no traffic jams?",
         "117. Would you rather be able to solve any jigsaw puzzle instantly or untie any knot?",
-        "118. Would you rather always have W-Fi wherever you go or never need to charge your devices?",
+        "118. Would you rather always have Wi-Fi wherever you go or never need to charge your devices?",
         "119. Would you rather be an expert at origami or master card sharp tricks?",
         "120. Would you rather have a magical backpack that holds anything or shoes that never wear out?",
         "121. Would you rather always know when someone is about to sneeze or yawn?",
@@ -1592,14 +1611,14 @@
         "85. Did you know that a group of porcupines is officially known as a prickle?",
         "86. Did you know that the Eiffel Tower grows taller during summer because thermal expansion heats up its iron structure?",
         "87. Did you know that baby elephants suck on their trunks for comfort just like human babies suck their thumbs?",
-        "88. Did you know that butterﬂies taste their food using sensory receptors located on the bottoms of their feet?",
+        "88. Did you know that butterflies taste their food using sensory receptors located on the bottoms of their feet?",
         "89. Did you know that the human nose can detect over one trillion different scents?",
         "90. Did you know that giraffes have the same number of neck vertebrae as humans—exactly seven?",
         "91. Did you know that wombat teeth never stop growing throughout their entire lifetime?",
         "92. Did you know that penguins propose to their mates by presenting them with a carefully chosen pebble?",
         "93. Did you know that cats spend roughly 70% of their lives sleeping?",
         "94. Did you know that a flea can jump up to 200 times the length of its own body?",
-        "95. Did you know that starﬁsh do not have any brains or blood inside their bodies?",
+        "95. Did you know that starfish do not have any brains or blood inside their bodies?",
         "96. Did you know that ancient Egyptians slept on pillows made of solid stone?",
         "97. Did you know that Wawa started as an iron foundry before opening its first milk market in Pennsylvania?",
         "98. Did you know that polar bear fur is actually transparent rather than white, reflecting light to appear snowy?",
@@ -1685,7 +1704,6 @@
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
 
-    // Session-based sequential pointers per category
     var categoryPointers = {};
     Object.keys(QUESTION_BANKS).forEach(function(cat) {
       categoryPointers[cat] = 0;
@@ -1729,7 +1747,6 @@
       var pointer = categoryPointers[category] || 0;
       var text = questionsList[pointer];
       
-      // Advance pointer sequentially, looping back if it reaches 150
       categoryPointers[category] = (pointer + 1) % questionsList.length;
 
       var topic = {
@@ -1885,9 +1902,9 @@
             /* Horizontal Divider (100% Transparent) */
             '<div class="w-full h-[1px] bg-transparent my-1"></div>' +
 
-            /* Tap/Click to flip hint centered directly under the divider */
-            '<div class="flex items-center justify-center gap-1 text-[11px] font-semibold text-slate-400 dark:text-slate-500 my-0.5">' +
-              '<i class="fa-solid fa-lightbulb text-[10px] text-amber-400"></i> Tap or click card to flip' +
+            /* Bottom Divider Scrolling Marquee Container (Triggers every 30 seconds) */
+            '<div class="marquee-container my-0.5 h-6 flex items-center">' +
+              '<div id="marquee-el-' + index + '" class="marquee-content text-xs font-extrabold tracking-tight" style="animation-play-state: paused; opacity: 0;">Topics.FrrFrrr.Com</div>' +
             '</div>' +
 
             /* Middle Section: Question text */
@@ -1907,6 +1924,28 @@
       }).join("");
 
       grid.innerHTML = cardsHtml;
+      triggerMarqueeLoop();
+    }
+
+    function triggerMarqueeLoop() {
+      // Trigger marquee animation immediately on render, then repeat every 30 seconds
+      runMarqueeCycle();
+      if (window.marqueeInterval) clearInterval(window.marqueeInterval);
+      window.marqueeInterval = setInterval(runMarqueeCycle, 30000);
+    }
+
+    function runMarqueeCycle() {
+      for (var i = 0; i < cardCountView; i++) {
+        var el = document.getElementById("marquee-el-" + i);
+        if (el) {
+          el.style.opacity = "1";
+          el.style.animationPlayState = "running";
+          // Reset animation by cloning or restarting
+          el.style.animation = 'none';
+          el.offsetHeight; /* trigger reflow */
+          el.style.animation = 'scroll-marquee 12s linear forwards';
+        }
+      }
     }
 
     function followModelFooterHelper(viewCount) {
