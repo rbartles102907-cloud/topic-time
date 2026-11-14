@@ -140,7 +140,7 @@
       line-height: 1.6;
       font-weight: 500;
       margin-bottom: 1.5rem;
-      /* Bottom line completely removed */
+      /* Bottom divider line removed */
     }
 
     .card-footer {
@@ -243,7 +243,7 @@
 
   <header>
     <h1>Nellie B – Topic Time</h1>
-    <div class="sub-title">Let's chat it up! [🔍 [Go to My TikTok](https://www.tiktok.com/@nellie.b5)]</div>
+    <div class="sub-title">Let's chat it up! [🔍 <a href="url?id=5">[Go to My TikTok]</a>]</div>
   </header>
 
   <div class="container" id="cardContainer">
@@ -282,8 +282,7 @@
         "What legacy do you hope to leave behind for the people who know you best?",
         "What is something you wish more people understood about your perspective?",
         "How do you typically handle moments of profound uncertainty or unexpected change?",
-        "What is a question you wish people asked you more often?",
-        // Expanded array logic handles up to 150 unique prompts seamlessly
+        "What is a question you wish people asked you more often?"
       ],
       "Did You Know?": [
         "Did you know that rainy days smell the way they do because of petrichor, an oily compound released by soil dwelling bacteria and plants?",
@@ -300,7 +299,7 @@
         "Did you know that octopuses have three hearts and blue blood?",
         "Did you know that lightning strikes the Earth about one hundred times every single second?",
         "Did you know that newborn babies do not shed tears when they cry for the first few weeks?",
-        "Did you know that tree bark was used as a primary ingredient in ancient chewing gums?",
+        "Did you know that tree bark was used as a primary ingredient in ancient chewing gums?"
       ],
       "Personal Stories": [
         "What was the most hilarious miscommunication you experienced during a family road trip?",
@@ -338,7 +337,7 @@
       ]
     };
 
-    // Auto-fill remaining items up to 150 for any category array to ensure clean 1-150 counting
+    // Auto-fill remaining items up to 150 for each category array to ensure clean 1-150 numbering
     Object.keys(topicDatabase).forEach(cat => {
       while (topicDatabase[cat].length < 150) {
         const index = topicDatabase[cat].length + 1;
