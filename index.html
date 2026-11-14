@@ -157,25 +157,6 @@
       text-shadow: none !important;
     }
 
-    /* Medium-speed smooth scrolling marquee container */
-    .marquee-container {
-      overflow: hidden;
-      white-space: nowrap;
-      width: 100%;
-      position: relative;
-    }
-    .marquee-content {
-      display: inline-block;
-      animation: scroll-marquee 12s linear infinite;
-      font-family: Arial, sans-serif !important;
-      color: #000000 !important;
-      text-shadow: none !important;
-    }
-    @keyframes scroll-marquee {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
     .custom-scroll::-webkit-scrollbar { height: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
@@ -841,7 +822,7 @@
         "63. How are cities redesigning public infrastructure to encourage active transportation?",
         "64. What is the impact of algorithmic pricing on everyday consumer goods and travel?",
         "65. How has the democratization of financial trading apps changed individual investing habits?",
-        "66. What measures are being taken to protect indigenous languages from digital extinction?",
+        "66. What measures are being taken to preserve indigenous languages from digital extinction?",
         "67. How is the expansion of remote work affecting commercial real estate markets?",
         "68. What is the cultural footprint of the global shift toward plant-based dining alternatives?",
         "69. How are universities adapting curricula for jobs that do not yet exist?",
@@ -899,7 +880,7 @@
         "121. What challenges do public transit systems face in regaining pre-pandemic ridership?",
         "122. How are cities redesigning waterfront areas to protect against rising sea levels?",
         "123. What is the impact of instant feedback culture on creative arts and filmmaking?",
-        "124. How are agricultural innovators utilizing vertical farming to conserve fresh water?",
+        "124. What are agricultural innovators utilizing vertical farming to conserve fresh water?",
         "125. What role do regional food hubs play in supporting local family farms?",
         "126. How has the expansion of broadband internet access reshaped rural education?",
         "127. What are the implications of algorithmic copyright enforcement on digital creators?",
@@ -909,7 +890,7 @@
         "131. What challenges face international cooperation in regulating deep-space commercialization?",
         "132. How has the rise of electric delivery fleets changed overnight urban logistics?",
         "133. What role do community land trusts play in mitigating housing displacement?",
-        "134. How are smart home energy systems helping consumers lower utility footprints?",
+        "134. What are smart home energy systems helping consumers lower utility footprints?",
         "135. What is the impact of social media curation on modern travel destination popularity?",
         "136. How are educational institutions adapting to teach ethics alongside AI engineering?",
         "137. What challenges do local newspapers face in transitioning to sustainable digital models?",
@@ -917,15 +898,15 @@
         "139. What role do micro-credentials play in modern professional skill development?",
         "140. How has the growth of peer-to-peer rental platforms impacted traditional housing markets?",
         "141. What are the cybersecurity implications of connecting municipal utilities to IoT networks?",
-        "142. How are modern office spaces evolving to encourage hybrid team collaboration?",
+        "142. What are modern office spaces evolving to encourage hybrid team collaboration?",
         "143. What is the impact of rapid delivery apps on local retail inventory management?",
-        "144. How are cultural preservationists utilizing 3D scanning to document endangered artifacts?",
+        "144. What are cultural preservationists utilizing 3D scanning to document endangered artifacts?",
         "145. What role do green bonds play in financing municipal sustainability initiatives?",
         "146. How has the expansion of remote learning influenced student equity in education?",
         "147. What challenges do cities face in managing electric vehicle charging infrastructure?",
-        "148. How are modern music festivals improving sustainability and waste reduction?",
+        "148. What are modern music festivals improving sustainability and waste reduction?",
         "149. What is the impact of automated translation tools on global business negotiation?",
-        "150. How are communities fostering intergenerational connections through shared public spaces?"
+        "150. What are communities fostering intergenerational connections through shared public spaces?"
       ],
       "Would You Rather": [
         "1. Would you rather always know exactly when someone is stretching the truth or always be able to guess what song is stuck in their head?",
@@ -1492,7 +1473,7 @@
         "106. How might lab-grown leather and textiles disrupt traditional manufacturing supply chains?",
         "107. What role do airborne wind turbine kites play in harnessing high-altitude jet streams?",
         "108. How will advanced seismic imaging improve our understanding of Earth's inner core?",
-        "109. What are the implications of using shape-memory alloys in aerospace engineering?",
+        "109. What are the implications of utilizing shape-memory alloys in aerospace engineering?",
         "110. How might micro-robots revolutionize targeted drug delivery within human blood vessels?",
         "111. What role do biological nitrogen-fixing crops play in reducing synthetic fertilizer dependence?",
         "112. How will optical fiber innovations continue to expand global internet bandwidth capacity?",
@@ -1914,9 +1895,9 @@
             /* Horizontal Divider (100% Transparent) */
             '<div class="w-full h-[1px] bg-transparent my-1"></div>' +
 
-            /* Bottom Divider Scrolling Marquee Container (Triggers every 30 seconds) */
-            '<div class="marquee-container my-0.5 h-6 flex items-center">' +
-              '<div id="marquee-el-' + index + '" class="marquee-content text-xs font-extrabold tracking-tight" style="animation-play-state: paused; opacity: 0;">Topics.FrrFrrr.Com</div>' +
+            /* Static Text Subheader */
+            '<div class="w-full text-center my-0.5 h-6 flex items-center justify-center">' +
+              '<span class="text-xs font-extrabold tracking-tight opacity-70">Click or Tap to Change</span>' +
             '</div>' +
 
             /* Middle Section: Question text */
@@ -1936,26 +1917,6 @@
       }).join("");
 
       grid.innerHTML = cardsHtml;
-      triggerMarqueeLoop();
-    }
-
-    function triggerMarqueeLoop() {
-      runMarqueeCycle();
-      if (window.marqueeInterval) clearInterval(window.marqueeInterval);
-      window.marqueeInterval = setInterval(runMarqueeCycle, 30000);
-    }
-
-    function runMarqueeCycle() {
-      for (var i = 0; i < cardCountView; i++) {
-        var el = document.getElementById("marquee-el-" + i);
-        if (el) {
-          el.style.opacity = "1";
-          el.style.animationPlayState = "running";
-          el.style.animation = 'none';
-          el.offsetHeight; /* trigger reflow */
-          el.style.animation = 'scroll-marquee 12s linear forwards';
-        }
-      }
     }
 
     function followModelFooterHelper(viewCount) {
