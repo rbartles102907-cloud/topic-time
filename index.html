@@ -37,7 +37,7 @@
     
     .card-container { perspective: 1000px; overflow: visible !important; }
 
-    /* RGB Chasing Neon Border Animation (Slower speed: 8s / 7s) */
+    /* RGB Chasing Neon Border Animation */
     @keyframes rgb-chase {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -83,18 +83,12 @@
       box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
     }
 
-    .glass-card:hover {
-      box-shadow: 0 0 30px rgba(236, 72, 153, 0.8), 0 0 60px rgba(56, 189, 248, 0.7), 0 0 90px rgba(168, 85, 247, 0.6), 0 15px 40px rgba(0, 0, 0, 0.6);
-    }
-
     @keyframes flip-right-to-left {
       0% { transform: rotateY(0deg) scale(1); }
       50% { transform: rotateY(-90deg) scale(0.92); }
       100% { transform: rotateY(-180deg) scale(1); }
     }
-    .card-flipping {
-      animation: flip-right-to-left 0.5s ease-in-out forwards;
-    }
+    .card-flipping { animation: flip-right-to-left 0.5s ease-in-out forwards; }
 
     @keyframes char-grow-shrink {
       0%, 100% { transform: scale(1) translate(0, 0); }
@@ -175,6 +169,16 @@
     .animate-marquee:hover {
       animation-play-state: paused;
     }
+
+    /* Floating floating banner effect */
+    @keyframes float-subtle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+    }
+    .floating-ticker-card {
+      animation: float-subtle 4s ease-in-out infinite;
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
+    }
   </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
@@ -227,8 +231,8 @@
     </div>
   </header>
 
-  <!-- Live Scrolling Leaderboard Ticker -->
-  <div class="relative z-30 w-full bg-slate-900/90 dark:bg-slate-900/95 border-b border-indigo-500/30 overflow-hidden py-1.5 shadow-inner">
+  <!-- Global Top Scrolling Leaderboard Ticker (Visible on 4-Card / Desktop view) -->
+  <div id="global-ticker-container" class="relative z-30 w-full bg-slate-900/90 dark:bg-slate-900/95 border-b border-indigo-500/30 overflow-hidden py-1.5 shadow-inner">
     <div class="flex items-center">
       <div class="bg-indigo-600 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1 shadow-md">
         <i class="fa-solid fa-crown text-yellow-300"></i> Top Streamers
@@ -264,7 +268,26 @@
       <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1 px-0.5 text-xs font-medium"></div>
     </div>
 
-    <div id="topics-grid" class="my-auto flex-grow flex items-center justify-center w-full py-1"></div>
+    <!-- Topics Grid & Single Card Container Area -->
+    <div class="w-full flex flex-col items-center justify-center my-auto flex-grow">
+      <div id="topics-grid" class="w-full py-1"></div>
+      
+      <!-- Floating Banner Ticker (Appears only on Single Card view just beneath the card) -->
+      <div id="single-card-floating-ticker" class="hidden w-full max-w-2xl mx-auto mt-3">
+        <div class="floating-ticker-card bg-slate-900/90 dark:bg-slate-900/95 border border-indigo-500/40 rounded-xl overflow-hidden py-2 px-1 shadow-2xl backdrop-blur-md">
+          <div class="flex items-center">
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg z-10 shrink-0 flex items-center gap-1 shadow">
+              <i class="fa-solid fa-crown text-yellow-300"></i> Live Scores
+            </div>
+            <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
+              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-5 text-xs font-bold text-slate-200">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="shrink-0 pt-1 pb-1 flex flex-col items-center justify-center gap-1">
       <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
@@ -1566,7 +1589,7 @@
         "119. What are the challenges of maintaining stable magnetic fields in fusion test reactors?",
         "120. How will wearable hydration sensors monitor athletic performance and health in real time?",
         "121. What role do autonomous underwater gliders play in long-term oceanographic surveys?",
-        "122. How might biological computers utilizing human brain cell cultures change processing paradigms?",
+        "122. What are biological computers utilizing human brain cell cultures change processing paradigms?",
         "123. What are the implications of deploying orbital solar power stations beaming energy wirelessly?",
         "124. How will advanced composting enzymes accelerate municipal organic waste recycling?",
         "125. What is the potential of perovskite solar cells in surpassing traditional silicon efficiency?",
@@ -1803,6 +1826,8 @@
       var badge = document.getElementById("generate-btn-badge");
       var btnText = document.getElementById("generate-btn-text");
       var mainArea = document.getElementById("main-content-area");
+      var globalTicker = document.getElementById("global-ticker-container");
+      var floatingTicker = document.getElementById("single-card-floating-ticker");
 
       if (cardCountView === 1) {
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
@@ -1810,12 +1835,20 @@
         if (badge) badge.innerText = "1 Card";
         if (btnText) btnText.innerText = "Generate Random Topic";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-0.5 sm:py-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
+        
+        // Hide global header ticker and show floating banner under the single card view
+        if (globalTicker) globalTicker.classList.add("hidden");
+        if (floatingTicker) floatingTicker.classList.remove("hidden");
       } else {
         btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
         if (badge) badge.innerText = "4 Cards";
         if (btnText) btnText.innerText = "Generate 4 Random Topics";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden";
+        
+        // Show global header ticker and hide floating banner for 4-card mode
+        if (globalTicker) globalTicker.classList.remove("hidden");
+        if (floatingTicker) floatingTicker.classList.add("hidden");
       }
     }
 
@@ -1946,9 +1979,9 @@
       if (!grid) return;
       
       if (cardCountView === 1) {
-        grid.className = "my-auto flex-grow flex items-center justify-center w-full max-w-2xl mx-auto py-1";
+        grid.className = "w-full max-w-2xl mx-auto py-1";
       } else {
-        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 my-auto flex-grow items-center w-full py-2";
+        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-2";
       }
 
       var cardsHtml = currentTopics.map(function(topic, index) {
@@ -2091,12 +2124,14 @@
 
     function renderLeaderboardTicker() {
       var ticker = document.getElementById("leaderboard-ticker");
-      if (!ticker) return;
+      var floatingTicker = document.getElementById("floating-leaderboard-ticker");
 
       var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 10);
 
       if (sorted.length === 0) {
-        ticker.innerHTML = '<span class="text-slate-400 italic">No leaderboard scores entered yet. Click "Scores" to add session users!</span>';
+        var emptyHtml = '<span class="text-slate-400 italic">No leaderboard scores entered yet. Click "Scores" to add session users!</span>';
+        if (ticker) ticker.innerHTML = emptyHtml;
+        if (floatingTicker) floatingTicker.innerHTML = emptyHtml;
         return;
       }
 
@@ -2109,7 +2144,9 @@
         '</div>';
       });
 
-      ticker.innerHTML = itemsHtml.concat(itemsHtml).join("");
+      var duplicatedHtml = itemsHtml.concat(itemsHtml).join("");
+      if (ticker) ticker.innerHTML = duplicatedHtml;
+      if (floatingTicker) floatingTicker.innerHTML = duplicatedHtml;
     }
 
     // --- FAVORITES & UTILS ---
