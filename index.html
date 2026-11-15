@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
     .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
@@ -164,7 +164,7 @@
     .animate-marquee {
       display: flex;
       width: max-content;
-      animation: marquee 25s linear infinite;
+      animation: marquee 22s linear infinite;
     }
     .animate-marquee:hover {
       animation-play-state: paused;
@@ -178,6 +178,111 @@
     .floating-ticker-card {
       animation: float-subtle 4s ease-in-out infinite;
       box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
+    }
+
+    /* Metallic Shimmer & Podium Pole Position Effects */
+    @keyframes metallic-shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes trophy-pulse {
+      0%, 100% { transform: scale(1) rotate(-3deg); }
+      50% { transform: scale(1.16) rotate(4deg); }
+    }
+
+    .trophy-animate {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      animation: trophy-pulse 2.2s ease-in-out infinite;
+    }
+
+    /* 1st Place - 24K Liquid Gold Metallic Foil */
+    .pts-gold {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(
+        110deg,
+        #b47800 0%,
+        #f59e0b 20%,
+        #fef08a 42%,
+        #ffffff 50%,
+        #fef08a 58%,
+        #eab308 80%,
+        #92400e 100%
+      );
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 2.8s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.75)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-gold-glow {
+      border: 1.5px solid rgba(250, 204, 21, 0.85) !important;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.45), inset 0 0 12px rgba(250, 204, 21, 0.2) !important;
+      background: linear-gradient(135deg, rgba(45, 32, 6, 0.95), rgba(15, 23, 42, 0.96)) !important;
+    }
+
+    /* 2nd Place - Sterling Platinum/Silver Metallic Foil */
+    .pts-silver {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(
+        110deg,
+        #64748b 0%,
+        #cbd5e1 22%,
+        #f8fafc 44%,
+        #ffffff 50%,
+        #e2e8f0 58%,
+        #94a3b8 80%,
+        #475569 100%
+      );
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 3.2s linear infinite;
+      filter: drop-shadow(0 0 8px rgba(226, 232, 240, 0.65)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-silver-glow {
+      border: 1.5px solid rgba(203, 213, 225, 0.75) !important;
+      box-shadow: 0 0 14px rgba(203, 213, 225, 0.35), inset 0 0 10px rgba(226, 232, 240, 0.15) !important;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.96)) !important;
+    }
+
+    /* 3rd Place - Burnished Royal Bronze/Copper Metallic Foil */
+    .pts-bronze {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(
+        110deg,
+        #7c2d12 0%,
+        #c2410c 22%,
+        #fdba74 44%,
+        #ffedd5 50%,
+        #fb923c 58%,
+        #9a3412 80%,
+        #431407 100%
+      );
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 3.6s linear infinite;
+      filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-bronze-glow {
+      border: 1.5px solid rgba(234, 88, 12, 0.75) !important;
+      box-shadow: 0 0 14px rgba(234, 88, 12, 0.35), inset 0 0 10px rgba(251, 146, 60, 0.15) !important;
+      background: linear-gradient(135deg, rgba(42, 20, 10, 0.95), rgba(15, 23, 42, 0.96)) !important;
     }
   </style>
 </head>
@@ -234,8 +339,8 @@
   <!-- Global Top Scrolling Leaderboard Ticker (Visible on 4-Card / Desktop view) -->
   <div id="global-ticker-container" class="relative z-30 w-full bg-slate-900/90 dark:bg-slate-900/95 border-b border-indigo-500/30 overflow-hidden py-1.5 shadow-inner">
     <div class="flex items-center">
-      <div class="bg-indigo-600 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1 shadow-md">
-        <i class="fa-solid fa-crown text-yellow-300"></i> Top Streamers
+      <div class="bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1.5 shadow-md">
+        <i class="fa-solid fa-crown text-slate-950"></i> TOP 3 PODIUM
       </div>
       <div class="overflow-hidden whitespace-nowrap flex-grow relative">
         <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-xs font-bold text-slate-200">
@@ -274,14 +379,14 @@
       
       <!-- Floating Banner Ticker (Appears only on Single Card view just beneath the card) -->
       <div id="single-card-floating-ticker" class="hidden w-full max-w-2xl mx-auto mt-3">
-        <div class="floating-ticker-card bg-slate-900/90 dark:bg-slate-900/95 border border-indigo-500/40 rounded-xl overflow-hidden py-2 px-1 shadow-2xl backdrop-blur-md">
+        <div class="floating-ticker-card bg-slate-950/95 border border-amber-500/40 rounded-2xl overflow-hidden py-2 px-1.5 shadow-2xl backdrop-blur-md">
           <div class="flex items-center">
-            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg z-10 shrink-0 flex items-center gap-1 shadow">
-              <i class="fa-solid fa-crown text-yellow-300"></i> LIVE SCORES
+            <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-xl z-10 shrink-0 flex items-center gap-1 shadow-md">
+              <i class="fa-solid fa-crown"></i> TOP 3
             </div>
             <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
-              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-8 text-lg sm:text-2xl font-extrabold text-white">
-                <!-- Dynamically populated with name color rules: 1st Gold, 2nd Silver, 3rd Bronze, rest White -->
+              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-lg sm:text-2xl font-extrabold text-white">
+                <!-- Dynamically populated with Top 3 Podium only, white names, custom SVG trophies, and 24K Gold / Sterling Silver / Royal Bronze metallic points -->
               </div>
             </div>
           </div>
@@ -320,7 +425,7 @@
       </div>
 
       <p class="text-xs text-slate-500 dark:text-slate-400">
-        Enter user names and their session points below. Changes instantly update the bottom scrolling ticker!
+        Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!
       </p>
 
       <!-- Score Table Editor -->
@@ -2130,48 +2235,142 @@
       showToast("Leaderboard updated successfully!", "success");
     }
 
+    // Custom Fancy Bespoke SVG Trophies for 1st (24K Gold Crown Cup), 2nd (Sterling Silver Winged Chalice), 3rd (Burnished Bronze Star Shield)
+    function getFancyTrophySvg(idx, sizeClass) {
+      if (idx === 0) {
+        // 1st Place: 24K Gold Grand Championship Crown & Laurel Cup
+        return '<span class="trophy-animate shrink-0" title="1st Place - Pole Position">' +
+          '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs>' +
+              '<linearGradient id="goldGrad" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#FFFBEB"/>' +
+                '<stop offset="28%" stop-color="#FDE047"/>' +
+                '<stop offset="65%" stop-color="#EAB308"/>' +
+                '<stop offset="100%" stop-color="#92400E"/>' +
+              '</linearGradient>' +
+              '<linearGradient id="goldRim" x1="16" y1="14" x2="48" y2="38" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#FEF08A"/>' +
+                '<stop offset="100%" stop-color="#B45309"/>' +
+              '</linearGradient>' +
+            '</defs>' +
+            '<!-- Floating Crown -->' +
+            '<path d="M22 12L26 6L32 10L38 6L42 12H22Z" fill="url(#goldGrad)" stroke="#FEF08A" stroke-width="1"/>' +
+            '<!-- Ornate Handles -->' +
+            '<path d="M18 18H11C8.5 18 7 20 7.5 23C8.5 29 13 33 19 34" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<path d="M46 18H53C55.5 18 57 20 56.5 23C55.5 29 51 33 45 34" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<!-- Main Championship Chalice -->' +
+            '<path d="M17 15H47V26C47 35.5 40.3 42 32 42C23.7 42 17 35.5 17 26V15Z" fill="url(#goldGrad)" stroke="url(#goldRim)" stroke-width="1.5"/>' +
+            '<!-- Center Diamond Crest -->' +
+            '<polygon points="32,20 36,26 32,32 28,26" fill="#FFFFFF" opacity="0.9"/>' +
+            '<!-- Stem & Pedestal -->' +
+            '<path d="M28 42H36L38 50H26L28 42Z" fill="url(#goldGrad)"/>' +
+            '<rect x="20" y="50" width="24" height="5" rx="2" fill="url(#goldGrad)" stroke="#FEF08A" stroke-width="1"/>' +
+            '<rect x="17" y="55" width="30" height="4" rx="1.5" fill="#78350F"/>' +
+            '<!-- Sparkles -->' +
+            '<circle cx="12" cy="11" r="1.8" fill="#FEF08A"/>' +
+            '<circle cx="52" cy="10" r="1.5" fill="#FFFFFF"/>' +
+          '</svg>' +
+        '</span>';
+      } else if (idx === 1) {
+        // 2nd Place: Sterling Platinum Winged Silver Chalice
+        return '<span class="trophy-animate shrink-0" style="animation-delay: 0.3s;" title="2nd Place - Silver Podium">' +
+          '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs>' +
+              '<linearGradient id="silverGrad" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#FFFFFF"/>' +
+                '<stop offset="35%" stop-color="#E2E8F0"/>' +
+                '<stop offset="70%" stop-color="#94A3B8"/>' +
+                '<stop offset="100%" stop-color="#475569"/>' +
+              '</linearGradient>' +
+            '</defs>' +
+            '<!-- Winged Handles -->' +
+            '<path d="M18 19C12 17 7 19 6 23C9 24 12 25 14 27C10 27 8 28 7 30C11 32 16 32 20 31" fill="url(#silverGrad)"/>' +
+            '<path d="M46 19C52 17 57 19 58 23C55 24 52 25 50 27C54 27 56 28 57 30C53 32 48 32 44 31" fill="url(#silverGrad)"/>' +
+            '<!-- Sleek Silver Goblet -->' +
+            '<path d="M18 15H46L43 29C41.8 36.5 37.5 41 32 41C26.5 41 22.2 36.5 21 29L18 15Z" fill="url(#silverGrad)" stroke="#F8FAFC" stroke-width="1.2"/>' +
+            '<!-- Star Emblem -->' +
+            '<path d="M32 20L33.8 24.2L38.4 24.6L34.9 27.6L36 32L32 29.6L28 32L29.1 27.6L25.6 24.6L30.2 24.2L32 20Z" fill="#38BDF8"/>' +
+            '<!-- Pedestal -->' +
+            '<rect x="29" y="41" width="6" height="9" fill="url(#silverGrad)"/>' +
+            '<rect x="21" y="50" width="22" height="5" rx="2" fill="url(#silverGrad)"/>' +
+            '<rect x="18" y="55" width="28" height="4" rx="1.5" fill="#334155"/>' +
+          '</svg>' +
+        '</span>';
+      } else {
+        // 3rd Place: Burnished Royal Bronze Crest & Shield Cup
+        return '<span class="trophy-animate shrink-0" style="animation-delay: 0.6s;" title="3rd Place - Bronze Podium">' +
+          '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs>' +
+              '<linearGradient id="bronzeGrad" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#FFEDD5"/>' +
+                '<stop offset="30%" stop-color="#FB923C"/>' +
+                '<stop offset="70%" stop-color="#C2410C"/>' +
+                '<stop offset="100%" stop-color="#431407"/>' +
+              '</linearGradient>' +
+            '</defs>' +
+            '<!-- Scroll Handles -->' +
+            '<path d="M19 19H13C10.5 19 9 21 9.5 24C10.5 29 14.5 32 20 33" stroke="url(#bronzeGrad)" stroke-width="3.2" stroke-linecap="round"/>' +
+            '<path d="M45 19H51C53.5 19 55 21 54.5 24C53.5 29 49.5 32 44 33" stroke="url(#bronzeGrad)" stroke-width="3.2" stroke-linecap="round"/>' +
+            '<!-- Royal Bronze Cup -->' +
+            '<path d="M19 16H45V27C45 35.2 39.2 41 32 41C24.8 41 19 35.2 19 27V16Z" fill="url(#bronzeGrad)" stroke="#FDBA74" stroke-width="1.2"/>' +
+            '<!-- Flame / Crest Accent -->' +
+            '<circle cx="32" cy="26" r="5" fill="#FFEDD5" opacity="0.85"/>' +
+            '<circle cx="32" cy="26" r="2.5" fill="#9A3412"/>' +
+            '<!-- Pedestal -->' +
+            '<rect x="29" y="41" width="6" height="9" fill="url(#bronzeGrad)"/>' +
+            '<rect x="21" y="50" width="22" height="5" rx="2" fill="url(#bronzeGrad)"/>' +
+            '<rect x="18" y="55" width="28" height="4" rx="1.5" fill="#431407"/>' +
+          '</svg>' +
+        '</span>';
+      }
+    }
+
     function renderLeaderboardTicker() {
       var ticker = document.getElementById("leaderboard-ticker");
       var floatingTicker = document.getElementById("floating-leaderboard-ticker");
 
-      var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; });
+      // Limit scroll strictly to the Top 3 Podium positions
+      var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 3);
 
       if (sorted.length === 0) {
-        var emptyHtml = '<span class="text-slate-400 italic">No leaderboard scores entered yet. Click "Scores" to add session users!</span>';
+        var emptyHtml = '<span class="text-slate-400 italic">No podium leaders yet. Click "Scores" to enter contenders!</span>';
         if (ticker) ticker.innerHTML = emptyHtml;
         if (floatingTicker) floatingTicker.innerHTML = emptyHtml;
         return;
       }
 
-      // Standard desktop ticker items (retains small medal icons)
+      // Desktop / 4-Card Top Bar Items
       var standardItemsHtml = sorted.map(function(item, idx) {
-        var rankMedal = idx === 0 ? "🥇" : (idx === 1 ? "🥈" : (idx === 2 ? "🥉" : "#" + (idx + 1)));
-        return '<div class="flex items-center gap-2 bg-slate-800/80 dark:bg-slate-950/80 border border-slate-700/60 px-3 py-1 rounded-lg shrink-0 shadow-sm">' +
-          '<span class="text-amber-400 font-extrabold">' + rankMedal + '</span>' +
-          '<span class="text-white font-bold">' + escapeHtml(item.name) + '</span>' +
-          '<span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-md font-extrabold">' + item.points + ' pts</span>' +
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
+        var trophySvg = getFancyTrophySvg(idx, "w-6 h-6");
+
+        return '<div class="flex items-center gap-2.5 ' + cardClass + ' px-3.5 py-1 rounded-xl shrink-0">' +
+          trophySvg +
+          '<span class="text-white font-extrabold tracking-wide">' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + ptsClass + ' text-sm">' + Number(item.points).toLocaleString() + ' PTS</span>' +
         '</div>';
       });
 
-      // Floating single-card view ticker items with specific podium font colors for names (1st Gold, 2nd Silver, 3rd Bronze, rest White)
+      // Single-Card Floating Banner Items (White names + Bespoke Trophies + Shimmering Metallic Gold/Silver/Bronze Points)
       var floatingItemsHtml = sorted.map(function(item, idx) {
-        var nameColorClass = "text-white";
-        if (idx === 0) {
-          nameColorClass = "text-yellow-400"; // Gold
-        } else if (idx === 1) {
-          nameColorClass = "text-slate-300"; // Silver
-        } else if (idx === 2) {
-          nameColorClass = "text-amber-600"; // Bronze
-        }
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
+        var trophySvg = getFancyTrophySvg(idx, "w-8 h-8 sm:w-9 sm:h-9");
 
-        return '<div class="flex items-center gap-3 bg-slate-800/90 dark:bg-slate-900/90 border border-indigo-500/50 px-4 py-1.5 rounded-xl shrink-0 shadow-md">' +
-          '<span class="' + nameColorClass + ' font-extrabold tracking-tight">' + escapeHtml(item.name) + '</span>' +
-          '<span class="text-indigo-400 font-extrabold">' + item.points + ' pts</span>' +
+        return '<div class="flex items-center gap-3 ' + cardClass + ' px-4 py-1.5 rounded-2xl shrink-0">' +
+          trophySvg +
+          '<span class="text-white font-extrabold tracking-tight">' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + ptsClass + ' text-lg sm:text-2xl">' + Number(item.points).toLocaleString() + ' PTS</span>' +
         '</div>';
       });
 
-      if (ticker) ticker.innerHTML = standardItemsHtml.concat(standardItemsHtml).join("");
-      if (floatingTicker) floatingTicker.innerHTML = floatingItemsHtml.concat(floatingItemsHtml).join("");
+      // Duplicate array smoothly for seamless continuous marquee loop
+      var loopStandard = standardItemsHtml.concat(standardItemsHtml).concat(standardItemsHtml).join("");
+      var loopFloating = floatingItemsHtml.concat(floatingItemsHtml).concat(floatingItemsHtml).join("");
+
+      if (ticker) ticker.innerHTML = loopStandard;
+      if (floatingTicker) floatingTicker.innerHTML = loopFloating;
     }
 
     // --- FAVORITES & UTILS ---
