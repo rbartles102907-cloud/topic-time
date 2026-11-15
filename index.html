@@ -281,7 +281,7 @@
             </div>
             <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
               <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-8 text-lg sm:text-2xl font-extrabold text-white">
-                <!-- Dynamically populated with large topic-question font size -->
+                <!-- Dynamically populated with name color rules: 1st Gold, 2nd Silver, 3rd Bronze, rest White -->
               </div>
             </div>
           </div>
@@ -989,7 +989,7 @@
         "127. What are the implications of algorithmic copyright enforcement on digital creators?",
         "128. How are modern museums curating exhibits to engage digitally native audiences?",
         "129. What is the future of public broadcasting in an era of ad-free subscription tiers?",
-        "130. How are urban forestry initiatives transforming neighborhood air quality indices?",
+        "130. What are urban forestry initiatives transforming neighborhood air quality indices?",
         "131. What challenges face international cooperation in regulating deep-space commercialization?",
         "132. How has the rise of electric delivery fleets changed overnight urban logistics?",
         "133. What role do community land trusts play in mitigating housing displacement?",
@@ -2143,10 +2143,19 @@
         '</div>';
       });
 
-      // Floating single-card view ticker items (ICON-FREE & MATCHING TOPIC QUESTION FONT SIZE)
-      var floatingItemsHtml = sorted.map(function(item) {
+      // Floating single-card view ticker items with specific podium font colors for names (1st Gold, 2nd Silver, 3rd Bronze, rest White)
+      var floatingItemsHtml = sorted.map(function(item, idx) {
+        var nameColorClass = "text-white";
+        if (idx === 0) {
+          nameColorClass = "text-yellow-400"; // Gold
+        } else if (idx === 1) {
+          nameColorClass = "text-slate-300"; // Silver
+        } else if (idx === 2) {
+          nameColorClass = "text-amber-600"; // Bronze
+        }
+
         return '<div class="flex items-center gap-3 bg-slate-800/90 dark:bg-slate-900/90 border border-indigo-500/50 px-4 py-1.5 rounded-xl shrink-0 shadow-md">' +
-          '<span class="text-white font-extrabold tracking-tight">' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + nameColorClass + ' font-extrabold tracking-tight">' + escapeHtml(item.name) + '</span>' +
           '<span class="text-indigo-400 font-extrabold">' + item.points + ' pts</span>' +
         '</div>';
       });
