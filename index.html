@@ -386,7 +386,7 @@
             </div>
             <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
               <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-lg sm:text-2xl font-extrabold text-white">
-                <!-- Dynamically populated with Top 3 Podium only, white names, custom SVG trophies, and 24K Gold / Sterling Silver / Royal Bronze metallic points -->
+                <!-- Dynamically populated -->
               </div>
             </div>
           </div>
@@ -2093,16 +2093,15 @@
         var isFav = favoritedTopicIds.has(topic.id);
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
 
+        var pillMarkup = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+          "<span>" + topic.category + "</span>" +
+        '</span>';
+
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
-              '<div></div>' +
-              '<div class="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none">' +
-                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
-                  "<span>" + topic.category + "</span>" +
-                '</span>' +
-              '</div>' +
+              '<div class="text-xs font-extrabold tracking-tight opacity-70">Click or Tap to Change</div>' +
               '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
                 '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
                 '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Bookmark Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
@@ -2110,18 +2109,13 @@
               '</div>' +
             '</div>' +
 
-            '<div class="w-full h-[1px] bg-transparent my-1"></div>' +
-
-            '<div class="w-full text-center my-0.5 h-6 flex items-center justify-center">' +
-              '<span class="text-xs font-extrabold tracking-tight opacity-70">Click or Tap to Change</span>' +
-            '</div>' +
-
             '<div class="my-1 flex-grow flex items-center justify-center flex-col">' +
               '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
               followModelFooterHelper(cardCountView) +
+              '<div class="mt-2 flex items-center justify-center pointer-events-none">' + pillMarkup + '</div>' +
             '</div>' +
 
-            '<div class="mt-2 pt-1 border-t border-transparent flex items-center justify-between gap-2 relative h-10">' +
+            '<div class="mt-1 flex items-center justify-between gap-2 relative h-9">' +
               '<div></div>' +
               characterElementMarkup +
             '</div>' +
@@ -2352,7 +2346,7 @@
         '</div>';
       });
 
-      // Single-Card Floating Banner Items (White names + Bespoke Trophies + Shimmering Metallic Gold/Silver/Bronze Points)
+      // Single-Card Floating Banner Items
       var floatingItemsHtml = sorted.map(function(item, idx) {
         var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
         var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
@@ -2365,7 +2359,6 @@
         '</div>';
       });
 
-      // Duplicate array smoothly for seamless continuous marquee loop
       var loopStandard = standardItemsHtml.concat(standardItemsHtml).concat(standardItemsHtml).join("");
       var loopFloating = floatingItemsHtml.concat(floatingItemsHtml).concat(floatingItemsHtml).join("");
 
