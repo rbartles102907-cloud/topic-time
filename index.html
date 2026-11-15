@@ -277,11 +277,11 @@
         <div class="floating-ticker-card bg-slate-900/90 dark:bg-slate-900/95 border border-indigo-500/40 rounded-xl overflow-hidden py-2 px-1 shadow-2xl backdrop-blur-md">
           <div class="flex items-center">
             <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg z-10 shrink-0 flex items-center gap-1 shadow">
-              <i class="fa-solid fa-crown text-yellow-300"></i> Live Scores
+              <i class="fa-solid fa-crown text-yellow-300"></i> LIVE SCORES
             </div>
             <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
-              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-5 text-xs font-bold text-slate-200">
-                <!-- Dynamically populated -->
+              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-8 text-lg sm:text-2xl font-extrabold text-white">
+                <!-- Dynamically populated with large topic-question font size -->
               </div>
             </div>
           </div>
@@ -1836,7 +1836,6 @@
         if (btnText) btnText.innerText = "Generate Random Topic";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-0.5 sm:py-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
         
-        // Hide global header ticker and show floating banner under the single card view
         if (globalTicker) globalTicker.classList.add("hidden");
         if (floatingTicker) floatingTicker.classList.remove("hidden");
       } else {
@@ -1846,7 +1845,6 @@
         if (btnText) btnText.innerText = "Generate 4 Random Topics";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden";
         
-        // Show global header ticker and hide floating banner for 4-card mode
         if (globalTicker) globalTicker.classList.remove("hidden");
         if (floatingTicker) floatingTicker.classList.add("hidden");
       }
@@ -2135,7 +2133,8 @@
         return;
       }
 
-      var itemsHtml = sorted.map(function(item, idx) {
+      // Standard desktop ticker items (retains small medal icons)
+      var standardItemsHtml = sorted.map(function(item, idx) {
         var rankMedal = idx === 0 ? "🥇" : (idx === 1 ? "🥈" : (idx === 2 ? "🥉" : "#" + (idx + 1)));
         return '<div class="flex items-center gap-2 bg-slate-800/80 dark:bg-slate-950/80 border border-slate-700/60 px-3 py-1 rounded-lg shrink-0 shadow-sm">' +
           '<span class="text-amber-400 font-extrabold">' + rankMedal + '</span>' +
@@ -2144,9 +2143,16 @@
         '</div>';
       });
 
-      var duplicatedHtml = itemsHtml.concat(itemsHtml).join("");
-      if (ticker) ticker.innerHTML = duplicatedHtml;
-      if (floatingTicker) floatingTicker.innerHTML = duplicatedHtml;
+      // Floating single-card view ticker items (ICON-FREE & MATCHING TOPIC QUESTION FONT SIZE)
+      var floatingItemsHtml = sorted.map(function(item) {
+        return '<div class="flex items-center gap-3 bg-slate-800/90 dark:bg-slate-900/90 border border-indigo-500/50 px-4 py-1.5 rounded-xl shrink-0 shadow-md">' +
+          '<span class="text-white font-extrabold tracking-tight">' + escapeHtml(item.name) + '</span>' +
+          '<span class="text-indigo-400 font-extrabold">' + item.points + ' pts</span>' +
+        '</div>';
+      });
+
+      if (ticker) ticker.innerHTML = standardItemsHtml.concat(standardItemsHtml).join("");
+      if (floatingTicker) floatingTicker.innerHTML = floatingItemsHtml.concat(floatingItemsHtml).join("");
     }
 
     // --- FAVORITES & UTILS ---
