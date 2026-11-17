@@ -12,7 +12,7 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nellie B - Topic Time</title>
+  <title>Nellie B - Chatomizer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Fredoka:wght@700&family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
     .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
@@ -109,6 +109,21 @@
       pointer-events: none;
       z-index: 25;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    }
+
+    /* Chatomizer Game Badge Logo on Bottom Left */
+    @keyframes chatomizer-bob {
+      0%, 100% { transform: rotate(-2.5deg) scale(1); }
+      50% { transform: rotate(-1deg) scale(1.03); }
+    }
+    .chatomizer-logo-badge {
+      position: absolute;
+      left: -4px;
+      bottom: -6px;
+      z-index: 25;
+      pointer-events: none;
+      animation: chatomizer-bob 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.45));
     }
 
     @keyframes flash-red-slow {
@@ -299,7 +314,7 @@
         </div>
         <div>
           <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
-            Nellie B &#8211; Topic Time
+            Nellie B &#8211; Chatomizer
           </h1>
           <p class="text-[10px] font-bold tracking-widest uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">LET&#39;S CHAT IT UP</p>
         </div>
@@ -408,7 +423,7 @@
   </main>
 
   <footer class="relative z-30 w-full py-1.5 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
-    <p>&copy; Nellie B Topic Time &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
+    <p>&copy; Nellie B Chatomizer &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
   </footer>
 
   <!-- Manage Session Scores Modal -->
@@ -1919,6 +1934,50 @@
 
     var characterElementMarkup = '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink">';
 
+    // Fun Chatomizer Arcade Speech-Bubble Game Logo (Bottom Left)
+    function getChatomizerLogoMarkup() {
+      return '<div class="chatomizer-logo-badge" title="Chatomizer Party Game">' +
+        '<svg class="w-36 h-12 sm:w-44 sm:h-14" viewBox="0 0 230 70" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<defs>' +
+            '<linearGradient id="chatBg" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
+              '<stop offset="0%" stop-color="#1E1B4B"/>' +
+              '<stop offset="50%" stop-color="#311042"/>' +
+              '<stop offset="100%" stop-color="#0F172A"/>' +
+            '</linearGradient>' +
+            '<linearGradient id="chatBorder" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
+              '<stop offset="0%" stop-color="#00F2FE"/>' +
+              '<stop offset="50%" stop-color="#FF007F"/>' +
+              '<stop offset="100%" stop-color="#FACC15"/>' +
+            '</linearGradient>' +
+            '<linearGradient id="chatTextGrad" x1="48" y1="16" x2="215" y2="48" gradientUnits="userSpaceOnUse">' +
+              '<stop offset="0%" stop-color="#FFFFFF"/>' +
+              '<stop offset="55%" stop-color="#FEF08A"/>' +
+              '<stop offset="100%" stop-color="#38BDF8"/>' +
+            '</linearGradient>' +
+          '</defs>' +
+          '<!-- Speech Bubble Badge Shape -->' +
+          '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H42L24 66L28 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
+          '<!-- Mini Neon Dice Icon -->' +
+          '<g transform="translate(14, 18) rotate(-10)">' +
+            '<rect x="2" y="2" width="24" height="24" rx="6" fill="#FF007F" stroke="#FFFFFF" stroke-width="1.8"/>' +
+            '<circle cx="9" cy="9" r="2.2" fill="#FFFFFF"/>' +
+            '<circle cx="19" cy="9" r="2.2" fill="#FFFFFF"/>' +
+            '<circle cx="14" cy="14" r="2.4" fill="#FACC15"/>' +
+            '<circle cx="9" cy="19" r="2.2" fill="#FFFFFF"/>' +
+            '<circle cx="19" cy="19" r="2.2" fill="#FFFFFF"/>' +
+          '</g>' +
+          '<!-- Sparkle Accents -->' +
+          '<path d="M210 16L211.5 19.5L215 21L211.5 22.5L210 26L208.5 22.5L205 21L208.5 19.5L210 16Z" fill="#FACC15"/>' +
+          '<circle cx="48" cy="17" r="1.6" fill="#00F2FE"/>' +
+          '<!-- CHATOMIZER Bold Arcade Title -->' +
+          '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="#090D16" stroke="#090D16" stroke-width="3.5" stroke-linejoin="round">CHATOMIZER</text>' +
+          '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="url(#chatTextGrad)">CHATOMIZER</text>' +
+          '<!-- Sub-caption -->' +
+          '<text x="50" y="50.5" font-family="\'Orbitron\', sans-serif" font-weight="800" font-size="6.8" letter-spacing="2.2" fill="#F472B6">PARTY EDITION</text>' +
+        '</svg>' +
+      '</div>';
+    }
+
     function setLayoutView(count) {
       cardCountView = count;
       updateToggleUI();
@@ -2087,6 +2146,8 @@
         grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-2";
       }
 
+      var chatomizerLogo = getChatomizerLogoMarkup();
+
       var cardsHtml = currentTopics.map(function(topic, index) {
         if (!topic) return "";
 
@@ -2115,8 +2176,8 @@
               '<div class="mt-2 flex items-center justify-center pointer-events-none">' + pillMarkup + '</div>' +
             '</div>' +
 
-            '<div class="mt-1 flex items-center justify-between gap-2 relative h-9">' +
-              '<div></div>' +
+            '<div class="mt-1 flex items-center justify-between gap-2 relative h-10">' +
+              chatomizerLogo +
               characterElementMarkup +
             '</div>' +
 
@@ -2157,7 +2218,6 @@
         return;
       }
 
-      // Sort highest to lowest points whenever the modal opens
       var sortedScores = sessionScores.slice().sort(function(a, b) {
         return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
       });
@@ -2216,7 +2276,6 @@
         }
       });
 
-      // Keep stored scores sorted in descending order
       updated.sort(function(a, b) {
         return b.points - a.points;
       });
@@ -2229,10 +2288,8 @@
       showToast("Leaderboard updated successfully!", "success");
     }
 
-    // Custom Fancy Bespoke SVG Trophies for 1st (24K Gold Crown Cup), 2nd (Sterling Silver Winged Chalice), 3rd (Burnished Bronze Star Shield)
     function getFancyTrophySvg(idx, sizeClass) {
       if (idx === 0) {
-        // 1st Place: 24K Gold Grand Championship Crown & Laurel Cup
         return '<span class="trophy-animate shrink-0" title="1st Place - Pole Position">' +
           '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
             '<defs>' +
@@ -2247,26 +2304,19 @@
                 '<stop offset="100%" stop-color="#B45309"/>' +
               '</linearGradient>' +
             '</defs>' +
-            '<!-- Floating Crown -->' +
             '<path d="M22 12L26 6L32 10L38 6L42 12H22Z" fill="url(#goldGrad)" stroke="#FEF08A" stroke-width="1"/>' +
-            '<!-- Ornate Handles -->' +
             '<path d="M18 18H11C8.5 18 7 20 7.5 23C8.5 29 13 33 19 34" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round"/>' +
             '<path d="M46 18H53C55.5 18 57 20 56.5 23C55.5 29 51 33 45 34" stroke="url(#goldGrad)" stroke-width="3.5" stroke-linecap="round"/>' +
-            '<!-- Main Championship Chalice -->' +
             '<path d="M17 15H47V26C47 35.5 40.3 42 32 42C23.7 42 17 35.5 17 26V15Z" fill="url(#goldGrad)" stroke="url(#goldRim)" stroke-width="1.5"/>' +
-            '<!-- Center Diamond Crest -->' +
             '<polygon points="32,20 36,26 32,32 28,26" fill="#FFFFFF" opacity="0.9"/>' +
-            '<!-- Stem & Pedestal -->' +
             '<path d="M28 42H36L38 50H26L28 42Z" fill="url(#goldGrad)"/>' +
             '<rect x="20" y="50" width="24" height="5" rx="2" fill="url(#goldGrad)" stroke="#FEF08A" stroke-width="1"/>' +
             '<rect x="17" y="55" width="30" height="4" rx="1.5" fill="#78350F"/>' +
-            '<!-- Sparkles -->' +
             '<circle cx="12" cy="11" r="1.8" fill="#FEF08A"/>' +
             '<circle cx="52" cy="10" r="1.5" fill="#FFFFFF"/>' +
           '</svg>' +
         '</span>';
       } else if (idx === 1) {
-        // 2nd Place: Sterling Platinum Winged Silver Chalice
         return '<span class="trophy-animate shrink-0" style="animation-delay: 0.3s;" title="2nd Place - Silver Podium">' +
           '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
             '<defs>' +
@@ -2277,21 +2327,16 @@
                 '<stop offset="100%" stop-color="#475569"/>' +
               '</linearGradient>' +
             '</defs>' +
-            '<!-- Winged Handles -->' +
             '<path d="M18 19C12 17 7 19 6 23C9 24 12 25 14 27C10 27 8 28 7 30C11 32 16 32 20 31" fill="url(#silverGrad)"/>' +
             '<path d="M46 19C52 17 57 19 58 23C55 24 52 25 50 27C54 27 56 28 57 30C53 32 48 32 44 31" fill="url(#silverGrad)"/>' +
-            '<!-- Sleek Silver Goblet -->' +
             '<path d="M18 15H46L43 29C41.8 36.5 37.5 41 32 41C26.5 41 22.2 36.5 21 29L18 15Z" fill="url(#silverGrad)" stroke="#F8FAFC" stroke-width="1.2"/>' +
-            '<!-- Star Emblem -->' +
             '<path d="M32 20L33.8 24.2L38.4 24.6L34.9 27.6L36 32L32 29.6L28 32L29.1 27.6L25.6 24.6L30.2 24.2L32 20Z" fill="#38BDF8"/>' +
-            '<!-- Pedestal -->' +
             '<rect x="29" y="41" width="6" height="9" fill="url(#silverGrad)"/>' +
             '<rect x="21" y="50" width="22" height="5" rx="2" fill="url(#silverGrad)"/>' +
             '<rect x="18" y="55" width="28" height="4" rx="1.5" fill="#334155"/>' +
           '</svg>' +
         '</span>';
       } else {
-        // 3rd Place: Burnished Royal Bronze Crest & Shield Cup
         return '<span class="trophy-animate shrink-0" style="animation-delay: 0.6s;" title="3rd Place - Bronze Podium">' +
           '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
             '<defs>' +
@@ -2302,15 +2347,11 @@
                 '<stop offset="100%" stop-color="#431407"/>' +
               '</linearGradient>' +
             '</defs>' +
-            '<!-- Scroll Handles -->' +
             '<path d="M19 19H13C10.5 19 9 21 9.5 24C10.5 29 14.5 32 20 33" stroke="url(#bronzeGrad)" stroke-width="3.2" stroke-linecap="round"/>' +
             '<path d="M45 19H51C53.5 19 55 21 54.5 24C53.5 29 49.5 32 44 33" stroke="url(#bronzeGrad)" stroke-width="3.2" stroke-linecap="round"/>' +
-            '<!-- Royal Bronze Cup -->' +
             '<path d="M19 16H45V27C45 35.2 39.2 41 32 41C24.8 41 19 35.2 19 27V16Z" fill="url(#bronzeGrad)" stroke="#FDBA74" stroke-width="1.2"/>' +
-            '<!-- Flame / Crest Accent -->' +
             '<circle cx="32" cy="26" r="5" fill="#FFEDD5" opacity="0.85"/>' +
             '<circle cx="32" cy="26" r="2.5" fill="#9A3412"/>' +
-            '<!-- Pedestal -->' +
             '<rect x="29" y="41" width="6" height="9" fill="url(#bronzeGrad)"/>' +
             '<rect x="21" y="50" width="22" height="5" rx="2" fill="url(#bronzeGrad)"/>' +
             '<rect x="18" y="55" width="28" height="4" rx="1.5" fill="#431407"/>' +
@@ -2323,7 +2364,6 @@
       var ticker = document.getElementById("leaderboard-ticker");
       var floatingTicker = document.getElementById("floating-leaderboard-ticker");
 
-      // Limit scroll strictly to the Top 3 Podium positions
       var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 3);
 
       if (sorted.length === 0) {
@@ -2333,7 +2373,6 @@
         return;
       }
 
-      // Desktop / 4-Card Top Bar Items
       var standardItemsHtml = sorted.map(function(item, idx) {
         var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
         var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
@@ -2346,7 +2385,6 @@
         '</div>';
       });
 
-      // Single-Card Floating Banner Items
       var floatingItemsHtml = sorted.map(function(item, idx) {
         var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
         var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
