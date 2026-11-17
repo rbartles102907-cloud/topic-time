@@ -92,34 +92,29 @@
 
     @keyframes char-grow-shrink {
       0%, 100% { transform: scale(1) translate(0, 0); }
-      50% { transform: scale(1.05) translate(-2px, -4px); }
+      50% { transform: scale(1.05) translate(-2px, -3px); }
     }
     .anim-grow-shrink {
       animation: char-grow-shrink 3s ease-in-out infinite;
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
     }
 
+    /* Nellie's Head Positioned to the Left of the Chatomizer Speech Bubble */
     .card-character-avatar {
-      width: 60px;
-      height: 60px;
+      width: 56px;
+      height: 56px;
       object-fit: contain;
-      position: absolute;
-      right: 4px;
-      bottom: -2px;
       pointer-events: none;
       z-index: 25;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
     }
 
-    /* Chatomizer Game Badge Logo on Bottom Left */
+    /* Chatomizer Game Badge Logo Elevated Slightly Above & Right of Nellie's Head */
     @keyframes chatomizer-bob {
-      0%, 100% { transform: rotate(-2.5deg) scale(1); }
+      0%, 100% { transform: rotate(-3deg) scale(1); }
       50% { transform: rotate(-1deg) scale(1.03); }
     }
     .chatomizer-logo-badge {
-      position: absolute;
-      left: -4px;
-      bottom: -6px;
       z-index: 25;
       pointer-events: none;
       animation: chatomizer-bob 3.5s ease-in-out infinite;
@@ -332,7 +327,7 @@
           <span class="hidden sm:inline">Scores</span>
         </button>
 
-        <a href="https://www.tiktok.com/@nellieb_0814" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
+        <a href="https://www.tiktok.com/@nellie_b" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
           <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
           <span class="hidden sm:inline">Go to My TikTok</span>
           <span class="sm:hidden">TikTok</span>
@@ -1932,49 +1927,55 @@
       categoryPointers[cat] = 0;
     });
 
-    var characterElementMarkup = '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink">';
+    // Nellie's Head + Chatomizer Speech Bubble Assembly (Bottom-Right, with Nellie's head to the left of the logo)
+    function getNellieAndChatomizerMarkup(viewCount) {
+      var logoSizeClass = viewCount === 1 ? "w-40 h-14 sm:w-48 sm:h-16" : "w-32 h-11 sm:w-36 sm:h-12";
+      var headSizeClass = viewCount === 1 ? "w-14 h-14 sm:w-16 sm:h-16" : "w-11 h-11 sm:w-12 sm:h-12";
 
-    // Fun Chatomizer Arcade Speech-Bubble Game Logo (Bottom Left)
-    function getChatomizerLogoMarkup() {
-      return '<div class="chatomizer-logo-badge" title="Chatomizer Party Game">' +
-        '<svg class="w-36 h-12 sm:w-44 sm:h-14" viewBox="0 0 230 70" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-          '<defs>' +
-            '<linearGradient id="chatBg" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
-              '<stop offset="0%" stop-color="#1E1B4B"/>' +
-              '<stop offset="50%" stop-color="#311042"/>' +
-              '<stop offset="100%" stop-color="#0F172A"/>' +
-            '</linearGradient>' +
-            '<linearGradient id="chatBorder" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
-              '<stop offset="0%" stop-color="#00F2FE"/>' +
-              '<stop offset="50%" stop-color="#FF007F"/>' +
-              '<stop offset="100%" stop-color="#FACC15"/>' +
-            '</linearGradient>' +
-            '<linearGradient id="chatTextGrad" x1="48" y1="16" x2="215" y2="48" gradientUnits="userSpaceOnUse">' +
-              '<stop offset="0%" stop-color="#FFFFFF"/>' +
-              '<stop offset="55%" stop-color="#FEF08A"/>' +
-              '<stop offset="100%" stop-color="#38BDF8"/>' +
-            '</linearGradient>' +
-          '</defs>' +
-          '<!-- Speech Bubble Badge Shape -->' +
-          '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H42L24 66L28 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
-          '<!-- Mini Neon Dice Icon -->' +
-          '<g transform="translate(14, 18) rotate(-10)">' +
-            '<rect x="2" y="2" width="24" height="24" rx="6" fill="#FF007F" stroke="#FFFFFF" stroke-width="1.8"/>' +
-            '<circle cx="9" cy="9" r="2.2" fill="#FFFFFF"/>' +
-            '<circle cx="19" cy="9" r="2.2" fill="#FFFFFF"/>' +
-            '<circle cx="14" cy="14" r="2.4" fill="#FACC15"/>' +
-            '<circle cx="9" cy="19" r="2.2" fill="#FFFFFF"/>' +
-            '<circle cx="19" cy="19" r="2.2" fill="#FFFFFF"/>' +
-          '</g>' +
-          '<!-- Sparkle Accents -->' +
-          '<path d="M210 16L211.5 19.5L215 21L211.5 22.5L210 26L208.5 22.5L205 21L208.5 19.5L210 16Z" fill="#FACC15"/>' +
-          '<circle cx="48" cy="17" r="1.6" fill="#00F2FE"/>' +
-          '<!-- CHATOMIZER Bold Arcade Title -->' +
-          '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="#090D16" stroke="#090D16" stroke-width="3.5" stroke-linejoin="round">CHATOMIZER</text>' +
-          '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="url(#chatTextGrad)">CHATOMIZER</text>' +
-          '<!-- Sub-caption -->' +
-          '<text x="50" y="50.5" font-family="\'Orbitron\', sans-serif" font-weight="800" font-size="6.8" letter-spacing="2.2" fill="#F472B6">PARTY EDITION</text>' +
-        '</svg>' +
+      return '<div class="flex items-end gap-0.5 pointer-events-none select-none z-20 ml-auto -mb-2 -mr-1">' +
+        '<!-- Nellie Head to the Left of the Speech Bubble -->' +
+        '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink ' + headSizeClass + ' shrink-0">' +
+        '<!-- Chatomizer Speech Bubble Slightly Elevated Above & Right of Her Head -->' +
+        '<div class="chatomizer-logo-badge -translate-y-4 sm:-translate-y-5 -ml-2" title="Chatomizer Party Edition">' +
+          '<svg class="' + logoSizeClass + '" viewBox="0 0 230 70" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs>' +
+              '<linearGradient id="chatBg" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#1E1B4B"/>' +
+                '<stop offset="50%" stop-color="#311042"/>' +
+                '<stop offset="100%" stop-color="#0F172A"/>' +
+              '</linearGradient>' +
+              '<linearGradient id="chatBorder" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#00F2FE"/>' +
+                '<stop offset="50%" stop-color="#FF007F"/>' +
+                '<stop offset="100%" stop-color="#FACC15"/>' +
+              '</linearGradient>' +
+              '<linearGradient id="chatTextGrad" x1="48" y1="16" x2="215" y2="48" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#FFFFFF"/>' +
+                '<stop offset="55%" stop-color="#FEF08A"/>' +
+                '<stop offset="100%" stop-color="#38BDF8"/>' +
+              '</linearGradient>' +
+            '</defs>' +
+            '<!-- Speech Bubble Badge Shape (Tail Pointing Bottom-Left Toward Nellie) -->' +
+            '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H34L12 67L22 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
+            '<!-- Mini Neon Dice Icon -->' +
+            '<g transform="translate(14, 18) rotate(-10)">' +
+              '<rect x="2" y="2" width="24" height="24" rx="6" fill="#FF007F" stroke="#FFFFFF" stroke-width="1.8"/>' +
+              '<circle cx="9" cy="9" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="19" cy="9" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="14" cy="14" r="2.4" fill="#FACC15"/>' +
+              '<circle cx="9" cy="19" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="19" cy="19" r="2.2" fill="#FFFFFF"/>' +
+            '</g>' +
+            '<!-- Sparkle Accents -->' +
+            '<path d="M210 16L211.5 19.5L215 21L211.5 22.5L210 26L208.5 22.5L205 21L208.5 19.5L210 16Z" fill="#FACC15"/>' +
+            '<circle cx="48" cy="17" r="1.6" fill="#00F2FE"/>' +
+            '<!-- CHATOMIZER Bold Arcade Title -->' +
+            '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="#090D16" stroke="#090D16" stroke-width="3.5" stroke-linejoin="round">CHATOMIZER</text>' +
+            '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="url(#chatTextGrad)">CHATOMIZER</text>' +
+            '<!-- Sub-caption -->' +
+            '<text x="50" y="50.5" font-family="\'Orbitron\', sans-serif" font-weight="800" font-size="6.8" letter-spacing="2.2" fill="#F472B6">PARTY EDITION</text>' +
+          '</svg>' +
+        '</div>' +
       '</div>';
     }
 
@@ -2146,7 +2147,7 @@
         grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-2";
       }
 
-      var chatomizerLogo = getChatomizerLogoMarkup();
+      var rightCornerGroup = getNellieAndChatomizerMarkup(cardCountView);
 
       var cardsHtml = currentTopics.map(function(topic, index) {
         if (!topic) return "";
@@ -2161,6 +2162,7 @@
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             
+            '<!-- Top Bar -->' +
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
               '<div class="text-xs font-extrabold tracking-tight opacity-70">Click or Tap to Change</div>' +
               '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
@@ -2170,15 +2172,18 @@
               '</div>' +
             '</div>' +
 
-            '<div class="my-1 flex-grow flex items-center justify-center flex-col">' +
+            '<!-- Center Question -->' +
+            '<div class="my-2 flex-grow flex items-center justify-center">' +
               '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
-              followModelFooterHelper(cardCountView) +
-              '<div class="mt-2 flex items-center justify-center pointer-events-none">' + pillMarkup + '</div>' +
             '</div>' +
 
-            '<div class="mt-1 flex items-center justify-between gap-2 relative h-10">' +
-              chatomizerLogo +
-              characterElementMarkup +
+            '<!-- Bottom Row: Follow Me + Category Pill (Left) | Nellie Head + Chatomizer Speech Bubble (Right) -->' +
+            '<div class="mt-2 flex items-end justify-between gap-2 relative pt-1">' +
+              '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
+                followModelLeftHelper(cardCountView) +
+                pillMarkup +
+              '</div>' +
+              rightCornerGroup +
             '</div>' +
 
           '</div>' +
@@ -2188,9 +2193,9 @@
       grid.innerHTML = cardsHtml;
     }
 
-    function followModelFooterHelper(viewCount) {
+    function followModelLeftHelper(viewCount) {
       if (viewCount !== 1) return '';
-      return '<div class="flex items-center justify-center gap-1.5 mt-2 pt-1 w-full">' +
+      return '<div class="flex items-center gap-1.5">' +
         '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">Follow Me</span>' +
         '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
       '</div>';
