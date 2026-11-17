@@ -101,18 +101,16 @@
 
     /* Nellie's Head Positioned to the Left of the Chatomizer Speech Bubble */
     .card-character-avatar {
-      width: 56px;
-      height: 56px;
       object-fit: contain;
       pointer-events: none;
       z-index: 25;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
     }
 
-    /* Chatomizer Game Badge Logo Elevated Slightly Above & Right of Nellie's Head */
+    /* Chatomizer Game Badge Logo Raised Above Nellie's Mouth Level */
     @keyframes chatomizer-bob {
-      0%, 100% { transform: rotate(-3deg) scale(1); }
-      50% { transform: rotate(-1deg) scale(1.03); }
+      0%, 100% { transform: translateY(-28px) rotate(-3deg) scale(1); }
+      50% { transform: translateY(-31px) rotate(-1deg) scale(1.03); }
     }
     .chatomizer-logo-badge {
       z-index: 25;
@@ -1927,7 +1925,7 @@
       categoryPointers[cat] = 0;
     });
 
-    // Nellie's Head + Chatomizer Speech Bubble Assembly (Bottom-Right, with Nellie's head to the left of the logo)
+    // Nellie's Head + Raised Chatomizer Speech Bubble Assembly (Bottom-Right)
     function getNellieAndChatomizerMarkup(viewCount) {
       var logoSizeClass = viewCount === 1 ? "w-40 h-14 sm:w-48 sm:h-16" : "w-32 h-11 sm:w-36 sm:h-12";
       var headSizeClass = viewCount === 1 ? "w-14 h-14 sm:w-16 sm:h-16" : "w-11 h-11 sm:w-12 sm:h-12";
@@ -1935,8 +1933,8 @@
       return '<div class="flex items-end gap-0.5 pointer-events-none select-none z-20 ml-auto -mb-2 -mr-1">' +
         '<!-- Nellie Head to the Left of the Speech Bubble -->' +
         '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink ' + headSizeClass + ' shrink-0">' +
-        '<!-- Chatomizer Speech Bubble Slightly Elevated Above & Right of Her Head -->' +
-        '<div class="chatomizer-logo-badge -translate-y-4 sm:-translate-y-5 -ml-2" title="Chatomizer Party Edition">' +
+        '<!-- Chatomizer Speech Bubble Raised Above Nellie\'s Mouth Level -->' +
+        '<div class="chatomizer-logo-badge -ml-1.5" title="Chatomizer Party Edition">' +
           '<svg class="' + logoSizeClass + '" viewBox="0 0 230 70" fill="none" xmlns="http://www.w3.org/2000/svg">' +
             '<defs>' +
               '<linearGradient id="chatBg" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
@@ -1955,8 +1953,8 @@
                 '<stop offset="100%" stop-color="#38BDF8"/>' +
               '</linearGradient>' +
             '</defs>' +
-            '<!-- Speech Bubble Badge Shape (Tail Pointing Bottom-Left Toward Nellie) -->' +
-            '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H34L12 67L22 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
+            '<!-- Speech Bubble Badge Shape (Tail Pointing Bottom-Left Toward Nellie\'s Mouth) -->' +
+            '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H34L10 68L22 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
             '<!-- Mini Neon Dice Icon -->' +
             '<g transform="translate(14, 18) rotate(-10)">' +
               '<rect x="2" y="2" width="24" height="24" rx="6" fill="#FF007F" stroke="#FFFFFF" stroke-width="1.8"/>' +
@@ -2178,7 +2176,7 @@
             '</div>' +
 
             '<!-- Bottom Row: Follow Me + Category Pill (Left) | Nellie Head + Chatomizer Speech Bubble (Right) -->' +
-            '<div class="mt-2 flex items-end justify-between gap-2 relative pt-1">' +
+            '<div class="mt-2 flex items-end justify-between gap-2 relative pt-2">' +
               '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
                 followModelLeftHelper(cardCountView) +
                 pillMarkup +
