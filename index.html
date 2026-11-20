@@ -187,26 +187,67 @@
       animation: float-subtle 4s ease-in-out infinite;
     }
 
-    /* Metallic Shimmer & Podium Pole Position Effects (Light & Dark Mode Adaptive) */
+    /* Metallic Shimmer & 3D Podium Rank Badges */
     @keyframes metallic-shimmer {
       0% { background-position: -200% center; }
       100% { background-position: 200% center; }
     }
 
-    @keyframes trophy-pulse {
-      0%, 100% { transform: scale(1) rotate(-3deg); }
-      50% { transform: scale(1.14) rotate(4deg); }
+    @keyframes rank-3d-float {
+      0%, 100% { transform: perspective(300px) rotateY(-8deg) rotateX(6deg) scale(1); }
+      50% { transform: perspective(300px) rotateY(8deg) rotateX(-4deg) scale(1.08); }
     }
 
-    .trophy-animate {
+    .rank-3d-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      animation: trophy-pulse 2.2s ease-in-out infinite;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      line-height: 1;
+      border-radius: 0.65rem;
+      transform-style: preserve-3d;
+      animation: rank-3d-float 3s ease-in-out infinite;
+      user-select: none;
     }
-    .dark .trophy-animate {
-      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.35)) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.85));
+
+    /* 3D 1st Place Gold Badge */
+    .rank-3d-1 {
+      background: linear-gradient(145deg, #fef08a 0%, #f59e0b 45%, #b45309 100%);
+      color: #1c1917;
+      border: 1.5px solid #fffbeb;
+      box-shadow:
+        0 3px 0 #78350f,
+        0 5px 0 #451a03,
+        0 8px 14px rgba(245, 158, 11, 0.55),
+        inset 0 2px 3px rgba(255, 255, 255, 0.85);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+    }
+
+    /* 3D 2nd Place Silver/Chrome Badge */
+    .rank-3d-2 {
+      background: linear-gradient(145deg, #ffffff 0%, #cbd5e1 45%, #64748b 100%);
+      color: #0f172a;
+      border: 1.5px solid #f8fafc;
+      box-shadow:
+        0 3px 0 #475569,
+        0 5px 0 #1e293b,
+        0 8px 14px rgba(56, 189, 248, 0.45),
+        inset 0 2px 3px rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+    }
+
+    /* 3D 3rd Place Copper/Bronze Badge */
+    .rank-3d-3 {
+      background: linear-gradient(145deg, #fed7aa 0%, #ea580c 48%, #9a3412 100%);
+      color: #ffffff;
+      border: 1.5px solid #ffedd5;
+      box-shadow:
+        0 3px 0 #7c2d12,
+        0 5px 0 #431407,
+        0 8px 14px rgba(234, 88, 12, 0.45),
+        inset 0 2px 3px rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1.5px 2px rgba(67, 20, 7, 0.85);
     }
 
     /* 1st Place - Gold */
@@ -417,7 +458,7 @@
     <div class="shrink-0 pt-1 pb-1 flex flex-col items-center justify-center gap-1">
       <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
         <i id="generate-icon" class="fa-solid fa-dice text-xl group-hover:rotate-180 transition-transform duration-300"></i>
-        <span id="generate-btn-text">Generate Topics</span>
+        <span id="generate-btn-text">Click to Change Cards</span>
         <span id="generate-btn-badge" class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full font-bold ml-1">4 Cards</span>
       </button>
 
@@ -2008,7 +2049,7 @@
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
         btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
         if (badge) badge.innerText = "1 Card";
-        if (btnText) btnText.innerText = "Generate Random Topic";
+        if (btnText) btnText.innerText = "Click to Change Card";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-0.5 sm:py-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
         
         if (globalTicker) globalTicker.classList.add("hidden");
@@ -2017,7 +2058,7 @@
         btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
         if (badge) badge.innerText = "4 Cards";
-        if (btnText) btnText.innerText = "Generate 4 Random Topics";
+        if (btnText) btnText.innerText = "Click to Change Cards";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden";
         
         if (globalTicker) globalTicker.classList.remove("hidden");
@@ -2303,89 +2344,21 @@
       showToast("Leaderboard updated successfully!", "success");
     }
 
-    function getFancyTrophySvg(idx, sizeClass) {
-      if (idx === 0) {
-        return '<span class="trophy-animate shrink-0" title="1st Place - Gold Podium">' +
-          '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-            '<defs>' +
-              '<linearGradient id="goldCup" x1="12" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">' +
-                '<stop offset="0%" stop-color="#FFFBEB"/>' +
-                '<stop offset="30%" stop-color="#FACC15"/>' +
-                '<stop offset="70%" stop-color="#D97706"/>' +
-                '<stop offset="100%" stop-color="#78350F"/>' +
-              '</linearGradient>' +
-            '</defs>' +
-            '<!-- Dark Backing Circle for Crisp Contrast in Both Modes -->' +
-            '<circle cx="32" cy="32" r="30" fill="#1E1B18" stroke="#F59E0B" stroke-width="2.5"/>' +
-            '<!-- Crown Accent -->' +
-            '<path d="M23 14L26.5 9L32 12.5L37.5 9L41 14H23Z" fill="#FDE047"/>' +
-            '<!-- Handles -->' +
-            '<path d="M20 20H14C12 20 11 21.8 11.5 24.5C12.2 29.5 16 33 21 33.5" stroke="#FACC15" stroke-width="3" stroke-linecap="round"/>' +
-            '<path d="M44 20H50C52 20 53 21.8 52.5 24.5C51.8 29.5 48 33 43 33.5" stroke="#FACC15" stroke-width="3" stroke-linecap="round"/>' +
-            '<!-- Cup -->' +
-            '<path d="M19 17H45V27C45 35 39.2 40.5 32 40.5C24.8 40.5 19 35 19 27V17Z" fill="url(#goldCup)" stroke="#FEF08A" stroke-width="1.5"/>' +
-            '<!-- #1 Star -->' +
-            '<polygon points="32,21 35,26.5 32,32 29,26.5" fill="#FFFFFF"/>' +
-            '<!-- Stem & Base -->' +
-            '<path d="M28.5 40.5H35.5L37 47.5H27L28.5 40.5Z" fill="#F59E0B"/>' +
-            '<rect x="21" y="47.5" width="22" height="4.5" rx="2" fill="#FDE047"/>' +
-            '<rect x="18" y="52" width="28" height="3.5" rx="1.5" fill="#B45309"/>' +
-          '</svg>' +
-        '</span>';
-      } else if (idx === 1) {
-        return '<span class="trophy-animate shrink-0" style="animation-delay: 0.3s;" title="2nd Place - Silver Podium">' +
-          '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-            '<defs>' +
-              '<linearGradient id="silverCup" x1="12" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">' +
-                '<stop offset="0%" stop-color="#FFFFFF"/>' +
-                '<stop offset="35%" stop-color="#E2E8F0"/>' +
-                '<stop offset="75%" stop-color="#94A3B8"/>' +
-                '<stop offset="100%" stop-color="#475569"/>' +
-              '</linearGradient>' +
-            '</defs>' +
-            '<!-- Dark Slate Backing Circle for High Contrast -->' +
-            '<circle cx="32" cy="32" r="30" fill="#0F172A" stroke="#38BDF8" stroke-width="2.5"/>' +
-            '<!-- Handles -->' +
-            '<path d="M20 20H14C12 20 11 21.8 11.5 24.5C12.2 29.5 16 33 21 33.5" stroke="#CBD5E1" stroke-width="3" stroke-linecap="round"/>' +
-            '<path d="M44 20H50C52 20 53 21.8 52.5 24.5C51.8 29.5 48 33 43 33.5" stroke="#CBD5E1" stroke-width="3" stroke-linecap="round"/>' +
-            '<!-- Cup -->' +
-            '<path d="M19 16H45V26.5C45 34.8 39.2 40.5 32 40.5C24.8 40.5 19 34.8 19 26.5V16Z" fill="url(#silverCup)" stroke="#FFFFFF" stroke-width="1.5"/>' +
-            '<!-- Ice Blue Star Emblem -->' +
-            '<path d="M32 20L33.8 24.2L38.4 24.6L34.9 27.6L36 32L32 29.6L28 32L29.1 27.6L25.6 24.6L30.2 24.2L32 20Z" fill="#0284C7"/>' +
-            '<!-- Stem & Base -->' +
-            '<path d="M28.5 40.5H35.5L37 47.5H27L28.5 40.5Z" fill="#CBD5E1"/>' +
-            '<rect x="21" y="47.5" width="22" height="4.5" rx="2" fill="#F1F5F9"/>' +
-            '<rect x="18" y="52" width="28" height="3.5" rx="1.5" fill="#64748B"/>' +
-          '</svg>' +
-        '</span>';
-      } else {
-        return '<span class="trophy-animate shrink-0" style="animation-delay: 0.6s;" title="3rd Place - Bronze Podium">' +
-          '<svg class="' + sizeClass + '" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-            '<defs>' +
-              '<linearGradient id="bronzeCup" x1="12" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">' +
-                '<stop offset="0%" stop-color="#FFEDD5"/>' +
-                '<stop offset="30%" stop-color="#FB923C"/>' +
-                '<stop offset="70%" stop-color="#EA580C"/>' +
-                '<stop offset="100%" stop-color="#7C2D12"/>' +
-              '</linearGradient>' +
-            '</defs>' +
-            '<!-- Dark Espresso Backing Circle for High Contrast -->' +
-            '<circle cx="32" cy="32" r="30" fill="#1C100B" stroke="#F97316" stroke-width="2.5"/>' +
-            '<!-- Handles -->' +
-            '<path d="M20 20H14C12 20 11 21.8 11.5 24.5C12.2 29.5 16 33 21 33.5" stroke="#FB923C" stroke-width="3" stroke-linecap="round"/>' +
-            '<path d="M44 20H50C52 20 53 21.8 52.5 24.5C51.8 29.5 48 33 43 33.5" stroke="#FB923C" stroke-width="3" stroke-linecap="round"/>' +
-            '<!-- Cup -->' +
-            '<path d="M19 16H45V26.5C45 34.8 39.2 40.5 32 40.5C24.8 40.5 19 34.8 19 26.5V16Z" fill="url(#bronzeCup)" stroke="#FED7AA" stroke-width="1.5"/>' +
-            '<!-- Medal Circle -->' +
-            '<circle cx="32" cy="26" r="5" fill="#FFF7ED"/>' +
-            '<circle cx="32" cy="26" r="2.5" fill="#C2410C"/>' +
-            '<!-- Stem & Base -->' +
-            '<path d="M28.5 40.5H35.5L37 47.5H27L28.5 40.5Z" fill="#FB923C"/>' +
-            '<rect x="21" y="47.5" width="22" height="4.5" rx="2" fill="#FDBA74"/>' +
-            '<rect x="18" y="52" width="28" height="3.5" rx="1.5" fill="#9A3412"/>' +
-          '</svg>' +
-        '</span>';
-      }
+    function get3DRankBadge(idx, isFloating) {
+      var rankNum = idx + 1;
+      var suffix = rankNum === 1 ? "ST" : (rankNum === 2 ? "ND" : "RD");
+      var rankClass = idx === 0 ? "rank-3d-1" : (idx === 1 ? "rank-3d-2" : "rank-3d-3");
+      var delayStyle = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.35s;"' : ' style="animation-delay: 0.7s;"');
+      var sizeClass = isFloating
+        ? "h-9 sm:h-10 px-2.5 text-base sm:text-xl"
+        : "h-6 px-2 text-xs";
+      var supClass = isFloating
+        ? "text-[9px] sm:text-[11px] ml-0.5 -mt-1.5"
+        : "text-[7px] ml-0.5 -mt-1";
+
+      return '<span class="rank-3d-badge ' + rankClass + ' ' + sizeClass + ' shrink-0"' + delayStyle + ' title="' + rankNum + suffix.toLowerCase() + ' Place">' +
+        '<span>' + rankNum + '</span><sup class="' + supClass + '">' + suffix + '</sup>' +
+      '</span>';
     }
 
     function renderLeaderboardTicker() {
@@ -2404,10 +2377,10 @@
       var standardItemsHtml = sorted.map(function(item, idx) {
         var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
         var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
-        var trophySvg = getFancyTrophySvg(idx, "w-6 h-6");
+        var rankBadge = get3DRankBadge(idx, false);
 
         return '<div class="flex items-center gap-2.5 ' + cardClass + ' px-3.5 py-1 rounded-xl shrink-0">' +
-          trophySvg +
+          rankBadge +
           '<span class="text-slate-900 dark:text-white font-extrabold tracking-wide">' + escapeHtml(item.name) + '</span>' +
           '<span class="' + ptsClass + ' text-sm">' + Number(item.points).toLocaleString() + ' PTS</span>' +
         '</div>';
@@ -2416,10 +2389,10 @@
       var floatingItemsHtml = sorted.map(function(item, idx) {
         var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
         var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
-        var trophySvg = getFancyTrophySvg(idx, "w-9 h-9 sm:w-10 sm:h-10");
+        var rankBadge = get3DRankBadge(idx, true);
 
         return '<div class="flex items-center gap-3 ' + cardClass + ' px-4 py-1.5 rounded-2xl shrink-0">' +
-          trophySvg +
+          rankBadge +
           '<span class="text-slate-900 dark:text-white font-extrabold tracking-tight">' + escapeHtml(item.name) + '</span>' +
           '<span class="' + ptsClass + ' text-lg sm:text-2xl">' + Number(item.points).toLocaleString() + ' PTS</span>' +
         '</div>';
