@@ -400,48 +400,63 @@
       box-shadow: 0 0 14px rgba(234, 88, 12, 0.35), inset 0 0 10px rgba(251, 146, 60, 0.15) !important;
     }
 
-    /* Bomb Alarm Clock Timer Styles */
-    @keyframes bomb-shake {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      15% { transform: translate(-2px, 1px) rotate(-2.5deg); }
-      30% { transform: translate(2px, -1px) rotate(2.5deg); }
-      45% { transform: translate(-2px, -1px) rotate(-2deg); }
-      60% { transform: translate(2px, 1px) rotate(2deg); }
-      75% { transform: translate(-1px, 1px) rotate(-1deg); }
-      90% { transform: translate(1px, -1px) rotate(1deg); }
+    /* Twin-Bell Clock & Explosion Animations */
+    @keyframes clock-shake-ring {
+      0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      15% { transform: translate(-3px, 1px) rotate(-5deg) scale(1.03); }
+      30% { transform: translate(3px, -1px) rotate(5deg) scale(1.04); }
+      45% { transform: translate(-3px, -1px) rotate(-4deg) scale(1.03); }
+      60% { transform: translate(3px, 1px) rotate(4deg) scale(1.04); }
+      75% { transform: translate(-2px, 1px) rotate(-2deg) scale(1.02); }
+      90% { transform: translate(2px, -1px) rotate(2deg) scale(1.02); }
     }
-    .bomb-shaking {
-      animation: bomb-shake 0.32s linear infinite;
-    }
-
-    @keyframes spark-pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.35); opacity: 0.65; }
-    }
-    .spark-active {
-      animation: spark-pulse 0.35s ease-in-out infinite;
+    .clock-shaking {
+      animation: clock-shake-ring 0.28s linear infinite;
     }
 
-    @keyframes shard-fly-1 {
-      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-      100% { transform: translate(-36px, -32px) rotate(-140deg) scale(0.5); opacity: 0; }
+    @keyframes wave-pulse {
+      0%, 100% { opacity: 0.25; transform: scale(0.92); }
+      50% { opacity: 1; transform: scale(1.06); }
     }
-    @keyframes shard-fly-2 {
-      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-      100% { transform: translate(38px, -28px) rotate(150deg) scale(0.5); opacity: 0; }
+    .sound-wave-anim {
+      transform-origin: center;
+      animation: wave-pulse 0.6s ease-in-out infinite;
     }
-    @keyframes shard-fly-3 {
-      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-      100% { transform: translate(-32px, 28px) rotate(-110deg) scale(0.4); opacity: 0; }
+
+    @keyframes clock-explode-body {
+      0% { transform: scale(1) rotate(0deg); opacity: 1; }
+      35% { transform: scale(1.22) rotate(6deg); opacity: 1; }
+      100% { transform: scale(0.15) rotate(-25deg); opacity: 0; }
     }
-    @keyframes shard-fly-4 {
-      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
-      100% { transform: translate(34px, 30px) rotate(125deg) scale(0.4); opacity: 0; }
+    .clock-exploded {
+      animation: clock-explode-body 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-    .shard-1 { animation: shard-fly-1 0.65s ease-out forwards; }
-    .shard-2 { animation: shard-fly-2 0.65s ease-out forwards; }
-    .shard-3 { animation: shard-fly-3 0.65s ease-out forwards; }
-    .shard-4 { animation: shard-fly-4 0.65s ease-out forwards; }
+
+    @keyframes blast-piece-1 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
+      100% { transform: translate(-52px, -44px) rotate(-150deg) scale(1.1); opacity: 0; }
+    }
+    @keyframes blast-piece-2 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
+      100% { transform: translate(54px, -40px) rotate(165deg) scale(1.1); opacity: 0; }
+    }
+    @keyframes blast-piece-3 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
+      100% { transform: translate(-48px, 42px) rotate(-120deg) scale(1); opacity: 0; }
+    }
+    @keyframes blast-piece-4 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
+      100% { transform: translate(50px, 44px) rotate(135deg) scale(1); opacity: 0; }
+    }
+    @keyframes blast-piece-5 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.8); opacity: 1; }
+      100% { transform: translate(0px, -58px) rotate(90deg) scale(1.25); opacity: 0; }
+    }
+    .blast-p1 { animation: blast-piece-1 0.75s ease-out forwards; }
+    .blast-p2 { animation: blast-piece-2 0.75s ease-out forwards; }
+    .blast-p3 { animation: blast-piece-3 0.75s ease-out forwards; }
+    .blast-p4 { animation: blast-piece-4 0.75s ease-out forwards; }
+    .blast-p5 { animation: blast-piece-5 0.75s ease-out forwards; }
   </style>
 </head>
 <body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
@@ -528,48 +543,90 @@
       <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1 px-0.5 text-xs font-medium"></div>
     </div>
 
+    <!-- Main Stage: Card + Vertical Right-Side Alarm Clock Rail (in 1-Card Mode) -->
     <div class="w-full flex flex-col items-center justify-center my-auto flex-grow">
-      <div id="topics-grid" class="w-full py-1"></div>
+      <div id="single-card-stage" class="w-full flex flex-col md:flex-row items-center md:items-stretch justify-center gap-4 py-1">
+        <div id="topics-grid" class="w-full py-1"></div>
 
-      <!-- Single-Card Bomb Alarm Clock Timer -->
-      <div id="single-card-bomb-timer" class="hidden w-full max-w-2xl mx-auto mt-2">
-        <div class="bg-white/95 dark:bg-slate-900/95 border border-slate-300 dark:border-rose-500/40 rounded-2xl px-4 py-2.5 shadow-xl backdrop-blur-md flex flex-wrap items-center justify-between gap-3 transition-colors">
-          <div class="flex items-center gap-3 relative">
-            <div id="bomb-clock-visual" class="relative w-11 h-11 rounded-full bg-slate-900 border-2 border-rose-500 flex items-center justify-center shadow-lg shrink-0 select-none">
-              <i id="bomb-icon" class="fa-solid fa-bomb text-xl text-rose-400"></i>
-              <span id="bomb-spark" class="hidden -top-1 -right-1 absolute w-3 h-3 rounded-full bg-amber-300 spark-active"></span>
-              <span class="bomb-shard hidden absolute w-2 h-2 rounded-sm bg-rose-500"></span>
-              <span class="bomb-shard hidden absolute w-2 h-2 rounded-sm bg-amber-400"></span>
-              <span class="bomb-shard hidden absolute w-2 h-2 rounded-sm bg-cyan-400"></span>
-              <span class="bomb-shard hidden absolute w-2 h-2 rounded-sm bg-pink-500"></span>
+        <!-- Vertical Timer Panel: Timer on Top, Big Alarm Clock in Middle, Options Below -->
+        <aside id="single-card-bomb-timer" class="hidden w-full md:w-56 shrink-0 bg-white/95 dark:bg-slate-900/95 border border-slate-300 dark:border-rose-500/40 rounded-2xl p-3.5 shadow-xl backdrop-blur-md flex flex-col items-center justify-between gap-2.5 transition-colors">
+          <!-- Top: Countdown & Progress -->
+          <div class="w-full flex flex-col items-center text-center">
+            <div class="flex items-center justify-center gap-2">
+              <span id="bomb-timer-display" class="font-mono font-black text-2xl sm:text-3xl tracking-wider text-slate-900 dark:text-white">00:30</span>
             </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <span id="bomb-timer-display" class="font-mono font-black text-xl sm:text-2xl tracking-wider text-slate-900 dark:text-white">00:30</span>
-                <span id="bomb-boom-banner" class="hidden px-2 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] tracking-wider uppercase animate-bounce">BOOM! TIME&#39;S UP</span>
-              </div>
-              <div class="w-32 sm:w-44 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1">
-                <div id="bomb-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-200" style="width: 100%;"></div>
+            <span id="bomb-boom-banner" class="hidden mt-1 px-2.5 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] tracking-wider uppercase animate-bounce">BOOM! TIME&#39;S UP</span>
+            <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1.5">
+              <div id="bomb-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-200" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <!-- Middle: Stand-Alone Twin-Bell Alarm Clock that Shakes & Explodes -->
+          <div class="relative flex items-center justify-center my-1 min-h-[124px] w-full select-none">
+            <div id="twin-bell-clock-wrapper" class="relative w-28 h-28 flex items-center justify-center">
+              <svg id="twin-bell-clock-svg" viewBox="0 0 140 140" class="w-28 h-28 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Left & Right Sound Waves -->
+                <g id="clock-waves-left" class="opacity-40">
+                  <path d="M22 44C14 54 14 70 22 80" stroke="#38BDF8" stroke-width="3.2" stroke-linecap="round"/>
+                  <path d="M14 38C3 52 3 72 14 86" stroke="#F472B6" stroke-width="2.8" stroke-linecap="round"/>
+                </g>
+                <g id="clock-waves-right" class="opacity-40">
+                  <path d="M118 44C126 54 126 70 118 80" stroke="#38BDF8" stroke-width="3.2" stroke-linecap="round"/>
+                  <path d="M126 38C137 52 137 72 126 86" stroke="#F472B6" stroke-width="2.8" stroke-linecap="round"/>
+                </g>
+
+                <!-- Top Ringer Bar & Twin Bells -->
+                <line x1="70" y1="20" x2="70" y2="34" stroke="#E2E8F0" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="70" cy="17" r="4.5" stroke="#FACC15" stroke-width="2.5"/>
+                <path d="M33 44C28 33 36 22 48 26C53 28 56 32 57 36" stroke="#F472B6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M107 44C112 33 104 22 92 26C87 28 84 32 83 36" stroke="#F472B6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <!-- Feet -->
+                <line x1="46" y1="106" x2="36" y2="122" stroke="#E2E8F0" stroke-width="4.5" stroke-linecap="round"/>
+                <line x1="94" y1="106" x2="104" y2="122" stroke="#E2E8F0" stroke-width="4.5" stroke-linecap="round"/>
+
+                <!-- Clock Body -->
+                <circle cx="70" cy="72" r="38" fill="#0F172A" stroke="#F8FAFC" stroke-width="4.5"/>
+                <circle cx="70" cy="72" r="32" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="2 6"/>
+
+                <!-- Clock Hands -->
+                <line x1="70" y1="72" x2="70" y2="49" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>
+                <line id="clock-second-hand" x1="70" y1="72" x2="88" y2="62" stroke="#FF2A85" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="70" cy="72" r="4" fill="#F8FAFC"/>
+              </svg>
+
+              <!-- Explosion Burst & Shards -->
+              <div id="clock-explosion-burst" class="hidden absolute inset-0 pointer-events-none flex items-center justify-center">
+                <i class="fa-solid fa-burst text-5xl text-amber-400 blast-p5 drop-shadow-[0_0_14px_rgba(251,191,36,0.95)]"></i>
+                <span class="blast-shard blast-p1 absolute w-3 h-3 rounded-sm bg-rose-500"></span>
+                <span class="blast-shard blast-p2 absolute w-3 h-3 rounded-full bg-amber-300"></span>
+                <span class="blast-shard blast-p3 absolute w-3 h-2 rounded-sm bg-cyan-400"></span>
+                <span class="blast-shard blast-p4 absolute w-3 h-3 rounded-full bg-pink-500"></span>
               </div>
             </div>
           </div>
 
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <button onclick="setBombDuration(15)" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">15s</button>
-            <button onclick="setBombDuration(30)" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">30s</button>
-            <button onclick="setBombDuration(60)" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">60s</button>
-            <button id="bomb-toggle-btn" onclick="toggleBombTimer()" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white shadow cursor-pointer flex items-center gap-1">
-              <i id="bomb-toggle-icon" class="fa-solid fa-play"></i>
-              <span id="bomb-toggle-label">Start</span>
-            </button>
-            <button onclick="resetBombTimer(false)" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer" title="Reset Timer">
-              <i class="fa-solid fa-rotate-left"></i>
-            </button>
+          <!-- Bottom: Options & Controls -->
+          <div class="w-full flex flex-col gap-1.5">
+            <div class="grid grid-cols-3 gap-1">
+              <button onclick="setBombDuration(15)" class="py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">15s</button>
+              <button onclick="setBombDuration(30)" class="py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">30s</button>
+              <button onclick="setBombDuration(60)" class="py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">60s</button>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button id="bomb-toggle-btn" onclick="toggleBombTimer()" class="flex-1 py-1.5 rounded-lg text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white shadow cursor-pointer flex items-center justify-center gap-1">
+                <i id="bomb-toggle-icon" class="fa-solid fa-play"></i>
+                <span id="bomb-toggle-label">Start</span>
+              </button>
+              <button onclick="resetBombTimer(false)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer" title="Reset Timer">
+                <i class="fa-solid fa-rotate-left"></i>
+              </button>
+            </div>
           </div>
-        </div>
+        </aside>
       </div>
       
-      <div id="single-card-floating-ticker" class="hidden w-full max-w-2xl mx-auto mt-2.5">
+      <div id="single-card-floating-ticker" class="hidden w-full max-w-3xl mx-auto mt-2">
         <div class="floating-ticker-card bg-white/95 dark:bg-slate-950/95 border border-slate-300 dark:border-amber-500/40 rounded-2xl overflow-hidden py-2 px-1.5 shadow-xl dark:shadow-2xl backdrop-blur-md transition-colors">
           <div class="flex items-center">
             <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-xl z-10 shrink-0 flex items-center gap-1 shadow-md">
@@ -748,14 +805,14 @@
       { name: "Rick", points: 300 }
     ]));
 
-    // --- BOMB ALARM CLOCK TIMER STATE ---
+    // --- TWIN-BELL ALARM CLOCK & EXPLOSION TIMER STATE ---
     var bombDuration = 30;
     var bombRemaining = 30;
     var bombInterval = null;
     var bombRunning = false;
     var audioCtx = null;
 
-    function playAlarmTone() {
+    function playExplosionTone() {
       try {
         var Ctx = window.AudioContext || window.webkitAudioContext;
         if (!Ctx) return;
@@ -765,16 +822,16 @@
         var osc = audioCtx.createOscillator();
         var gain = audioCtx.createGain();
         osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(160, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(42, audioCtx.currentTime + 0.35);
+        osc.frequency.setValueAtTime(185, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(38, audioCtx.currentTime + 0.45);
 
-        gain.gain.setValueAtTime(0.22, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.38);
+        gain.gain.setValueAtTime(0.24, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.48);
 
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.4);
+        osc.stop(audioCtx.currentTime + 0.5);
       } catch (e) {}
     }
 
@@ -788,13 +845,15 @@
     function updateBombUI() {
       var displayEl = document.getElementById("bomb-timer-display");
       var barEl = document.getElementById("bomb-progress-bar");
-      var visualEl = document.getElementById("bomb-clock-visual");
-      var iconEl = document.getElementById("bomb-icon");
-      var sparkEl = document.getElementById("bomb-spark");
+      var clockSvg = document.getElementById("twin-bell-clock-svg");
+      var wavesLeft = document.getElementById("clock-waves-left");
+      var wavesRight = document.getElementById("clock-waves-right");
+      var secondHand = document.getElementById("clock-second-hand");
+      var burstEl = document.getElementById("clock-explosion-burst");
       var bannerEl = document.getElementById("bomb-boom-banner");
       var toggleIcon = document.getElementById("bomb-toggle-icon");
       var toggleLabel = document.getElementById("bomb-toggle-label");
-      var shards = document.querySelectorAll("#bomb-clock-visual .bomb-shard");
+      var shards = document.querySelectorAll("#clock-explosion-burst .blast-shard");
 
       if (displayEl) displayEl.innerText = formatBombClock(bombRemaining);
       if (barEl) {
@@ -802,36 +861,53 @@
         barEl.style.width = pct + "%";
       }
 
+      if (secondHand) {
+        var elapsed = Math.max(0, bombDuration - bombRemaining);
+        var angle = (elapsed * (360 / Math.max(1, bombDuration))) % 360;
+        secondHand.setAttribute("transform", "rotate(" + angle + " 70 72)");
+      }
+
       if (toggleIcon) toggleIcon.className = bombRunning ? "fa-solid fa-pause" : "fa-solid fa-play";
       if (toggleLabel) toggleLabel.innerText = bombRunning ? "Pause" : "Start";
 
-      if (visualEl) {
-        if (bombRunning && bombRemaining <= 10 && bombRemaining > 0) {
-          visualEl.classList.add("bomb-shaking");
-        } else {
-          visualEl.classList.remove("bomb-shaking");
-        }
+      var shouldShake = bombRunning && bombRemaining <= 10 && bombRemaining > 0;
+      if (clockSvg) {
+        clockSvg.classList.remove("clock-exploded");
+        if (shouldShake) clockSvg.classList.add("clock-shaking");
+        else clockSvg.classList.remove("clock-shaking");
       }
 
-      if (sparkEl) {
-        if (bombRunning && bombRemaining > 0) sparkEl.classList.remove("hidden");
-        else sparkEl.classList.add("hidden");
+      if (wavesLeft && wavesRight) {
+        if (shouldShake) {
+          wavesLeft.classList.remove("opacity-40");
+          wavesRight.classList.remove("opacity-40");
+          wavesLeft.classList.add("sound-wave-anim");
+          wavesRight.classList.add("sound-wave-anim");
+        } else {
+          wavesLeft.classList.remove("sound-wave-anim");
+          wavesRight.classList.remove("sound-wave-anim");
+          wavesLeft.classList.add("opacity-40");
+          wavesRight.classList.add("opacity-40");
+        }
       }
 
       if (bombRemaining <= 0) {
         if (bannerEl) bannerEl.classList.remove("hidden");
-        if (iconEl) iconEl.className = "fa-solid fa-burst text-xl text-amber-400";
+        if (clockSvg) {
+          clockSvg.classList.remove("clock-shaking");
+          clockSvg.classList.add("clock-exploded");
+        }
+        if (burstEl) burstEl.classList.remove("hidden");
         shards.forEach(function(sh, i) {
-          sh.classList.remove("hidden", "shard-1", "shard-2", "shard-3", "shard-4");
+          sh.classList.remove("blast-p1", "blast-p2", "blast-p3", "blast-p4");
           void sh.offsetWidth;
-          sh.classList.add("shard-" + ((i % 4) + 1));
+          sh.classList.add("blast-p" + ((i % 4) + 1));
         });
       } else {
         if (bannerEl) bannerEl.classList.add("hidden");
-        if (iconEl) iconEl.className = "fa-solid fa-bomb text-xl text-rose-400";
+        if (burstEl) burstEl.classList.add("hidden");
         shards.forEach(function(sh) {
-          sh.classList.add("hidden");
-          sh.classList.remove("shard-1", "shard-2", "shard-3", "shard-4");
+          sh.classList.remove("blast-p1", "blast-p2", "blast-p3", "blast-p4");
         });
       }
     }
@@ -844,7 +920,7 @@
         bombInterval = null;
       }
       updateBombUI();
-      playAlarmTone();
+      playExplosionTone();
       showToast("BOOM! TIME'S UP", "warning");
     }
 
@@ -978,6 +1054,7 @@
       var globalTicker = document.getElementById("global-ticker-container");
       var floatingTicker = document.getElementById("single-card-floating-ticker");
       var bombTimerBox = document.getElementById("single-card-bomb-timer");
+      var topicsGrid = document.getElementById("topics-grid");
 
       if (cardCountView === 1) {
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
@@ -988,6 +1065,7 @@
         if (globalTicker) globalTicker.classList.add("hidden");
         if (bombTimerBox) bombTimerBox.classList.remove("hidden");
         if (floatingTicker) floatingTicker.classList.remove("hidden");
+        if (topicsGrid) topicsGrid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
       } else {
         btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
@@ -997,6 +1075,7 @@
         if (globalTicker) globalTicker.classList.remove("hidden");
         if (bombTimerBox) bombTimerBox.classList.add("hidden");
         if (floatingTicker) floatingTicker.classList.add("hidden");
+        if (topicsGrid) topicsGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-2";
       }
     }
 
@@ -1147,7 +1226,7 @@
       if (!grid) return;
       
       if (cardCountView === 1) {
-        grid.className = "w-full max-w-2xl mx-auto py-1";
+        grid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
       } else {
         grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-2";
       }
