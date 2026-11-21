@@ -99,7 +99,6 @@
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
     }
 
-    /* Nellie's Head Positioned to the Left of the Chatomizer Speech Bubble */
     .card-character-avatar {
       object-fit: contain;
       pointer-events: none;
@@ -107,7 +106,6 @@
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
     }
 
-    /* Chatomizer Game Badge Logo Raised Above Nellie's Mouth Level */
     @keyframes chatomizer-bob {
       0%, 100% { transform: translateY(-28px) rotate(-3deg) scale(1); }
       50% { transform: translateY(-31px) rotate(-1deg) scale(1.03); }
@@ -164,7 +162,6 @@
     @keyframes spin-once { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .animate-spin-once { animation: spin-once 0.4s ease-in-out; }
 
-    /* Leaderboard Marquee Ticker Animation */
     @keyframes marquee {
       0% { transform: translateX(0%); }
       100% { transform: translateX(-50%); }
@@ -178,7 +175,6 @@
       animation-play-state: paused;
     }
 
-    /* Floating banner effect */
     @keyframes float-subtle {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-3px); }
@@ -187,7 +183,6 @@
       animation: float-subtle 4s ease-in-out infinite;
     }
 
-    /* Metallic Shimmer & 3D Podium Rank Badges */
     @keyframes metallic-shimmer {
       0% { background-position: -200% center; }
       100% { background-position: 200% center; }
@@ -211,46 +206,30 @@
       user-select: none;
     }
 
-    /* 3D 1st Place Gold Badge */
     .rank-3d-1 {
       background: linear-gradient(145deg, #fef08a 0%, #f59e0b 45%, #b45309 100%);
       color: #1c1917;
       border: 1.5px solid #fffbeb;
-      box-shadow:
-        0 3px 0 #78350f,
-        0 5px 0 #451a03,
-        0 8px 14px rgba(245, 158, 11, 0.55),
-        inset 0 2px 3px rgba(255, 255, 255, 0.85);
+      box-shadow: 0 3px 0 #78350f, 0 5px 0 #451a03, 0 8px 14px rgba(245, 158, 11, 0.55), inset 0 2px 3px rgba(255, 255, 255, 0.85);
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
     }
 
-    /* 3D 2nd Place Silver/Chrome Badge */
     .rank-3d-2 {
       background: linear-gradient(145deg, #ffffff 0%, #cbd5e1 45%, #64748b 100%);
       color: #0f172a;
       border: 1.5px solid #f8fafc;
-      box-shadow:
-        0 3px 0 #475569,
-        0 5px 0 #1e293b,
-        0 8px 14px rgba(56, 189, 248, 0.45),
-        inset 0 2px 3px rgba(255, 255, 255, 0.95);
+      box-shadow: 0 3px 0 #475569, 0 5px 0 #1e293b, 0 8px 14px rgba(56, 189, 248, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.95);
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
     }
 
-    /* 3D 3rd Place Copper/Bronze Badge */
     .rank-3d-3 {
       background: linear-gradient(145deg, #fed7aa 0%, #ea580c 48%, #9a3412 100%);
       color: #ffffff;
       border: 1.5px solid #ffedd5;
-      box-shadow:
-        0 3px 0 #7c2d12,
-        0 5px 0 #431407,
-        0 8px 14px rgba(234, 88, 12, 0.45),
-        inset 0 2px 3px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 3px 0 #7c2d12, 0 5px 0 #431407, 0 8px 14px rgba(234, 88, 12, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.7);
       text-shadow: 0 1.5px 2px rgba(67, 20, 7, 0.85);
     }
 
-    /* Excited Animated Podium Names */
     @keyframes name-pop-1st {
       0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.75)); }
       25% { transform: translateY(-2.5px) scale(1.07); filter: drop-shadow(0 0 16px rgba(253, 224, 71, 1)); }
@@ -328,7 +307,6 @@
       color: transparent;
     }
 
-    /* 1st Place - Gold */
     .pts-gold {
       font-family: 'Orbitron', 'Cinzel', sans-serif;
       font-weight: 900;
@@ -360,7 +338,6 @@
       box-shadow: 0 0 18px rgba(250, 204, 21, 0.45), inset 0 0 12px rgba(250, 204, 21, 0.2) !important;
     }
 
-    /* 2nd Place - Silver / Slate */
     .pts-silver {
       font-family: 'Orbitron', 'Cinzel', sans-serif;
       font-weight: 900;
@@ -392,7 +369,6 @@
       box-shadow: 0 0 14px rgba(203, 213, 225, 0.35), inset 0 0 10px rgba(226, 232, 240, 0.15) !important;
     }
 
-    /* 3rd Place - Bronze */
     .pts-bronze {
       font-family: 'Orbitron', 'Cinzel', sans-serif;
       font-weight: 900;
@@ -450,7 +426,6 @@
       </div>
 
       <div class="flex items-center gap-2 shrink-0">
-        <!-- Manage Scores Button -->
         <button onclick="toggleScoresModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
           <i class="fa-solid fa-trophy text-sm text-yellow-200"></i>
           <span class="hidden sm:inline">Scores</span>
@@ -475,16 +450,14 @@
     </div>
   </header>
 
-  <!-- Global Top Scrolling Leaderboard Ticker (Visible on 4-Card / Desktop view) -->
+  <!-- Global Top Scrolling Leaderboard Ticker -->
   <div id="global-ticker-container" class="relative z-30 w-full bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-indigo-500/30 overflow-hidden py-1.5 shadow-sm transition-colors">
     <div class="flex items-center">
       <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1.5 shadow-md">
         <i class="fa-solid fa-crown text-slate-950"></i> TOP 3 PODIUM
       </div>
       <div class="overflow-hidden whitespace-nowrap flex-grow relative">
-        <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-xs font-bold">
-          <!-- Dynamically populated -->
-        </div>
+        <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-xs font-bold"></div>
       </div>
     </div>
   </div>
@@ -512,11 +485,9 @@
       <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1 px-0.5 text-xs font-medium"></div>
     </div>
 
-    <!-- Topics Grid & Single Card Container Area -->
     <div class="w-full flex flex-col items-center justify-center my-auto flex-grow">
       <div id="topics-grid" class="w-full py-1"></div>
       
-      <!-- Floating Banner Ticker (Appears only on Single Card view just beneath the card) -->
       <div id="single-card-floating-ticker" class="hidden w-full max-w-2xl mx-auto mt-3">
         <div class="floating-ticker-card bg-white/95 dark:bg-slate-950/95 border border-slate-300 dark:border-amber-500/40 rounded-2xl overflow-hidden py-2 px-1.5 shadow-xl dark:shadow-2xl backdrop-blur-md transition-colors">
           <div class="flex items-center">
@@ -524,9 +495,7 @@
               <i class="fa-solid fa-crown"></i> TOP 3
             </div>
             <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
-              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-lg sm:text-2xl font-extrabold">
-                <!-- Dynamically populated -->
-              </div>
+              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-lg sm:text-2xl font-extrabold"></div>
             </div>
           </div>
         </div>
@@ -567,7 +536,6 @@
         Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!
       </p>
 
-      <!-- Score Table Editor -->
       <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden max-h-[50vh] overflow-y-auto custom-scroll">
         <table class="w-full text-left text-xs border-collapse">
           <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 sticky top-0 z-10">
@@ -577,9 +545,7 @@
               <th class="p-2.5 font-bold w-12 text-center">Action</th>
             </tr>
           </thead>
-          <tbody id="scores-table-body" class="divide-y divide-slate-200 dark:divide-slate-800">
-            <!-- Dynamically injected rows sorted highest to lowest -->
-          </tbody>
+          <tbody id="scores-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
         </table>
       </div>
 
@@ -646,1379 +612,29 @@
   </div>
 
   <script>
-    var QUESTION_BANKS = {
-      Philosophy: [
-        "150. If you could leave one timeless truth inscribed for future generations, what would it say?",
-        "149. Is every human action ultimately driven by the quest for connection or the fear of isolation?",
-        "148. Can a person find absolute contentment in a life of complete solitude?",
-        "147. Is tradition an anchor that keeps us safe or a weight that holds us down?",
-        "146. Does true strength require gentleness to balance it?",
-        "145. Is the past a fixed monument or a malleable story we rewrite with every memory?",
-        "144. Can a profound philosophical insight be communicated in a single sentence?",
-        "143. Is curiosity an endless wellspring of hope or an endless source of restless anxiety?",
-        "142. Does an apology hold more weight when accompanied by immediate restitution or changed behavior?",
-        "141. Is it more important to understand the universe or to find peace within your own mind?",
-        "140. Can a person be entirely independent, or are we fundamentally tethered to each other?",
-        "139. Is the concept of moral progress real, or do human beings merely change the arenas of their conflicts?",
-        "138. Does true freedom include the right to make self-destructive choices?",
-        "137. Is the desire for immortality a fear of death or a passion for endless learning?",
-        "136. Can a machine ever understand the poignant melancholy of a fading sunset?",
-        "135. Is skepticism about human motives a sign of wisdom or a symptom of a guarded heart?",
-        "134. Does the existence of sorrow give greater depth and brilliance to human joy?",
-        "133. Is loyalty tested more severely by adversity or by prosperity?",
-        "132. Can a society achieve true innovation without embracing elements of chaos and risk?",
-        "131. Is compromise a noble sign of maturity or a cowardly dilution of core principles?",
-        "130. Does wealth amplify a person's true nature or distort it beyond recognition?",
-        "129. Is patience a form of passive endurance or an active, disciplined strength?",
-        "128. Can silence ever be interpreted as a form of communication just as powerful as words?",
-        "127. Is beauty in nature superior to beauty created by human hands?",
-        "126. Does an individual have a moral duty to rebel against unjust laws?",
-        "125. Is ambition tempered by empathy superior to unyielding drive?",
-        "124. Can a culture survive without storytelling and myth-making?",
-        "123. Is it better to trust too easily and get hurt occasionally or be cynical and stay protected?",
-        "122. Does true grace under pressure come from natural temperament or rigorous mental discipline?",
-        "121. Is jealousy an instinctive warning system or an insecurity that poisons connection?",
-        "120. Can a person ever truly reinvent themselves, or are we always tied to our roots?",
-        "119. Is the search for meaning in life an innate biological drive or a learned cultural habit?",
-        "118. Does freedom of speech carry an equivalent moral duty of radical listening?",
-        "117. Is imagination more important for human survival than raw logical reasoning?",
-        "116. Can an unintended consequence ever outweigh a deliberate good intention?",
-        "115. Is true wisdom quiet and understated, or does it demand to be heard?",
-        "114. Does the rapid pace of modern life allow for deeper reflection, or does it crowd it out?",
-        "113. Is the concept of justice universal across all cultures, or is it entirely relative?",
-        "112. Can a community thrive without shared rituals and cultural celebrations?",
-        "111. Is hope an act of supreme optimism or a refusal to face harsh probabilities?",
-        "110. Does a person's character reveal itself more clearly in victory or in defeat?",
-        "109. Is simplicity in lifestyle a sign of enlightenment or a rejection of modern opportunity?",
-        "108. Can a philosophy be considered successful if it only works in theory but fails in daily practice?",
-        "107. Is it possible to love someone completely without ever fully understanding them?",
-        "106. Does true leadership mean standing out in front or empowering those in the back?",
-        "105. Is the concept of fate woven by the universe or forged entirely by our own choices?",
-        "104. Can a person be truly courageous if they have never experienced deep, paralyzing doubt?",
-        "103. Is time an objective dimension of the universe or a psychological construct created by human memory?",
-        "102. Does an act of kindness lose its value if it is done out of a sense of strict duty rather than genuine warmth?",
-        "101. Is self-deception ever a necessary shield against unbearable reality?",
-        "100. Can an individual change the course of history without intending to?",
-        "99. Is truth always stranger than fiction, or do we simply prefer fiction because it makes more sense?",
-        "98. Does a life well-lived require leaving a legacy behind?",
-        "97. Is peace merely the absence of war, or is it an active, dynamic state of harmony?",
-        "96. Can sorrow transform a person more profoundly than joy ever could?",
-        "95. Is wisdom ultimately about knowing what to do or knowing what to let go of?",
-        "94. Does every question have a correct answer, or are some questions valuable precisely because they remain open?",
-        "93. Is authority legitimate only when it is voluntarily accepted by those governed?",
-        "92. Can a person ever be completely objective when judging their own moral character?",
-        "91. Is the pursuit of perfection a noble endeavor or a paralyzing trap?",
-        "90. Does technology bring people closer together, or does it merely shrink the distance between lonely individuals?",
-        "89. Is humility a genuine virtue or a calculated strategy for social acceptance?",
-        "88. Can art be truly objective, or is it always colored by the soul of its creator?",
-        "87. Is privacy a fundamental human right or a modern luxury we are bound to lose?",
-        "86. Does a collective consciousness diminish individual responsibility or elevate it?",
-        "85. If you could choose the exact moment of your greatest triumph, would you want to know it beforehand?",
-        "84. Is competition an inherent engine of excellence or a source of unnecessary division?",
-        "83. Can true happiness exist without any awareness or contrast of sorrow?",
-        "82. Is intuition simply accumulated past experience or a genuine window into truth?",
-        "81. Does moral obligation extend to future generations who do not yet exist?",
-        "80. Is it more important to be respected by strangers or loved deeply by those in your inner circle?",
-        "79. Can a society truly progress if it forgets or erases its most painful historical chapters?",
-        "78. If we could permanently delete all negative emotions, would we still be fully human?",
-        "77. Is conformity a peaceful lubricant for society or a silent killer of individual genius?",
-        "76. Does absolute power always demand an absolute sacrifice from those who wield it?",
-        "75. Can humanity ever truly overcome its tribal instincts in favor of global unity?",
-        "74. Is it better to regret something you did or something you never tried?",
-        "73. Does the fear of failure hold back more brilliance than a lack of talent?",
-        "72. Is duty to oneself always more important than duty to the community?",
-        "71. Can a person be happy without a clear sense of purpose in their daily life?",
-        "70. Is ambition without empathy a form of sociopathy or a requirement for extreme success?",
-        "69. Does beauty truly lie solely in the eye of the beholder, or are there universal standards?",
-        "68. Is trust something that must be earned slowly or something that should be given freely?",
-        "67. Can an act be considered good if nobody ever knows about it?",
-        "66. Is patience a form of passive endurance or an active, disciplined strength?",
-        "65. Does destiny imply that our choices do not matter in the grand scheme?",
-        "64. Is silence more powerful than words when trying to comfort someone in grief?",
-        "63. Can a profound loss ever truly be replaced, or is the void permanent?",
-        "62. Is cynicism an intellectual defense mechanism or a shortcut to intellectual laziness?",
-        "61. Does true creativity spring from structure and constraint or from total freedom?",
-        "60. Is it possible to live a completely ethical life in a modern industrialized society?",
-        "59. Does wisdom come naturally with age, or do some people simply grow older without learning?",
-        "58. Is nostalgia a comforting refuge or a trap that romanticizes a flawed past?",
-        "57. Can peace exist without a balance of power to maintain it?",
-        "56. Is loyalty to an ideal superior to loyalty to flesh and blood?",
-        "55. Does language shape our thoughts, or do our thoughts shape our language?",
-        "54. Is pride the root of all moral failure, or is it a necessary component of self-respect?",
-        "53. Can a society ever be truly fair when starting conditions are inherently unequal?",
-        "52. Is intuition a reliable guide or just a subconscious bias disguised as instinct?",
-        "51. Does suffering make us wiser, or does it just make us more cautious?",
-        "50. Is it better to be deeply understood by few or universally liked by many?",
-        "49. Can humor soften any tragedy, or are some things inherently sacred and beyond laughter?",
-        "48. Is skepticism a sign of wisdom or a symptom of a cynical mind?",
-        "47. Does tradition provide a healthy anchor or an unnecessary chain holding us back?",
-        "46. Is hope a powerful survival mechanism or a dangerous illusion that prevents action?",
-        "45. Can a person be truly free if they are financially dependent on others?",
-        "44. Is hospitality a fading art in a world increasingly driven by digital isolation?",
-        "43. Does ambition blind us to the beauty of ordinary, quiet moments?",
-        "42. Is simplicity the ultimate sophistication, or is complexity required for true depth?",
-        "41. Can a lie repeated often enough eventually become a subjective truth?",
-        "40. Is loyalty a virtue when the cause or person being supported is morally compromised?",
-        "39. Does power corrupt inherently, or does it merely reveal who a person already was?",
-        "38. Is curiosity a virtue that drives us forward or a dangerous impulse that leads to ruin?",
-        "37. Can art ever truly capture the depth of human emotion, or is it always an approximation?",
-        "36. Is chaos a necessary precursor to any meaningful order?",
-        "35. Does free will exist in a universe governed by strict physical laws?",
-        "34. Is justice best served by punishing past actions or by rehabilitating future behavior?",
-        "33. Can a person change their core nature, or do we only alter our habits?",
-        "32. Is altruism ever completely free from the desire for social approval?",
-        "31. Does greatness require sacrifice, or can a balanced life produce legendary achievements?",
-        "30. If ignorance is truly bliss, is the pursuit of knowledge overrated?",
-        "29. Can a society function harmoniously without any shared mythology or belief system?",
-        "28. Is it more noble to suffer silently for others or to speak out against injustice?",
-        "27. Does time heal all wounds, or do we simply learn how to carry them better?",
-        "26. If technology allows us to live forever, what happens to the value of human experience?",
-        "25. Is envy always a destructive emotion, or can it sometimes serve as a positive catalyst?",
-        "24. Can a person ever truly step outside of their own subjectivity to understand another?",
-        "23. Is it ethical to lie if it spares someone's feelings completely?",
-        "22. Does courage require the presence of fear, or can a fearless person be truly courageous?",
-        "21. If you could download all the knowledge of the world into your brain instantly, would you lose your humanity?",
-        "20. Can true beauty exist without imperfection or flaws to contrast it?",
-        "19. Is forgiveness an act of selflessness or a selfish necessity for personal peace?",
-        "18. Does absolute truth exist, or is everything relative to individual perspective?",
-        "17. Are we the authors of our own destinies, or are we just actors playing out prewritten scripts?",
-        "16. If a machine can replicate human consciousness perfectly, does it possess a soul?",
-        "15. Is it better to live a short, intensely passionate life or a long, peaceful, and uneventful one?",
-        "14. Does suffering have inherent meaning, or is it simply an obstacle to be overcome?",
-        "13. If you could know the exact date and cause of your death, would you choose to know?",
-        "12. Is morality an innate human trait or merely a social contract designed for survival?",
-        "11. Can a society achieve true equality without sacrificing individual excellence?",
-        "10. If history repeats itself because human nature never changes, is personal growth truly possible?",
-        "9. Is ambition a vital driving force for human progress, or is it a trap that keeps us from appreciating the present moment?",
-        "8. Can a person ever act out of completely pure altruism, or is every good deed driven by a hidden personal reward?",
-        "7. If an artificial intelligence lived a completely fulfilled digital life, was its experience any less real than a human's?",
-        "6. Does solitude give people clarity, or does isolation eventually distort a person's judgment?",
-        "5. If you could permanently erase one regret from your past at the cost of erasing the wisdom you gained from it, would you do it?",
-        "4. Is it more important for a society to pursue absolute justice or absolute mercy?",
-        "3. If humanity discovered an objective universal purpose tomorrow, would it liberate us or strip away our individuality?",
-        "2. Does true freedom require the possibility of failure, or can a totally safe society still be free?",
-        "1. If memories could be traded on the open market like stocks, what do you think a peaceful childhood memory would sell for?"
-      ],
-      "Deep Questions": [
-        "150. What is the most meaningful gift anyone has ever given you that couldn't be wrapped?",
-        "149. What is a truth you discovered about yourself during a difficult season?",
-        "148. How do you cultivate inner strength during quiet moments of doubt?",
-        "147. What is something you are proud of overcoming that no one else knows about?",
-        "146. What is a lesson you learned from observing nature's cycles?",
-        "145. How do you maintain hope in the face of widespread uncertainty?",
-        "144. What is a simple pleasure that never fails to restore your energy?",
-        "143. What is a conversation that deepened your appreciation for someone?",
-        "142. How do you honor your past without getting stuck living in it?",
-        "141. What is a realization that helped you let go of perfectionism?",
-        "140. What is a dream you are currently nurturing quietly in your heart?",
-        "139. How do you practice self-compassion when you make mistakes?",
-        "138. What is something you used to worry about that now makes you smile?",
-        "137. How do you foster patience when waiting for long-term goals to bear fruit?",
-        "136. What is a moment when you felt deeply connected to the world around you?",
-        "135. What is a piece of advice you received that proved timeless?",
-        "134. How do you find inspiration when creative blocks feel overwhelming?",
-        "133. What is a boundary you set that transformed your relationship with yourself?",
-        "132. What is a memory of warmth from a cold winter day that stays with you?",
-        "131. How do you navigate the tension between ambition and contentment?",
-        "130. What is something you cherish about your own unique quirks?",
-        "129. What is a lesson you learned from a project that didn't succeed?",
-        "128. How do you define emotional safety in a partnership?",
-        "127. What is a habit of reflection that helps keep you centered?",
-        "126. What is a time when silence was the most powerful response you could give?",
-        "125. How do you maintain your sense of humor during difficult times?",
-        "124. What is something you forgave someone for that freed you more than them?",
-        "123. What is a friendship from your past that left a permanent imprint on your soul?",
-        "122. How do you handle moments when your expectations do not match reality?",
-        "121. What is a truth about aging that you have come to embrace?",
-        "120. What is a goal you achieved that taught you the destination wasn't as important as the journey?",
-        "119. How do you nurture your emotional well-being during stressful seasons?",
-        "118. What is a moment of unexpected beauty that caught you off guard?",
-        "117. What is a change in perspective that completely transformed your outlook?",
-        "116. How do you find joy in the repetition of daily responsibilities?",
-        "115. What is something you wish you could tell someone who is currently struggling?",
-        "114. What is a moment when you realized you were stronger than you thought?",
-        "113. How do you stay grounded in your values amidst external noise?",
-        "112. What is a relationship that taught you the true meaning of grace?",
-        "111. What is a promise you made to yourself that you have faithfully kept?",
-        "110. How do you cultivate resilience during long stretches of waiting?",
-        "109. What is a personal milestone you achieved that meant more to you than anyone else knew?",
-        "108. What is a realization about human nature that brought you comfort rather than cynicism?",
-        "107. How do you keep your heart open after experiencing disappointment?",
-        "106. What is something you used to fear that you now find comforting?",
-        "105. How do you decide which battles to fight and which to walk away from?",
-        "104. What is a memory of pure joy that instantly lifts your spirits?",
-        "103. What is a creative pursuit that allows you to express your truest self?",
-        "102. How do you handle the feeling of being misunderstood by someone important?",
-        "101. What is a lesson from a past mistake that protects you daily?",
-        "100. What does true peace of mind look like in your personal definition?",
-        "99. What is a time when letting go of control brought you unexpected relief?",
-        "98. What is a part of your character that you actively work to refine every single day?",
-        "97. What is a risk you took that didn't pay off, but you would take again in a heartbeat?",
-        "96. How do you cultivate gratitude on days when everything seems to go wrong?",
-        "95. What is something you wish you had appreciated more while it was happening?",
-        "94. What is a tradition or ritual that grounds you when life feels chaotic?",
-        "93. How do you balance being strong for others while allowing yourself to be vulnerable?",
-        "92. What is a moment of quiet solidarity you shared with someone without saying a word?",
-        "91. What is a belief about yourself that you had to unlearn to move forward?",
-        "90. How do you foster patience within yourself when dealing with unpredictable setbacks?",
-        "89. What is a fear you have outgrown that once felt insurmountable?",
-        "88. What is something you learned from an elder that you still carry with you?",
-        "87. How do you measure personal growth when progress feels painfully slow?",
-        "86. What is a difficult conversation that ultimately strengthened a bond rather than breaking it?",
-        "85. What is a moment of clarity that changed the trajectory of your thinking?",
-        "84. How do you maintain enthusiasm for your passions when daily responsibilities pile up?",
-        "83. What is something you used to take personally that you now realize had nothing to do with you?",
-        "82. What is a memory of comfort that sustains you during stressful times?",
-        "81. How do you distinguish between intuition and anxiety when making a major choice?",
-        "80. What is a value you refuse to compromise on, no matter the social pressure?",
-        "79. Who was the most unexpected teacher you ever encountered in your professional or personal life?",
-        "78. What is a habit of thought that you consciously try to interrupt when it arises?",
-        "77. How has your understanding of unconditional love shifted as you've matured?",
-        "76. What is a chapter of your life that you have successfully closed and feel total peace about?",
-        "75. What is the ultimate legacy you hope to leave behind in the hearts of others?",
-        "74. What is a dream for your future that you are too shy to share out loud?",
-        "73. What is a skill or trait you possess that you are most proud of?",
-        "72. How do you define success outside of career achievements and wealth?",
-        "71. What is something you are deeply grateful for that often goes unnoticed?",
-        "70. What is a lesson you learned from a heartbreak or painful parting?",
-        "69. How do you nurture your sense of curiosity in an overly routine world?",
-        "68. What is a limitation you’ve learned to accept rather than fight against?",
-        "67. What is a moment when you felt deeply seen and understood by someone?",
-        "66. How do you show kindness to yourself on your hardest days?",
-        "65. What is a part of your identity that you cherish above all else?",
-        "64. What is a conversation you need to have that you have been putting off?",
-        "63. How do you measure whether a day was well-spent?",
-        "62. What is something you wish you spent less time worrying about?",
-        "61. What is a fear of the future that you are actively working to release?",
-        "60. What does emotional maturity look like in daily conflicts?",
-        "59. What is a time when trusting your gut instinct saved you from a mistake?",
-        "58. How do you keep your sense of wonder alive as you get older?",
-        "57. What is something you learned about friendship the hard way?",
-        "56. What is a project or creative endeavor that feels like an extension of your soul?",
-        "55. How do you find courage when faced with an intimidating challenge?",
-        "54. What is a truth about yourself that you are finally proud to admit?",
-        "53. What is a memory of pure contentment that you revisit in your mind?",
-        "52. How do you handle transitions and major chapters closing in your life?",
-        "51. What is a mistake you keep repeating, and why is it so hard to break?",
-        "50. What does it mean to truly listen to another person without judgment?",
-        "49. What is a sacrifice you made that was entirely worth the outcome?",
-        "48. How do you recharge when your mental and physical energy is completely depleted?",
-        "47. What is a belief you hold that is entirely your own, separate from your upbringing?",
-        "46. What is a relationship in your life that requires constant, intentional care?",
-        "45. How do you maintain hope during prolonged periods of uncertainty?",
-        "44. What is something you wish you could tell your younger self during a hard time?",
-        "43. What is a fear you have successfully conquered that once felt paralyzing?",
-        "42. How do you find beauty in ordinary, mundane days?",
-        "41. What is a piece of unwritten wisdom you live your life by?",
-        "40. What does loyalty mean to you when tested by difficult circumstances?",
-        "39. What is something you used to judge others for before you experienced it yourself?",
-        "38. How do you handle the fear of aging and the passing of time?",
-        "37. What is a habit you broke that dramatically improved your quality of life?",
-        "36. What is a moment in your life when you felt completely aligned with your purpose?",
-        "35. How do you balance striving for personal growth with accepting who you are right now?",
-        "34. What is the most important lesson your parents or guardians taught you?",
-        "33. What is a dream you gave up on because it felt too impractical at the time?",
-        "32. How do you cultivate patience when dealing with difficult people or circumstances?",
-        "31. What is a passion you abandoned that you secretly miss pursuing?",
-        "30. What does it mean to live a life of integrity?",
-        "29. What is something you wish you had forgiven yourself for sooner?",
-        "28. How do you know when it is time to walk away from a situation or relationship?",
-        "27. What is a burden you’ve been carrying that you wish you could put down?",
-        "26. What is a moment of profound grace or kindness you experienced from a total stranger?",
-        "25. How has your relationship with yourself evolved over the past decade?",
-        "24. What is something you do purely for your own joy, regardless of what others think?",
-        "23. What is a tradition or value from your family that you want to pass down?",
-        "22. How do you define inner peace, and how often do you experience it?",
-        "21. What is a risk you regret not taking when you had the chance?",
-        "20. What does true vulnerability look like in everyday interactions?",
-        "19. What is a question you wish people asked you more often?",
-        "18. How do you typically handle moments when life feels completely overwhelming?",
-        "17. What is something you are holding onto that you know you need to finally let go of?",
-        "16. Who has had the most profound impact on shaping who you are as a person?",
-        "15. What is a personal failure that taught you more than any success ever did?",
-        "14. What does emotional intimacy mean to you, and how has it changed over time?",
-        "13. What is a compliment you received years ago that you still cherish today?",
-        "12. When was the last time you changed your mind about something major, and what prompted it?",
-        "11. What is a memory from your childhood that still brings an instant smile to your face?",
-        "10. What part of your daily routine brings you the most genuine sense of comfort?",
-        "9. What is something you believe strongly today that your younger self would completely disagree with?",
-        "8. What is a boundary you had to set for your own peace of mind that was difficult to establish?",
-        "7. Who is someone from your past that you wish you could thank properly for changing your perspective?",
-        "6. What is a fear that held you back for years before you finally decided to face it?",
-        "5. How has your definition of a successful life shifted since you were in your twenties?",
-        "4. What is something you used to care deeply about that now feels completely insignificant?",
-        "3. What is a hard truth about human relationships that took you years to finally accept?",
-        "2. When you look back on your life ten years from now, what do you hope you spent more time doing?",
-        "1. What is the single best piece of advice someone gave you that you completely ignored at the time?"
-      ],
-      "Humor/Fun": [
-        "150. If you could instantly replace all doorbells with hilarious sound clips, what would ring?",
-        "149. What is the most ridiculous reason you've ever been late because of a pet?",
-        "148. If your couch could talk, what complaints would it make about your TV viewing habits?",
-        "147. What is the weirdest superstition you invented just to amuse yourself?",
-        "146. If you had to wear a glowing neon bowtie to every social event, what color would it pulse?",
-        "145. What is the most humorous prank you would play on a self-driving car?",
-        "144. If you could instantly teleport one item across the room using your mind, what would you grab?",
-        "143. What is the strangest fashion advice you would give if asked by a confused alien?",
-        "142. If your computer mouse started vibrating every time you made a typo, how annoyed would you get?",
-        "141. What is the most ridiculous thing you've ever done to avoid talking to a telemarketer?",
-        "140. If you could add a sound effect to your footsteps like cartoon characters, what would you choose?",
-        "139. What is the funniest fictional creature you would want as an exotic house pet?",
-        "138. If you had to wear a giant inflatable dinosaur suit for a day of running errands, how would it go?",
-        "137. What is the most amusing misunderstanding you've ever had with a smart home assistant?",
-        "136. If you could turn any chore into a magical wizard spell, which chore would you banish first?",
-        "135. What is the strangest food pairing you secretly enjoy when nobody is watching?",
-        "134. If you had a personal hype man following you around all day, what would be their catchphrase?",
-        "133. What is the most ridiculous costume you'd wear to a completely formal business meeting?",
-        "132. If you could instantly memorize every movie quote ever spoken, which one would you drop first?",
-        "131. What is the weirdest souvenir you've ever bought on an impulse during a trip?",
-        "130. If your alarm clock insulted you instead of beeping, what roast would wake you up fastest?",
-        "129. What is the most absurd argument you've ever won against a stubborn toddler or pet?",
-        "128. If you could magically make all traffic lights green for you exactly once a day, when would you use it?",
-        "127. What is the funniest mispronunciation of a restaurant menu item you've ever heard?",
-        "126. If you had to wear roller skates while grocery shopping, how many items would you knock over?",
-        "125. What is the most ridiculous thing you've ever googled out of pure late-night curiosity?",
-        "124. If you could assign a theme song to your pet cat, what dramatic track would play when they enter a room?",
-        "123. What is the strangest place you've ever fallen asleep upright?",
-        "122. If your refrigerator could judge your midnight snacking choices out loud, what would it say?",
-        "121. What is the most absurd prize you would want to win at a local county fair?",
-        "120. If you had to wear a neon green wig every April Fool's Day, how would you style it?",
-        "119. What is the funniest autocorrect mishap that completely changed the meaning of a text?",
-        "118. If you could summon a mild breeze to blow your hair dramatically indoors, how often would you use it?",
-        "117. What is the most amusingly useless invention you would pitch on a late-night infomercial?",
-        "116. If you were forced to speak entirely in song lyrics for a day, which artist's catalog would you use?",
-        "115. What is the strangest item you've ever used as an impromptu bookmark?",
-        "114. If your thoughts were projected onto a screen above your head like subtitles, when would you panic?",
-        "113. What is the most ridiculous fashion trend you hope makes a comeback just for laughs?",
-        "112. If you could make any inanimate object float one inch off the ground, what would you pick?",
-        "111. What is the weirdest thing you've ever caught yourself talking to when home alone?",
-        "110. If you had to narrate your own cooking attempts like a dramatic sports commentator, what would you say?",
-        "109. What is the most absurd pet name you would give an intimidating guard dog?",
-        "108. If you could add a dramatic fog machine effect to any everyday moment, which one would you choose?",
-        "107. What is the funniest misunderstanding you've ever had with voice-to-text messaging?",
-        "106. If you were a ghost haunting a supermarket, which aisle would you hang out in most?",
-        "105. What is the strangest hobby you would pick up if time and money were completely unlimited?",
-        "104. If you had to wear a cape everywhere you went, what color and symbol would it feature?",
-        "103. What is the most ridiculous excuse you've ever imagined for being late to a meeting?",
-        "102. If you could replace car horns with silly sound effects, what noise would traffic make?",
-        "101. What fictional gadget from a cartoon would you invent first if you had mad scientist skills?",
-        "100. If your brain played elevator music during awkward silences, what tune would be on loop?",
-        "99. What is the most bizarre thing you have ever seen someone do at a red light?",
-        "98. If you could instantly turn any object into a bouncy castle, what would you bounce on first?",
-        "97. What is the funniest misinterpretation of a common idiom you have ever heard?",
-        "96. If you had to wear flippers on your feet every time you went outside, how fast would you adapt?",
-        "95. What is the most ridiculous item you would pack in a survival kit for a trip to the grocery store?",
-        "94. If you were a cartoon character, what single sound effect would play every time you blinked?",
-        "93. What is a minor conspiracy you would start just to see how many people believed it?",
-        "92. If you could give animals human jobs, which animal would make the worst tax accountant?",
-        "91. What is the strangest flavor combination that you secretly think might taste amazing on pizza?",
-        "90. If your shadow started acting on its own and doing slapstick comedy behind your back, how long before you noticed?",
-        "89. What is the most ridiculous fictional sport you would actually want to play professionally?",
-        "88. If you had to trade hands with oven mitts permanently, what everyday task would frustrate you most?",
-        "87. What everyday activity would become terrifying if gravity stopped working for five seconds daily?",
-        "86. If you could attach a neon warning label to any person you met, what would yours say?",
-        "85. What is the weirdest talent show act that would somehow win first place?",
-        "84. If you were required to enter every room by doing a specific dance move, which dance would you choose?",
-        "83. What is the most absurd rule you would enforce if you were crowned king of a tiny island?",
-        "82. If you could summon any cartoon sound effect every time you stood up, which one would you pick?",
-        "81. What food item would be the absolute worst choice for wallpaper paste?",
-        "80. If your smartphone had a tiny personality inside it, how passive-aggressive would it be toward you?",
-        "79. What is the most ridiculous fashion accessory you would wear if it gave you a minor superpower?",
-        "78. If you were forced to adopt a ridiculous pirate accent whenever you spoke to authority figures, what would happen?",
-        "77. What inanimate object would be terrifying if it suddenly started running around on spider legs?",
-        "76. If you could only communicate using movie quotes for an entire week, which film would you pull from?",
-        "75. What is the most hilarious thing you’ve ever witnessed someone do while sleepwalking or half-asleep?",
-        "74. If you had to invent a new icebreaker question, what delightfully weird inquiry would you ask?",
-        "73. What is a minor luxury that makes you feel like an absolute billionaire?",
-        "72. If you could put a neon sign over your bed summarizing your life, what would it read?",
-        "71. What is the funniest mispronunciation of a word you’ve ever heard someone stubbornly defend?",
-        "70. If you were trapped in a grocery store overnight, what is the first thing you would do?",
-        "69. What is a ridiculous trend you refused to participate in on principle?",
-        "68. If you could instantly swap places with a house cat for a weekend, would you do it?",
-        "67. What is the most absurd fact you know that somehow sticks in your brain?",
-        "66. If your house was haunted by a lazy ghost, how would they annoy you?",
-        "65. What is a guilty pleasure TV show or movie you can watch on an endless loop?",
-        "64. If you had to participate in an Olympic sport with zero training, which one would result in the funniest disaster?",
-        "63. What is the weirdest compliment you have ever received from a stranger?",
-        "62. If you could add any emoji to the standard keyboard right now, what would it depict?",
-        "61. What is a ridiculous argument you had with a sibling or friend that lasted way too long?",
-        "60. If your personality was summarized by a fast-food order, what would it consist of?",
-        "59. What fictional universe would you survive in for about five minutes before messing up?",
-        "58. If you were forced to give up either coffee, internet, or air conditioning forever, which goes first?",
-        "57. What is the most unnecessary gadget you have ever seen advertised on late-night TV?",
-        "56. If you could have a narrator follow you around all day narrating your thoughts, who would voice them?",
-        "55. What is a silly superstition you caught yourself following just in case?",
-        "54. If you had to wear neon orange jumpsuits every day, how would you accessorize?",
-        "53. What is the strangest smell that instantly brings back a specific childhood memory?",
-        "52. If you could make any animal the official mascot of the stock market, what would it be?",
-        "51. What is the most awkward elevator encounter you have ever endured?",
-        "50. If you were a villain in a superhero movie, what would be your goofy signature catchphrase?",
-        "49. What is a word you love saying just because of how it sounds?",
-        "48. If you could instantly master any ridiculous circus trick, which one would it be?",
-        "47. What is the most bizarre item you have ever impulse-bought online at 3 AM?",
-        "46. If your car had an attitude, what complaints would it make about your driving?",
-        "45. What is something adults told you was important as a kid that turned out to be a complete lie?",
-        "44. If you could trade voices with any fictional character for a day, who are you picking?",
-        "43. What is the most ridiculous lie you told as a kid that people actually believed?",
-        "42. If you had to wear one Halloween costume for an entire year, what would you pick?",
-        "41. What piece of modern technology would confuse a medieval knight the most?",
-        "40. If you were a wrestler, what would your dramatic entrance theme and nickname be?",
-        "39. What is the funniest autocorrect fail you have ever experienced or sent?",
-        "38. If aliens landed in your backyard, what mundane snack would you offer them first?",
-        "37. What board game brings out your absolute most competitive and savage personality?",
-        "36. If you could instantly teleport to any restaurant right now just for one bite, where are you going?",
-        "35. What is a ridiculously specific skill you possess that is completely useless in daily life?",
-        "34. If you were forced to join a medieval guild, which one would you choose?",
-        "33. What is the strangest hill you are willing to die on for absolutely no good reason?",
-        "32. If animals could suddenly talk, which species do you think would be the rudest?",
-        "31. What fashion trend from your past do you look back on with absolute regret?",
-        "30. If you had a warning label attached to your forehead, what would it say?",
-        "29. What is the most elaborate prank you have ever pulled or wanted to pull?",
-        "28. If you could legally rename any everyday object, what would you call it?",
-        "27. What movie plot would be completely ruined if someone just used common sense?",
-        "26. If you were an ice cream flavor, what bizarre ingredients would define you?",
-        "25. What fictional job would you be terrible at but want to try anyway?",
-        "24. If your internet browser history became public, which search would be the hardest to explain?",
-        "23. What is the weirdest item currently sitting in your refrigerator right now?",
-        "22. If you could ban one minor everyday annoyance from existence, what would it be?",
-        "21. What song do you belt out in the car like you are winning a Grammy, but sound terrible doing it?",
-        "20. If you had to fight one horse-sized duck or a hundred duck-sized horses, what is your strategy?",
-        "19. What is a conspiracy theory about everyday objects that you secretly want to believe?",
-        "18. If you were a ghost, what is the silliest way you would haunt people?",
-        "17. What cartoon physics rule do you wish applied in real life the most?",
-        "16. If you could replace handshakes with any weird gesture, what would it be?",
-        "15. What is the most useless superpower you would actually be willing to accept?",
-        "14. If you had to survive a zombie apocalypse using only items found in your junk drawer, how screwed are you?",
-        "13. What food combination do you love that makes everyone else look at you in horror?",
-        "12. If your pets could talk, what embarrassing secret about you would they spill first?",
-        "11. What fictional villain do you secretly think had a valid point about fashion?",
-        "10. If you were forced to live inside a board game for a week, which one would offer the highest survival odds?",
-        "9. What is a mundane household chore that you secretly treat like an Olympic sport?",
-        "8. If you could instantly swap the theme song of your life with any cartoon jingle, which one would you pick?",
-        "7. What is the most ridiculous excuse you have ever heard someone use to get out of social plans?",
-        "6. What fictional creature would make the absolute worst possible office coworker?",
-        "5. If you were suddenly put in charge of designing a brand new national holiday, what tradition would it require?",
-        "4. What is a minor inconvenience you would happily pay a monthly subscription fee to never deal with again?",
-        "3. If animals started wearing human clothes, which species do you think would pull off business casual the best?",
-        "2. What is the absolute strangest thing you have ever found yourself doing while home completely alone?",
-        "1. If household appliances could talk when you walked into the kitchen at 2 AM, which one would complain about you the most?"
-      ],
-      "Current Events": [
-        "150. How are communities fostering intergenerational connections through shared public spaces?",
-        "149. What is the impact of automated translation tools on global business negotiation?",
-        "148. How are modern music festivals improving sustainability and waste reduction?",
-        "147. What challenges do cities face in managing electric vehicle charging infrastructure?",
-        "146. How has the expansion of remote learning influenced student equity in education?",
-        "145. What role do green bonds play in financing municipal sustainability initiatives?",
-        "144. How are cultural preservationists utilizing 3D scanning to document endangered artifacts?",
-        "143. What is the impact of rapid delivery apps on local retail inventory management?",
-        "142. How are modern office spaces evolving to encourage hybrid team collaboration?",
-        "141. What are the cybersecurity implications of connecting municipal utilities to IoT networks?",
-        "140. How has the growth of peer-to-peer rental platforms impacted traditional housing markets?",
-        "139. What role do micro-credentials play in modern professional skill development?",
-        "138. How are cities integrating pollinator pathways into public park maintenance?",
-        "137. What challenges do local newspapers face in transitioning to sustainable digital models?",
-        "136. How are educational institutions adapting to teach ethics alongside AI engineering?",
-        "135. What is the impact of social media curation on modern travel destination popularity?",
-        "134. How are smart home energy systems helping consumers lower utility footprints?",
-        "133. What role do community land trusts play in mitigating housing displacement?",
-        "132. How has the rise of electric delivery fleets changed overnight urban logistics?",
-        "131. What challenges face international cooperation in regulating deep-space commercialization?",
-        "130. How are urban forestry initiatives transforming neighborhood air quality indices?",
-        "129. What is the future of public broadcasting in an era of ad-free subscription tiers?",
-        "128. How are modern museums curating exhibits to engage digitally native audiences?",
-        "127. What are the implications of algorithmic copyright enforcement on digital creators?",
-        "126. How has the expansion of broadband internet access reshaped rural education?",
-        "125. What role do regional food hubs play in supporting local family farms?",
-        "124. How are agricultural innovators utilizing vertical farming to conserve fresh water?",
-        "123. What is the impact of instant feedback culture on creative arts and filmmaking?",
-        "122. How are cities redesigning waterfront areas to protect against rising sea levels?",
-        "121. What challenges do public transit systems face in regaining pre-pandemic ridership?",
-        "120. How has the democratization of financial tools altered small business funding models?",
-        "119. What role do wearable devices play in preventative healthcare and early diagnosis?",
-        "118. How are communities addressing the psychological impacts of climate anxiety among youth?",
-        "117. What impact do virtual reality conferences have on reducing corporate carbon footprints?",
-        "116. How are modern public libraries expanding their services beyond traditional book lending?",
-        "115. What are the challenges of integrating renewable energy sources into legacy power grids?",
-        "114. How has the rise of ethical fashion certifications changed consumer shopping habits?",
-        "113. What role do local maker spaces play in fostering grassroots technological innovation?",
-        "112. How are cities utilizing permeable pavements to combat urban flooding risks?",
-        "111. What is the future of work-life balance as boundary lines blur in remote environments?",
-        "110. How are cultural heritage sites utilizing augmented reality to enhance visitor education?",
-        "109. What measures are effective in promoting digital literacy among older populations?",
-        "108. How has the growth of telehealth affected medical accessibility in rural regions?",
-        "107. What are the implications of autonomous shipping vessels on international trade routes?",
-        "106. How are changing consumer habits influencing the transition to circular economy models?",
-        "105. What role do digital twin simulations play in optimizing disaster evacuation routes?",
-        "104. How has the evolution of e-sports influenced traditional athletic entertainment models?",
-        "103. What is the cultural impact of the maker movement and DIY repair culture?",
-        "102. How are urban planners addressing the urban heat island effect in modern metropolitan design?",
-        "101. What challenges arise when balancing open-source AI models with national security regulations?",
-        "100. How has digital archiving altered the way historians preserve contemporary culture?",
-        "99. What role do citizen science projects play in tracking global biodiversity changes?",
-        "98. How are modern architectural designs incorporating biophilic principles for wellness?",
-        "97. What impact do algorithm-driven recommendation engines have on cultural homogenization?",
-        "96. How is the expansion of high-speed rail transforming regional economic corridors?",
-        "95. What measures are being taken to preserve dark skies against growing light pollution?",
-        "94. How has the popularity of podcasts changed the nature of investigative journalism?",
-        "93. What are the ethical concerns surrounding predictive policing algorithms in modern cities?",
-        "92. How are advancements in recycling infrastructure tackling single-use plastic waste?",
-        "91. What role do community gardens play in promoting food security in urban deserts?",
-        "90. How has remote collaboration changed corporate culture and team bonding exercises?",
-        "89. What is the impact of micro-mobility regulations on sidewalk safety in metropolitan areas?",
-        "88. How are streaming platforms altering the economic models for independent musicians?",
-        "87. What challenges do local governments face in managing aging municipal water infrastructure?",
-        "86. How has the evolution of drone technology influenced modern agricultural practices?",
-        "85. What are the privacy implications of biometric security implementation in public transit?",
-        "84. How are shifting demographic trends influencing national retirement policies?",
-        "83. What role does public art play in revitalizing economically depressed neighborhoods?",
-        "82. How has online education impacted the social development of younger students?",
-        "81. What are the environmental trade-offs associated with massive data center expansions?",
-        "80. How is artificial intelligence transforming language translation and cross-cultural communication?",
-        "79. What measures are cities implementing to address affordable housing shortages in downtown cores?",
-        "78. How has the rise of ghost kitchens transformed urban food delivery ecosystems?",
-        "77. What role do decentralized currencies play in modern international trade discussions?",
-        "76. How are modern cities integrating smart grid technology to manage surging power demands?",
-        "75. How is the concept of retirement evolving as life expectancies and economies shift?",
-        "74. What is the impact of digital fatigue on the popularity of analog hobbies and crafts?",
-        "73. How are modern supply chains improving transparency for ethically conscious consumers?",
-        "72. What does the future of public broadcasting look like in an era of personalized feeds?",
-        "71. How has social media activism changed the speed and nature of grassroots movements?",
-        "70. What are the cybersecurity challenges facing smart home technology and appliances?",
-        "69. How are universities adapting curricula for jobs that do not yet exist?",
-        "68. What is the cultural footprint of the global shift toward plant-based dining alternatives?",
-        "67. How is the expansion of remote work affecting commercial real estate markets?",
-        "66. What measures are being taken to preserve indigenous languages from digital extinction?",
-        "65. How has the democratization of financial trading apps changed individual investing habits?",
-        "64. What is the impact of algorithmic pricing on everyday consumer goods and travel?",
-        "63. How are cities redesigning public infrastructure to encourage active transportation?",
-        "62. What are the psychological impacts of constant notifications and digital connectivity?",
-        "61. How has the rise of self-publishing changed the literary world for new authors?",
-        "60. What innovations in agriculture are helping address global food security challenges?",
-        "59. How are modern workplaces adapting to multi-generational expectations and communication styles?",
-        "58. What is the future of paper mail and physical documentation in government services?",
-        "57. How is synthetic media and deepfake technology challenging visual verification of truth?",
-        "56. What are the benefits and drawbacks of hyper-local community apps and neighborhood forums?",
-        "55. How has the concept of privacy shifted among teenagers compared to older generations?",
-        "54. What challenges do rural communities face in maintaining economic vitality today?",
-        "53. How are streaming services altering the cultural impact of watercooler television shows?",
-        "52. What is the role of green spaces in urban planning for mental and physical health?",
-        "51. How has the rise of electric bikes and scooters transformed downtown traffic dynamics?",
-        "50. What are the implications of wearable health technology on personal privacy and insurance?",
-        "49. How are museums and cultural institutions adapting to attract younger digital audiences?",
-        "48. What does the future hold for universal basic income discussions in automated economies?",
-        "47. How is the gaming industry influencing modern storytelling and social interaction?",
-        "46. What measures are effective in combating the spread of digital misinformation?",
-        "45. How has online food delivery changed restaurant economics and neighborhood traffic?",
-        "44. What are the ethical implications of algorithmic hiring and recruitment tools?",
-        "43. How is the fast fashion industry being challenged by modern thrift and resale culture?",
-        "42. What innovations in architecture are helping cities adapt to changing environmental demands?",
-        "41. How has the definition of community changed in an era of hyper-connected isolation?",
-        "40. What are the challenges of managing electronic waste on a global scale?",
-        "39. How is the democratization of video production tools changing independent cinema?",
-        "38. What does the future of space commercialization mean for international space law?",
-        "37. How are libraries evolving to remain vital community hubs in the digital age?",
-        "36. What is the impact of automated customer service on human patience and empathy?",
-        "35. How can privacy rights be protected in an increasingly data-driven commercial world?",
-        "34. What role do influencers play in shaping modern political and social discourse?",
-        "33. How is remote work shifting populations away from major economic hubs to smaller towns?",
-        "32. What are the societal effects of moving toward a completely cashless society?",
-        "31. How has the explosion of podcasting changed the audio entertainment landscape?",
-        "30. What is the cultural significance of the revival of vinyl records and film photography?",
-        "29. How can policy keep pace with rapid innovations in biotechnology and genetic editing?",
-        "28. What is the future of physical retail stores in an age of hyper-efficient e-commerce?",
-        "27. How are changing weather patterns influencing where people choose to buy homes?",
-        "26. What does sustainable tourism look like for popular destinations overwhelmed by visitors?",
-        "25. How is the growth of remote healthcare changing the doctor-patient relationship?",
-        "24. What responsibility do tech platforms bear for the mental health of their youngest users?",
-        "23. How can communities balance historical preservation with modern housing demands?",
-        "22. What are the long-term cultural impacts of remote learning on younger generations?",
-        "21. How is digital banking changing the physical landscape of towns and neighborhoods?",
-        "20. What measures can cities take to combat the growing issue of urban loneliness and isolation?",
-        "19. How has the global supply chain evolution changed consumer expectations around delivery times?",
-        "18. What ethical boundaries should be established as artificial intelligence enters creative industries?",
-        "17. How is online content creation reshaping what young people view as viable career paths?",
-        "16. What does the future of public transportation look like in post-pandemic metropolitan areas?",
-        "15. Are smart cities actually improving urban quality of life or just creating privacy concerns?",
-        "14. How has the gig economy changed the traditional concept of job security and retirement?",
-        "13. What role should local journalism play in an era dominated by algorithmic social feeds?",
-        "12. How is the rise of renewable energy altering geopolitical power dynamics worldwide?",
-        "11. What impact are subscription models having on everyday consumer ownership and financial habits?",
-        "10. How has instant messaging changed the patience and communication styles of everyday people?",
-        "9. What local community initiative do you think deserves much more media attention today?",
-        "8. Is the rise of electric transportation changing how neighborhoods are designed and built?",
-        "7. How can educational institutions better prepare students for an unpredictable digital future?",
-        "6. What traditional public space do you feel is disappearing fastest in modern cities?",
-        "5. Are modern social algorithms bringing global cultures closer together or creating deeper ideological bubbles?",
-        "4. How will widespread artificial automation change the way young people choose their careers?",
-        "3. What emerging digital technology do you think older generations struggle to understand the most?",
-        "2. Is the constant availability of 24-hour global news helping people stay informed or just driving up daily anxiety?",
-        "1. How has the shift toward remote work permanently altered the way modern communities interact?"
-      ],
-      "Would You Rather": [
-        "150. Would you rather have the ability to instantly organize your thoughts or your physical workspace?",
-        "149. Would you rather always have your favorite song ready to play or your favorite snack in hand?",
-        "148. Would you rather live in a home filled with plants or antique books?",
-        "147. Would you rather be able to carve wood like a master sculptor or bake pastries like a Parisian chef?",
-        "146. Would you rather always find the best discount or never get charged service fees?",
-        "145. Would you rather have a magical mirror that shows your best self or your future accomplishments?",
-        "144. Would you rather always have a soothing voice narrate your walks or complete silence?",
-        "143. Would you rather be able to instantly memorize phone numbers or directions?",
-        "142. Would you rather live in a cabin by a rushing river or high on a windy cliff?",
-        "141. Would you rather always have fresh flowers on your desk or a glowing neon sign?",
-        "140. Would you rather be able to fix any electronic device with a tap or any wooden furniture?",
-        "139. Would you rather have a magical clock that slows down time for an hour daily or speeds up boring tasks?",
-        "138. Would you rather always travel first class on trains or economy on airplanes?",
-        "137. Would you rather be able to whistle any tune perfectly or hum harmoniously?",
-        "136. Would you rather have an unlimited supply of notebooks or pens that never run out of ink?",
-        "135. Would you rather always have crisp clean clothes or never have messy hair?",
-        "134. Would you rather be able to control your dreams every night or never have nightmares?",
-        "133. Would you rather always have a great book to read or a fascinating puzzle to solve?",
-        "132. Would you rather live in a treehouse village or an underwater dome city?",
-        "131. Would you rather be able to type without looking at a keyboard or write calligraphy effortlessly?",
-        "130. Would you rather always have a fresh cup of tea or coffee waiting for you?",
-        "129. Would you rather be able to predict weather changes an hour early or traffic jams?",
-        "128. Would you rather live in a town where everyone sings or everyone whistles?",
-        "127. Would you rather always find a $20 bill in your pocket or never pay for coffee?",
-        "126. Would you rather be able to sketch caricatures or paint landscapes instantly?",
-        "125. Would you rather have a library card that gives access to any book in history or any film?",
-        "124. Would you rather always have a gentle breeze cooling you down or warm sunlight?",
-        "123. Would you rather be able to instantly clean your car or your house with a snap?",
-        "122. Would you rather live in a house shaped like a dome or a pyramid?",
-        "121. Would you rather always know when someone is about to sneeze or yawn?",
-        "120. Would you rather have a magical backpack that holds anything or shoes that never wear out?",
-        "119. Would you rather be an expert at origami or master card sharp tricks?",
-        "118. Would you rather always have Wi-Fi wherever you go or never need to charge your devices?",
-        "117. Would you rather be able to solve any jigsaw puzzle instantly or untie any knot?",
-        "116. Would you rather live in a world with no alarm clocks or no traffic jams?",
-        "115. Would you rather have a pocket-sized dragon or a pocket-sized phoenix?",
-        "114. Would you rather always smell like freshly baked bread or blooming lavender?",
-        "113. Would you rather be able to jump twice as high or run twice as fast?",
-        "112. Would you rather have a camera built into your eyes or a voice recorder in your ears?",
-        "111. Would you rather always find a parking spot immediately or never wait in a line?",
-        "110. Would you rather spend a week camping under the stars or in a luxury penthouse?",
-        "109. Would you rather be able to change your shoe size at will or your jacket color?",
-        "108. Would you rather always have the perfect comeback ready or never stutter?",
-        "107. Would you rather live in a house with secret passageways or a rooftop garden?",
-        "106. Would you rather have a robot butler who tells terrible jokes or a silent robotic dog?",
-        "105. Would you rather be able to write with both hands simultaneously or speak backward fluently?",
-        "104. Would you rather always have perfect lighting wherever you go or perfect acoustics?",
-        "103. Would you rather have a calendar that warns you of minor inconveniences or pleasant surprises?",
-        "102. Would you rather live in a city where it always gently rains or always snows?",
-        "101. Would you rather have the ability to run effortlessly uphill or swim like a dolphin?",
-        "100. Would you rather always have an audience cheering when you succeed or absolute quiet?",
-        "99. Would you rather be able to instantly memorize song lyrics or recipes?",
-        "98. Would you rather have a memory like a vault or an imagination without limits?",
-        "97. Would you rather always wear shoes that are slightly too big or slightly too small?",
-        "96. Would you rather spend a year living in a lighthouse or a forest cabin?",
-        "95. Would you rather have an automatic translator for animal sounds or ancient languages?",
-        "94. Would you rather be able to communicate with plants or insects?",
-        "93. Would you rather always have the exact right tool in your pocket or never get lost in a new city?",
-        "92. Would you rather live in a home made entirely of glass or stone?",
-        "91. Would you rather have a pause button for live conversations or a rewind button for books?",
-        "90. Would you rather be able to sketch a blueprint of anything instantly or write a song on command?",
-        "89. Would you rather always have perfect posture without trying or never get tired when walking?",
-        "88. Would you rather live without clocks or without mirrors?",
-        "87. Would you rather have a pet owl that delivers your mail or a cat that writes poetry?",
-        "86. Would you rather be able to control the wind or control the temperature around you?",
-        "85. Would you rather never lose your keys again or never forget why you walked into a room?",
-        "84. Would you rather have the power to instantly organize any messy room or instantly fix any mechanical squeak?",
-        "83. Would you rather spend a month in a medieval castle or a high-tech space station?",
-        "82. Would you rather have a personal theme song play whenever you enter a room or a spotlight follow you?",
-        "81. Would you rather always step on squeaky floorboards or always knock things over clumsily?",
-        "80. Would you rather be able to change your hair color instantly by thinking about it or your eye color?",
-        "79. Would you rather have an unlimited supply of fresh fruit or endless gourmet chocolate?",
-        "78. Would you rather live in a perpetual sunrise or an eternal sunset?",
-        "77. Would you rather possess the ability to read fast or write with absolute eloquence?",
-        "76. Would you rather always have to whisper when angry or shout when happy?",
-        "75. Would you rather have your house automatically clean itself or have your meals cooked and dishes done forever?",
-        "74. Would you rather spend a year living in the 1800s or 100 years into the future?",
-        "73. Would you rather be a brilliant scientist who never gets recognized or an average inventor who gets all the credit?",
-        "72. Would you rather have a lifetime supply of free books or free airline tickets?",
-        "71. Would you rather be able to sleep anywhere instantly or never need sleep again?",
-        "70. Would you rather live in a world where everyone can read minds or where everyone must speak the absolute truth?",
-        "69. Would you rather have the power to fix any broken object instantly or cure any plant disease?",
-        "68. Would you rather have every song you listen to end one second too early or loop the chorus forever?",
-        "67. Would you rather be an extra in an Oscar-winning film or the lead actor in a terrible B-movie?",
-        "66. Would you rather have a giant statue of yourself erected in your hometown or a scholarship named after you?",
-        "65. Would you rather always have wet socks or a pebble permanently stuck in your shoe?",
-        "64. Would you rather be able to breathe underwater or fly through the clouds?",
-        "63. Would you rather have your dream job immediately or win the lottery ten years from now?",
-        "62. Would you rather live without mirrors or without cameras?",
-        "61. Would you rather have a rewind button for awkward social conversations or a fast-forward button for tedious tasks?",
-        "60. Would you rather be the star player on a losing team or sit on the bench for a championship team?",
-        "59. Would you rather give up coffee or give up your favorite hobby?",
-        "58. Would you rather have the ability to design your dreams every night or never dream again?",
-        "57. Would you rather be an expert carpenter or a master chef?",
-        "56. Would you rather eat spicy food for every meal or completely unseasoned food?",
-        "55. Would you rather have a permanent cloud follow you around raining only on your head or a spotlight shining on you at all times?",
-        "54. Would you rather be stranded on a tropical island alone or with your most annoying acquaintance?",
-        "53. Would you rather live in a library or an art gallery?",
-        "52. Would you rather have fingers as long as your legs or legs as short as your fingers?",
-        "51. Would you rather only be able to whisper or only be able to shout?",
-        "50. Would you rather have a laugh that sounds like a foghorn or a sneeze that sounds like a firework?",
-        "49. Would you rather be an unknown hero or a celebrated villain?",
-        "48. Would you rather always have to hop on one foot when moving or walk backward everywhere?",
-        "47. Would you rather have a pet dragon the size of a cat or a pet elephant the size of a dog?",
-        "46. Would you rather be able to change the past or catch a glimpse of the future?",
-        "45. Would you rather live in a treehouse mansion or an underground luxury bunker?",
-        "44. Would you rather be caught singing in the shower or caught talking to your plants?",
-        "43. Would you rather eat your favorite meal for every single meal or never taste food again?",
-        "42. Would you rather have hands that kept growing every year or feet that never stopped growing?",
-        "41. Would you rather lose all your old memories or never be able to make new ones?",
-        "40. Would you rather never age physically or never age mentally?",
-        "39. Would you rather be the funniest person in any room or the best listener?",
-        "38. Would you rather have your house permanently smell like fresh cookies or ocean breeze?",
-        "37. Would you rather spend a weekend trapped in a haunted house or a locked escape room?",
-        "36. Would you rather be able to sketch anything perfectly or play any song by ear on the piano?",
-        "35. Would you rather have a personal assistant who is brilliant but incredibly sarcastic or polite but totally incompetent?",
-        "34. Would you rather be forced to wear itchy wool sweaters every day or sandals in the snow?",
-        "33. Would you rather live without air conditioning or without heating?",
-        "32. Would you rather have the power of invisibility or the power of reading minds?",
-        "31. Would you rather give up social media forever or give up eating sweets for the rest of your life?",
-        "30. Would you rather always arrive ten minutes early to everything or twenty minutes late?",
-        "29. Would you rather be exceptionally funny or exceptionally intelligent?",
-        "28. Would you rather have a rewind button for your life or a pause button?",
-        "27. Would you rather live in a world with no winter or a world with no summer?",
-        "26. Would you rather be able to talk to land animals or marine creatures?",
-        "25. Would you rather have endless free time but limited money or endless wealth but zero free time?",
-        "24. Would you rather always know the outcome of any sports game before it starts or any movie plot before watching?",
-        "23. Would you rather be famous for a great artistic masterpiece or an incredible act of bravery?",
-        "22. Would you rather never feel physical pain again or never feel emotional stress?",
-        "21. Would you rather explore the deepest depths of the ocean or the farthest reaches of outer space?",
-        "20. Would you rather be able to control fire or control water?",
-        "19. Would you rather always have to sing instead of speaking or dance everywhere instead of walking?",
-        "18. Would you rather have your life narrated by a dramatic movie trailer voice or a cheerful cartoon narrator?",
-        "17. Would you rather live in a home filled with state-of-the-art gadgets or a cozy rustic cabin off the grid?",
-        "16. Would you rather be an expert at public speaking or an absolute genius at mathematics?",
-        "15. Would you rather lose the ability to read or lose the ability to write?",
-        "14. Would you rather always speak your mind instantly without filtering or never be able to express anger?",
-        "13. Would you rather have perpetual summer weather year-round or experience all four distinct seasons vividly?",
-        "12. Would you rather be able to fly anywhere at walking speed or run at the speed of a cheetah?",
-        "11. Would you rather live without music for the rest of your life or without movies and television?",
-        "10. Would you rather have a personal chef cook every meal or a personal assistant handle every administrative chore?",
-        "9. Would you rather discover a major historical artifact in your backyard or a hidden underground cavern?",
-        "8. Would you rather always be dressed slightly too formally for an occasion or noticeably too casually?",
-        "7. Would you rather give up your smartphone for an entire year or give up watching television and movies forever?",
-        "6. Would you rather have a photographic memory for facts and figures or an uncanny intuition for reading people's moods?",
-        "5. Would you rather spend a year traveling alone across rural countryside or live in the heart of a bustling foreign metropolis?",
-        "4. Would you rather never have to sleep again with zero fatigue or be able to teleport anywhere within a fifty-mile radius?",
-        "3. Would you rather have the ability to speak every spoken language fluently or master any musical instrument instantly?",
-        "2. Would you rather live in a house with panoramic views of a misty mountain range or right on a warm ocean shore?",
-        "1. Would you rather always know exactly when someone is stretching the truth or always be able to guess what song is stuck in their head?"
-      ],
-      "Pop Culture": [
-        "150. What pop culture phenomenon do you think people will study in history books 200 years from now?",
-        "149. Which video game franchise has evolved its gameplay mechanics most gracefully?",
-        "148. What animated short film tells a more profound story than most feature-length movies?",
-        "147. Which fictional sibling relationship in TV history feels the most authentic?",
-        "146. What historical film captured the texture of a bygone era with astonishing precision?",
-        "145. Which pop star's stage production sets a new benchmark for live performance?",
-        "144. What movie line do people quote incorrectly all the time in everyday life?",
-        "143. Which sci-fi television show featured the most visionary conceptual designs?",
-        "142. What film adaptation dared to change the ending of a book and made it better?",
-        "141. Which comic book artist defined the visual aesthetic of an entire era?",
-        "140. What television drama series had the most devastating character arc resolution?",
-        "139. Which movie stunt sequence required the most insane amount of bravery to film?",
-        "138. What fictional school or institution in literature would you most want to attend?",
-        "137. Which musical artist's debut album remains their absolute finest work?",
-        "136. What movie thriller kept you guessing until the absolute final frame?",
-        "135. Which sitcom featured the funniest running gag across multiple seasons?",
-        "134. What pop culture icon's documentary revealed a surprisingly vulnerable human side?",
-        "133. Which fantasy film trilogy set the gold standard for epic cinematic world-building?",
-        "132. What television show featured a standalone bottle episode that was an absolute masterpiece?",
-        "131. Which actor's physical transformation for a role remains the most astonishing?",
-        "130. What book or film universe would you want to explore during a weekend off?",
-        "129. Which movie villain's final defeat felt completely triumphant and earned?",
-        "128. What television show managed to maintain its high quality across ten or more seasons?",
-        "127. Which animated movie has a background score that carries the entire emotional weight?",
-        "126. What movie featured an improvised line that became more famous than the script?",
-        "125. Which science fiction franchise explores philosophical questions with the most nuance?",
-        "124. What television comedy supporting character stole every scene they appeared in?",
-        "123. Which music video director changed the medium into an artistic revolution?",
-        "122. What film adaptation captured the exact atmosphere of its source novel?",
-        "121. Which fictional detective duo is the most entertaining to watch solve crimes?",
-        "120. What theatrical production utilized stage design in the most innovative way?",
-        "119. Which comic book hero has undergone the most interesting evolution over decades?",
-        "118. What movie features the most memorable and haunting closing shot?",
-        "117. Which television mini-series is a masterclass in tight, economical storytelling?",
-        "116. What pop music album defined the summer soundtrack of your youth?",
-        "115. Which fantasy book series built a magic system with the most rigorous rules?",
-        "114. What video game narrative rivaled the emotional punch of prestige cinema?",
-        "113. Which comedy actor excels at playing characters completely unlike themselves?",
-        "112. What movie sequel managed to surpass the emotional depth of the original?",
-        "111. Which fictional artifact or magical item would you want to wield for a day?",
-        "110. What historical drama series took liberties with facts but succeeded purely as entertainment?",
-        "109. Which animated series features background art that rivals traditional paintings?",
-        "108. What movie director is a master of creating unbearable suspense without jump scares?",
-        "107. Which television ensemble cast had the most natural, effortless chemistry?",
-        "106. What sci-fi movie created a futuristic city backdrop that felt completely alive?",
-        "105. Which musician's acoustic live album is superior to their studio recordings?",
-        "104. What book or comic series had the most satisfying conclusion?",
-        "103. Which fictional antagonist had the best wardrobe and aesthetic design?",
-        "102. What television show pilot episode instantly established its unique tone?",
-        "101. Which movie chase scene is the most brilliantly choreographed in cinema history?",
-        "100. Which fictional mentor figure taught you life lessons through their on-screen wisdom?",
-        "99. What movie plot resolution felt completely earned after hours of buildup?",
-        "98. Which villain song in an animated movie slaps harder than it has any right to?",
-        "97. What pop culture trend from your childhood do you secretly miss participating in?",
-        "96. Which television drama handled the sensitive conclusion of its characters best?",
-        "95. What movie scene features the most brilliant use of practical effects?",
-        "94. Which comedy troupe or sketch show defined the humor of an entire generation?",
-        "93. What fictional kingdom or realm has the most intricate and fascinating history?",
-        "92. Which classic novel received the absolute worst modern film adaptation?",
-        "91. What video game soundtrack stands as a masterpiece of modern composition?",
-        "90. Which comic book storyline deserves a multi-million-dollar cinematic adaptation?",
-        "89. What movie character deserved a much better fate at the end of the story?",
-        "88. Which documentary subject fascinated you far more than you expected?",
-        "87. What TV show theme song never fails to get stuck in your head?",
-        "86. Which fictional spaceship captain would you trust to steer you through a crisis?",
-        "85. What animated feature film boasts the most breathtaking visual art style?",
-        "84. Which actor delivers the best deadpan comedic lines in film history?",
-        "83. What cinematic universe expanded its lore in the most satisfying way?",
-        "82. Which book-to-screen adaptation made changes that actually improved the original story?",
-        "81. What television series had the most shocking mid-season plot twist?",
-        "80. Which musical artist has the most distinct and recognizable voice?",
-        "79. What movie villain had a plan that actually made logical sense?",
-        "78. Which sitcom apartment or house would you most want to live in?",
-        "77. What fictional gadget or tool from pop culture do you wish existed in real life?",
-        "76. Which movie opening credits sequence sets the mood better than the rest of the film?",
-        "75. What pop culture icon do you think will be remembered centuries from now?",
-        "74. Which fictional duo has the best chemistry on screen?",
-        "73. What theater production or Broadway show blew you away when you saw it?",
-        "72. Which television mystery box show had the most thrilling buildup?",
-        "71. What science fiction movie predicted future technology with eerie accuracy?",
-        "70. Which pop star defines the modern era of music performance and production?",
-        "69. What animated series appeals to adults just as much as children?",
-        "68. Which holiday movie is an absolute mandatory watch every single year?",
-        "67. What book adaptation completely captured the spirit of the original text?",
-        "66. Which actor has the most impressive range across different genres?",
-        "65. What fictional sports team or competition story is your favorite?",
-        "64. Which television show had the most heartbreaking character departure?",
-        "63. What movie mystery kept you guessing until the very last second?",
-        "62. Which music album cover is the most iconic of all time?",
-        "61. What fictional school or academy would you want to attend?",
-        "60. Which documentary film changed the way you view the world?",
-        "59. What television comedy series changed the landscape of humor forever?",
-        "58. Which action movie has the most well-choreographed fight scenes?",
-        "57. What book or movie has the most satisfying redemption arc for a character?",
-        "56. Which fictional political leader or monarch would you actually trust to run things?",
-        "55. What movie makes you emotional every single time you watch it?",
-        "54. Which musical genre do you think produced the greatest decade of hits?",
-        "53. What television show introduced a character you initially hated but grew to love?",
-        "52. Which voice actor brings so much life to an animated character that they carry the film?",
-        "51. What movie prop or collectible would you most want to own from Hollywood history?",
-        "50. Which fictional hotel, tavern, or coffee shop would you love to hang out in?",
-        "49. What historical period is most accurately and beautifully captured in cinema?",
-        "48. Which superhero movie stands head and shoulders above the rest of the genre?",
-        "47. What television miniseries is a masterclass in storytelling from start to finish?",
-        "46. Which band or artist defined the soundtrack of your teenage years?",
-        "45. What movie plot hole bothers you more than it reasonably should?",
-        "44. Which fantasy realm has the best magic system or lore?",
-        "43. What television villain did you secretly root for throughout the series?",
-        "42. Which music video is a complete work of art in its own right?",
-        "41. What movie quote do you find yourself referencing most often in daily conversation?",
-        "40. Which sci-fi franchise has the most believable and immersive world-building?",
-        "39. What book did you finish reading and immediately wish you could experience for the first time again?",
-        "38. Which fictional family in television history is the most chaotic yet lovable?",
-        "37. What movie soundtrack do you listen to regularly while working or relaxing?",
-        "36. Which actor nailed a biographical role so well they became indistinguishable from the real person?",
-        "35. What pop culture phenomenon from your youth do you miss the most?",
-        "34. Which television sitcom has the most comforting, rewatchable episodes?",
-        "33. What movie features the most memorable opening sequence ever filmed?",
-        "32. Which fictional mentor or teacher do you wish you had in real life?",
-        "31. What video game or interactive story has the most compelling narrative?",
-        "30. Which director has the most recognizable and unique visual style?",
-        "29. What fictional spaceship or vehicle do you wish you could own?",
-        "28. Which movie monster or villain is the most iconic in cinema history?",
-        "27. What television show finale completely stuck the landing?",
-        "26. Which musical artist put on the best live concert performance you have ever seen?",
-        "25. What book series do you wish would get a faithful, high-budget television adaptation?",
-        "24. Which comedy film still makes you laugh out loud every single time?",
-        "23. What movie scene always gives you goosebumps no matter how many times you watch it?",
-        "22. Which fictional detective or investigator is your absolute favorite to follow?",
-        "21. What documentary series blew your mind the most when you watched it?",
-        "20. Which animated film features the best soundtrack of all time?",
-        "19. What is the most overrated movie or TV show that everyone else seemed to love?",
-        "18. Which actor or actress elevates every single movie they appear in?",
-        "17. What fictional world would you most want to visit for a weekend vacation?",
-        "16. Which movie sequel surpassed the original in every possible way?",
-        "15. What television show had a pilot episode that hooked you immediately?",
-        "14. Which music artist or band has the most flawless discography without a single bad album?",
-        "13. What book or movie ending left you feeling completely unsatisfied or upset?",
-        "12. Which fictional hero do you think would actually be a nightmare to deal with in real life?",
-        "11. What movie has the greatest plot twist that completely caught you off guard on first viewing?",
-        "10. What iconic pop song instantly takes you right back to a specific summer in your life?",
-        "9. What cinematic universe do you feel has completely run its course and should finally end?",
-        "8. Which board game rivalry has caused the most intense arguments among your friends or family?",
-        "7. What movie adaptation of a book completely exceeded your expectations?",
-        "6. What trend from early internet culture do you look back on with absolute fondness?",
-        "5. Which fictional sidekick deserved to be the main star of their own franchise?",
-        "4. What music album can you listen to from start to finish without ever skipping a single track?",
-        "3. What fictional universe from a book or film would be the absolute worst place to rent an apartment?",
-        "2. Who is a movie villain whose motivations you actually understood and sympathized with?",
-        "1. Which classic television series from decades past holds up best when binge-watched today?"
-      ],
-      "Personal Stories": [
-        "150. What is a funny memory of an unexpected power outage that turned into a cozy evening?",
-        "149. What was the most picturesque small-town square you ever explored during autumn?",
-        "148. What is a comforting weekend morning routine that sets the tone for your entire week?",
-        "147. What was the most amusing mix-up when trying out a trendy new workout class?",
-        "146. What is a memorable gift you made yourself instead of buying from a store?",
-        "145. What was the most peaceful forest trail where you heard nothing but the wind in the trees?",
-        "144. What is a funny anecdote about trying to navigate a maze or cornfield puzzle?",
-        "143. What was the most rewarding woodworking or craft project you built with your hands?",
-        "142. What is a nostalgic childhood television show intro that still brings instant joy?",
-        "141. What was the most picturesque bridge or boardwalk you ever crossed on foot?",
-        "140. What is a humorous mishap from a time you attempted home hair styling?",
-        "139. What was the most memorable sunset watch party you hosted with close friends?",
-        "138. What is a charming local diner or coffee shop where you became a regular?",
-        "137. What was the most relaxing coastal getaway you ever treated yourself to?",
-        "136. What is a funny memory of trying to teach a pet a remarkably silly trick?",
-        "135. What was the most stunning wildflower meadow you ever encountered on a hike?",
-        "134. What is a comforting family meal that always makes rainy days feel cozy?",
-        "133. What was the most amusing disaster that happened during a backyard camping attempt?",
-        "132. What is a memorable antique store discovery that started an unexpected collection?",
-        "131. What was the most picturesque snow-covered morning walk you ever took?",
-        "130. What is a funny story about a smart device misunderstanding a voice command?",
-        "129. What was the most memorable holiday decoration you spent hours crafting yourself?",
-        "128. What is a cherished childhood game you still remember the exact rules for?",
-        "127. What was the most peaceful fishing spot or riverside retreat you ever visited?",
-        "126. What is a humorous mix-up you experienced when trying to follow complex assembly instructions?",
-        "125. What was the most rewarding afternoon spent volunteering for a local community project?",
-        "124. What is a nostalgic song that immediately reminds you of your first apartment or car?",
-        "123. What was the most fascinating local museum or historical exhibit you stumbled upon?",
-        "122. What is a funny mishap that occurred during your first attempt at backyard grilling?",
-        "121. What was the most memorable picnic spot you discovered during a lazy afternoon hike?",
-        "120. What is a comforting ritual you practice whenever you need to decompress after a long week?",
-        "119. What was the most picturesque harbor or marina you ever strolled along?",
-        "118. What is a humorous story about a DIY costume you put together at the last minute?",
-        "117. What was the most memorable starry night sky you ever gazed at away from city lights?",
-        "116. What is a quirky neighborhood custom you noticed when moving to a new place?",
-        "115. What was the most entertaining local theater production or music gig you attended?",
-        "114. What is a memorable road trip snack stop that exceeded all culinary expectations?",
-        "113. What was the most satisfying vintage restoration project you ever completed?",
-        "112. What is a funny memory of a pet trying to 'help' you work on a household chore?",
-        "111. What was the most unusual weather phenomenon you witnessed right outside your window?",
-        "110. What is a fun tradition you started with family members during holiday seasons?",
-        "109. What was the most peaceful morning you spent sitting on a porch watching the sunrise?",
-        "108. What is a humorous mishap you had while learning how to use a new camera or gadget?",
-        "107. What was the most delightful surprise left for you by a neighbor or friend?",
-        "106. What is a vintage tool or household gadget you own that still works better than modern ones?",
-        "105. What was the most amusing mix-up when trying to meet someone in a crowded venue?",
-        "104. What is a cherished recipe handed down in your family that you've put your own spin on?",
-        "103. What was the most picturesque autumn afternoon walk you ever experienced?",
-        "102. What is a funny anecdote from a time you tried a brand new winter sport?",
-        "101. What was the most memorable local farmers market find you ever brought home to cook?",
-        "100. What was the most rewarding weekend project you completed from start to finish?",
-        "99. What is a nostalgic scent that instantly transports you back to your school days?",
-        "98. What was the most memorable community event or festival you participated in?",
-        "97. What is a humorous mix-up that happened during your first attempt at gardening?",
-        "96. What was the most relaxing train journey or scenic drive you ever took?",
-        "95. What is a memorable encounter with a friendly stray animal while away from home?",
-        "94. What was the most satisfying culinary creation you perfected through trial and error?",
-        "93. What is a funny story about trying to take a family photo where nothing went right?",
-        "92. What was the most breathtaking view you encountered after a long, difficult climb?",
-        "91. What is a comforting childhood memory associated with a specific rainy afternoon?",
-        "90. What was the funniest mishap you encountered while trying to assemble flat-pack furniture?",
-        "89. What is a memorable afternoon spent exploring a historic local park or trail?",
-        "88. What was the most surprising thing you ever discovered while reorganizing a storage closet?",
-        "87. What is a handmade gift you received that you will cherish forever?",
-        "86. What was the most entertaining board game night you ever hosted with friends?",
-        "85. What is a quirky family tradition that always brings everyone together with a smile?",
-        "84. What was the most peaceful camping morning you ever experienced in the wilderness?",
-        "83. What is a memorable roadside attraction that turned out to be far weirder than expected?",
-        "82. What was the funniest thing that happened when you tried a brand new recipe for guests?",
-        "81. What is an antique or vintage treasure you found that had a surprisingly rich history?",
-        "80. What was the most scenic bicycle ride or nature walk you ever embarked upon?",
-        "79. What is a funny misunderstanding involving a pet that still makes you laugh out loud?",
-        "78. What was the most delightful small-town bakery or coffee shop you ever discovered on a whim?",
-        "77. What is an unexpected skill you picked up while renovating or fixing up a living space?",
-        "76. What was the most memorable outdoor barbecue or backyard gathering you ever hosted?",
-        "75. What is the most peaceful afternoon nap or rest you ever remember taking in your life?",
-        "74. What is a cherished heirloom passed down to you with a fascinating backstory?",
-        "73. What was the most picturesque neighborhood or street you ever strolled down?",
-        "72. What is a funny memory of trying to learn a musical instrument as a beginner?",
-        "71. What was the most thrilling carnival ride or amusement park attraction you braved?",
-        "70. What is a charming local custom you observed while visiting a new town?",
-        "69. What was the most memorable boat ride, ferry trip, or cruise you ever took?",
-        "68. What is a funny story about a home improvement project gone slightly off track?",
-        "67. What was the most impressive garden or plant project you ever cultivated?",
-        "66. What is the most comforting childhood meal that still instantly makes you feel at home?",
-        "65. What was the funniest reason you were ever late for an important appointment?",
-        "64. What is a memorable museum or historical site that exceeded your expectations?",
-        "63. What was the most entertaining talent show or amateur performance you ever participated in?",
-        "62. What is a quirky regional slang word or phrase you picked up and started using?",
-        "61. What was the most memorable sunset over the ocean or mountains you've seen?",
-        "60. What is the best spontaneous day trip you ever took with no prior planning?",
-        "59. What is a funny story about trying to bake something complicated for the first time?",
-        "58. What was the most satisfying organizational project you tackled in your home?",
-        "57. What is a memorable encounter you had with local wildlife in your backyard?",
-        "56. What was the most elaborate Halloween decoration or setup you ever created?",
-        "55. What is the most peaceful morning routine you ever established for yourself?",
-        "54. What is a funny language barrier or translation mix-up you experienced abroad?",
-        "53. What was the most unexpected item you found while cleaning out an attic or garage?",
-        "52. What is a childhood fort, treehouse, or hiding spot you built yourself?",
-        "51. What was the most memorable sports game or live competition you attended in person?",
-        "50. What is the best meal you ever cooked from scratch for a group of loved ones?",
-        "49. What is a funny story about a pet escaping or getting into mischief?",
-        "48. What was the most rewarding volunteer work or community project you participated in?",
-        "47. What is a remarkable coincidence that happened to you when traveling far from home?",
-        "46. What was the funniest costume you ever wore to a party or event?",
-        "45. What is a hobby or craft you tried once and realized you were completely terrible at?",
-        "44. What was the most memorable gift you ever received that caught you completely by surprise?",
-        "43. What is the most relaxing weekend escape you have ever treated yourself to?",
-        "42. What is a funny story from when you first learned how to drive?",
-        "41. What was the most complicated puzzle or building project you ever completed?",
-        "40. What is a local hidden gem restaurant or park in your area that you love sharing with others?",
-        "39. What was the most heartwarming animal rescue or pet bonding moment you’ve witnessed?",
-        "38. What is a piece of advice you ignored that you wish you had followed?",
-        "37. What was the most unusual venue you ever attended a social gathering or party in?",
-        "36. What is a tradition you started with your friends that you still keep up today?",
-        "35. What is a memorable camping or outdoor adventure that tested your patience?",
-        "34. What was the best flea market, garage sale, or antique shop find you ever scored?",
-        "33. What is the most amusing mix-up you’ve had with a phone's GPS or directions?",
-        "32. What is a collection you maintained when you were younger that you look back on and smile?",
-        "31. What was the most awe-inspiring sunrise or sunset you have ever witnessed?",
-        "30. What is a family recipe that you have perfected over the years?",
-        "29. What is the most bizarre job interview or first day of work you ever experienced?",
-        "28. What is a memorable road trip detour that turned out to be better than the actual destination?",
-        "27. What was the most satisfying home repair or improvement you ever pulled off successfully?",
-        "26. What is a quirky habit your grandparents or parents had that you now catch yourself doing?",
-        "25. What is the most scenic hiking trail or nature walk you have ever explored?",
-        "24. What was your very first concert, and what memories stand out from it?",
-        "23. What is a piece of antique furniture or household item you restored with your own hands?",
-        "22. What was the funniest disaster that happened during a holiday family dinner?",
-        "21. What is the most interesting antique or vintage item you’ve ever stumbled across?",
-        "20. What is a childhood game or sport you played obsessively until the streetlights came on?",
-        "19. What was the most unforgettable storm or weather event you ever weathered?",
-        "18. What is the most prized possession in your home that has zero monetary value?",
-        "17. What is a funny misunderstanding you had when visiting a foreign place or new city?",
-        "16. What was the best concert or live event you attended on a spontaneous whim?",
-        "15. What is a skill or hobby you taught yourself entirely through online videos?",
-        "14. What was the most chaotic cooking disaster you managed to salvage into something edible?",
-        "13. What is the most unusual pet or animal encounter you have ever had?",
-        "12. What is a random act of kindness from a stranger that you have never forgotten?",
-        "11. What was the most embarrassing fashion choice you proudly rocked as a teenager?",
-        "10. What is a simple childhood tradition that you still try to keep alive today?",
-        "9. What is a DIY project you attempted around the house that turned into a complete comedy of errors?",
-        "8. What was the most adventurous vacation or weekend getaway you have ever taken?",
-        "7. What is a strange local legend or rumor from the town where you grew up?",
-        "6. What is the best surprise celebration or gathering you have ever been a part of?",
-        "5. What is an item you bought on an impulse that turned out to be the most useful thing in your home?",
-        "4. What was your first job like, and what is the funniest lesson it taught you?",
-        "3. What is the most memorable meal you ever had in an unexpected or out-of-the-way place?",
-        "2. What is a hobby you picked up on a whim that turned into a lifelong obsession?",
-        "1. What was the most hilarious miscommunication you experienced during a family road trip?"
-      ],
-      "Science & Tech": [
-        "150. How will the convergence of AI and biotechnology redefine our approach to longevity research?",
-        "149. What role do autonomous soil-sampling rovers play in precision regenerative agriculture?",
-        "148. How might flexible solar films transform camping gear and emergency shelters?",
-        "147. What are the challenges of scaling carbon-negative concrete production for commercial use?",
-        "146. How will quantum sensors improve gravitational field measurements and mineral exploration?",
-        "145. What role do atmospheric aerosol measurements play in refining climate sensitivity models?",
-        "144. How might biomimetic robotics draw inspiration from insect flight mechanics?",
-        "143. What are the implications of utilizing asteroid resources for in-space manufacturing?",
-        "142. How will smart wearable textiles monitor cardiovascular health during daily routines?",
-        "141. What role will advanced flywheels play in short-term grid frequency stabilization?",
-        "140. What is the potential of synthetic RNA vaccines expand beyond infectious diseases into oncology?",
-        "139. What are the engineering hurdles of developing reusable heavy-lift orbital rocket stages?",
-        "138. How will machine learning algorithms improve weather radar precipitation nowcasting?",
-        "137. What role do deep-earth microbiological communities play in global geochemical cycles?",
-        "136. How might autonomous drone swarms assist in post-earthquake structural damage assessment?",
-        "135. What is the potential of graphene membranes in ultra-efficient water desalination?",
-        "134. How might acoustic sensors monitor forest health and illegal deforestation activities?",
-        "133. What are the implications of integrating brain-computer interfaces with virtual reality?",
-        "132. How will advancements in cryogenic freezing improve organ preservation timelines?",
-        "131. What role do high-altitude pseudo-satellites play in providing regional communications?",
-        "130. How might bio-batteries powered by sugar or bacteria replace traditional lithium cells?",
-        "129. What are the challenges of implementing quantum key distribution for secure communications?",
-        "128. How will digital twin models of Earth improve long-range climate forecasting accuracy?",
-        "127. What role do radioisotope thermoelectric generators play in deep-space probes?",
-        "126. How might robotic exosuits assist stroke rehabilitation patients in regaining mobility?",
-        "125. What is the potential of perovskite solar cells in surpassing traditional silicon efficiency?",
-        "124. How will advanced composting enzymes accelerate municipal organic waste recycling?",
-        "123. What are the implications of deploying orbital solar power stations beaming energy wirelessly?",
-        "122. How are biological computers utilizing human brain cell cultures change processing paradigms?",
-        "121. What role do autonomous underwater gliders play in long-term oceanographic surveys?",
-        "120. How will wearable hydration sensors monitor athletic performance and health in real time?",
-        "119. What are the challenges of maintaining stable magnetic fields in fusion test reactors?",
-        "118. How might transparent wood materials replace glass in eco-friendly building designs?",
-        "117. What role will modular nuclear micro-reactors play in powering remote research outposts?",
-        "116. How will machine learning models accelerate materials science discovery and synthesis?",
-        "115. What is the significance of discovering organic molecules in Martian meteorite samples?",
-        "114. How might smart concrete embedded with bacteria repair structural stress fractures automatically?",
-        "113. What are the engineering challenges of building subsea compressed air energy storage?",
-        "112. How will optical fiber innovations continue to expand global internet bandwidth capacity?",
-        "111. What role do biological nitrogen-fixing crops play in reducing synthetic fertilizer dependence?",
-        "110. How might micro-robots revolutionize targeted drug delivery within human blood vessels?",
-        "109. What are the implications of utilizing shape-memory alloys in aerospace engineering?",
-        "108. How will advanced seismic imaging improve our understanding of Earth's inner core?",
-        "107. What role do airborne wind turbine kites play in harnessing high-altitude jet streams?",
-        "106. How might lab-grown leather and textiles disrupt traditional manufacturing supply chains?",
-        "105. What is the potential of plasma actuators in reducing aircraft drag and noise?",
-        "104. How will tidal stream generators contribute to coastal renewable energy mixes?",
-        "103. What are the challenges of long-term data preservation in synthetic DNA storage?",
-        "102. How might thermoelectric generators capture waste industrial heat for electricity?",
-        "101. What role will advanced aerodynamics play in supersonic commercial passenger flight?",
-        "100. How will robotic process automation continue to reshape analytical data workflows?",
-        "99. What is the significance of mapping the connectome of simple model organisms?",
-        "98. How might bio-printing technology revolutionize organ transplants and regenerative medicine?",
-        "97. What are the engineering marvels behind deep-underground neutrino particle detectors?",
-        "96. How will smart grid algorithms balance decentralized wind and solar power fluctuations?",
-        "95. What role do extremophile enzymes play in advancing green industrial chemistry?",
-        "94. How might magnetic confinement fusion reactors achieve net-positive energy output?",
-        "93. What is the most fascinating application of quantum dot technology in displays and medicine?",
-        "92. How will advancements in atmospheric water generators help combat arid region droughts?",
-        "91. What are the implications of developing biodegradable electronics for environmental health?",
-        "90. How might metamaterials manipulate light to create functional cloaking devices?",
-        "89. What role do autonomous rover swarms play in planetary surface exploration?",
-        "88. How will neuromorphic computing architectures mimic human brain efficiency?",
-        "87. What is the significance of studying deep mantle plumes for understanding plate tectonics?",
-        "86. How might acoustic levitation technology change manufacturing assembly lines?",
-        "85. What are the challenges of utilizing carbon-nanotube cables for industrial applications?",
-        "84. How do orbital telescope arrays help astronomers detect exoplanet atmospheric compositions?",
-        "83. What role will solid-state batteries play in the next generation of electric vehicles?",
-        "82. How might CRISPR gene therapies eradicate hereditary blood disorders in our lifetime?",
-        "81. What is the potential of kinetic energy harvesting in powering wearable electronics?",
-        "80. How will micro-fluidic diagnostic chips transform point-of-care medical testing?",
-        "79. What are the engineering hurdles of constructing permanent habitats on lunar soil?",
-        "78. How might synthetic photosynthesis revolutionize clean fuel production globally?",
-        "77. What role do magnetohydrodynamic drives play in theoretical spacecraft propulsion?",
-        "76. How will advancements in optical computing change processing speeds in the future?",
-        "75. How might future space missions utilize in-situ resource utilization for long-term survival?",
-        "74. What lessons can we draw from the resilience of deep-sea hydrothermal vent ecosystems?",
-        "73. How will digital twins of cities help urban planners test disaster resilience?",
-        "72. What is the most exciting development in the quest for interstellar communication?",
-        "71. How might automated agricultural machinery improve crop yields while reducing pesticide use?",
-        "70. What mysteries of quantum entanglement do you think physicists will unlock next?",
-        "69. How will advanced climate modeling improve our preparedness for extreme weather events?",
-        "68. What is the most compelling argument for or against the simulation hypothesis?",
-        "67. How might high-speed hyperloop transportation systems change cross-country commuting?",
-        "66. What biological secrets can we learn from animals that undergo hibernation or extreme survival?",
-        "65. How will robotic exoskeletons assist workers in heavy manufacturing and logistics?",
-        "64. What is the most mind-bending concept related to the expansion of the universe?",
-        "63. How might transparent solar panels integrated into windows change urban skyscrapers?",
-        "62. What role will modular nuclear reactors play in remote or off-grid power generation?",
-        "61. How will advancements in recycling technology change plastic waste processing?",
-        "60. What is the significance of gravitational wave astronomy in viewing the universe?",
-        "59. How might the study of extremophiles on Earth guide our search for life on icy moons?",
-        "58. What challenges do robotics engineers face in mastering human-like dexterity and touch?",
-        "57. How will smart infrastructure and IoT sensors help cities better manage traffic and waste?",
-        "56. What is the most remarkable example of convergent evolution in the natural world?",
-        "55. How might geothermal energy tap into deeper layers of the Earth's crust for clean power?",
-        "54. What are the implications of using AI models to decipher ancient undeciphered scripts?",
-        "53. How will machine learning accelerate the discovery of new pharmaceutical drugs?",
-        "52. What is the most complex engineering challenge involved in building a space elevator?",
-        "51. How might bio-luminescent plants replace traditional street lighting in future eco-cities?",
-        "50. What technological solutions are most promising for cleaning up space debris in orbit?",
-        "49. How will clean energy transitions impact the geopolitics of rare earth minerals?",
-        "48. What is the most fascinating aspect of animal communication and neurology?",
-        "47. How might autonomous underwater vehicles map uncharted ocean trenches completely?",
-        "46. What lessons does the evolution of computer architecture teach us about complex systems?",
-        "45. How do you think artificial intelligence will assist marine biologists in tracking ocean life?",
-        "44. What is the potential impact of room-temperature superconductors on global power grids?",
-        "43. How might nanotechnology revolutionize targeted cancer treatments in medicine?",
-        "42. What challenges face the implementation of global satellite internet networks?",
-        "41. How will wearable health sensors change how we catch and prevent illnesses early?",
-        "40. What is the most intriguing theory regarding the nature of dark matter and dark energy?",
-        "39. How might automated manufacturing and 3D printing transform disaster relief housing?",
-        "38. What role will desalination plants play in solving global freshwater shortages?",
-        "37. How will advances in battery storage technology revolutionize electric aviation and shipping?",
-        "36. What is the most profound implication of discovering microbial life on another celestial body?",
-        "35. How might synthetic biology allow us to engineer bacteria to clean up environmental pollution?",
-        "34. What biological mysteries of the human brain do you hope neuroscientists solve soon?",
-        "33. How will holographic displays and augmented reality change remote collaboration?",
-        "32. What is the most exciting frontier in deep-space exploration beyond our solar system?",
-        "31. How might swarm robotics change search-and-rescue operations in disaster zones?",
-        "30. What technological marvel from the ancient world still leaves modern engineers scratching their heads?",
-        "29. How do you think atmospheric carbon capture technology will scale in the coming decades?",
-        "28. What ethical boundaries should govern genetic modifications in human embryos?",
-        "27. How will personal genomics and personalized medicine alter how we approach healthcare?",
-        "26. What is the most fascinating paradox in modern physics or astrophysics?",
-        "25. How might advances in material science create buildings that heal their own cracks?",
-        "24. What lessons can modern engineers learn by studying bio-inspired design from nature?",
-        "23. How do you think autonomous drones will change parcel delivery and emergency services?",
-        "22. What challenges must be overcome before asteroid mining becomes a commercial reality?",
-        "21. How will brain-computer interfaces change the way individuals with physical disabilities interact?",
-        "20. What is the most awe-inspiring telescope image or astronomical discovery in recent years?",
-        "19. How might vertical farming and lab-grown food transform global agriculture and land use?",
-        "18. What everyday household technology from science fiction movies do you wish existed right now?",
-        "17. How will quantum computing change encryption and cybersecurity in our daily lives?",
-        "16. What ocean floor discovery do you think would be the most exciting for humanity to uncover?",
-        "15. If scientists could resurrect an extinct species like the woolly mammoth, should they do it?",
-        "14. What role do you think nuclear fusion will play in powering the cities of the future?",
-        "13. How might artificial intelligence change the way we study and understand prehistoric archaeology?",
-        "12. What physics concept do you find the most difficult and fascinating to wrap your head around?",
-        "11. If humanity successfully establishes a permanent base on Mars, would you watch the live broadcast?",
-        "10. How will advancements in computer graphics change the way we experience historical education?",
-        "9. What deep-sea mystery do you wish marine scientists could finally solve?",
-        "8. Would you ever want to live in a fully automated smart home controlled entirely by voice commands?",
-        "7. What ancient technological invention do you think had the greatest impact on human civilization?",
-        "6. How do you think renewable energy grids will completely reshape rural communities?",
-        "5. If you could explore any planet or moon in our solar system via probe, which one would you pick?",
-        "4. What medical breakthrough do you hope researchers achieve within the next few decades?",
-        "3. Would you trust an autonomous vehicle to navigate heavy traffic through a severe snowstorm?",
-        "2. What scientific discovery from the last century do you find the most mind-boggling to think about?",
-        "1. If commercial space tourism becomes routine in your lifetime, would you sign up for a trip to orbit?"
-      ],
-      "Did You Know?": [
-        "150. Did you know that planet Earth is the only known celestial body in the universe to harbor liquid water on its surface?",
-        "149. Did you know that red pandas use their long bushy tails for balance and as cozy blankets in winter?",
-        "148. Did you know that the human eye can distinguish approximately 10 million different colors?",
-        "147. Did you know that tapirs are closely related to horses and rhinoceroses?",
-        "146. Did you know that giraffes give birth standing up, meaning newborn calves drop six feet to the ground?",
-        "145. Did you know that a group of owls is called a parliament?",
-        "144. Did you know that ancient Romans used lead acetate syrup to sweeten and preserve wine?",
-        "143. Did you know that lightning produces ozone gas, which gives the air a fresh scent after a thunderstorm?",
-        "142. Did you know that cat whiskers act as sensitive balancing and spatial measuring instruments?",
-        "141. Did you know that honey was used in ancient wound dressings because of its natural antibacterial properties?",
-        "140. Did you know that sea otters often carry their favorite rocks in special skin pouches under their arms?",
-        "139. Did you know that wombat pouches face backwards so dirt doesn't get shoveled into them while digging?",
-        "138. Did you know that a group of pandas is called an embarrassment?",
-        "137. Did you know that some species of cactus can live for over 200 years in arid desert environments?",
-        "136. Did you know that blue whales are the largest animals ever known to have lived on Earth?",
-        "135. Did you know that a tiger's skin is also striped underneath its fur coat?",
-        "134. Did you know that ancient Egyptians worshipped cats and considered harming them a severe crime?",
-        "133. Did you know that playing video games can improve hand-eye coordination and visual spatial skills?",
-        "132. Did you know that starfish can regenerate lost arms, and sometimes an entire body from a single arm?",
-        "131. Did you know that squirrel nests are called dreys and are built high up in tree forks?",
-        "130. Did you know that the shortest war in history lasted only 38 minutes between Britain and Zanzibar in 1896?",
-        "129. Did you know that flamingos are born with gray feathers that turn pink from their crustacean diet?",
-        "128. Did you know that an electric eel is actually a type of knifefish rather than a true eel?",
-        "127. Did you know that a group of jellyfish is called a smack or a bloom?",
-        "126. Did you know that ancient Romans used pulverized glass in some of their tooth-cleaning mixtures?",
-        "125. Did you know that blue jays frequently mimic the calls of hawks to scare other birds away from feeders?",
-        "124. Did you know that cats have 32 individual muscles in each of their ears to control movement?",
-        "123. Did you know that the smell of freshly cut grass is actually a distress chemical plants release?",
-        "122. Did you know that sea turtles can live to be over 100 years old in the wild?",
-        "121. Did you know that an adult human has 206 bones, but babies are born with approximately 270?",
-        "120. Did you know that koalas have fingerprints so distinct they have occasionally tricked police databases?",
-        "119. Did you know that snail slime has been used in cosmetics for its skin-soothing properties?",
-        "118. Did you know that a crocodile cannot stick its tongue out because it is attached to the roof of its mouth?",
-        "117. Did you know that Wawa's name comes from the Ojibwe Native American word for the Canada goose?",
-        "116. Did you know that ancient Egyptians played an early form of bowling using stone balls?",
-        "115. Did you know that the tongue of a woodpecker wraps completely around its skull to cushion its brain while pecking?",
-        "114. Did you know that giraffes sleep as little as two hours a day, often standing up?",
-        "113. Did you know that lightning can strike the same place multiple times, contrary to popular belief?",
-        "112. Did you know that a blue whale's heartbeat can be detected from over two miles away underwater?",
-        "111. Did you know that bank teller signatures on old currency were once written by hand using fountain pens?",
-        "110. Did you know that playing classical music to plants can stimulate faster leaf growth?",
-        "109. Did you know that ostrich eyes are actually bigger than their entire brains?",
-        "108. Did you know that jellyfish are roughly 95% water by total body weight?",
-        "107. Did you know that the first computer mouse was invented by Douglas Engelbart in 1964 and was made of wood?",
-        "106. Did you know that horses are physically incapable of breathing through their mouths?",
-        "105. Did you know that ancient Greeks and Romans used urine to wash clothes because of its natural ammonia content?",
-        "104. Did you know that sea otters have the densest fur of any animal on Earth, with up to one million hairs per square inch?",
-        "103. Did you know that the human body contains enough iron to make a three-inch metal nail?",
-        "102. Did you know that a group of crows is called a murder?",
-        "101. Did you know that honeybees can recognize human faces when shown photographs?",
-        "100. Did you know that sea horses are the only animal species on Earth where the males carry and give birth to the young?",
-        "99. Did you know that blue-eyed cats have a higher genetic predisposition to congenital deafness?",
-        "98. Did you know that polar bear fur is actually transparent rather than white, reflecting light to appear snowy?",
-        "97. Did you know that Wawa started as an iron foundry before opening its first milk market in Pennsylvania?",
-        "96. Did you know that ancient Egyptians slept on pillows made of solid stone?",
-        "95. Did you know that starfish do not have any brains or blood inside their bodies?",
-        "94. Did you know that a flea can jump up to 200 times the length of its own body?",
-        "93. Did you know that cats spend roughly 70% of their lives sleeping?",
-        "92. Did you know that penguins propose to their mates by presenting them with a carefully chosen pebble?",
-        "91. Did you know that wombat teeth never stop growing throughout their entire lifetime?",
-        "90. Did you know that giraffes have the same number of neck vertebrae as humans—exactly seven?",
-        "89. Did you know that the human nose can detect over one trillion different scents?",
-        "88. Did you know that butterflies taste their food using sensory receptors located on the bottoms of their feet?",
-        "87. Did you know that baby elephants suck on their trunks for comfort just like human babies suck their thumbs?",
-        "86. Did you know that the Eiffel Tower grows taller during summer because thermal expansion heats up its iron structure?",
-        "85. Did you know that a group of porcupines is officially known as a prickle?",
-        "84. Did you know that shark skin is covered in tiny tooth-like structures called dermal denticles that reduce water drag?",
-        "83. Did you know that neon gas glows reddish-orange, while other colors in neon signs come from different gases or fluorescent coatings?",
-        "82. Did you know that kangaroo rats can live their entire lives without ever drinking a single drop of water?",
-        "81. Did you know that tuatara lizards possess a third parietal 'pineal eye' on top of their skulls that senses light changes?",
-        "80. Did you know that a bolt of lightning is five times hotter than the surface of the sun?",
-        "79. Did you know that goldfish have a memory span of at least five months, debunking the classic three-second myth?",
-        "78. Did you know that sloths can hold their breath underwater for up to 40 minutes, which is longer than dolphins can?",
-        "77. Did you know that strawberry is the only fruit with its seeds on the outside of its skin?",
-        "76. Did you know that koalas sleep up to 22 hours a day because their eucalyptus diet provides very little caloric energy?",
-        "75. Did you know that honeybees communicate the location of flower patches to each other by performing a specialized 'waggle dance'?",
-        "74. Did you know that the Great Wall of China cannot actually be seen from space with the naked eye without camera zoom lenses?",
-        "73. Did you know that the human heart pumps roughly 2,000 gallons of blood through 60,000 miles of blood vessels every day?",
-        "72. Did you know that chameleons change their skin color primarily to communicate their mood or regulate body temperature rather than to hide?",
-        "71. Did you know that pearls are created when oysters and clams form a protective nacre layer around irritating foreign particles?",
-        "70. Did you know that squirrels plant thousands of new trees every year simply by forgetting where they buried their acorns?",
-        "69. Did you know that Mount Everest is still growing taller by about a quarter of an inch every single year due to shifting tectonic plates?",
-        "68. Did you know that wombats are the only known animals in the world that produce geometric cube-shaped waste?",
-        "67. Did you know that carrots were originally purple or yellow before Dutch farmers bred orange mutants in the 17th century?",
-        "66. Did you know that your eyelids blink roughly 15 to 20 times every minute, totaling over 10 million blinks per year?",
-        "65. Did you know that modern commercial airliners are struck by lightning routinely without suffering any electrical damage thanks to conductive aluminum frames?",
-        "64. Did you know that ketchup was once sold in the 1830s as a medicinal cure for indigestion and diarrhea?",
-        "63. Did you know that a single strand of spider silk is five times stronger than a steel strand of the same weight?",
-        "62. Did you know that jellyfish have existed on Earth for over 500 million years, predating both dinosaurs and trees?",
-        "61. Did you know that sea turtles navigate across thousands of miles of open ocean by sensing the Earth's invisible magnetic field?",
-        "60. Did you know that paper currency is not actually made of wood pulp paper, but is instead crafted from 75% cotton and 25% linen fibers?",
-        "59. Did you know that horse teeth occupy more space inside their heads than their brains do?",
-        "58. Did you know that ancient Greeks threw apples at each other as a traditional marriage proposal gesture?",
-        "57. Did you know that a housefly hums in the musical key of F major as it beats its wings rapidly?",
-        "56. Did you know that neon signs do not all glow orange-red; different noble gases and coated tubes create all the vibrant colors?",
-        "55. Did you know that striped zebras actually use their black-and-white patterns as natural camouflage to confuse biting horseflies?",
-        "54. Did you know that the word 'alphabet' comes from the first two letters of the Greek writing system: alpha and beta?",
-        "53. Did you know that pigeons have exceptional visual recognition skills and can even distinguish between paintings by Monet and Picasso?",
-        "52. Did you know that peanut butter can be transformed into diamonds under extreme laboratory pressure and heat conditions?",
-        "51. Did you know that an octopus can squeeze its entire flexible body through any opening larger than its hard beak?",
-        "50. Did you know that lightning strikes the Earth approximately 100 times every single second of every day?",
-        "49. Did you know that ancient Egyptians used trained baboons as police officers to patrol markets and help apprehend suspected thieves?",
-        "48. Did you know that astronauts can grow up to two inches taller while living in microgravity because their spinal discs decompress without gravity?",
-        "47. Did you know that some species of bamboo can grow up to three feet in a single 24-hour period under optimal conditions?",
-        "46. Did you know that crossword puzzles were first published in the New York World newspaper in December 1913 by Arthur Wynne?",
-        "45. Did you know that blue whales have tongues that weigh as much as an entire adult elephant?",
-        "44. Did you know that bullets and cannons were originally stacked in pyramids on brass rings called 'monkeys' in naval yards?",
-        "43. Did you know that newborn babies are born without kneecaps, which don't fully develop into solid bone until they are around three years old?",
-        "42. Did you know that pineapples take nearly two full years to grow from planting to harvestable fruit?",
-        "41. Did you know that the world's oldest known recipe is for beer, dating back over 4,000 years to ancient Sumerian culture?",
-        "40. Did you know that the coldest temperature ever recorded naturally on Earth was minus 128.6 degrees Fahrenheit in Antarctica?",
-        "39. Did you know that Venice, Italy, is built upon millions of wooden timber piles driven deep into the marshy mud, where they petrified underwater?",
-        "38. Did you know that cats cannot taste sweetness because they lack the specific taste receptor gene required to detect sugar?",
-        "37. Did you know that butterflies go through complete metamorphosis, liquidizing inside their cocoons before reorganizing into winged adults?",
-        "36. Did you know that the inventor of the Frisbee was eventually cremated and made into a series of commemorative plastic flying discs after he passed away?",
-        "35. Did you know that capital letters were originally called 'majuscules' and lowercase letters were called 'minuscules' before printing presses?",
-        "34. Did you know that electric eels can generate a powerful shock of up to 860 volts, easily enough to stun a horse or power small appliances?",
-        "33. Did you know that jigsaw puzzles were originally invented in the 1760s as educational toys to help children learn geography by cutting maps on wood?",
-        "32. Did you know that sea sponges have no brains, hearts, or nervous systems, yet they are complex animals that filter thousands of gallons of water daily?",
-        "31. Did you know that bullets traveling underwater slow down dramatically within just a few feet because water is roughly 800 times denser than air?",
-        "30. Did you know that the first-ever product to feature a barcode scan at a supermarket checkout was a pack of Wrigley's Juicy Fruit chewing gum in 1974?",
-        "29. Did you know that your nose can remember and distinguish over 50,000 different unique scents throughout your lifetime?",
-        "28. Did you know that rainy days smell the way they do because of petrichor—an oily compound released by soil-dwelling bacteria and plants?",
-        "27. Did you know that a group of flamingos is formally known as a 'flamboyance'?",
-        "26. Did you know that freshwater lakes hold less than 1% of the world's total water supply, while over 96% is locked away in salty oceans?",
-        "25. Did you know that Thomas Edison originally greeted people by saying 'Hello' over the telephone, but Alexander Graham Bell insisted on 'Ahoy'?",
-        "24. Did you know that Norway once knighted an actual king penguin named Nils Olav who serves as the mascot of the Norwegian King's Guard?",
-        "23. Did you know that the shortest commercial flight in the world lasts less than two minutes and connects two Scottish islands?",
-        "22. Did you know that sea cucumbers breathe through their anuses while filtering nutrients from the ocean floor?",
-        "21. Did you know that there are more trees on the planet today than there were a century ago, largely due to modern reforestation efforts?",
-        "20. Did you know that ancient Romans used crushed mouse brains and pulverized charcoal as toothpaste to keep their smiles bright?",
-        "19. Did you know that laughing for just 10 to 15 minutes a day can burn up to 40 calories and temporarily boost your pain tolerance?",
-        "18. Did you know that the fingerprints of koalas are so remarkably similar to human fingerprints that they have occasionally confused crime scene investigators?",
-        "17. Did you know that Saturn has such a low average density that if you could find a bathtub big enough, the giant planet would float on water?",
-        "16. Did you know that slot machines were originally invented to dispense chewing gum and fruit-flavored candy before paying out cash prizes?",
-        "15. Did you know that more than half of all languages currently spoken on Earth have never been written down in a formal alphabet?",
-        "14. Did you know that immortal jellyfish (Turritopsis dohrnii) can cycle back to their juvenile polyp stage indefinitely after reaching maturity, effectively cheating death?",
-        "13. Did you know that glass is technically an amorphous solid that flows extremely slowly over centuries rather than a true crystalline solid?",
-        "12. Did you know that your brain uses about 20% of your body's total energy and oxygen, despite accounting for only 2% of your total body weight?",
-        "11. Did you know that cows have best friends and get noticeably stressed and anxious when they are separated from them?",
-        "10. Did you know that games of competitive Monopoly once lasted over 70 days when played underwater in a swimming pool?",
-        "9. Did you know that the total weight of all ants on Earth is roughly equal to the total weight of all human beings combined?",
-        "8. Did you know that wombats produce cube-shaped droppings, which prevents them from rolling away and helps mark their territory on elevated rocks?",
-        "7. Did you know that trees on Earth outnumber all the stars in the Milky Way galaxy by an estimated factor of hundreds?",
-        "6. Did you know that Shakespeare invented over 1,700 words that we still use today by changing nouns into verbs, verbs into adjectives, and combining words?",
-        "5. Did you know that bananas are actually classified as berries botanically, while strawberries, raspberries, and blackberries are not?",
-        "4. Did you know that sea otters hold hands while sleeping so they don't drift apart from each other in the ocean current?",
-        "3. Did you know that octopuses have three hearts, nine brains, and blue-colored blood because their oxygen-binding protein uses copper instead of iron?",
-        "2. Did you know that a single cloud can weigh over one million pounds, equivalent to about 100 elephants floating in the sky?",
-        "1. Did you know that honey never spoils, and archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still edible?"
-      ]
+    // Each category maps to a standalone JSON file under ./data/
+    var CATEGORY_FILES = {
+      "Philosophy": "data/questions-philosophy.json",
+      "Deep Questions": "data/questions-deep-questions.json",
+      "Humor/Fun": "data/questions-humor-fun.json",
+      "Current Events": "data/questions-current-events.json",
+      "Would You Rather": "data/questions-would-you-rather.json",
+      "Pop Culture": "data/questions-pop-culture.json",
+      "Personal Stories": "data/questions-personal-stories.json",
+      "Science & Tech": "data/questions-science-tech.json",
+      "Did You Know?": "data/questions-did-you-know.json",
+      "Music Fun Facts": "data/questions-music-fun-facts.json"
     };
 
+    var QUESTION_BANKS = {};
+    var categoryPointers = {};
+    Object.keys(CATEGORY_FILES).forEach(function(cat) {
+      QUESTION_BANKS[cat] = [];
+      categoryPointers[cat] = 0;
+    });
+
     var CATEGORY_STYLES = {
-      Philosophy: { bg: "bg-purple-100 dark:bg-purple-950/80", text: "text-purple-700 dark:text-purple-200", border: "border-purple-300 dark:border-purple-600" },
+      "Philosophy": { bg: "bg-purple-100 dark:bg-purple-950/80", text: "text-purple-700 dark:text-purple-200", border: "border-purple-300 dark:border-purple-600" },
       "Deep Questions": { bg: "bg-indigo-100 dark:bg-indigo-950/80", text: "text-indigo-700 dark:text-indigo-200", border: "border-indigo-300 dark:border-indigo-600" },
       "Humor/Fun": { bg: "bg-amber-100 dark:bg-amber-950/80", text: "text-amber-800 dark:text-amber-200", border: "border-amber-300 dark:border-amber-600" },
       "Current Events": { bg: "bg-blue-100 dark:bg-blue-950/80", text: "text-blue-700 dark:text-blue-200", border: "border-blue-300 dark:border-blue-600" },
@@ -2026,15 +642,16 @@
       "Pop Culture": { bg: "bg-pink-100 dark:bg-pink-950/80", text: "text-pink-700 dark:text-pink-200", border: "border-pink-300 dark:border-pink-600" },
       "Personal Stories": { bg: "bg-cyan-100 dark:bg-cyan-950/80", text: "text-cyan-700 dark:text-cyan-200", border: "border-cyan-300 dark:border-cyan-600" },
       "Science & Tech": { bg: "bg-violet-100 dark:bg-violet-950/80", text: "text-violet-700 dark:text-violet-200", border: "border-violet-300 dark:border-violet-600" },
-      "Did You Know?": { bg: "bg-rose-100 dark:bg-rose-950/80", text: "text-rose-700 dark:text-rose-200", border: "border-rose-300 dark:border-rose-600" }
+      "Did You Know?": { bg: "bg-rose-100 dark:bg-rose-950/80", text: "text-rose-700 dark:text-rose-200", border: "border-rose-300 dark:border-rose-600" },
+      "Music Fun Facts": { bg: "bg-teal-100 dark:bg-teal-950/80", text: "text-teal-700 dark:text-teal-200", border: "border-teal-300 dark:border-teal-600" }
     };
 
     var PRESET_MODES = [
       { id: "all", name: "Balanced Mix", categories: Object.keys(CATEGORY_STYLES) },
-      { id: "icebreaker", name: "Casual Icebreakers", categories: ["Humor/Fun", "Would You Rather", "Pop Culture", "Personal Stories"] },
+      { id: "icebreaker", name: "Casual Icebreakers", categories: ["Humor/Fun", "Would You Rather", "Pop Culture", "Personal Stories", "Music Fun Facts"] },
       { id: "deep", name: "Deep Discussions", categories: ["Philosophy", "Deep Questions", "Science & Tech"] },
-      { id: "latenight", name: "Late Night Debates", categories: ["Philosophy", "Did You Know?", "Current Events", "Science & Tech"] },
-      { id: "funny", name: "Funny & Silly", categories: ["Humor/Fun", "Would You Rather", "Did You Know?"] }
+      { id: "latenight", name: "Late Night Debates", categories: ["Philosophy", "Did You Know?", "Current Events", "Science & Tech", "Music Fun Facts"] },
+      { id: "funny", name: "Funny & Silly", categories: ["Humor/Fun", "Would You Rather", "Did You Know?", "Music Fun Facts"] }
     ];
 
     var currentTopics = [];
@@ -2044,27 +661,42 @@
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
 
-    // Leaderboard session state
     var sessionScores = JSON.parse(localStorage.getItem("nellieb_scores") || JSON.stringify([
       { name: "Zach", points: 150 },
       { name: "Nelly", points: 240 },
       { name: "Rick", points: 300 }
     ]));
 
-    var categoryPointers = {};
-    Object.keys(QUESTION_BANKS).forEach(function(cat) {
-      categoryPointers[cat] = 0;
-    });
+    async function loadAllQuestionBanks() {
+      var entries = Object.entries(CATEGORY_FILES);
+      await Promise.all(entries.map(async function(pair) {
+        var cat = pair[0];
+        var url = pair[1];
+        try {
+          var res = await fetch(url + "?v=" + Date.now(), { cache: "no-store" });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          var data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            QUESTION_BANKS[cat] = data;
+          }
+        } catch (err) {
+          console.warn("Could not load JSON for " + cat + " (" + url + "):", err);
+        }
+      }));
+    }
 
-    // Nellie's Head + Raised Chatomizer Speech Bubble Assembly (Bottom-Right)
+    function getPopulatedCategories() {
+      return Array.from(selectedCategories).filter(function(cat) {
+        return Array.isArray(QUESTION_BANKS[cat]) && QUESTION_BANKS[cat].length > 0;
+      });
+    }
+
     function getNellieAndChatomizerMarkup(viewCount) {
       var logoSizeClass = viewCount === 1 ? "w-40 h-14 sm:w-48 sm:h-16" : "w-32 h-11 sm:w-36 sm:h-12";
       var headSizeClass = viewCount === 1 ? "w-14 h-14 sm:w-16 sm:h-16" : "w-11 h-11 sm:w-12 sm:h-12";
 
       return '<div class="flex items-end gap-0.5 pointer-events-none select-none z-20 ml-auto -mb-2 -mr-1">' +
-        '<!-- Nellie Head to the Left of the Speech Bubble -->' +
         '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink ' + headSizeClass + ' shrink-0">' +
-        '<!-- Chatomizer Speech Bubble Raised Above Nellie\'s Mouth Level -->' +
         '<div class="chatomizer-logo-badge -ml-1.5" title="Chatomizer Party Edition">' +
           '<svg class="' + logoSizeClass + '" viewBox="0 0 230 70" fill="none" xmlns="http://www.w3.org/2000/svg">' +
             '<defs>' +
@@ -2084,9 +716,7 @@
                 '<stop offset="100%" stop-color="#38BDF8"/>' +
               '</linearGradient>' +
             '</defs>' +
-            '<!-- Speech Bubble Badge Shape (Tail Pointing Bottom-Left Toward Nellie\'s Mouth) -->' +
             '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H34L10 68L22 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
-            '<!-- Mini Neon Dice Icon -->' +
             '<g transform="translate(14, 18) rotate(-10)">' +
               '<rect x="2" y="2" width="24" height="24" rx="6" fill="#FF007F" stroke="#FFFFFF" stroke-width="1.8"/>' +
               '<circle cx="9" cy="9" r="2.2" fill="#FFFFFF"/>' +
@@ -2095,13 +725,10 @@
               '<circle cx="9" cy="19" r="2.2" fill="#FFFFFF"/>' +
               '<circle cx="19" cy="19" r="2.2" fill="#FFFFFF"/>' +
             '</g>' +
-            '<!-- Sparkle Accents -->' +
             '<path d="M210 16L211.5 19.5L215 21L211.5 22.5L210 26L208.5 22.5L205 21L208.5 19.5L210 16Z" fill="#FACC15"/>' +
             '<circle cx="48" cy="17" r="1.6" fill="#00F2FE"/>' +
-            '<!-- CHATOMIZER Bold Arcade Title -->' +
             '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="#090D16" stroke="#090D16" stroke-width="3.5" stroke-linejoin="round">CHATOMIZER</text>' +
             '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="url(#chatTextGrad)">CHATOMIZER</text>' +
-            '<!-- Sub-caption -->' +
             '<text x="50" y="50.5" font-family="\'Orbitron\', sans-serif" font-weight="800" font-size="6.8" letter-spacing="2.2" fill="#F472B6">PARTY EDITION</text>' +
           '</svg>' +
         '</div>' +
@@ -2129,7 +756,6 @@
         if (badge) badge.innerText = "1 Card";
         if (btnText) btnText.innerText = "Click to Change Card";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-0.5 sm:py-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
-        
         if (globalTicker) globalTicker.classList.add("hidden");
         if (floatingTicker) floatingTicker.classList.remove("hidden");
       } else {
@@ -2138,31 +764,40 @@
         if (badge) badge.innerText = "4 Cards";
         if (btnText) btnText.innerText = "Click to Change Cards";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden";
-        
         if (globalTicker) globalTicker.classList.remove("hidden");
         if (floatingTicker) floatingTicker.classList.add("hidden");
       }
     }
 
     function generateSequentialTopic(categoryOverride) {
-      var availCategories = Array.from(selectedCategories);
-      var category = categoryOverride || availCategories[Math.floor(Math.random() * availCategories.length)] || "Philosophy";
-      var questionsList = QUESTION_BANKS[category] || QUESTION_BANKS["Philosophy"];
-      
+      var availCategories = getPopulatedCategories();
+      if (availCategories.length === 0) {
+        return {
+          id: "topic-loading",
+          category: "Music Fun Facts",
+          text: "Add JSON question files to the /data folder in GitHub to load your 300-question decks!"
+        };
+      }
+
+      var category = (categoryOverride && QUESTION_BANKS[categoryOverride] && QUESTION_BANKS[categoryOverride].length > 0)
+        ? categoryOverride
+        : availCategories[Math.floor(Math.random() * availCategories.length)];
+
+      var questionsList = QUESTION_BANKS[category];
       var pointer = categoryPointers[category] || 0;
-      var text = questionsList[pointer];
-      
+      var text = questionsList[pointer % questionsList.length];
+
       categoryPointers[category] = (pointer + 1) % questionsList.length;
 
       var numMatch = text.match(/^(\d+)\./);
       var qNum = numMatch ? numMatch[1] : (pointer + 1);
 
       var topic = {
-        id: "topic-" + category.replace(/\s+/g, '-').toLowerCase() + "-" + qNum,
+        id: "topic-" + category.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase() + "-" + qNum,
         category: category,
         text: text
       };
-      
+
       topicCache[topic.id] = topic;
       localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
       return topic;
@@ -2293,8 +928,6 @@
 
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
-            
-            '<!-- Top Bar -->' +
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
               '<div class="text-xs font-extrabold tracking-tight opacity-70">Click or Tap to Change</div>' +
               '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
@@ -2303,13 +936,9 @@
                 '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
               '</div>' +
             '</div>' +
-
-            '<!-- Center Question -->' +
             '<div class="my-2 flex-grow flex items-center justify-center">' +
               '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
             '</div>' +
-
-            '<!-- Bottom Row: Follow Me + Category Pill (Left) | Nellie Head + Chatomizer Speech Bubble (Right) -->' +
             '<div class="mt-2 flex items-end justify-between gap-2 relative pt-2">' +
               '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
                 followModelLeftHelper(cardCountView) +
@@ -2317,7 +946,6 @@
               '</div>' +
               rightCornerGroup +
             '</div>' +
-
           '</div>' +
         '</div>';
       }).join("");
@@ -2419,7 +1047,6 @@
 
       sessionScores = updated;
       localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
-      
       renderLeaderboardTicker();
       toggleScoresModal(false);
       showToast("Leaderboard updated successfully!", "success");
@@ -2654,12 +1281,17 @@
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
-    updateToggleUI();
-    renderModePills();
-    renderCategoryPills();
-    generateTopics();
-    updateFavoritesUI();
-    renderLeaderboardTicker();
+    async function initApp() {
+      updateToggleUI();
+      renderModePills();
+      renderCategoryPills();
+      updateFavoritesUI();
+      renderLeaderboardTicker();
+      await loadAllQuestionBanks();
+      generateTopics();
+    }
+
+    initApp();
 
     document.addEventListener("keydown", function(e) {
       if (e.code === "Space" && !["INPUT", "BUTTON", "TEXTAREA"].includes(e.target.tagName)) {
