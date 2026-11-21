@@ -439,6 +439,16 @@
       animation: clock-explode-body 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
+    @keyframes nellie-pop-reveal {
+      0% { transform: scale(0.3) rotate(-14deg); opacity: 0; }
+      65% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .nellie-exploded-placeholder {
+      animation: nellie-pop-reveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s both, char-grow-shrink 2.8s ease-in-out 0.7s infinite;
+      filter: drop-shadow(0 0 16px rgba(236, 72, 153, 0.85)) drop-shadow(0 0 28px rgba(56, 189, 248, 0.65));
+    }
+
     @keyframes blast-piece-1 {
       0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
       100% { transform: translate(-52px, -44px) rotate(-150deg) scale(1.1); opacity: 0; }
@@ -575,7 +585,7 @@
             </div>
           </div>
 
-          <!-- Middle: Stand-Alone Twin-Bell Alarm Clock that Shakes & Explodes -->
+          <!-- Middle: Stand-Alone Twin-Bell Alarm Clock that Shakes & Explodes (with Nellie Placeholder After Blast) -->
           <div class="relative flex items-center justify-center my-1 min-h-[124px] w-full select-none">
             <div id="twin-bell-clock-wrapper" class="relative w-28 h-28 flex items-center justify-center">
               <svg id="twin-bell-clock-svg" viewBox="0 0 140 140" class="w-28 h-28 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -609,8 +619,15 @@
                 <circle cx="70" cy="72" r="4" fill="#F8FAFC"/>
               </svg>
 
+              <!-- Nellie Head Placeholder Shown After Clock Explodes -->
+              <div id="clock-nellie-placeholder" onclick="resetBombTimer(false)" title="Click to reset clock" class="hidden absolute inset-0 flex flex-col items-center justify-center cursor-pointer z-10">
+                <div class="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-amber-400 to-cyan-400 shadow-lg nellie-exploded-placeholder">
+                  <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie Waiting" class="w-full h-full object-contain rounded-full bg-slate-900/90">
+                </div>
+              </div>
+
               <!-- Explosion Burst & Shards -->
-              <div id="clock-explosion-burst" class="hidden absolute inset-0 pointer-events-none flex items-center justify-center">
+              <div id="clock-explosion-burst" class="hidden absolute inset-0 pointer-events-none flex items-center justify-center z-20">
                 <i class="fa-solid fa-burst text-5xl text-amber-400 blast-p5 drop-shadow-[0_0_14px_rgba(251,191,36,0.95)]"></i>
                 <span class="blast-shard blast-p1 absolute w-3 h-3 rounded-sm bg-rose-500"></span>
                 <span class="blast-shard blast-p2 absolute w-3 h-3 rounded-full bg-amber-300"></span>
@@ -1125,6 +1142,7 @@
       var wavesLeft = document.getElementById("clock-waves-left");
       var wavesRight = document.getElementById("clock-waves-right");
       var secondHand = document.getElementById("clock-second-hand");
+      var nelliePlaceholder = document.getElementById("clock-nellie-placeholder");
       var burstEl = document.getElementById("clock-explosion-burst");
       var bannerEl = document.getElementById("bomb-boom-banner");
       var toggleIcon = document.getElementById("bomb-toggle-icon");
@@ -1173,6 +1191,7 @@
           clockSvg.classList.remove("clock-shaking");
           clockSvg.classList.add("clock-exploded");
         }
+        if (nelliePlaceholder) nelliePlaceholder.classList.remove("hidden");
         if (burstEl) burstEl.classList.remove("hidden");
         shards.forEach(function(sh, i) {
           sh.classList.remove("blast-p1", "blast-p2", "blast-p3", "blast-p4");
@@ -1181,6 +1200,7 @@
         });
       } else {
         if (bannerEl) bannerEl.classList.add("hidden");
+        if (nelliePlaceholder) nelliePlaceholder.classList.add("hidden");
         if (burstEl) burstEl.classList.add("hidden");
         shards.forEach(function(sh) {
           sh.classList.remove("blast-p1", "blast-p2", "blast-p3", "blast-p4");
