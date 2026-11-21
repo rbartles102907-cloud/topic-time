@@ -66,7 +66,7 @@
       z-index: -1;
       background: linear-gradient(270deg, #ff007f, #7928ca, #00dfd8, #007cf0, #ff007f);
       background-size: 400% 400%;
-      animation: rgb-chase 8s linear infinite;
+      animation: rgb-chase 16s linear infinite;
       box-shadow: 0 0 15px rgba(255, 0, 127, 0.6), inset 0 0 10px rgba(0, 223, 216, 0.6);
     }
     
@@ -79,7 +79,7 @@
     .dark .glass-card::before {
       background: linear-gradient(270deg, #ff2a85, #8a2be2, #00f2fe, #4facfe, #ff2a85);
       background-size: 400% 400%;
-      animation: rgb-chase 7s linear infinite;
+      animation: rgb-chase 14s linear infinite;
       box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
     }
 
@@ -881,9 +881,9 @@
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
 
     var sessionScores = JSON.parse(localStorage.getItem("nellieb_scores") || JSON.stringify([
-      { name: "Zach", points: 150 },
-      { name: "Nelly", points: 240 },
-      { name: "Rick", points: 300 }
+      { name: "Rick", points: 1000 },
+      { name: "Nellie", points: 999 },
+      { name: "Roberto", points: 998 }
     ]));
 
     // --- TUTORIAL MODAL STATE & CONTENT ---
@@ -948,17 +948,17 @@
             '<div class="flex items-center gap-2 card-gold-glow px-3 py-1.5 rounded-xl">' +
               '<span class="rank-3d-badge rank-3d-1 h-7 px-2 text-xs">1<sup>ST</sup></span>' +
               '<span class="podium-name-1 text-sm">Rick</span>' +
-              '<span class="pts-gold text-xs">300 PTS</span>' +
+              '<span class="pts-gold text-xs">1,000 PTS</span>' +
             '</div>' +
             '<div class="flex items-center gap-2 card-silver-glow px-3 py-1.5 rounded-xl">' +
               '<span class="rank-3d-badge rank-3d-2 h-7 px-2 text-xs">2<sup>ND</sup></span>' +
-              '<span class="podium-name-2 text-sm">Nelly</span>' +
-              '<span class="pts-silver text-xs">240 PTS</span>' +
+              '<span class="podium-name-2 text-sm">Nellie</span>' +
+              '<span class="pts-silver text-xs">999 PTS</span>' +
             '</div>' +
             '<div class="flex items-center gap-2 card-bronze-glow px-3 py-1.5 rounded-xl">' +
               '<span class="rank-3d-badge rank-3d-3 h-7 px-2 text-xs">3<sup>RD</sup></span>' +
-              '<span class="podium-name-3 text-sm">Zach</span>' +
-              '<span class="pts-bronze text-xs">150 PTS</span>' +
+              '<span class="podium-name-3 text-sm">Roberto</span>' +
+              '<span class="pts-bronze text-xs">998 PTS</span>' +
             '</div>' +
           '</div>' +
           '<p class="text-xs text-slate-300 text-center">Award points for best answers, fastest replies, or chat votes—the top 3 automatically animate in Gold, Silver &amp; Bronze!</p>' +
