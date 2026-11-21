@@ -1,128 +1,63 @@
-(() => {
-  const zone = document.getElementById('chatomizer-bomb-clock-zone');
-  const assembly = document.getElementById('bombClockAssembly');
-  const display = document.getElementById('clockCountdownDisplay');
-  const secondHand = document.getElementById('clockSecondHand');
-  const lengthLabel = document.getElementById('clockLengthLabel');
-  const startPauseBtn = document.getElementById('clockStartPauseBtn');
-  const resetSmallBtn = document.getElementById('clockResetSmallBtn');
-  const resetBtn = document.getElementById('clockResetBtn');
-  const minusBtn = document.getElementById('clockMinusBtn');
-  const plusBtn = document.getElementById('clockPlusBtn');
-  const banner = document.getElementById('clockExplodedBanner');
-  const presets = Array.from(document.querySelectorAll('.clock-preset'));
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatomizer - Single Card Bomb Clock</title>
+</head>
+<body>
+  <!-- Single-card container (place the clock zone beside your card content) -->
+  <div id="singleCardContainer" class="single-card-layout">
+    <div id="singleCardPromptArea">
+      <!-- Your existing single card prompt goes here -->
+    </div>
 
-  if (!zone || !assembly || !display) return;
+    <div id="chatomizer-bomb-clock-zone" class="bomb-clock-zone is-hidden" aria-live="polite">
+      <div id="bombClockStage" class="bomb-clock-stage">
+        <div id="bombClockAssembly" class="bomb-clock-assembly">
+          <div class="clock-bell clock-bell--left" data-piece></div>
+          <div class="clock-bell clock-bell--right" data-piece></div>
+          <div class="clock-hammer" data-piece></div>
 
-  let durationSec = 30;
-  let remainingSec = 30;
-  let timerId = null;
-  let isRunning = false;
+          <div class="clock-body" data-piece>
+            <div class="clock-face">
+              <div class="clock-hands" data-piece>
+                <span class="clock-hand clock-hand--hour"></span>
+                <span class="clock-hand clock-hand--minute"></span>
+                <span class="clock-hand clock-hand--second" id="clockSecondHand"></span>
+              </div>
+              <div id="clockCountdownDisplay" class="clock-countdown">00:30</div>
+            </div>
+          </div>
 
-  function formatTime(sec) {
-    const safe = Math.max(0, Math.ceil(sec));
-    const mins = Math.floor(safe / 60);
-    const rem = safe % 60;
-    return `${String(mins).padStart(2, '0')}:${String(rem).padStart(2, '0')}`;
-  }
+          <div class="clock-foot clock-foot--left" data-piece></div>
+          <div class="clock-foot clock-foot--right" data-piece></div>
+          <div class="clock-gear" data-piece></div>
+        </div>
 
-  function updateVisuals() {
-    display.textContent = formatTime(remainingSec);
-    lengthLabel.textContent = `Length: ${durationSec}s`;
+        <div id="clockExplodedBanner" class="clock-exploded-banner" hidden>
+          <span>TIME'S UP!</span>
+          <button type="button" id="clockResetBtn" class="clock-btn clock-btn--primary">Rebuild Clock</button>
+        </div>
+      </div>
 
-    const progress = durationSec > 0 ? remainingSec / durationSec : 0;
-    const angle = (1 - progress) * 360;
-    if (secondHand) {
-      secondHand.style.transform = `rotate(${angle}deg)`;
-    }
+      <div class="clock-controls">
+        <div class="clock-length-row">
+          <button type="button" id="clockMinusBtn" class="clock-btn clock-btn--icon" aria-label="Decrease timer by 5 seconds">-5s</button>
+          <span id="clockLengthLabel" class="clock-length-label">Length: 30s</span>
+          <button type="button" id="clockPlusBtn" class="clock-btn clock-btn--icon" aria-label="Increase timer by 5 seconds">+5s</button>
+        </div>
 
-    zone.classList.toggle('is-danger', remainingSec > 0 && remainingSec <= 5);
-  }
+        <div class="clock-presets">
+          <button type="button" class="clock-preset" data-seconds="15">15s</button>
+          <button type="button" class="clock-preset is-active" data-seconds="30">30s</button>
+          <button type="button" class="clock-preset" data-seconds="60">60s</button>
+        </div>
 
-  function clearTicker() {
-    if (timerId !== null) {
-      clearInterval(timerId);
-      timerId = null;
-    }
-    isRunning = false;
-    startPauseBtn.textContent = 'Start';
-  }
-
-  function rebuildClock() {
-    clearTicker();
-    remainingSec = durationSec;
-    assembly.classList.remove('is-shaking', 'is-exploded');
-    banner.hidden = true;
-    updateVisuals();
-  }
-
-  function triggerExplosion() {
-    clearTicker();
-    remainingSec = 0;
-    updateVisuals();
-    assembly.classList.add('is-shaking');
-
-    setTimeout(() => {
-      assembly.classList.remove('is-shaking');
-      assembly.classList.add('is-exploded');
-      banner.hidden = false;
-    }, 650);
-  }
-
-  function setDuration(newSec) {
-    durationSec = Math.min(300, Math.max(5, newSec));
-    presets.forEach((btn) => {
-      btn.classList.toggle('is-active', Number(btn.dataset.seconds) === durationSec);
-    });
-    rebuildClock();
-  }
-
-  startPauseBtn.addEventListener('click', () => {
-    if (assembly.classList.contains('is-exploded')) {
-      rebuildClock();
-    }
-
-    if (isRunning) {
-      clearTicker();
-      return;
-    }
-
-    if (remainingSec <= 0) {
-      remainingSec = durationSec;
-    }
-
-    isRunning = true;
-    startPauseBtn.textContent = 'Pause';
-    const startTime = performance.now();
-    const initialRemaining = remainingSec;
-
-    timerId = setInterval(() => {
-      const elapsed = (performance.now() - startTime) / 1000;
-      remainingSec = Math.max(0, initialRemaining - elapsed);
-      updateVisuals();
-
-      if (remainingSec <= 0) {
-        triggerExplosion();
-      }
-    }, 100);
-  });
-
-  minusBtn.addEventListener('click', () => setDuration(durationSec - 5));
-  plusBtn.addEventListener('click', () => setDuration(durationSec + 5));
-  resetSmallBtn.addEventListener('click', rebuildClock);
-  resetBtn.addEventListener('click', rebuildClock);
-
-  presets.forEach((btn) => {
-    btn.addEventListener('click', () => setDuration(Number(btn.dataset.seconds)));
-  });
-
-  // Call window.setChatomizerSingleCardMode(true/false) from your 1 Card / 4 Cards button handler
-  window.setChatomizerSingleCardMode = function (isSingleCard) {
-    zone.classList.toggle('is-hidden', !isSingleCard);
-    if (!isSingleCard) {
-      rebuildClock();
-    }
-  };
-
-  updateVisuals();
-})();
+        <div class="clock-actions">
+          <button type="button" id="clockStartPauseBtn" class="clock-btn clock-btn--start">Start</button>
+          <button type="button" id="clockResetSmallBtn" class="clock-btn clock-btn--ghost">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
