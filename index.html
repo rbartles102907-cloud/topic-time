@@ -5,25 +5,169 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chatomizer - Topics to Discuss</title>
   <style>
+    :root {
+      --bg-1: #140d29;
+      --bg-2: #241347;
+      --card-bg: #fffdf8;
+      --ink-dark: #1d1128;
+      --ink-muted: #5b4b6e;
+      --accent: #ff3b6b;
+      --accent-2: #f77f00;
+      --gold: #ffd166;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #ffffff;
+      background: radial-gradient(circle at top, var(--bg-2), var(--bg-1) 72%);
+      padding: 24px 16px 48px;
+    }
+
+    .app-shell {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .app-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    select,
+    .ui-btn {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(20, 14, 38, 0.85);
+      cursor: pointer;
+    }
+
+    .ui-btn.is-active,
+    .ui-btn--draw {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-color: transparent;
+    }
+
+    .status-bar {
+      margin-bottom: 18px;
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+    }
+
     .single-card-layout {
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      gap: 20px;
+      gap: 24px;
       flex-wrap: wrap;
     }
 
+    .single-card-layout.is-hidden {
+      display: none;
+    }
+
+    .prompt-card {
+      background: var(--card-bg);
+      color: var(--ink-dark);
+      border-radius: 22px;
+      padding: 28px 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      border: 3px solid #2b193d;
+    }
+
+    .single-card-main {
+      flex: 1 1 380px;
+      max-width: 560px;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-category-tag {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #ffe5ec;
+      color: #9b1138;
+      margin-bottom: 14px;
+    }
+
+    .card-question {
+      margin: 0 0 20px;
+      font-size: 1.35rem;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .grid-4-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .grid-4-cards.is-hidden {
+      display: none;
+    }
+
+    .grid-4-cards .card-question {
+      font-size: 1.08rem;
+    }
+
+    /* Bomb Alarm Clock on Right Side of Single Card */
     .bomb-clock-zone {
-      width: 240px;
+      width: 245px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
-      padding: 14px;
+      padding: 16px;
       border-radius: 20px;
-      background: rgba(20, 14, 38, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(20, 14, 38, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(10px);
       position: relative;
       overflow: visible;
@@ -35,8 +179,8 @@
 
     .bomb-clock-stage {
       position: relative;
-      width: 170px;
-      height: 170px;
+      width: 176px;
+      height: 176px;
       display: grid;
       place-items: center;
     }
@@ -52,7 +196,7 @@
       top: 4px;
       width: 34px;
       height: 22px;
-      background: linear-gradient(145deg, #ffd166, #f77f00);
+      background: linear-gradient(145deg, var(--gold), var(--accent-2));
       border: 3px solid #2b193d;
       border-radius: 20px 20px 6px 6px;
       z-index: 1;
@@ -87,7 +231,7 @@
       width: 120px;
       height: 102px;
       border-radius: 50% / 46%;
-      background: linear-gradient(160deg, #ff3b6b, #b5179e);
+      background: linear-gradient(160deg, var(--accent), #b5179e);
       border: 4px solid #2b193d;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
       display: grid;
@@ -111,8 +255,8 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-weight: 800;
       font-size: 1.05rem;
-      color: #1d1128;
-      background: rgba(255, 249, 236, 0.9);
+      color: var(--ink-dark);
+      background: rgba(255, 249, 236, 0.92);
       padding: 2px 6px;
       border-radius: 8px;
       z-index: 4;
@@ -161,7 +305,7 @@
       bottom: 0;
       width: 22px;
       height: 12px;
-      background: #ffd166;
+      background: var(--gold);
       border: 3px solid #2b193d;
       border-radius: 0 0 10px 10px;
       z-index: 2;
@@ -184,7 +328,7 @@
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      border: 3px dashed #ffd166;
+      border: 3px dashed var(--gold);
       background: #3a0ca3;
       z-index: 4;
     }
@@ -198,15 +342,15 @@
     }
 
     .bomb-clock-assembly.is-shaking {
-      animation: vigShake 0.09s infinite linear;
+      animation: vigShake 0.08s infinite linear;
     }
 
     @keyframes vigShake {
-      0%   { transform: translate(-4px, -3px) rotate(-5deg); }
-      25%  { transform: translate(5px, -4px) rotate(6deg); }
-      50%  { transform: translate(-5px, 4px) rotate(-6deg); }
-      75%  { transform: translate(4px, 3px) rotate(5deg); }
-      100% { transform: translate(-3px, 2px) rotate(-4deg); }
+      0%   { transform: translate(-5px, -4px) rotate(-7deg); }
+      25%  { transform: translate(6px, -4px) rotate(7deg); }
+      50%  { transform: translate(-6px, 5px) rotate(-7deg); }
+      75%  { transform: translate(5px, 4px) rotate(6deg); }
+      100% { transform: translate(-4px, 3px) rotate(-5deg); }
     }
 
     .bomb-clock-assembly.is-exploded [data-piece] {
@@ -215,15 +359,15 @@
     }
 
     .bomb-clock-assembly.is-exploded .clock-bell--left {
-      transform: translate(-85px, -75px) rotate(-135deg);
+      transform: translate(-90px, -80px) rotate(-140deg);
     }
 
     .bomb-clock-assembly.is-exploded .clock-bell--right {
-      transform: translate(90px, -80px) rotate(140deg);
+      transform: translate(95px, -85px) rotate(145deg);
     }
 
     .bomb-clock-assembly.is-exploded .clock-hammer {
-      transform: translate(12px, -95px) rotate(95deg);
+      transform: translate(14px, -100px) rotate(95deg);
     }
 
     .bomb-clock-assembly.is-exploded .clock-body {
@@ -231,19 +375,19 @@
     }
 
     .bomb-clock-assembly.is-exploded .clock-hands {
-      transform: translate(65px, -45px) rotate(210deg);
+      transform: translate(70px, -48px) rotate(220deg);
     }
 
     .bomb-clock-assembly.is-exploded .clock-foot--left {
-      transform: translate(-75px, 65px) rotate(-110deg);
+      transform: translate(-80px, 70px) rotate(-115deg);
     }
 
     .bomb-clock-assembly.is-exploded .clock-foot--right {
-      transform: translate(80px, 60px) rotate(115deg);
+      transform: translate(85px, 65px) rotate(120deg);
     }
 
     .bomb-clock-assembly.is-exploded .clock-gear {
-      transform: translate(95px, -20px) rotate(320deg);
+      transform: translate(100px, -22px) rotate(330deg);
     }
 
     .clock-exploded-banner {
@@ -254,7 +398,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      background: rgba(20, 10, 32, 0.85);
+      background: rgba(20, 10, 32, 0.86);
       border-radius: 16px;
       z-index: 10;
     }
@@ -266,7 +410,7 @@
     .clock-exploded-banner span {
       font-weight: 900;
       letter-spacing: 0.06em;
-      color: #ffd166;
+      color: var(--gold);
       font-size: 1.05rem;
     }
 
@@ -298,7 +442,7 @@
       padding: 6px 10px;
       font-size: 0.78rem;
       font-weight: 700;
-      color: #fff;
+      color: #ffffff;
       background: rgba(255, 255, 255, 0.08);
       cursor: pointer;
     }
@@ -311,7 +455,7 @@
     .clock-preset.is-active,
     .clock-btn--start,
     .clock-btn--primary {
-      background: linear-gradient(135deg, #ff3b6b, #f77f00);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       border-color: transparent;
     }
 
@@ -321,63 +465,115 @@
   </style>
 </head>
 <body>
-  <div id="singleCardContainer" class="single-card-layout">
-    <div id="singleCardPromptArea">
-      <!-- Keep your existing single-card prompt UI here -->
-    </div>
+  <div class="app-shell">
+    <header class="app-header">
+      <h1 class="app-title">Chatomizer - Topics to Discuss</h1>
 
-    <div id="chatomizer-bomb-clock-zone" class="bomb-clock-zone is-hidden" aria-live="polite">
-      <div id="bombClockStage" class="bomb-clock-stage">
-        <div id="bombClockAssembly" class="bomb-clock-assembly">
-          <div class="clock-bell clock-bell--left" data-piece></div>
-          <div class="clock-bell clock-bell--right" data-piece></div>
-          <div class="clock-hammer" data-piece></div>
+      <div class="toolbar">
+        <select id="categorySelect" aria-label="Select topic category">
+          <option value="all">All Categories</option>
+          <option value="questions-general.json">General</option>
+          <option value="questions-lifestyle-food.json">Lifestyle &amp; Food</option>
+          <option value="questions-science-tech.json">Science &amp; Tech</option>
+          <option value="questions-would-you-rather.json">Would You Rather</option>
+          <option value="questions-current-events.json">Current Events</option>
+          <option value="questions-personal-stories.json">Personal Stories</option>
+          <option value="questions-philosophy.json">Philosophy</option>
+          <option value="questions-deep-questions.json">Deep Questions</option>
+          <option value="questions-humor-fun.json">Humor &amp; Fun</option>
+          <option value="questions-pop-culture.json">Pop Culture</option>
+          <option value="questions-music-fun-facts.json">Music &amp; Fun Facts</option>
+        </select>
 
-          <div class="clock-body" data-piece>
-            <div class="clock-face">
-              <div class="clock-hands" data-piece>
-                <span class="clock-hand clock-hand--hour"></span>
-                <span class="clock-hand clock-hand--minute"></span>
-                <span class="clock-hand clock-hand--second" id="clockSecondHand"></span>
+        <button type="button" id="modeSingleBtn" class="ui-btn">1 Card</button>
+        <button type="button" id="modeGridBtn" class="ui-btn is-active">4 Cards</button>
+        <button type="button" id="drawBtn" class="ui-btn ui-btn--draw">Draw Prompt</button>
+      </div>
+    </header>
+
+    <div id="statusBar" class="status-bar">Loading questions...</div>
+
+    <!-- 1 Card Mode + Bomb Clock on Right -->
+    <section id="singleCardView" class="single-card-layout is-hidden" aria-label="Single card view">
+      <article class="prompt-card single-card-main">
+        <div>
+          <span id="singleCardCategory" class="card-category-tag">General</span>
+          <p id="singleCardQuestion" class="card-question">Click "Draw Prompt" to start a topic.</p>
+        </div>
+        <div class="card-actions">
+          <button type="button" id="singleNextBtn" class="ui-btn ui-btn--draw">Next Card</button>
+        </div>
+      </article>
+
+      <aside id="chatomizer-bomb-clock-zone" class="bomb-clock-zone is-hidden" aria-live="polite">
+        <div id="bombClockStage" class="bomb-clock-stage">
+          <div id="bombClockAssembly" class="bomb-clock-assembly">
+            <div class="clock-bell clock-bell--left" data-piece></div>
+            <div class="clock-bell clock-bell--right" data-piece></div>
+            <div class="clock-hammer" data-piece></div>
+
+            <div class="clock-body" data-piece>
+              <div class="clock-face">
+                <div class="clock-hands" data-piece>
+                  <span class="clock-hand clock-hand--hour"></span>
+                  <span class="clock-hand clock-hand--minute"></span>
+                  <span class="clock-hand clock-hand--second" id="clockSecondHand"></span>
+                </div>
+                <div id="clockCountdownDisplay" class="clock-countdown">00:30</div>
               </div>
-              <div id="clockCountdownDisplay" class="clock-countdown">00:30</div>
             </div>
+
+            <div class="clock-foot clock-foot--left" data-piece></div>
+            <div class="clock-foot clock-foot--right" data-piece></div>
+            <div class="clock-gear" data-piece></div>
           </div>
 
-          <div class="clock-foot clock-foot--left" data-piece></div>
-          <div class="clock-foot clock-foot--right" data-piece></div>
-          <div class="clock-gear" data-piece></div>
+          <div id="clockExplodedBanner" class="clock-exploded-banner" hidden>
+            <span>TIME'S UP!</span>
+            <button type="button" id="clockResetBtn" class="clock-btn clock-btn--primary">Rebuild Clock</button>
+          </div>
         </div>
 
-        <div id="clockExplodedBanner" class="clock-exploded-banner" hidden>
-          <span>TIME'S UP!</span>
-          <button type="button" id="clockResetBtn" class="clock-btn clock-btn--primary">Rebuild Clock</button>
-        </div>
-      </div>
+        <div class="clock-controls">
+          <div class="clock-length-row">
+            <button type="button" id="clockMinusBtn" class="clock-btn clock-btn--icon" aria-label="Decrease timer by 5 seconds">-5s</button>
+            <span id="clockLengthLabel" class="clock-length-label">Length: 30s</span>
+            <button type="button" id="clockPlusBtn" class="clock-btn clock-btn--icon" aria-label="Increase timer by 5 seconds">+5s</button>
+          </div>
 
-      <div class="clock-controls">
-        <div class="clock-length-row">
-          <button type="button" id="clockMinusBtn" class="clock-btn clock-btn--icon" aria-label="Decrease timer by 5 seconds">-5s</button>
-          <span id="clockLengthLabel" class="clock-length-label">Length: 30s</span>
-          <button type="button" id="clockPlusBtn" class="clock-btn clock-btn--icon" aria-label="Increase timer by 5 seconds">+5s</button>
-        </div>
+          <div class="clock-presets">
+            <button type="button" class="clock-preset" data-seconds="15">15s</button>
+            <button type="button" class="clock-preset is-active" data-seconds="30">30s</button>
+            <button type="button" class="clock-preset" data-seconds="60">60s</button>
+          </div>
 
-        <div class="clock-presets">
-          <button type="button" class="clock-preset" data-seconds="15">15s</button>
-          <button type="button" class="clock-preset is-active" data-seconds="30">30s</button>
-          <button type="button" class="clock-preset" data-seconds="60">60s</button>
+          <div class="clock-actions">
+            <button type="button" id="clockStartPauseBtn" class="clock-btn clock-btn--start">Start</button>
+            <button type="button" id="clockResetSmallBtn" class="clock-btn clock-btn--ghost">Reset</button>
+          </div>
         </div>
+      </aside>
+    </section>
 
-        <div class="clock-actions">
-          <button type="button" id="clockStartPauseBtn" class="clock-btn clock-btn--start">Start</button>
-          <button type="button" id="clockResetSmallBtn" class="clock-btn clock-btn--ghost">Reset</button>
-        </div>
-      </div>
-    </div>
+    <!-- 4 Cards Mode -->
+    <section id="grid4View" class="grid-4-cards" aria-label="Four cards grid"></section>
   </div>
 
   <script>
     (() => {
+      const categorySelect = document.getElementById('categorySelect');
+      const modeSingleBtn = document.getElementById('modeSingleBtn');
+      const modeGridBtn = document.getElementById('modeGridBtn');
+      const drawBtn = document.getElementById('drawBtn');
+      const singleNextBtn = document.getElementById('singleNextBtn');
+      const statusBar = document.getElementById('statusBar');
+
+      const singleCardView = document.getElementById('singleCardView');
+      const grid4View = document.getElementById('grid4View');
+      const singleCardCategory = document.getElementById('singleCardCategory');
+      const singleCardQuestion = document.getElementById('singleCardQuestion');
+
+      // Bomb clock elements
       const zone = document.getElementById('chatomizer-bomb-clock-zone');
       const assembly = document.getElementById('bombClockAssembly');
       const display = document.getElementById('clockCountdownDisplay');
@@ -391,8 +587,24 @@
       const banner = document.getElementById('clockExplodedBanner');
       const presets = Array.from(document.querySelectorAll('.clock-preset'));
 
-      if (!zone || !assembly || !display) return;
+      const DATA_FILES = [
+        'questions-general.json',
+        'questions-lifestyle-food.json',
+        'questions-science-tech.json',
+        'questions-would-you-rather.json',
+        'questions-current-events.json',
+        'questions-personal-stories.json',
+        'questions-philosophy.json',
+        'questions-deep-questions.json',
+        'questions-humor-fun.json',
+        'questions-pop-culture.json',
+        'questions-music-fun-facts.json'
+      ];
 
+      let allQuestions = [];
+      let isSingleCardMode = false;
+
+      // Clock state
       let durationSec = 30;
       let remainingSec = 30;
       let timerId = null;
@@ -405,19 +617,20 @@
         return String(mins).padStart(2, '0') + ':' + String(rem).padStart(2, '0');
       }
 
-      function updateVisuals() {
+      function updateClockVisuals() {
+        if (!display) return;
         display.textContent = formatTime(remainingSec);
         if (lengthLabel) {
           lengthLabel.textContent = 'Length: ' + durationSec + 's';
         }
-
         const progress = durationSec > 0 ? remainingSec / durationSec : 0;
         const angle = (1 - progress) * 360;
         if (secondHand) {
           secondHand.style.transform = 'rotate(' + angle + 'deg)';
         }
-
-        zone.classList.toggle('is-danger', remainingSec > 0 && remainingSec <= 5);
+        if (zone) {
+          zone.classList.toggle('is-danger', remainingSec > 0 && remainingSec <= 5);
+        }
       }
 
       function clearTicker() {
@@ -434,19 +647,21 @@
       function rebuildClock() {
         clearTicker();
         remainingSec = durationSec;
-        assembly.classList.remove('is-shaking', 'is-exploded');
+        if (assembly) {
+          assembly.classList.remove('is-shaking', 'is-exploded');
+        }
         if (banner) {
           banner.hidden = true;
         }
-        updateVisuals();
+        updateClockVisuals();
       }
 
       function triggerExplosion() {
         clearTicker();
         remainingSec = 0;
-        updateVisuals();
+        updateClockVisuals();
+        if (!assembly) return;
         assembly.classList.add('is-shaking');
-
         setTimeout(() => {
           assembly.classList.remove('is-shaking');
           assembly.classList.add('is-exploded');
@@ -464,21 +679,138 @@
         rebuildClock();
       }
 
+      function syncBombClockVisibility() {
+        if (!zone) return;
+        zone.classList.toggle('is-hidden', !isSingleCardMode);
+        if (!isSingleCardMode) {
+          rebuildClock();
+        }
+      }
+
+      function setMode(single) {
+        isSingleCardMode = Boolean(single);
+        singleCardView.classList.toggle('is-hidden', !isSingleCardMode);
+        grid4View.classList.toggle('is-hidden', isSingleCardMode);
+        modeSingleBtn.classList.toggle('is-active', isSingleCardMode);
+        modeGridBtn.classList.toggle('is-active', !isSingleCardMode);
+        syncBombClockVisibility();
+        renderCards();
+      }
+
+      function extractText(item) {
+        if (typeof item === 'string') return item;
+        if (item && typeof item === 'object') {
+          return item.question || item.prompt || item.text || item.title || '';
+        }
+        return '';
+      }
+
+      function formatCategoryName(fileName) {
+        return fileName
+          .replace(/^questions-/, '')
+          .replace(/\.json$/, '')
+          .split('-')
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+      }
+
+      async function loadQuestions() {
+        const loaded = [];
+        for (const file of DATA_FILES) {
+          try {
+            const res = await fetch('./data/' + file, { cache: 'no-store' });
+            if (!res.ok) continue;
+            const data = await res.json();
+            const list = Array.isArray(data) ? data : (Array.isArray(data.questions) ? data.questions : []);
+            const catLabel = formatCategoryName(file);
+            for (const entry of list) {
+              const qText = extractText(entry).trim();
+              if (qText) {
+                loaded.push({
+                  category: (entry && entry.category) || catLabel,
+                  question: qText
+                });
+              }
+            }
+          } catch (_) {
+            // Skip unreachable category file
+          }
+        }
+        allQuestions = loaded;
+        if (allQuestions.length > 0) {
+          statusBar.textContent = allQuestions.length + ' conversation prompts ready.';
+        } else {
+          allQuestions = [
+            { category: 'General', question: 'What is a small habit that improved your daily routine this year?' },
+            { category: 'Humor & Fun', question: 'If you could instantly master any useless party trick, what would it be?' },
+            { category: 'Personal Stories', question: 'What trip or outing surprised you the most in a good way?' },
+            { category: 'Would You Rather', question: 'Would you rather always have perfect weather on weekends or never hit traffic again?' }
+          ];
+          statusBar.textContent = 'Showing starter prompts (add JSON files in data/ to expand).';
+        }
+        renderCards();
+      }
+
+      function getFilteredPool() {
+        const selected = categorySelect.value;
+        if (selected === 'all') return allQuestions;
+        const label = formatCategoryName(selected).toLowerCase();
+        const matches = allQuestions.filter((item) => item.category.toLowerCase() === label);
+        return matches.length > 0 ? matches : allQuestions;
+      }
+
+      function pickRandom(pool, count) {
+        const copy = pool.slice();
+        const picks = [];
+        while (picks.length < count && copy.length > 0) {
+          const idx = Math.floor(Math.random() * copy.length);
+          picks.push(copy.splice(idx, 1)[0]);
+        }
+        return picks;
+      }
+
+      function renderCards() {
+        const pool = getFilteredPool();
+        if (!pool.length) return;
+
+        if (isSingleCardMode) {
+          const [one] = pickRandom(pool, 1);
+          singleCardCategory.textContent = one.category;
+          singleCardQuestion.textContent = one.question;
+        } else {
+          const four = pickRandom(pool, 4);
+          grid4View.innerHTML = '';
+          four.forEach((item) => {
+            const card = document.createElement('article');
+            card.className = 'prompt-card';
+
+            const badge = document.createElement('span');
+            badge.className = 'card-category-tag';
+            badge.textContent = item.category;
+
+            const text = document.createElement('p');
+            text.className = 'card-question';
+            text.textContent = item.question;
+
+            card.appendChild(badge);
+            card.appendChild(text);
+            grid4View.appendChild(card);
+          });
+        }
+      }
+
       if (startPauseBtn) {
         startPauseBtn.addEventListener('click', () => {
-          if (assembly.classList.contains('is-exploded')) {
+          if (assembly && assembly.classList.contains('is-exploded')) {
             rebuildClock();
           }
-
           if (isRunning) {
             clearTicker();
             return;
           }
-
           if (remainingSec <= 0) {
             remainingSec = durationSec;
           }
-
           isRunning = true;
           startPauseBtn.textContent = 'Pause';
           const startTime = performance.now();
@@ -487,8 +819,7 @@
           timerId = setInterval(() => {
             const elapsed = (performance.now() - startTime) / 1000;
             remainingSec = Math.max(0, initialRemaining - elapsed);
-            updateVisuals();
-
+            updateClockVisuals();
             if (remainingSec <= 0) {
               triggerExplosion();
             }
@@ -505,14 +836,21 @@
         btn.addEventListener('click', () => setDuration(Number(btn.dataset.seconds)));
       });
 
-      window.setChatomizerSingleCardMode = function (isSingleCard) {
-        zone.classList.toggle('is-hidden', !isSingleCard);
-        if (!isSingleCard) {
-          rebuildClock();
-        }
+      modeSingleBtn.addEventListener('click', () => setMode(true));
+      modeGridBtn.addEventListener('click', () => setMode(false));
+      drawBtn.addEventListener('click', renderCards);
+      singleNextBtn.addEventListener('click', () => {
+        renderCards();
+        rebuildClock();
+      });
+      categorySelect.addEventListener('change', renderCards);
+
+      window.setChatomizerSingleCardMode = function (single) {
+        setMode(Boolean(single));
       };
 
-      updateVisuals();
+      updateClockVisuals();
+      loadQuestions();
     })();
   </script>
 </body>
