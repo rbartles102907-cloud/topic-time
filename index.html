@@ -1,848 +1,1543 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chatomizer - Topics to Discuss</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3K0G736WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-E3K0G736WX');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nellie B - Chatomizer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#f0f5ff', 100: '#e0ebff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' }
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Fredoka:wght@700&family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-top: #261447;
-      --bg-bottom: #0d081a;
-      --panel-bg: rgba(24, 15, 46, 0.88);
-      --panel-border: rgba(255, 255, 255, 0.14);
-      --card-bg: #fffdf9;
-      --card-ink: #1a1026;
-      --accent-pink: #ff3b6b;
-      --accent-orange: #f77f00;
-      --accent-gold: #ffd166;
+    body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
+    .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
+    .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    
+    .card-container { perspective: 1000px; overflow: visible !important; }
+
+    /* RGB Chasing Neon Border Animation */
+    @keyframes rgb-chase {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: #ffffff;
-      background: radial-gradient(circle at 50% 0%, var(--bg-top), var(--bg-bottom) 70%);
-      padding: 28px 20px 60px;
-    }
-
-    .app-wrap {
-      max-width: 1220px;
-      margin: 0 auto;
-    }
-
-    .top-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 18px 24px;
-      border-radius: 20px;
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-      margin-bottom: 24px;
-    }
-
-    .brand-title {
-      margin: 0;
-      font-size: 1.55rem;
-      font-weight: 800;
-      letter-spacing: -0.01em;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-    }
-
-    select,
-    .btn {
-      appearance: none;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: #ffffff;
-      background: rgba(15, 9, 31, 0.9);
-      cursor: pointer;
-      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
-    }
-
-    .btn:hover,
-    select:hover {
-      border-color: rgba(255, 255, 255, 0.42);
-    }
-
-    .btn.is-active {
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-orange));
-      border-color: transparent;
-    }
-
-    .btn--primary {
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-orange));
-      border-color: transparent;
-    }
-
-    .status-line {
-      text-align: center;
-      font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.82);
-      margin-bottom: 26px;
-    }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 22px;
-    }
-
-    @media (max-width: 980px) {
-      .cards-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 560px) {
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .cards-grid.is-hidden {
-      display: none;
-    }
-
-    .single-stage {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 26px;
-      flex-wrap: wrap;
-    }
-
-    .single-stage.is-hidden {
-      display: none;
-    }
-
-    .topic-card {
-      background: var(--card-bg);
-      color: var(--card-ink);
-      border-radius: 22px;
-      padding: 24px 22px;
-      min-height: 215px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.45);
-    }
-
-    .single-card-box {
-      flex: 1 1 420px;
-      max-width: 600px;
-      min-height: 260px;
-      padding: 32px 28px;
-      justify-content: space-between;
-    }
-
-    .category-pill {
-      display: inline-block;
-      align-self: flex-start;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 5px 11px;
-      border-radius: 999px;
-      background: #ffe3ec;
-      color: #b0123d;
-      margin-bottom: 16px;
-    }
-
-    .topic-text {
-      margin: 0;
-      font-size: 1.08rem;
-      line-height: 1.45;
-      font-weight: 700;
-    }
-
-    .single-card-box .topic-text {
-      font-size: 1.38rem;
-      margin-bottom: 24px;
-    }
-
-    .single-card-footer {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* Alarm Clock Bomb Timer on Right of Single Card */
-    .alarm-bomb-panel {
-      width: 255px;
-      flex-shrink: 0;
-      padding: 18px 16px;
-      border-radius: 22px;
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.45);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      overflow: visible;
-    }
-
-    .alarm-bomb-panel.is-hidden {
-      display: none;
-    }
-
-    .clock-arena {
+    .glass-card { 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)); 
+      backdrop-filter: blur(16px); 
       position: relative;
-      width: 184px;
-      height: 184px;
-      display: grid;
-      place-items: center;
-      overflow: visible;
+      border-radius: 1rem;
+      border: 3px solid transparent;
+      background-clip: padding-box;
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(59, 130, 246, 0.4), 0 0 60px rgba(168, 85, 247, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.3s ease, background 0.25s ease;
+      touch-action: manipulation;
+      overflow: visible !important;
     }
 
-    .alarm-clock {
-      position: relative;
-      width: 122px;
-      height: 130px;
-    }
-
-    .bell {
+    .glass-card::before {
+      content: '';
       position: absolute;
-      top: 4px;
-      width: 34px;
-      height: 22px;
-      background: linear-gradient(145deg, var(--accent-gold), var(--accent-orange));
-      border: 3px solid #231233;
-      border-radius: 20px 20px 6px 6px;
-      z-index: 1;
+      inset: -3px;
+      border-radius: 1.15rem;
+      z-index: -1;
+      background: linear-gradient(270deg, #ff007f, #7928ca, #00dfd8, #007cf0, #ff007f);
+      background-size: 400% 400%;
+      animation: rgb-chase 8s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.6), inset 0 0 10px rgba(0, 223, 216, 0.6);
+    }
+    
+    .dark .glass-card { 
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98)); 
+      backdrop-filter: blur(16px); 
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.65), 0 0 50px rgba(56, 189, 248, 0.5), 0 0 80px rgba(139, 92, 246, 0.4), 0 15px 35px rgba(0, 0, 0, 0.8);
     }
 
-    .bell--left {
-      left: 8px;
-      transform: rotate(-32deg);
+    .dark .glass-card::before {
+      background: linear-gradient(270deg, #ff2a85, #8a2be2, #00f2fe, #4facfe, #ff2a85);
+      background-size: 400% 400%;
+      animation: rgb-chase 7s linear infinite;
+      box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
     }
 
-    .bell--right {
-      right: 8px;
-      transform: rotate(32deg);
+    @keyframes flip-right-to-left {
+      0% { transform: rotateY(0deg) scale(1); }
+      50% { transform: rotateY(-90deg) scale(0.92); }
+      100% { transform: rotateY(-180deg) scale(1); }
+    }
+    .card-flipping { animation: flip-right-to-left 0.5s ease-in-out forwards; }
+
+    @keyframes char-grow-shrink {
+      0%, 100% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.05) translate(-2px, -3px); }
+    }
+    .anim-grow-shrink {
+      animation: char-grow-shrink 3s ease-in-out infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
     }
 
-    .hammer {
-      position: absolute;
-      top: -5px;
-      left: 50%;
-      width: 8px;
-      height: 18px;
-      margin-left: -4px;
-      background: #ff4d6d;
-      border: 2px solid #231233;
-      border-radius: 4px;
-      z-index: 2;
-    }
-
-    .clock-casing {
-      position: relative;
-      margin-top: 16px;
-      width: 122px;
-      height: 104px;
-      border-radius: 50% / 46%;
-      background: linear-gradient(160deg, var(--accent-pink), #a6148e);
-      border: 4px solid #231233;
-      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
-      display: grid;
-      place-items: center;
-      z-index: 3;
-    }
-
-    .clock-dial {
-      width: 90px;
-      height: 78px;
-      border-radius: 46%;
-      background: #fff9ec;
-      border: 3px solid #231233;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .clock-hands-layer {
-      position: absolute;
-      inset: 0;
+    .card-character-avatar {
+      object-fit: contain;
       pointer-events: none;
+      z-index: 25;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
     }
 
-    .hand {
-      position: absolute;
-      bottom: 50%;
-      left: 50%;
-      transform-origin: bottom center;
-      border-radius: 999px;
+    @keyframes chatomizer-bob {
+      0%, 100% { transform: translateY(-28px) rotate(-3deg) scale(1); }
+      50% { transform: translateY(-31px) rotate(-1deg) scale(1.03); }
+    }
+    .chatomizer-logo-badge {
+      z-index: 25;
+      pointer-events: none;
+      animation: chatomizer-bob 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.45));
     }
 
-    .hand--hour {
-      width: 4px;
-      height: 18px;
-      margin-left: -2px;
-      background: #231233;
-      transform: rotate(-48deg);
+    @keyframes flash-red-slow {
+      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
+      50% { color: #991b1b; opacity: 0.35; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
+    }
+    .flashing-follow-slow { animation: flash-red-slow 2.5s ease-in-out infinite; }
+
+    @keyframes point-right-bounce {
+      0%, 100% { transform: translateX(0) scale(1); }
+      50% { transform: translateX(6px) scale(1.08); }
+    }
+    .pointing-arrow-right { 
+      display: inline-block;
+      animation: point-right-bounce 1.2s ease-in-out infinite; 
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
     }
 
-    .hand--minute {
-      width: 3px;
-      height: 25px;
-      margin-left: -1.5px;
-      background: #231233;
-      transform: rotate(62deg);
+    @keyframes point-bounce-slow {
+      0%, 100% { transform: rotate(-45deg) translateX(0) scale(1); }
+      50% { transform: rotate(-45deg) translateX(6px) scale(1.08); }
+    }
+    .pointing-arrow-slow { 
+      transform: rotate(-45deg);
+      display: inline-block;
+      animation: point-bounce-slow 1.2s ease-in-out infinite; 
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
     }
 
-    .hand--second {
-      width: 2px;
-      height: 28px;
-      margin-left: -1px;
-      background: #e63946;
-      transform: rotate(0deg);
+    .tiktok-card-text { 
+      font-family: Arial, sans-serif !important;
+      color: #000000 !important; 
+      text-shadow: none !important;
+    }
+    .dark .tiktok-card-text { 
+      font-family: Arial, sans-serif !important;
+      color: #000000 !important; 
+      text-shadow: none !important;
     }
 
-    .clock-readout {
-      position: relative;
-      z-index: 4;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-weight: 800;
-      font-size: 1.05rem;
-      color: var(--card-ink);
-      background: rgba(255, 249, 236, 0.92);
-      padding: 2px 6px;
-      border-radius: 8px;
-    }
+    .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
+    
+    @keyframes spin-once { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .animate-spin-once { animation: spin-once 0.4s ease-in-out; }
 
-    .clock-leg {
-      position: absolute;
-      bottom: 0;
-      width: 22px;
-      height: 12px;
-      background: var(--accent-gold);
-      border: 3px solid #231233;
-      border-radius: 0 0 10px 10px;
-      z-index: 2;
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
     }
-
-    .clock-leg--left {
-      left: 20px;
-      transform: rotate(18deg);
-    }
-
-    .clock-leg--right {
-      right: 20px;
-      transform: rotate(-18deg);
-    }
-
-    .clock-spring-gear {
-      position: absolute;
-      right: -8px;
-      bottom: 18px;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 3px dashed var(--accent-gold);
-      background: #3a0ca3;
-      z-index: 4;
-    }
-
-    .alarm-bomb-panel.is-hot .clock-casing {
-      box-shadow: 0 0 24px rgba(255, 59, 107, 0.9), 0 0 42px rgba(255, 209, 102, 0.55);
-    }
-
-    .alarm-bomb-panel.is-hot .clock-readout {
-      color: #c9002b;
-    }
-
-    .alarm-clock.is-shaking {
-      animation: clockShakeHard 0.08s infinite linear;
-    }
-
-    @keyframes clockShakeHard {
-      0%   { transform: translate(-5px, -4px) rotate(-7deg); }
-      25%  { transform: translate(6px, -4px) rotate(7deg); }
-      50%  { transform: translate(-6px, 5px) rotate(-7deg); }
-      75%  { transform: translate(5px, 4px) rotate(6deg); }
-      100% { transform: translate(-4px, 3px) rotate(-5deg); }
-    }
-
-    .alarm-clock.is-broken [data-part] {
-      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.65s ease;
-      opacity: 0.95;
-    }
-
-    .alarm-clock.is-broken .bell--left {
-      transform: translate(-92px, -82px) rotate(-145deg);
-    }
-
-    .alarm-clock.is-broken .bell--right {
-      transform: translate(96px, -84px) rotate(150deg);
-    }
-
-    .alarm-clock.is-broken .hammer {
-      transform: translate(12px, -104px) rotate(105deg);
-    }
-
-    .alarm-clock.is-broken .clock-casing {
-      transform: translate(0px, -12px) scale(1.08) rotate(15deg);
-    }
-
-    .alarm-clock.is-broken .clock-hands-layer {
-      transform: translate(72px, -48px) rotate(225deg);
-    }
-
-    .alarm-clock.is-broken .clock-leg--left {
-      transform: translate(-80px, 72px) rotate(-115deg);
-    }
-
-    .alarm-clock.is-broken .clock-leg--right {
-      transform: translate(86px, 68px) rotate(120deg);
-    }
-
-    .alarm-clock.is-broken .clock-spring-gear {
-      transform: translate(102px, -24px) rotate(330deg);
-    }
-
-    .blast-overlay {
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      background: rgba(18, 9, 30, 0.88);
+    .animate-marquee {
       display: flex;
-      flex-direction: column;
+      width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes float-subtle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+    }
+    .floating-ticker-card {
+      animation: float-subtle 4s ease-in-out infinite;
+    }
+
+    @keyframes metallic-shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes rank-3d-float {
+      0%, 100% { transform: perspective(300px) rotateY(-8deg) rotateX(6deg) scale(1); }
+      50% { transform: perspective(300px) rotateY(8deg) rotateX(-4deg) scale(1.08); }
+    }
+
+    .rank-3d-badge {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      z-index: 10;
-    }
-
-    .blast-overlay[hidden] {
-      display: none;
-    }
-
-    .blast-label {
+      font-family: 'Orbitron', sans-serif;
       font-weight: 900;
-      letter-spacing: 0.06em;
-      color: var(--accent-gold);
-      font-size: 1.05rem;
+      line-height: 1;
+      border-radius: 0.65rem;
+      transform-style: preserve-3d;
+      animation: rank-3d-float 3s ease-in-out infinite;
+      user-select: none;
     }
 
-    .clock-ui {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .rank-3d-1 {
+      background: linear-gradient(145deg, #fef08a 0%, #f59e0b 45%, #b45309 100%);
+      color: #1c1917;
+      border: 1.5px solid #fffbeb;
+      box-shadow: 0 3px 0 #78350f, 0 5px 0 #451a03, 0 8px 14px rgba(245, 158, 11, 0.55), inset 0 2px 3px rgba(255, 255, 255, 0.85);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
     }
 
-    .clock-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
+    .rank-3d-2 {
+      background: linear-gradient(145deg, #ffffff 0%, #cbd5e1 45%, #64748b 100%);
+      color: #0f172a;
+      border: 1.5px solid #f8fafc;
+      box-shadow: 0 3px 0 #475569, 0 5px 0 #1e293b, 0 8px 14px rgba(56, 189, 248, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
     }
 
-    .clock-mini-btn {
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 10px;
-      padding: 6px 10px;
-      font-size: 0.78rem;
-      font-weight: 700;
+    .rank-3d-3 {
+      background: linear-gradient(145deg, #fed7aa 0%, #ea580c 48%, #9a3412 100%);
       color: #ffffff;
-      background: rgba(255, 255, 255, 0.08);
-      cursor: pointer;
+      border: 1.5px solid #ffedd5;
+      box-shadow: 0 3px 0 #7c2d12, 0 5px 0 #431407, 0 8px 14px rgba(234, 88, 12, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1.5px 2px rgba(67, 20, 7, 0.85);
     }
 
-    .clock-preset {
-      flex: 1;
-      text-align: center;
+    @keyframes name-pop-1st {
+      0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.75)); }
+      25% { transform: translateY(-2.5px) scale(1.07); filter: drop-shadow(0 0 16px rgba(253, 224, 71, 1)); }
+      50% { transform: translateY(0) scale(1.02); filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.85)); }
+      75% { transform: translateY(-1.5px) scale(1.05); filter: drop-shadow(0 0 14px rgba(253, 224, 71, 0.95)); }
     }
 
-    .clock-preset.is-active,
-    .clock-start-btn,
-    .clock-rebuild-btn {
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-orange));
-      border-color: transparent;
+    @keyframes name-pop-2nd {
+      0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6)); }
+      50% { transform: translateY(-2px) scale(1.05); filter: drop-shadow(0 0 13px rgba(186, 230, 253, 0.95)); }
     }
 
-    .clock-start-btn {
-      flex: 1;
+    @keyframes name-pop-3rd {
+      0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.6)); }
+      50% { transform: translateY(-1.5px) scale(1.04); filter: drop-shadow(0 0 12px rgba(253, 186, 116, 0.9)); }
     }
 
-    .clock-length-text {
-      font-size: 0.82rem;
-      font-weight: 700;
+    .podium-name-1 {
+      display: inline-block;
+      font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      background: linear-gradient(110deg, #b45309 0%, #f59e0b 30%, #fef08a 50%, #f59e0b 70%, #b45309 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 2.2s linear infinite, name-pop-1st 1.8s ease-in-out infinite;
     }
+    .dark .podium-name-1 {
+      background: linear-gradient(110deg, #fde047 0%, #ffffff 30%, #facc15 50%, #ffffff 70%, #fde047 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .podium-name-2 {
+      display: inline-block;
+      font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.025em;
+      background: linear-gradient(110deg, #0284c7 0%, #38bdf8 30%, #e0f2fe 50%, #38bdf8 70%, #0284c7 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 2.6s linear infinite, name-pop-2nd 2.1s ease-in-out infinite;
+    }
+    .dark .podium-name-2 {
+      background: linear-gradient(110deg, #e2e8f0 0%, #38bdf8 30%, #ffffff 50%, #38bdf8 70%, #e2e8f0 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .podium-name-3 {
+      display: inline-block;
+      font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.025em;
+      background: linear-gradient(110deg, #9a3412 0%, #ea580c 30%, #fed7aa 50%, #ea580c 70%, #9a3412 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 3s linear infinite, name-pop-3rd 2.4s ease-in-out infinite;
+    }
+    .dark .podium-name-3 {
+      background: linear-gradient(110deg, #fdba74 0%, #fb923c 30%, #ffffff 50%, #fb923c 70%, #fdba74 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .pts-gold {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(110deg, #92400e 0%, #b45309 25%, #d97706 50%, #b45309 75%, #78350f 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 2.8s linear infinite;
+    }
+    .dark .pts-gold {
+      background: linear-gradient(110deg, #f59e0b 0%, #fde047 25%, #ffffff 50%, #fde047 75%, #eab308 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.7)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-gold-glow {
+      border: 1.5px solid #f59e0b !important;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%) !important;
+      box-shadow: 0 3px 10px rgba(245, 158, 11, 0.25) !important;
+    }
+    .dark .card-gold-glow {
+      border: 1.5px solid rgba(250, 204, 21, 0.9) !important;
+      background: linear-gradient(135deg, #2b1f05 0%, #141b2d 100%) !important;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.45), inset 0 0 12px rgba(250, 204, 21, 0.2) !important;
+    }
+
+    .pts-silver {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(110deg, #334155 0%, #475569 25%, #0284c7 50%, #475569 75%, #1e293b 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 3.2s linear infinite;
+    }
+    .dark .pts-silver {
+      background: linear-gradient(110deg, #94a3b8 0%, #e2e8f0 25%, #ffffff 50%, #e2e8f0 75%, #cbd5e1 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 8px rgba(226, 232, 240, 0.65)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-silver-glow {
+      border: 1.5px solid #94a3b8 !important;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+      box-shadow: 0 3px 10px rgba(100, 116, 139, 0.2) !important;
+    }
+    .dark .card-silver-glow {
+      border: 1.5px solid rgba(203, 213, 225, 0.85) !important;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+      box-shadow: 0 0 14px rgba(203, 213, 225, 0.35), inset 0 0 10px rgba(226, 232, 240, 0.15) !important;
+    }
+
+    .pts-bronze {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(110deg, #7c2d12 0%, #9a3412 25%, #ea580c 50%, #9a3412 75%, #431407 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 3.6s linear infinite;
+    }
+    .dark .pts-bronze {
+      background: linear-gradient(110deg, #ea580c 0%, #fdba74 25%, #ffffff 50%, #fdba74 75%, #f97316 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-bronze-glow {
+      border: 1.5px solid #ea580c !important;
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%) !important;
+      box-shadow: 0 3px 10px rgba(234, 88, 12, 0.2) !important;
+    }
+    .dark .card-bronze-glow {
+      border: 1.5px solid rgba(249, 115, 22, 0.85) !important;
+      background: linear-gradient(135deg, #2d1408 0%, #141b2d 100%) !important;
+      box-shadow: 0 0 14px rgba(234, 88, 12, 0.35), inset 0 0 10px rgba(251, 146, 60, 0.15) !important;
+    }
+
+    /* Bomb Alarm Clock Timer Styles */
+    @keyframes bomb-shake {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      15% { transform: translate(-2px, 1px) rotate(-2.5deg); }
+      30% { transform: translate(2px, -1px) rotate(2.5deg); }
+      45% { transform: translate(-2px, -1px) rotate(-2deg); }
+      60% { transform: translate(2px, 1px) rotate(2deg); }
+      75% { transform: translate(-1px, 1px) rotate(-1deg); }
+      90% { transform: translate(1px, -1px) rotate(1deg); }
+    }
+    .bomb-shaking {
+      animation: bomb-shake 0.32s linear infinite;
+    }
+
+    @keyframes spark-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.65; }
+    }
+    .spark-active {
+      animation: spark-pulse 0.35s ease-in-out infinite;
+    }
+
+    @keyframes shard-fly-1 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(-36px, -32px) rotate(-140deg) scale(0.5); opacity: 0; }
+    }
+    @keyframes shard-fly-2 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(38px, -28px) rotate(150deg) scale(0.5); opacity: 0; }
+    }
+    @keyframes shard-fly-3 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(-32px, 28px) rotate(-110deg) scale(0.4); opacity: 0; }
+    }
+    @keyframes shard-fly-4 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(34px, 30px) rotate(125deg) scale(0.4); opacity: 0; }
+    }
+    .shard-1 { animation: shard-fly-1 0.65s ease-out forwards; }
+    .shard-2 { animation: shard-fly-2 0.65s ease-out forwards; }
+    .shard-3 { animation: shard-fly-3 0.65s ease-out forwards; }
+    .shard-4 { animation: shard-fly-4 0.65s ease-out forwards; }
   </style>
 </head>
-<body>
-  <div class="app-wrap">
-    <header class="top-bar">
-      <h1 class="brand-title">Chatomizer - Topics to Discuss</h1>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
 
-      <div class="controls">
-        <select id="categorySelect" aria-label="Category">
-          <option value="all">All Categories</option>
-          <option value="questions-general.json">General</option>
-          <option value="questions-lifestyle-food.json">Lifestyle &amp; Food</option>
-          <option value="questions-science-tech.json">Science &amp; Tech</option>
-          <option value="questions-would-you-rather.json">Would You Rather</option>
-          <option value="questions-current-events.json">Current Events</option>
-          <option value="questions-personal-stories.json">Personal Stories</option>
-          <option value="questions-philosophy.json">Philosophy</option>
-          <option value="questions-deep-questions.json">Deep Questions</option>
-          <option value="questions-humor-fun.json">Humor &amp; Fun</option>
-          <option value="questions-pop-culture.json">Pop Culture</option>
-          <option value="questions-music-fun-facts.json">Music &amp; Fun Facts</option>
-        </select>
+  <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-        <button type="button" id="oneCardBtn" class="btn">1 Card</button>
-        <button type="button" id="fourCardsBtn" class="btn is-active">4 Cards</button>
-        <button type="button" id="drawPromptBtn" class="btn btn--primary">Draw Prompt</button>
-      </div>
-    </header>
-
-    <div id="statusLine" class="status-line">Loading prompts...</div>
-
-    <section id="fourCardsGrid" class="cards-grid" aria-label="4 Cards"></section>
-
-    <section id="singleCardStage" class="single-stage is-hidden" aria-label="1 Card">
-      <article class="topic-card single-card-box">
+  <!-- Header -->
+  <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="resetToInitial()">
+        <div class="w-9 h-9 rounded-full border-2 border-indigo-500 shadow-sm shrink-0 bg-slate-900 overflow-hidden flex items-center justify-center">
+          <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-cover">
+        </div>
         <div>
-          <span id="singleCategory" class="category-pill">General</span>
-          <p id="singleQuestion" class="topic-text">Click "Draw Prompt" to load a topic.</p>
+          <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
+            Nellie B &#8211; Chatomizer
+          </h1>
+          <p class="text-[10px] font-bold tracking-widest uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">LET&#39;S CHAT IT UP</p>
         </div>
-        <div class="single-card-footer">
-          <button type="button" id="nextSingleBtn" class="btn btn--primary">Next Prompt</button>
+      </div>
+
+      <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
+        <span class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">Follow Me</span>
+        <span class="pointing-arrow-right text-xl sm:text-2xl text-red-500 select-none" title="Pointing to TikTok">👉</span>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <button onclick="toggleScoresModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
+          <i class="fa-solid fa-trophy text-sm text-yellow-200"></i>
+          <span class="hidden sm:inline">Scores</span>
+        </button>
+
+        <a href="https://www.tiktok.com/@nellie_b" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
+          <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
+          <span class="hidden sm:inline">Go to My TikTok</span>
+          <span class="sm:hidden">TikTok</span>
+        </a>
+
+        <button id="open-favorites-btn" onclick="toggleFavoritesDrawer(true)" class="relative p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95" title="Saved Topics">
+          <i class="fa-solid fa-bookmark text-sm"></i>
+          <span id="favorites-badge" class="hidden absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+        </button>
+
+        <button onclick="toggleDarkMode()" title="Toggle Theme" class="p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95">
+          <i class="fa-solid fa-sun text-amber-500 dark:hidden text-sm"></i>
+          <i class="fa-solid fa-moon hidden dark:block text-indigo-400 text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Global Top Scrolling Leaderboard Ticker -->
+  <div id="global-ticker-container" class="relative z-30 w-full bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-indigo-500/30 overflow-hidden py-1.5 shadow-sm transition-colors">
+    <div class="flex items-center">
+      <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1.5 shadow-md">
+        <i class="fa-solid fa-crown text-slate-950"></i> TOP 3 PODIUM
+      </div>
+      <div class="overflow-hidden whitespace-nowrap flex-grow relative">
+        <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-xs font-bold"></div>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-1 sm:py-2 flex-grow w-full flex flex-col justify-between overflow-hidden">
+    <div class="space-y-2 shrink-0 mb-1">
+      <div class="flex items-center gap-3 overflow-x-auto custom-scroll py-1 px-0.5 text-xs">
+        <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
+          <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-square text-[11px]"></i> 1 Card
+          </button>
+          <button id="view-btn-4" onclick="setLayoutView(4)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-border-all text-[11px]"></i> 4 Cards
+          </button>
         </div>
-      </article>
 
-      <aside id="alarmBombPanel" class="alarm-bomb-panel is-hidden" aria-live="polite">
-        <div class="clock-arena">
-          <div id="alarmClock" class="alarm-clock">
-            <div class="bell bell--left" data-part></div>
-            <div class="bell bell--right" data-part></div>
-            <div class="hammer" data-part></div>
+        <div class="h-5 w-[1px] bg-slate-300 dark:bg-slate-700 shrink-0"></div>
 
-            <div class="clock-casing" data-part>
-              <div class="clock-dial">
-                <div class="clock-hands-layer" data-part>
-                  <span class="hand hand--hour"></span>
-                  <span class="hand hand--minute"></span>
-                  <span class="hand hand--second" id="clockSecondHand"></span>
-                </div>
-                <span id="clockReadout" class="clock-readout">00:30</span>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-0.5 hidden sm:inline">Presets:</span>
+          <div id="mode-pills" class="flex gap-2"></div>
+        </div>
+      </div>
+
+      <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1 px-0.5 text-xs font-medium"></div>
+    </div>
+
+    <div class="w-full flex flex-col items-center justify-center my-auto flex-grow">
+      <div id="topics-grid" class="w-full py-1"></div>
+
+      <!-- Single-Card Bomb Alarm Clock Timer -->
+      <div id="single-card-bomb-timer" class="hidden w-full max-w-2xl mx-auto mt-2">
+        <div class="bg-white/95 dark:bg-slate-900/95 border border-slate-300 dark:border-rose-500/40 rounded-2xl px-4 py-2.5 shadow-xl backdrop-blur-md flex flex-wrap items-center justify-between gap-3 transition-colors">
+          <div class="flex items-center gap-3 relative">
+            <div id="bomb-clock-visual" class="relative w-11 h-11 rounded-full bg-slate-900 border-2 border-rose-500 flex items-center justify-center shadow-lg shrink-0 select-none">
+              <i id="bomb-icon" class="fa-solid fa-bomb text-xl text-rose-400"></i>
+              <span id="bomb-spark" class="hidden -top-1 -right-1 absolute w-3 h-3 rounded-full bg-amber-300 spark-active"></span>
+              <span class="bomb-shard hidden absolute w-2 h-2 rounded-sm bg-rose-500"></span>
+              <span class="bomb-shard hidden absolute w-2 h-2 rounded-sm bg-amber-400"></span>
+              <span class="bomb-shard hidden absolute w-2 h-2 rounded-sm bg-cyan-400"></span>
+              <span class="bomb-shard hidden absolute w-2 h-2 rounded-sm bg-pink-500"></span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span id="bomb-timer-display" class="font-mono font-black text-xl sm:text-2xl tracking-wider text-slate-900 dark:text-white">00:30</span>
+                <span id="bomb-boom-banner" class="hidden px-2 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] tracking-wider uppercase animate-bounce">BOOM! TIME&#39;S UP</span>
+              </div>
+              <div class="w-32 sm:w-44 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1">
+                <div id="bomb-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-200" style="width: 100%;"></div>
               </div>
             </div>
-
-            <div class="clock-leg clock-leg--left" data-part></div>
-            <div class="clock-leg clock-leg--right" data-part></div>
-            <div class="clock-spring-gear" data-part></div>
           </div>
 
-          <div id="blastOverlay" class="blast-overlay" hidden>
-            <span class="blast-label">BOOM! TIME'S UP</span>
-            <button type="button" id="rebuildClockBtn" class="clock-mini-btn clock-rebuild-btn">Fix Clock</button>
-          </div>
-        </div>
-
-        <div class="clock-ui">
-          <div class="clock-row">
-            <button type="button" id="minusFiveBtn" class="clock-mini-btn" aria-label="Subtract 5 seconds">-5s</button>
-            <span id="clockLengthText" class="clock-length-text">30s</span>
-            <button type="button" id="plusFiveBtn" class="clock-mini-btn" aria-label="Add 5 seconds">+5s</button>
-          </div>
-
-          <div class="clock-row">
-            <button type="button" class="clock-mini-btn clock-preset" data-sec="15">15s</button>
-            <button type="button" class="clock-mini-btn clock-preset is-active" data-sec="30">30s</button>
-            <button type="button" class="clock-mini-btn clock-preset" data-sec="60">60s</button>
-          </div>
-
-          <div class="clock-row">
-            <button type="button" id="startPauseClockBtn" class="clock-mini-btn clock-start-btn">Start</button>
-            <button type="button" id="resetClockBtn" class="clock-mini-btn">Reset</button>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button onclick="setBombDuration(15)" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">15s</button>
+            <button onclick="setBombDuration(30)" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">30s</button>
+            <button onclick="setBombDuration(60)" class="px-2 py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">60s</button>
+            <button id="bomb-toggle-btn" onclick="toggleBombTimer()" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white shadow cursor-pointer flex items-center gap-1">
+              <i id="bomb-toggle-icon" class="fa-solid fa-play"></i>
+              <span id="bomb-toggle-label">Start</span>
+            </button>
+            <button onclick="resetBombTimer(false)" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer" title="Reset Timer">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
           </div>
         </div>
-      </aside>
-    </section>
+      </div>
+      
+      <div id="single-card-floating-ticker" class="hidden w-full max-w-2xl mx-auto mt-2.5">
+        <div class="floating-ticker-card bg-white/95 dark:bg-slate-950/95 border border-slate-300 dark:border-amber-500/40 rounded-2xl overflow-hidden py-2 px-1.5 shadow-xl dark:shadow-2xl backdrop-blur-md transition-colors">
+          <div class="flex items-center">
+            <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-xl z-10 shrink-0 flex items-center gap-1 shadow-md">
+              <i class="fa-solid fa-crown"></i> TOP 3
+            </div>
+            <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
+              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-lg sm:text-2xl font-extrabold"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shrink-0 pt-1 pb-1 flex flex-col items-center justify-center gap-1">
+      <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+        <i id="generate-icon" class="fa-solid fa-dice text-xl group-hover:rotate-180 transition-transform duration-300"></i>
+        <span id="generate-btn-text">Click to Change Cards</span>
+        <span id="generate-btn-badge" class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full font-bold ml-1">4 Cards</span>
+      </button>
+
+      <p class="text-[11px] text-slate-400 dark:text-slate-500 text-center">
+        Tap or click any card, press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[10px]">Spacebar</kbd>, or use <i class="fa-solid fa-rotate text-xs text-indigo-400"></i> to flip topics.
+      </p>
+    </div>
+  </main>
+
+  <footer class="relative z-30 w-full py-1.5 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
+    <p>&copy; Nellie B Chatomizer &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
+  </footer>
+
+  <!-- Manage Session Scores Modal -->
+  <div id="scores-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="toggleScoresModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-trophy text-amber-500"></i> Manage Session Leaderboard Scores
+        </h3>
+        <button onclick="toggleScoresModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500 dark:text-slate-400">
+        Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!
+      </p>
+
+      <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden max-h-[50vh] overflow-y-auto custom-scroll">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 sticky top-0 z-10">
+            <tr>
+              <th class="p-2.5 font-bold">Username</th>
+              <th class="p-2.5 font-bold w-28">Session Points</th>
+              <th class="p-2.5 font-bold w-12 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="scores-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button onclick="addScoreRow('', '')" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+          <i class="fa-solid fa-plus text-indigo-500"></i> Add User
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="clearAllScores()" class="px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors cursor-pointer">Clear All</button>
+          <button onclick="saveAndApplyScores()" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer shadow">Save & Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Modal -->
+  <div id="privacy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="togglePrivacyModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-indigo-500"></i> Privacy Policy
+        </h3>
+        <button onclick="togglePrivacyModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="text-xs space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+        <p><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.</p>
+      </div>
+      <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-right">
+        <button onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favorites Drawer -->
+  <div id="favorites-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+    <div id="drawer-backdrop" onclick="toggleFavoritesDrawer(false)" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+    <div id="drawer-content" class="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out pointer-events-auto border-l border-slate-200 dark:border-slate-800">
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-3">
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 rounded-lg bg-pink-100 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400">
+              <i class="fa-solid fa-bookmark text-sm"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-base text-slate-900 dark:text-white">Saved Topics</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Click any prompt to load it</p>
+            </div>
+          </div>
+          <button onclick="toggleFavoritesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div id="saved-topics-list" class="space-y-2.5 overflow-y-auto max-h-[70vh] pr-1"></div>
+      </div>
+      <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+        <button onclick="clearAllFavorites()" class="w-full py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-trash-can"></i> Clear Saved
+        </button>
+      </div>
+    </div>
   </div>
 
   <script>
-    (() => {
-      const DATA_FILES = [
-        'questions-general.json',
-        'questions-lifestyle-food.json',
-        'questions-science-tech.json',
-        'questions-would-you-rather.json',
-        'questions-current-events.json',
-        'questions-personal-stories.json',
-        'questions-philosophy.json',
-        'questions-deep-questions.json',
-        'questions-humor-fun.json',
-        'questions-pop-culture.json',
-        'questions-music-fun-facts.json'
-      ];
+    // Each category maps to a standalone JSON file under ./data/
+    var CATEGORY_FILES = {
+      "Philosophy": "data/questions-philosophy.json",
+      "Deep Questions": "data/questions-deep-questions.json",
+      "Humor/Fun": "data/questions-humor-fun.json",
+      "Current Events": "data/questions-current-events.json",
+      "Would You Rather": "data/questions-would-you-rather.json",
+      "Pop Culture": "data/questions-pop-culture.json",
+      "Personal Stories": "data/questions-personal-stories.json",
+      "Science & Tech": "data/questions-science-tech.json",
+      "Did You Know?": "data/questions-did-you-know.json",
+      "Music Fun Facts": "data/questions-music-fun-facts.json"
+    };
 
-      const categorySelect = document.getElementById('categorySelect');
-      const oneCardBtn = document.getElementById('oneCardBtn');
-      const fourCardsBtn = document.getElementById('fourCardsBtn');
-      const drawPromptBtn = document.getElementById('drawPromptBtn');
-      const nextSingleBtn = document.getElementById('nextSingleBtn');
-      const statusLine = document.getElementById('statusLine');
+    var QUESTION_BANKS = {};
+    var categoryPointers = {};
+    Object.keys(CATEGORY_FILES).forEach(function(cat) {
+      QUESTION_BANKS[cat] = [];
+      categoryPointers[cat] = 0;
+    });
 
-      const fourCardsGrid = document.getElementById('fourCardsGrid');
-      const singleCardStage = document.getElementById('singleCardStage');
-      const singleCategory = document.getElementById('singleCategory');
-      const singleQuestion = document.getElementById('singleQuestion');
+    var CATEGORY_STYLES = {
+      "Philosophy": { bg: "bg-purple-100 dark:bg-purple-950/80", text: "text-purple-700 dark:text-purple-200", border: "border-purple-300 dark:border-purple-600" },
+      "Deep Questions": { bg: "bg-indigo-100 dark:bg-indigo-950/80", text: "text-indigo-700 dark:text-indigo-200", border: "border-indigo-300 dark:border-indigo-600" },
+      "Humor/Fun": { bg: "bg-amber-100 dark:bg-amber-950/80", text: "text-amber-800 dark:text-amber-200", border: "border-amber-300 dark:border-amber-600" },
+      "Current Events": { bg: "bg-blue-100 dark:bg-blue-950/80", text: "text-blue-700 dark:text-blue-200", border: "border-blue-300 dark:border-blue-600" },
+      "Would You Rather": { bg: "bg-emerald-100 dark:bg-emerald-950/80", text: "text-emerald-700 dark:text-emerald-200", border: "border-emerald-300 dark:border-emerald-600" },
+      "Pop Culture": { bg: "bg-pink-100 dark:bg-pink-950/80", text: "text-pink-700 dark:text-pink-200", border: "border-pink-300 dark:border-pink-600" },
+      "Personal Stories": { bg: "bg-cyan-100 dark:bg-cyan-950/80", text: "text-cyan-700 dark:text-cyan-200", border: "border-cyan-300 dark:border-cyan-600" },
+      "Science & Tech": { bg: "bg-violet-100 dark:bg-violet-950/80", text: "text-violet-700 dark:text-violet-200", border: "border-violet-300 dark:border-violet-600" },
+      "Did You Know?": { bg: "bg-rose-100 dark:bg-rose-950/80", text: "text-rose-700 dark:text-rose-200", border: "border-rose-300 dark:border-rose-600" },
+      "Music Fun Facts": { bg: "bg-teal-100 dark:bg-teal-950/80", text: "text-teal-700 dark:text-teal-200", border: "border-teal-300 dark:border-teal-600" }
+    };
 
-      const alarmBombPanel = document.getElementById('alarmBombPanel');
-      const alarmClock = document.getElementById('alarmClock');
-      const clockReadout = document.getElementById('clockReadout');
-      const clockSecondHand = document.getElementById('clockSecondHand');
-      const clockLengthText = document.getElementById('clockLengthText');
-      const minusFiveBtn = document.getElementById('minusFiveBtn');
-      const plusFiveBtn = document.getElementById('plusFiveBtn');
-      const startPauseClockBtn = document.getElementById('startPauseClockBtn');
-      const resetClockBtn = document.getElementById('resetClockBtn');
-      const rebuildClockBtn = document.getElementById('rebuildClockBtn');
-      const blastOverlay = document.getElementById('blastOverlay');
-      const presetButtons = Array.from(document.querySelectorAll('.clock-preset'));
+    var PRESET_MODES = [
+      { id: "all", name: "Balanced Mix", categories: Object.keys(CATEGORY_STYLES) },
+      { id: "icebreaker", name: "Casual Icebreakers", categories: ["Humor/Fun", "Would You Rather", "Pop Culture", "Personal Stories", "Music Fun Facts"] },
+      { id: "deep", name: "Deep Discussions", categories: ["Philosophy", "Deep Questions", "Science & Tech"] },
+      { id: "latenight", name: "Late Night Debates", categories: ["Philosophy", "Did You Know?", "Current Events", "Science & Tech", "Music Fun Facts"] },
+      { id: "funny", name: "Funny & Silly", categories: ["Humor/Fun", "Would You Rather", "Did You Know?", "Music Fun Facts"] }
+    ];
 
-      let prompts = [];
-      let singleMode = false;
+    var currentTopics = [];
+    var cardCountView = 4;
+    var activePreset = "all";
+    var selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
+    var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
+    var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
 
-      let durationSec = 30;
-      let leftSec = 30;
-      let intervalRef = null;
-      let running = false;
+    var sessionScores = JSON.parse(localStorage.getItem("nellieb_scores") || JSON.stringify([
+      { name: "Zach", points: 150 },
+      { name: "Nelly", points: 240 },
+      { name: "Rick", points: 300 }
+    ]));
 
-      function formatClock(seconds) {
-        const clamped = Math.max(0, Math.ceil(seconds));
-        const mins = Math.floor(clamped / 60);
-        const secs = clamped % 60;
-        return String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    // --- BOMB ALARM CLOCK TIMER STATE ---
+    var bombDuration = 30;
+    var bombRemaining = 30;
+    var bombInterval = null;
+    var bombRunning = false;
+    var audioCtx = null;
+
+    function playAlarmTone() {
+      try {
+        var Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        if (!audioCtx) audioCtx = new Ctx();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(160, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(42, audioCtx.currentTime + 0.35);
+
+        gain.gain.setValueAtTime(0.22, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.38);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.4);
+      } catch (e) {}
+    }
+
+    function formatBombClock(sec) {
+      var s = Math.max(0, Math.ceil(sec));
+      var mins = Math.floor(s / 60);
+      var rem = s % 60;
+      return String(mins).padStart(2, "0") + ":" + String(rem).padStart(2, "0");
+    }
+
+    function updateBombUI() {
+      var displayEl = document.getElementById("bomb-timer-display");
+      var barEl = document.getElementById("bomb-progress-bar");
+      var visualEl = document.getElementById("bomb-clock-visual");
+      var iconEl = document.getElementById("bomb-icon");
+      var sparkEl = document.getElementById("bomb-spark");
+      var bannerEl = document.getElementById("bomb-boom-banner");
+      var toggleIcon = document.getElementById("bomb-toggle-icon");
+      var toggleLabel = document.getElementById("bomb-toggle-label");
+      var shards = document.querySelectorAll("#bomb-clock-visual .bomb-shard");
+
+      if (displayEl) displayEl.innerText = formatBombClock(bombRemaining);
+      if (barEl) {
+        var pct = bombDuration > 0 ? Math.max(0, Math.min(100, (bombRemaining / bombDuration) * 100)) : 0;
+        barEl.style.width = pct + "%";
       }
 
-      function renderClockState() {
-        clockReadout.textContent = formatClock(leftSec);
-        clockLengthText.textContent = durationSec + 's';
-        const ratio = durationSec > 0 ? leftSec / durationSec : 0;
-        const deg = (1 - ratio) * 360;
-        if (clockSecondHand) {
-          clockSecondHand.style.transform = 'rotate(' + deg + 'deg)';
+      if (toggleIcon) toggleIcon.className = bombRunning ? "fa-solid fa-pause" : "fa-solid fa-play";
+      if (toggleLabel) toggleLabel.innerText = bombRunning ? "Pause" : "Start";
+
+      if (visualEl) {
+        if (bombRunning && bombRemaining <= 10 && bombRemaining > 0) {
+          visualEl.classList.add("bomb-shaking");
+        } else {
+          visualEl.classList.remove("bomb-shaking");
         }
-        alarmBombPanel.classList.toggle('is-hot', leftSec > 0 && leftSec <= 5);
       }
 
-      function stopClockInterval() {
-        if (intervalRef !== null) {
-          clearInterval(intervalRef);
-          intervalRef = null;
-        }
-        running = false;
-        startPauseClockBtn.textContent = 'Start';
+      if (sparkEl) {
+        if (bombRunning && bombRemaining > 0) sparkEl.classList.remove("hidden");
+        else sparkEl.classList.add("hidden");
       }
 
-      function resetClock() {
-        stopClockInterval();
-        leftSec = durationSec;
-        alarmClock.classList.remove('is-shaking', 'is-broken');
-        blastOverlay.hidden = true;
-        renderClockState();
-      }
-
-      function explodeClock() {
-        stopClockInterval();
-        leftSec = 0;
-        renderClockState();
-        alarmClock.classList.add('is-shaking');
-        setTimeout(() => {
-          alarmClock.classList.remove('is-shaking');
-          alarmClock.classList.add('is-broken');
-          blastOverlay.hidden = false;
-        }, 650);
-      }
-
-      function changeDuration(nextSec) {
-        durationSec = Math.min(300, Math.max(5, nextSec));
-        presetButtons.forEach((btn) => {
-          btn.classList.toggle('is-active', Number(btn.dataset.sec) === durationSec);
+      if (bombRemaining <= 0) {
+        if (bannerEl) bannerEl.classList.remove("hidden");
+        if (iconEl) iconEl.className = "fa-solid fa-burst text-xl text-amber-400";
+        shards.forEach(function(sh, i) {
+          sh.classList.remove("hidden", "shard-1", "shard-2", "shard-3", "shard-4");
+          void sh.offsetWidth;
+          sh.classList.add("shard-" + ((i % 4) + 1));
         });
-        resetClock();
-      }
-
-      function applyMode(isSingle) {
-        singleMode = Boolean(isSingle);
-        singleCardStage.classList.toggle('is-hidden', !singleMode);
-        fourCardsGrid.classList.toggle('is-hidden', singleMode);
-        oneCardBtn.classList.toggle('is-active', singleMode);
-        fourCardsBtn.classList.toggle('is-active', !singleMode);
-        alarmBombPanel.classList.toggle('is-hidden', !singleMode);
-        if (!singleMode) {
-          resetClock();
-        }
-        drawCards();
-      }
-
-      function labelFromFilename(file) {
-        return file
-          .replace(/^questions-/, '')
-          .replace(/\.json$/, '')
-          .split('-')
-          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-          .join(' ');
-      }
-
-      function extractPromptText(row) {
-        if (typeof row === 'string') return row;
-        if (row && typeof row === 'object') {
-          return row.question || row.prompt || row.text || row.title || '';
-        }
-        return '';
-      }
-
-      async function loadAllPrompts() {
-        const collected = [];
-        for (const file of DATA_FILES) {
-          try {
-            const resp = await fetch('./data/' + file, { cache: 'no-store' });
-            if (!resp.ok) continue;
-            const json = await resp.json();
-            const entries = Array.isArray(json) ? json : (Array.isArray(json.questions) ? json.questions : []);
-            const fallbackCat = labelFromFilename(file);
-            for (const entry of entries) {
-              const text = extractPromptText(entry).trim();
-              if (text) {
-                collected.push({
-                  category: (entry && entry.category) || fallbackCat,
-                  question: text
-                });
-              }
-            }
-          } catch (_) {
-            // Skip unavailable file
-          }
-        }
-        prompts = collected;
-        statusLine.textContent = prompts.length
-          ? prompts.length + ' conversation prompts ready.'
-          : 'No prompts loaded from data/ folder.';
-        drawCards();
-      }
-
-      function currentPool() {
-        const chosen = categorySelect.value;
-        if (chosen === 'all') return prompts;
-        const target = labelFromFilename(chosen).toLowerCase();
-        const filtered = prompts.filter((item) => String(item.category).toLowerCase() === target);
-        return filtered.length ? filtered : prompts;
-      }
-
-      function sampleItems(pool, amount) {
-        const bag = pool.slice();
-        const out = [];
-        while (out.length < amount && bag.length > 0) {
-          const i = Math.floor(Math.random() * bag.length);
-          out.push(bag.splice(i, 1)[0]);
-        }
-        return out;
-      }
-
-      function drawCards() {
-        const pool = currentPool();
-        if (!pool.length) return;
-
-        if (singleMode) {
-          const [picked] = sampleItems(pool, 1);
-          singleCategory.textContent = picked.category;
-          singleQuestion.textContent = picked.question;
-          return;
-        }
-
-        const four = sampleItems(pool, 4);
-        fourCardsGrid.innerHTML = '';
-        four.forEach((item) => {
-          const card = document.createElement('article');
-          card.className = 'topic-card';
-
-          const pill = document.createElement('span');
-          pill.className = 'category-pill';
-          pill.textContent = item.category;
-
-          const q = document.createElement('p');
-          q.className = 'topic-text';
-          q.textContent = item.question;
-
-          card.appendChild(pill);
-          card.appendChild(q);
-          fourCardsGrid.appendChild(card);
+      } else {
+        if (bannerEl) bannerEl.classList.add("hidden");
+        if (iconEl) iconEl.className = "fa-solid fa-bomb text-xl text-rose-400";
+        shards.forEach(function(sh) {
+          sh.classList.add("hidden");
+          sh.classList.remove("shard-1", "shard-2", "shard-3", "shard-4");
         });
       }
+    }
 
-      startPauseClockBtn.addEventListener('click', () => {
-        if (alarmClock.classList.contains('is-broken')) {
-          resetClock();
+    function triggerBombExplosion() {
+      bombRunning = false;
+      bombRemaining = 0;
+      if (bombInterval) {
+        clearInterval(bombInterval);
+        bombInterval = null;
+      }
+      updateBombUI();
+      playAlarmTone();
+      showToast("BOOM! TIME'S UP", "warning");
+    }
+
+    function toggleBombTimer() {
+      if (bombRunning) {
+        bombRunning = false;
+        if (bombInterval) {
+          clearInterval(bombInterval);
+          bombInterval = null;
         }
-        if (running) {
-          stopClockInterval();
+        updateBombUI();
+        return;
+      }
+
+      if (bombRemaining <= 0) {
+        bombRemaining = bombDuration;
+      }
+
+      bombRunning = true;
+      updateBombUI();
+
+      if (bombInterval) clearInterval(bombInterval);
+      bombInterval = setInterval(function() {
+        bombRemaining -= 1;
+        if (bombRemaining <= 0) {
+          triggerBombExplosion();
+        } else {
+          updateBombUI();
+        }
+      }, 1000);
+    }
+
+    function resetBombTimer(autoStart) {
+      bombRunning = false;
+      if (bombInterval) {
+        clearInterval(bombInterval);
+        bombInterval = null;
+      }
+      bombRemaining = bombDuration;
+      updateBombUI();
+      if (autoStart) {
+        toggleBombTimer();
+      }
+    }
+
+    function setBombDuration(seconds) {
+      bombDuration = seconds;
+      resetBombTimer(false);
+    }
+
+    async function loadAllQuestionBanks() {
+      var entries = Object.entries(CATEGORY_FILES);
+      await Promise.all(entries.map(async function(pair) {
+        var cat = pair[0];
+        var url = pair[1];
+        try {
+          var res = await fetch(url + "?v=" + Date.now(), { cache: "no-store" });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          var data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            QUESTION_BANKS[cat] = data;
+          }
+        } catch (err) {
+          console.warn("Could not load JSON for " + cat + " (" + url + "):", err);
+        }
+      }));
+    }
+
+    function getPopulatedCategories() {
+      return Array.from(selectedCategories).filter(function(cat) {
+        return Array.isArray(QUESTION_BANKS[cat]) && QUESTION_BANKS[cat].length > 0;
+      });
+    }
+
+    function getNellieAndChatomizerMarkup(viewCount) {
+      var logoSizeClass = viewCount === 1 ? "w-40 h-14 sm:w-48 sm:h-16" : "w-32 h-11 sm:w-36 sm:h-12";
+      var headSizeClass = viewCount === 1 ? "w-14 h-14 sm:w-16 sm:h-16" : "w-11 h-11 sm:w-12 sm:h-12";
+
+      return '<div class="flex items-end gap-0.5 pointer-events-none select-none z-20 ml-auto -mb-2 -mr-1">' +
+        '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink ' + headSizeClass + ' shrink-0">' +
+        '<div class="chatomizer-logo-badge -ml-1.5" title="Chatomizer Party Edition">' +
+          '<svg class="' + logoSizeClass + '" viewBox="0 0 230 70" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs>' +
+              '<linearGradient id="chatBg" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#1E1B4B"/>' +
+                '<stop offset="50%" stop-color="#311042"/>' +
+                '<stop offset="100%" stop-color="#0F172A"/>' +
+              '</linearGradient>' +
+              '<linearGradient id="chatBorder" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#00F2FE"/>' +
+                '<stop offset="50%" stop-color="#FF007F"/>' +
+                '<stop offset="100%" stop-color="#FACC15"/>' +
+              '</linearGradient>' +
+              '<linearGradient id="chatTextGrad" x1="48" y1="16" x2="215" y2="48" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#FFFFFF"/>' +
+                '<stop offset="55%" stop-color="#FEF08A"/>' +
+                '<stop offset="100%" stop-color="#38BDF8"/>' +
+              '</linearGradient>' +
+            '</defs>' +
+            '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H34L10 68L22 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
+            '<g transform="translate(14, 18) rotate(-10)">' +
+              '<rect x="2" y="2" width="24" height="24" rx="6" fill="#FF007F" stroke="#FFFFFF" stroke-width="1.8"/>' +
+              '<circle cx="9" cy="9" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="19" cy="9" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="14" cy="14" r="2.4" fill="#FACC15"/>' +
+              '<circle cx="9" cy="19" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="19" cy="19" r="2.2" fill="#FFFFFF"/>' +
+            '</g>' +
+            '<path d="M210 16L211.5 19.5L215 21L211.5 22.5L210 26L208.5 22.5L205 21L208.5 19.5L210 16Z" fill="#FACC15"/>' +
+            '<circle cx="48" cy="17" r="1.6" fill="#00F2FE"/>' +
+            '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="#090D16" stroke="#090D16" stroke-width="3.5" stroke-linejoin="round">CHATOMIZER</text>' +
+            '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="url(#chatTextGrad)">CHATOMIZER</text>' +
+            '<text x="50" y="50.5" font-family="\'Orbitron\', sans-serif" font-weight="800" font-size="6.8" letter-spacing="2.2" fill="#F472B6">PARTY EDITION</text>' +
+          '</svg>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function setLayoutView(count) {
+      cardCountView = count;
+      updateToggleUI();
+      generateTopics();
+    }
+
+    function updateToggleUI() {
+      var btn1 = document.getElementById("view-btn-1");
+      var btn4 = document.getElementById("view-btn-4");
+      var badge = document.getElementById("generate-btn-badge");
+      var btnText = document.getElementById("generate-btn-text");
+      var mainArea = document.getElementById("main-content-area");
+      var globalTicker = document.getElementById("global-ticker-container");
+      var floatingTicker = document.getElementById("single-card-floating-ticker");
+      var bombTimerBox = document.getElementById("single-card-bomb-timer");
+
+      if (cardCountView === 1) {
+        btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
+        btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+        if (badge) badge.innerText = "1 Card";
+        if (btnText) btnText.innerText = "Click to Change Card";
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-0.5 sm:py-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
+        if (globalTicker) globalTicker.classList.add("hidden");
+        if (bombTimerBox) bombTimerBox.classList.remove("hidden");
+        if (floatingTicker) floatingTicker.classList.remove("hidden");
+      } else {
+        btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm";
+        btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+        if (badge) badge.innerText = "4 Cards";
+        if (btnText) btnText.innerText = "Click to Change Cards";
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 py-2 sm:py-4 flex-grow w-full flex flex-col justify-between overflow-hidden";
+        if (globalTicker) globalTicker.classList.remove("hidden");
+        if (bombTimerBox) bombTimerBox.classList.add("hidden");
+        if (floatingTicker) floatingTicker.classList.add("hidden");
+      }
+    }
+
+    function generateSequentialTopic(categoryOverride) {
+      var availCategories = getPopulatedCategories();
+      if (availCategories.length === 0) {
+        return {
+          id: "topic-loading",
+          category: "Music Fun Facts",
+          text: "Add JSON question files to the /data folder in GitHub to load your 300-question decks!"
+        };
+      }
+
+      var category = (categoryOverride && QUESTION_BANKS[categoryOverride] && QUESTION_BANKS[categoryOverride].length > 0)
+        ? categoryOverride
+        : availCategories[Math.floor(Math.random() * availCategories.length)];
+
+      var questionsList = QUESTION_BANKS[category];
+      var pointer = categoryPointers[category] || 0;
+      var text = questionsList[pointer % questionsList.length];
+
+      categoryPointers[category] = (pointer + 1) % questionsList.length;
+
+      var numMatch = text.match(/^(\d+)\./);
+      var qNum = numMatch ? numMatch[1] : (pointer + 1);
+
+      var topic = {
+        id: "topic-" + category.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase() + "-" + qNum,
+        category: category,
+        text: text
+      };
+
+      topicCache[topic.id] = topic;
+      localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+      return topic;
+    }
+
+    function renderModePills() {
+      var container = document.getElementById("mode-pills");
+      if (!container) return;
+      container.innerHTML = PRESET_MODES.map(function(mode) {
+        return '<button onclick="selectPreset(\'' + mode.id + '\')" class="px-3 py-1.5 rounded-lg font-bold text-xs transition-all whitespace-nowrap ' +
+          (activePreset === mode.id ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/20" : "bg-slate-200/70 dark:bg-slate-800/70 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700") +
+          '">' + mode.name + "</button>";
+      }).join("");
+    }
+
+    function selectPreset(modeId) {
+      activePreset = modeId;
+      var preset = PRESET_MODES.find(function(m) { return m.id === modeId; });
+      if (preset) {
+        selectedCategories = new Set(preset.categories);
+      }
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+    }
+
+    function renderCategoryPills() {
+      var container = document.getElementById("category-pills");
+      if (!container) return;
+      container.innerHTML = Object.keys(CATEGORY_STYLES).map(function(cat) {
+        var isSelected = selectedCategories.has(cat);
+        var style = CATEGORY_STYLES[cat];
+        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-3 py-1 rounded-xl border font-bold text-xs whitespace-nowrap transition-all flex items-center gap-1.5 ' +
+          (isSelected ? (style.bg + " " + style.text + " " + style.border + " scale-100 shadow-sm") : "bg-slate-200/40 dark:bg-slate-800/30 text-slate-400 border-transparent opacity-50 hover:opacity-100") +
+          '"><span>' + cat + "</span>" + (isSelected ? '<i class="fa-solid fa-check text-[10px]"></i>' : "") + "</button>";
+      }).join("");
+    }
+
+    function toggleCategory(cat) {
+      activePreset = "custom";
+      if (selectedCategories.has(cat)) {
+        if (selectedCategories.size === 1) {
+          showToast("At least one category must remain selected!", "warning");
           return;
         }
-        if (leftSec <= 0) {
-          leftSec = durationSec;
+        selectedCategories.delete(cat);
+      } else {
+        selectedCategories.add(cat);
+      }
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+    }
+
+    function generateTopics() {
+      if (selectedCategories.size === 0) return;
+      var genIcon = document.getElementById("generate-icon");
+      if (genIcon) {
+        genIcon.classList.add("animate-spin-once");
+        setTimeout(function() { genIcon.classList.remove("animate-spin-once"); }, 400);
+      }
+
+      var indicesToFlip = [];
+      for (var i = 0; i < cardCountView; i++) {
+        indicesToFlip.push(i);
+      }
+
+      triggerCardFlip(indicesToFlip, function() {
+        var nextTopics = [];
+        for (var i = 0; i < cardCountView; i++) {
+          nextTopics[i] = generateSequentialTopic();
         }
-        running = true;
-        startPauseClockBtn.textContent = 'Pause';
-        const startedAt = performance.now();
-        const startLeft = leftSec;
+        currentTopics = nextTopics;
+      });
 
-        intervalRef = setInterval(() => {
-          const elapsed = (performance.now() - startedAt) / 1000;
-          leftSec = Math.max(0, startLeft - elapsed);
-          renderClockState();
-          if (leftSec <= 0) {
-            explodeClock();
+      if (cardCountView === 1) {
+        resetBombTimer(false);
+      }
+    }
+
+    function handleCardTap(e, index) {
+      if (e.target.closest("button") || e.target.closest("a")) return;
+      refreshCardAtIndex(index);
+    }
+
+    function refreshCardAtIndex(index) {
+      triggerCardFlip([index], function() {
+        currentTopics[index] = generateSequentialTopic();
+      });
+      if (cardCountView === 1) {
+        resetBombTimer(false);
+      }
+    }
+
+    function triggerCardFlip(indices, dataUpdateFn) {
+      var cardEls = indices.map(function(idx) {
+        return document.getElementById("card-inner-" + idx);
+      }).filter(Boolean);
+
+      if (cardEls.length === 0) {
+        dataUpdateFn();
+        renderTopicCards();
+        return;
+      }
+
+      cardEls.forEach(function(el) { el.classList.add("card-flipping"); });
+
+      setTimeout(function() {
+        dataUpdateFn();
+        renderTopicCards();
+      }, 250);
+    }
+
+    function renderTopicCards() {
+      var grid = document.getElementById("topics-grid");
+      if (!grid) return;
+      
+      if (cardCountView === 1) {
+        grid.className = "w-full max-w-2xl mx-auto py-1";
+      } else {
+        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-2";
+      }
+
+      var rightCornerGroup = getNellieAndChatomizerMarkup(cardCountView);
+
+      var cardsHtml = currentTopics.map(function(topic, index) {
+        if (!topic) return "";
+
+        var isFav = favoritedTopicIds.has(topic.id);
+        var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
+
+        var pillMarkup = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+          "<span>" + topic.category + "</span>" +
+        '</span>';
+
+        return '<div class="card-container h-full w-full min-h-[175px]">' +
+          '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+            '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
+              '<div class="text-xs font-extrabold tracking-tight opacity-70">Click or Tap to Change</div>' +
+              '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
+                '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
+                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Bookmark Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
+                '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="my-2 flex-grow flex items-center justify-center">' +
+              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+            '</div>' +
+            '<div class="mt-2 flex items-end justify-between gap-2 relative pt-2">' +
+              '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
+                followModelLeftHelper(cardCountView) +
+                pillMarkup +
+              '</div>' +
+              rightCornerGroup +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+
+      grid.innerHTML = cardsHtml;
+    }
+
+    function followModelLeftHelper(viewCount) {
+      if (viewCount !== 1) return '';
+      return '<div class="flex items-center gap-1.5">' +
+        '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">Follow Me</span>' +
+        '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
+      '</div>';
+    }
+
+    // --- LEADERBOARD & SESSION SCORES LOGIC ---
+
+    function toggleScoresModal(open) {
+      var modal = document.getElementById("scores-modal");
+      if (!modal) return;
+      if (open) {
+        populateScoresTable();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function populateScoresTable() {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+
+      if (sessionScores.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">No users added yet. Click "Add User" below!</td></tr>';
+        return;
+      }
+
+      var sortedScores = sessionScores.slice().sort(function(a, b) {
+        return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
+      });
+
+      tbody.innerHTML = sortedScores.map(function(item) {
+        return '<tr class="score-row">' +
+          '<td class="p-2"><input type="text" value="' + escapeQuotes(item.name) + '" placeholder="Username" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2"><input type="number" value="' + item.points + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="Remove"><i class="fa-solid fa-trash-can text-xs"></i></button></td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    function addScoreRow(name, points) {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+
+      if (tbody.querySelector("tr td[colspan]")) {
+        tbody.innerHTML = "";
+      }
+
+      var tr = document.createElement("tr");
+      tr.className = "score-row";
+      tr.innerHTML = '<td class="p-2"><input type="text" value="' + escapeQuotes(name || "") + '" placeholder="Username" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2"><input type="number" value="' + (points !== undefined ? points : 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="Remove"><i class="fa-solid fa-trash-can text-xs"></i></button></td>';
+      tbody.appendChild(tr);
+    }
+
+    function removeScoreRow(btn) {
+      var row = btn.closest("tr");
+      if (row) row.remove();
+    }
+
+    function clearAllScores() {
+      sessionScores = [];
+      localStorage.removeItem("nellieb_scores");
+      populateScoresTable();
+      renderLeaderboardTicker();
+      showToast("Cleared leaderboard scores", "info");
+    }
+
+    function saveAndApplyScores() {
+      var rows = document.querySelectorAll("#scores-table-body .score-row");
+      var updated = [];
+
+      rows.forEach(function(row) {
+        var nameInput = row.querySelector(".score-name");
+        var ptsInput = row.querySelector(".score-pts");
+        if (nameInput && ptsInput) {
+          var name = nameInput.value.trim();
+          var points = parseInt(ptsInput.value) || 0;
+          if (name !== "") {
+            updated.push({ name: name, points: points });
           }
-        }, 100);
+        }
       });
 
-      minusFiveBtn.addEventListener('click', () => changeDuration(durationSec - 5));
-      plusFiveBtn.addEventListener('click', () => changeDuration(durationSec + 5));
-      resetClockBtn.addEventListener('click', resetClock);
-      rebuildClockBtn.addEventListener('click', resetClock);
-
-      presetButtons.forEach((btn) => {
-        btn.addEventListener('click', () => changeDuration(Number(btn.dataset.sec)));
+      updated.sort(function(a, b) {
+        return b.points - a.points;
       });
 
-      oneCardBtn.addEventListener('click', () => applyMode(true));
-      fourCardsBtn.addEventListener('click', () => applyMode(false));
-      drawPromptBtn.addEventListener('click', drawCards);
-      nextSingleBtn.addEventListener('click', () => {
-        drawCards();
-        resetClock();
-      });
-      categorySelect.addEventListener('change', drawCards);
+      sessionScores = updated;
+      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+      renderLeaderboardTicker();
+      toggleScoresModal(false);
+      showToast("Leaderboard updated successfully!", "success");
+    }
 
-      renderClockState();
-      loadAllPrompts();
-    })();
+    function get3DRankBadge(idx, isFloating) {
+      var rankNum = idx + 1;
+      var suffix = rankNum === 1 ? "ST" : (rankNum === 2 ? "ND" : "RD");
+      var rankClass = idx === 0 ? "rank-3d-1" : (idx === 1 ? "rank-3d-2" : "rank-3d-3");
+      var delayStyle = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.35s;"' : ' style="animation-delay: 0.7s;"');
+      var sizeClass = isFloating
+        ? "h-9 sm:h-10 px-2.5 text-base sm:text-xl"
+        : "h-6 px-2 text-xs";
+      var supClass = isFloating
+        ? "text-[9px] sm:text-[11px] ml-0.5 -mt-1.5"
+        : "text-[7px] ml-0.5 -mt-1";
+
+      return '<span class="rank-3d-badge ' + rankClass + ' ' + sizeClass + ' shrink-0"' + delayStyle + ' title="' + rankNum + suffix.toLowerCase() + ' Place">' +
+        '<span>' + rankNum + '</span><sup class="' + supClass + '">' + suffix + '</sup>' +
+      '</span>';
+    }
+
+    function renderLeaderboardTicker() {
+      var ticker = document.getElementById("leaderboard-ticker");
+      var floatingTicker = document.getElementById("floating-leaderboard-ticker");
+
+      var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 3);
+
+      if (sorted.length === 0) {
+        var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic">No podium leaders yet. Click "Scores" to enter contenders!</span>';
+        if (ticker) ticker.innerHTML = emptyHtml;
+        if (floatingTicker) floatingTicker.innerHTML = emptyHtml;
+        return;
+      }
+
+      var standardItemsHtml = sorted.map(function(item, idx) {
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
+        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
+        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
+        var rankBadge = get3DRankBadge(idx, false);
+
+        return '<div class="flex items-center gap-2.5 ' + cardClass + ' px-3.5 py-1 rounded-xl shrink-0">' +
+          rankBadge +
+          '<span class="' + nameClass + ' text-sm tracking-wide"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + ptsClass + ' text-sm">' + Number(item.points).toLocaleString() + ' PTS</span>' +
+        '</div>';
+      });
+
+      var floatingItemsHtml = sorted.map(function(item, idx) {
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
+        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
+        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
+        var rankBadge = get3DRankBadge(idx, true);
+
+        return '<div class="flex items-center gap-3 ' + cardClass + ' px-4 py-1.5 rounded-2xl shrink-0">' +
+          rankBadge +
+          '<span class="' + nameClass + ' text-xl sm:text-2xl tracking-tight"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + ptsClass + ' text-lg sm:text-2xl">' + Number(item.points).toLocaleString() + ' PTS</span>' +
+        '</div>';
+      });
+
+      var loopStandard = standardItemsHtml.concat(standardItemsHtml).concat(standardItemsHtml).join("");
+      var loopFloating = floatingItemsHtml.concat(floatingItemsHtml).concat(floatingItemsHtml).join("");
+
+      if (ticker) ticker.innerHTML = loopStandard;
+      if (floatingTicker) floatingTicker.innerHTML = loopFloating;
+    }
+
+    // --- FAVORITES & UTILS ---
+
+    function toggleFavorite(topicId, cardIndex) {
+      var topic = currentTopics[cardIndex];
+      if (!topic) return;
+
+      if (favoritedTopicIds.has(topic.id)) {
+        favoritedTopicIds.delete(topic.id);
+        showToast("Removed from saved topics", "info");
+      } else {
+        favoritedTopicIds.add(topic.id);
+        topicCache[topic.id] = topic;
+        localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+        showToast("Bookmarked topic!", "success");
+      }
+
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      renderTopicCards();
+      updateFavoritesUI();
+    }
+
+    function loadSavedTopicIntoView(topicId) {
+      var topic = topicCache[topicId];
+      if (!topic) return;
+
+      setLayoutView(1);
+      currentTopics = [topic];
+      renderTopicCards();
+      toggleFavoritesDrawer(false);
+      showToast("Loaded saved topic", "success");
+    }
+
+    function updateFavoritesUI() {
+      var badge = document.getElementById("favorites-badge");
+      var listContainer = document.getElementById("saved-topics-list");
+      if (!badge || !listContainer) return;
+
+      badge.innerText = favoritedTopicIds.size;
+      if (favoritedTopicIds.size > 0) {
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+
+      if (favoritedTopicIds.size === 0) {
+        listContainer.innerHTML = '<div class="text-center py-10 px-4 text-slate-400"><i class="fa-regular fa-bookmark text-3xl mb-2 opacity-40"></i><p class="font-semibold text-xs">No saved topics yet.</p><p class="text-[10px] mt-1">Tap the pin icon on any card to bookmark it!</p></div>';
+        return;
+      }
+
+      var savedList = Array.from(favoritedTopicIds).map(function(id) {
+        return topicCache[id] || { id: id, category: "Saved", text: "Saved topic item" };
+      });
+
+      listContainer.innerHTML = savedList.map(function(topic) {
+        var st = CATEGORY_STYLES[topic.category] || { bg: "bg-indigo-100", text: "text-indigo-700" };
+        return '<div onclick="loadSavedTopicIntoView(\'' + topic.id + '\')" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex flex-col gap-2 relative cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">' +
+          '<div class="flex items-center justify-between">' +
+            '<span class="text-[9px] font-bold px-2 py-0.5 rounded ' + st.bg + " " + st.text + '">' + topic.category + '</span>' +
+            '<div class="flex items-center gap-1.5" onclick="event.stopPropagation()">' +
+              '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-500 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-regular fa-copy text-xs"></i></button>' +
+              '<button onclick="removeFavorite(\'' + topic.id + '\')" title="Remove" class="p-1.5 rounded-lg text-pink-500 hover:text-red-600 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+            '</div>' +
+          '</div>' +
+          '<p class="text-xs font-bold text-slate-800 dark:text-slate-100 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">&quot;' + topic.text + '&quot;</p>' +
+          '<div class="text-[9px] text-indigo-500 dark:text-indigo-400 font-semibold flex items-center gap-1"><i class="fa-solid fa-arrow-right text-[8px]"></i> Click to load topic</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    function removeFavorite(id) {
+      favoritedTopicIds.delete(id);
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast("Removed topic", "info");
+    }
+
+    function clearAllFavorites() {
+      if (favoritedTopicIds.size === 0) return;
+      favoritedTopicIds.clear();
+      localStorage.removeItem("nellieb_favs");
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast("Cleared all saved topics", "info");
+    }
+
+    function toggleFavoritesDrawer(open) {
+      var drawer = document.getElementById("favorites-drawer");
+      var content = document.getElementById("drawer-content");
+      if (!drawer || !content) return;
+
+      if (open) {
+        drawer.classList.remove("pointer-events-none");
+        drawer.classList.remove("opacity-0");
+        drawer.classList.add("opacity-100");
+        content.classList.remove("translate-x-full");
+      } else {
+        drawer.classList.remove("opacity-100");
+        drawer.classList.add("opacity-0");
+        content.classList.add("translate-x-full");
+        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
+      }
+    }
+
+    function togglePrivacyModal(open) {
+      var modal = document.getElementById("privacy-modal");
+      if (!modal) return;
+      if (open) modal.classList.remove("hidden");
+      else modal.classList.add("hidden");
+    }
+
+    function copyTopicText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      showToast("Topic copied to clipboard!", "success");
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function showToast(message, type) {
+      var container = document.getElementById("toast-container");
+      if (!container) return;
+
+      var toast = document.createElement("div");
+      var icons = {
+        success: "fa-circle-check text-emerald-400",
+        warning: "fa-triangle-exclamation text-amber-400",
+        info: "fa-circle-info text-indigo-400"
+      };
+
+      toast.className = "px-3.5 py-2 rounded-xl bg-slate-900/90 text-white text-xs font-semibold shadow-xl backdrop-blur border border-slate-700 flex items-center gap-2 pointer-events-auto transition-all duration-200 translate-x-6 opacity-0";
+      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + message + "</span>";
+
+      container.appendChild(toast);
+      requestAnimationFrame(function() { toast.classList.remove("translate-x-6", "opacity-0"); });
+
+      setTimeout(function() {
+        toast.classList.add("translate-x-6", "opacity-0");
+        setTimeout(function() { toast.remove(); }, 200);
+      }, 2500);
+    }
+
+    function resetToInitial() { selectPreset("all"); }
+
+    function escapeQuotes(str) {
+      return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    async function initApp() {
+      updateToggleUI();
+      renderModePills();
+      renderCategoryPills();
+      updateFavoritesUI();
+      renderLeaderboardTicker();
+      updateBombUI();
+      await loadAllQuestionBanks();
+      generateTopics();
+    }
+
+    initApp();
+
+    document.addEventListener("keydown", function(e) {
+      if (e.code === "Space" && !["INPUT", "BUTTON", "TEXTAREA"].includes(e.target.tagName)) {
+        e.preventDefault();
+        generateTopics();
+      }
+    });
   </script>
 </body>
 </html>
