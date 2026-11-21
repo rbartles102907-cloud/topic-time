@@ -158,6 +158,13 @@
     .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
+
+    /* Double-height horizontal scrollbar specifically for Categories */
+    .category-scroll { scrollbar-width: auto; scrollbar-color: rgba(56, 189, 248, 0.75) rgba(15, 23, 42, 0.25); }
+    .category-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+    .category-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.25); border-radius: 9999px; }
+    .category-scroll::-webkit-scrollbar-thumb { background: linear-gradient(90deg, #38bdf8, #818cf8); border-radius: 9999px; }
+    .category-scroll::-webkit-scrollbar-thumb:hover { background: linear-gradient(90deg, #0ea5e9, #6366f1); }
     
     @keyframes spin-once { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .animate-spin-once { animation: spin-once 0.4s ease-in-out; }
@@ -484,6 +491,12 @@
       </div>
 
       <div class="flex items-center gap-2 shrink-0">
+        <!-- Tutorial Button (Left of Scores) -->
+        <button onclick="toggleTutorialModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="How to Play & Party Guide">
+          <i class="fa-solid fa-graduation-cap text-sm text-cyan-200"></i>
+          <span class="hidden sm:inline">Tutorial</span>
+        </button>
+
         <button onclick="toggleScoresModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
           <i class="fa-solid fa-trophy text-sm text-yellow-200"></i>
           <span class="hidden sm:inline">Scores</span>
@@ -540,7 +553,8 @@
         </div>
       </div>
 
-      <div id="category-pills" class="flex gap-2 overflow-x-auto custom-scroll py-1 px-0.5 text-xs font-medium"></div>
+      <!-- Categories Bar with Double-Height Scrollbar, Select All & Unselect All -->
+      <div id="category-pills" class="flex items-center gap-2 overflow-x-auto category-scroll py-1.5 px-0.5 text-xs font-medium"></div>
     </div>
 
     <!-- Main Stage: Card + Vertical Right-Side Alarm Clock Rail (in 1-Card Mode) -->
@@ -656,6 +670,73 @@
   <footer class="relative z-30 w-full py-1.5 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
     <p>&copy; Nellie B Chatomizer &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
   </footer>
+
+  <!-- Fun & Interactive Tutorial Modal -->
+  <div id="tutorial-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5">
+    <div onclick="toggleTutorialModal(false)" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md cursor-pointer"></div>
+    <div class="relative w-full max-w-2xl bg-white dark:bg-slate-900 border-2 border-indigo-500/50 rounded-3xl shadow-2xl z-10 overflow-hidden flex flex-col max-h-[90vh]">
+      
+      <!-- Modal Hero Banner -->
+      <div class="relative bg-gradient-to-r from-indigo-950 via-purple-950 to-slate-950 p-5 sm:p-6 border-b border-indigo-500/30 flex items-center justify-between gap-4 overflow-hidden">
+        <div class="flex items-center gap-3.5 relative z-10">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 p-0.5 shadow-lg shrink-0">
+            <div class="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
+              <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie Host" class="w-full h-full object-cover anim-grow-shrink">
+            </div>
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-[10px] font-black uppercase tracking-widest mb-1">
+              <i class="fa-solid fa-sparkles"></i> Party Host Guide
+            </div>
+            <h2 class="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight">
+              Welcome to <span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer!</span>
+            </h2>
+            <p class="text-xs text-slate-300 mt-0.5">Everything you need to host lively chats, debates &amp; party rounds.</p>
+          </div>
+        </div>
+
+        <button onclick="toggleTutorialModal(false)" class="relative z-10 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white transition-colors cursor-pointer shrink-0" title="Close Tutorial">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Interactive Step Tabs -->
+      <div class="grid grid-cols-4 gap-1.5 bg-slate-100 dark:bg-slate-950/90 p-2.5 border-b border-slate-200 dark:border-slate-800 shrink-0">
+        <button id="tut-tab-0" onclick="setTutorialStep(0)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-layer-group text-indigo-400"></i>
+          <span>1. Decks</span>
+        </button>
+        <button id="tut-tab-1" onclick="setTutorialStep(1)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-bell text-rose-400"></i>
+          <span>2. Timer</span>
+        </button>
+        <button id="tut-tab-2" onclick="setTutorialStep(2)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-trophy text-amber-400"></i>
+          <span>3. Podium</span>
+        </button>
+        <button id="tut-tab-3" onclick="setTutorialStep(3)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+          <span>4. Pro Tips</span>
+        </button>
+      </div>
+
+      <!-- Tutorial Step Content Area -->
+      <div id="tutorial-step-body" class="p-5 sm:p-6 overflow-y-auto custom-scroll flex-grow space-y-4"></div>
+
+      <!-- Footer Navigation -->
+      <div class="p-4 bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
+        <div id="tutorial-dots" class="flex items-center gap-1.5"></div>
+        <div class="flex items-center gap-2">
+          <button id="tut-prev-btn" onclick="stepTutorial(-1)" class="px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold transition-colors cursor-pointer">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Back
+          </button>
+          <button id="tut-next-btn" onclick="stepTutorial(1)" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-extrabold shadow cursor-pointer">
+            Next <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Manage Session Scores Modal -->
   <div id="scores-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -804,6 +885,201 @@
       { name: "Nelly", points: 240 },
       { name: "Rick", points: 300 }
     ]));
+
+    // --- TUTORIAL MODAL STATE & CONTENT ---
+    var currentTutorialStep = 0;
+    var TUTORIAL_STEPS = [
+      {
+        title: "Pick Your Vibe & Filter Decks",
+        badge: "Step 1 of 4 • Topic Cards",
+        visual: '<div class="relative bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border border-indigo-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-hidden">' +
+          '<div class="space-y-2 text-left">' +
+            '<div class="flex flex-wrap gap-1.5">' +
+              '<span class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider"><i class="fa-solid fa-check-double mr-1"></i>Select All</span>' +
+              '<span class="px-2.5 py-1 rounded-lg bg-rose-600 text-white text-[10px] font-black uppercase tracking-wider"><i class="fa-solid fa-xmark mr-1"></i>Unselect All</span>' +
+              '<span class="px-2.5 py-1 rounded-lg bg-teal-950/90 text-teal-200 border border-teal-500 text-[10px] font-bold">Music Fun Facts <i class="fa-solid fa-check ml-1"></i></span>' +
+            '</div>' +
+            '<p class="text-xs text-slate-300 leading-relaxed">Want just <strong>one</strong> category? Hit <span class="text-rose-400 font-bold">Unselect All</span> first, click your deck—or tap <span class="text-emerald-400 font-bold">Select All</span> to bring every deck back!</p>' +
+          '</div>' +
+          '<svg viewBox="0 0 130 95" class="w-32 h-24 shrink-0" fill="none">' +
+            '<rect x="10" y="14" width="76" height="54" rx="10" transform="rotate(-8 10 14)" fill="#1E1B4B" stroke="#38BDF8" stroke-width="2.5"/>' +
+            '<rect x="34" y="22" width="82" height="58" rx="10" transform="rotate(6 34 22)" fill="#0F172A" stroke="#FF2A85" stroke-width="3"/>' +
+            '<circle cx="75" cy="51" r="14" fill="#FACC15" fill-opacity="0.2" stroke="#FACC15" stroke-width="2"/>' +
+            '<path d="M70 51L74 55L82 46" stroke="#FACC15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '</svg>' +
+        '</div>',
+        bullets: [
+          { icon: "fa-border-all text-indigo-400", title: "1 Card vs. 4 Cards", text: "Use 4 Cards to let chatters vote on a prompt, or switch to 1 Card for spotlight hot-seat rounds." },
+          { icon: "fa-sliders text-pink-400", title: "Select All & Unselect All", text: "Quickly toggle every category at once or isolate a single category in two clicks." },
+          { icon: "fa-rotate text-cyan-400", title: "Sequential Deck Memory", text: "Every category steps cleanly through its questions without immediate repeats." }
+        ]
+      },
+      {
+        title: "1-Card Spotlight & Exploding Clock",
+        badge: "Step 2 of 4 • Hot-Seat Timer",
+        visual: '<div class="relative bg-gradient-to-br from-rose-950/80 via-slate-900 to-amber-950/70 border border-rose-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">' +
+          '<div class="space-y-1.5 text-left">' +
+            '<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] uppercase tracking-wider">BOOM! TIME\'S UP</div>' +
+            '<p class="text-xs text-slate-200 leading-relaxed">In <strong>1 Card</strong> mode, a stand-alone twin-bell alarm clock sits right next to the card. Set <strong>15s, 30s, or 60s</strong> and hit <strong>Start</strong>!</p>' +
+            '<p class="text-[11px] text-amber-300 font-semibold"><i class="fa-solid fa-bolt mr-1"></i>At 10 seconds left it shakes violently—at 00:00 it explodes!</p>' +
+          '</div>' +
+          '<svg viewBox="0 0 120 120" class="w-24 h-24 shrink-0 clock-shaking" fill="none">' +
+            '<path d="M22 40C15 49 15 63 22 72" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>' +
+            '<path d="M98 40C105 49 105 63 98 72" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>' +
+            '<path d="M30 40C26 30 33 21 43 24C47 26 49 29 50 32" stroke="#F472B6" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<path d="M90 40C94 30 87 21 77 24C73 26 71 29 70 32" stroke="#F472B6" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<circle cx="60" cy="64" r="32" fill="#0F172A" stroke="#F8FAFC" stroke-width="4"/>' +
+            '<line x1="60" y1="64" x2="60" y2="44" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<line x1="60" y1="64" x2="76" y2="55" stroke="#FF2A85" stroke-width="3" stroke-linecap="round"/>' +
+            '<circle cx="60" cy="64" r="3.5" fill="#FFFFFF"/>' +
+          '</svg>' +
+        '</div>',
+        bullets: [
+          { icon: "fa-stopwatch text-emerald-400", title: "Flexible Round Lengths", text: "Tap 15s for rapid-fire lightning rounds, 30s for standard answers, or 60s for story prompts." },
+          { icon: "fa-volume-high text-amber-400", title: "Audio + Visual Tension", text: "The clock rattles in the final 10 seconds and plays an explosion blast when time expires." },
+          { icon: "fa-rotate-left text-sky-400", title: "Auto-Reset on Flip", text: "Flipping to the next card automatically resets the clock back to your chosen duration." }
+        ]
+      },
+      {
+        title: "Crown Your Top 3 Podium Champions",
+        badge: "Step 3 of 4 • Live Leaderboard",
+        visual: '<div class="relative bg-gradient-to-br from-amber-950/70 via-slate-900 to-slate-950 border border-amber-500/40 rounded-2xl p-4 flex flex-col items-center gap-3">' +
+          '<div class="flex flex-wrap items-center justify-center gap-2.5">' +
+            '<div class="flex items-center gap-2 card-gold-glow px-3 py-1.5 rounded-xl">' +
+              '<span class="rank-3d-badge rank-3d-1 h-7 px-2 text-xs">1<sup>ST</sup></span>' +
+              '<span class="podium-name-1 text-sm">Rick</span>' +
+              '<span class="pts-gold text-xs">300 PTS</span>' +
+            '</div>' +
+            '<div class="flex items-center gap-2 card-silver-glow px-3 py-1.5 rounded-xl">' +
+              '<span class="rank-3d-badge rank-3d-2 h-7 px-2 text-xs">2<sup>ND</sup></span>' +
+              '<span class="podium-name-2 text-sm">Nelly</span>' +
+              '<span class="pts-silver text-xs">240 PTS</span>' +
+            '</div>' +
+            '<div class="flex items-center gap-2 card-bronze-glow px-3 py-1.5 rounded-xl">' +
+              '<span class="rank-3d-badge rank-3d-3 h-7 px-2 text-xs">3<sup>RD</sup></span>' +
+              '<span class="podium-name-3 text-sm">Zach</span>' +
+              '<span class="pts-bronze text-xs">150 PTS</span>' +
+            '</div>' +
+          '</div>' +
+          '<p class="text-xs text-slate-300 text-center">Award points for best answers, fastest replies, or chat votes—the top 3 automatically animate in Gold, Silver &amp; Bronze!</p>' +
+        '</div>',
+        bullets: [
+          { icon: "fa-trophy text-amber-400", title: "Click 'Scores' in the Header", text: "Add players, update their session points, and hit Save & Apply to rank them live." },
+          { icon: "fa-crown text-yellow-300", title: "Floating 1-Card Podium", text: "In 1 Card view, the Top 3 marquee moves right below the card so viewers always see who is winning." },
+          { icon: "fa-floppy-disk text-emerald-400", title: "Saved Automatically", text: "Scores and bookmarked questions stay saved in your browser between rounds." }
+        ]
+      },
+      {
+        title: "Host Shortcuts & Hidden Gems",
+        badge: "Step 4 of 4 • Power Moves",
+        visual: '<div class="relative bg-gradient-to-br from-cyan-950/70 via-slate-900 to-indigo-950 border border-cyan-500/40 rounded-2xl p-4 grid grid-cols-3 gap-2.5 text-center">' +
+          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
+            '<kbd class="px-2 py-1 rounded-lg bg-indigo-600 text-white font-mono text-xs font-black shadow">SPACE</kbd>' +
+            '<p class="text-[11px] font-bold text-slate-200 mt-2">Flip All Cards</p>' +
+          '</div>' +
+          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
+            '<div class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-pink-600 text-white"><i class="fa-solid fa-thumbtack text-xs rotate-45"></i></div>' +
+            '<p class="text-[11px] font-bold text-slate-200 mt-2">Pin Favorites</p>' +
+          '</div>' +
+          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
+            '<div class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-600 text-white"><i class="fa-regular fa-copy text-xs"></i></div>' +
+            '<p class="text-[11px] font-bold text-slate-200 mt-2">1-Click Copy</p>' +
+          '</div>' +
+        '</div>',
+        bullets: [
+          { icon: "fa-hand-pointer text-pink-400", title: "Tap Any Card Directly", text: "Click anywhere on a single card to flip just that prompt without changing the other 3." },
+          { icon: "fa-bookmark text-indigo-400", title: "Build a Show Queue", text: "Pin great questions ahead of time, then open the Bookmark drawer to load them on demand." },
+          { icon: "fa-circle-half-stroke text-amber-400", title: "Day & Night Modes", text: "Use the sun/moon toggle in the top right to match your room or stream lighting." }
+        ]
+      }
+    ];
+
+    function toggleTutorialModal(open) {
+      var modal = document.getElementById("tutorial-modal");
+      if (!modal) return;
+      if (open) {
+        currentTutorialStep = 0;
+        renderTutorialStep();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+        localStorage.setItem("nellieb_tutorial_seen", "1");
+      }
+    }
+
+    function setTutorialStep(stepIndex) {
+      currentTutorialStep = Math.max(0, Math.min(TUTORIAL_STEPS.length - 1, stepIndex));
+      renderTutorialStep();
+    }
+
+    function stepTutorial(delta) {
+      if (currentTutorialStep + delta >= TUTORIAL_STEPS.length) {
+        toggleTutorialModal(false);
+        return;
+      }
+      setTutorialStep(currentTutorialStep + delta);
+    }
+
+    function renderTutorialStep() {
+      var step = TUTORIAL_STEPS[currentTutorialStep];
+      var bodyEl = document.getElementById("tutorial-step-body");
+      var dotsEl = document.getElementById("tutorial-dots");
+      var prevBtn = document.getElementById("tut-prev-btn");
+      var nextBtn = document.getElementById("tut-next-btn");
+
+      for (var i = 0; i < TUTORIAL_STEPS.length; i++) {
+        var tab = document.getElementById("tut-tab-" + i);
+        if (!tab) continue;
+        if (i === currentTutorialStep) {
+          tab.className = "py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer bg-indigo-600 text-white shadow";
+        } else {
+          tab.className = "py-2 px-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer text-slate-600 dark:text-slate-400 hover:bg-slate-200/70 dark:hover:bg-slate-800/70";
+        }
+      }
+
+      if (bodyEl && step) {
+        var bulletsHtml = step.bullets.map(function(b) {
+          return '<div class="flex items-start gap-3 p-3 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60">' +
+            '<div class="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">' +
+              '<i class="fa-solid ' + b.icon + ' text-sm"></i>' +
+            '</div>' +
+            '<div>' +
+              '<h4 class="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">' + b.title + '</h4>' +
+              '<p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">' + b.text + '</p>' +
+            '</div>' +
+          '</div>';
+        }).join("");
+
+        bodyEl.innerHTML = '<div>' +
+            '<span class="text-[10px] font-black uppercase tracking-widest text-indigo-500 dark:text-indigo-400">' + step.badge + '</span>' +
+            '<h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white mt-0.5">' + step.title + '</h3>' +
+          '</div>' +
+          step.visual +
+          '<div class="space-y-2.5">' + bulletsHtml + '</div>';
+      }
+
+      if (dotsEl) {
+        dotsEl.innerHTML = TUTORIAL_STEPS.map(function(_, idx) {
+          return '<button onclick="setTutorialStep(' + idx + ')" class="h-2 rounded-full transition-all cursor-pointer ' +
+            (idx === currentTutorialStep ? "w-6 bg-indigo-500" : "w-2 bg-slate-300 dark:bg-slate-700") + '"></button>';
+        }).join("");
+      }
+
+      if (prevBtn) {
+        prevBtn.disabled = currentTutorialStep === 0;
+        prevBtn.className = currentTutorialStep === 0
+          ? "px-3.5 py-2 rounded-xl bg-slate-200/50 dark:bg-slate-800/40 text-slate-400 text-xs font-bold cursor-not-allowed"
+          : "px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold transition-colors cursor-pointer";
+      }
+
+      if (nextBtn) {
+        if (currentTutorialStep === TUTORIAL_STEPS.length - 1) {
+          nextBtn.innerHTML = 'Let\'s Play! <i class="fa-solid fa-fire ml-1"></i>';
+        } else {
+          nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right ml-1"></i>';
+        }
+      }
+    }
 
     // --- TWIN-BELL ALARM CLOCK & EXPLOSION TIMER STATE ---
     var bombDuration = 30;
@@ -1084,8 +1360,8 @@
       if (availCategories.length === 0) {
         return {
           id: "topic-loading",
-          category: "Music Fun Facts",
-          text: "Add JSON question files to the /data folder in GitHub to load your 300-question decks!"
+          category: "Select Category",
+          text: "Pick at least one category above to draw questions!"
         };
       }
 
@@ -1117,7 +1393,7 @@
       var container = document.getElementById("mode-pills");
       if (!container) return;
       container.innerHTML = PRESET_MODES.map(function(mode) {
-        return '<button onclick="selectPreset(\'' + mode.id + '\')" class="px-3 py-1.5 rounded-lg font-bold text-xs transition-all whitespace-nowrap ' +
+        return '<button onclick="selectPreset(\'' + mode.id + '\')" class="px-3 py-1.5 rounded-lg font-bold text-xs transition-all whitespace-nowrap cursor-pointer ' +
           (activePreset === mode.id ? "bg-indigo-600 text-white shadow-sm shadow-indigo-500/20" : "bg-slate-200/70 dark:bg-slate-800/70 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700") +
           '">' + mode.name + "</button>";
       }).join("");
@@ -1134,16 +1410,52 @@
       generateTopics();
     }
 
+    function selectAllCategories() {
+      activePreset = "all";
+      selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+      showToast("All categories selected!", "success");
+    }
+
+    function unselectAllCategories() {
+      activePreset = "custom";
+      selectedCategories.clear();
+      renderModePills();
+      renderCategoryPills();
+      showToast("All categories unselected — pick the category you want!", "info");
+    }
+
     function renderCategoryPills() {
       var container = document.getElementById("category-pills");
       if (!container) return;
-      container.innerHTML = Object.keys(CATEGORY_STYLES).map(function(cat) {
+
+      var allCategories = Object.keys(CATEGORY_STYLES);
+      var allSelected = selectedCategories.size === allCategories.length;
+      var hasAnySelected = selectedCategories.size > 0;
+
+      var selectAllBtnHtml = '<button onclick="selectAllCategories()" class="px-3 py-1 rounded-xl border font-extrabold text-xs whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ' +
+        (!allSelected
+          ? "bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-500 shadow-sm"
+          : "bg-slate-200/50 dark:bg-slate-800/50 text-slate-400 border-slate-300/60 dark:border-slate-700/60 opacity-60") +
+        '" title="Check all categories"><i class="fa-solid fa-check-double text-[10px]"></i><span>Select All</span></button>';
+
+      var unselectBtnHtml = '<button onclick="unselectAllCategories()" class="px-3 py-1 rounded-xl border font-extrabold text-xs whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 cursor-pointer ' +
+        (hasAnySelected
+          ? "bg-rose-600 hover:bg-rose-500 text-white border-rose-500 shadow-sm"
+          : "bg-slate-200/50 dark:bg-slate-800/50 text-slate-400 border-slate-300/60 dark:border-slate-700/60 opacity-60") +
+        '" title="Uncheck all categories so you can pick just one"><i class="fa-solid fa-xmark text-[10px]"></i><span>Unselect All</span></button>';
+
+      var pillsHtml = allCategories.map(function(cat) {
         var isSelected = selectedCategories.has(cat);
         var style = CATEGORY_STYLES[cat];
-        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-3 py-1 rounded-xl border font-bold text-xs whitespace-nowrap transition-all flex items-center gap-1.5 ' +
+        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-3 py-1 rounded-xl border font-bold text-xs whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ' +
           (isSelected ? (style.bg + " " + style.text + " " + style.border + " scale-100 shadow-sm") : "bg-slate-200/40 dark:bg-slate-800/30 text-slate-400 border-transparent opacity-50 hover:opacity-100") +
           '"><span>' + cat + "</span>" + (isSelected ? '<i class="fa-solid fa-check text-[10px]"></i>' : "") + "</button>";
       }).join("");
+
+      container.innerHTML = selectAllBtnHtml + unselectBtnHtml + pillsHtml;
     }
 
     function toggleCategory(cat) {
@@ -1163,7 +1475,10 @@
     }
 
     function generateTopics() {
-      if (selectedCategories.size === 0) return;
+      if (selectedCategories.size === 0) {
+        showToast("Select at least one category first!", "warning");
+        return;
+      }
       var genIcon = document.getElementById("generate-icon");
       if (genIcon) {
         genIcon.classList.add("animate-spin-once");
@@ -1194,6 +1509,10 @@
     }
 
     function refreshCardAtIndex(index) {
+      if (selectedCategories.size === 0) {
+        showToast("Select at least one category first!", "warning");
+        return;
+      }
       triggerCardFlip([index], function() {
         currentTopics[index] = generateSequentialTopic();
       });
@@ -1607,6 +1926,12 @@
       updateBombUI();
       await loadAllQuestionBanks();
       generateTopics();
+
+      if (!localStorage.getItem("nellieb_tutorial_seen")) {
+        setTimeout(function() {
+          toggleTutorialModal(true);
+        }, 450);
+      }
     }
 
     initApp();
