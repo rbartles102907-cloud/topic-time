@@ -1321,16 +1321,22 @@
     var bombRunning = false;
     var audioCtx = null;
 
+    function ensureAudioContext() {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return null;
+      if (!audioCtx) audioCtx = new Ctx();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
     function playCardFlipSound() {
       try {
-        var Ctx = window.AudioContext || window.webkitAudioContext;
-        if (!Ctx) return;
-        if (!audioCtx) audioCtx = new Ctx();
-        if (audioCtx.state === "suspended") audioCtx.resume();
+        var ctx = ensureAudioContext();
+        if (!ctx) return;
 
-        var now = audioCtx.currentTime;
-        var osc = audioCtx.createOscillator();
-        var gain = audioCtx.createGain();
+        var now = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
 
         osc.type = "triangle";
         osc.frequency.setValueAtTime(320, now);
@@ -1342,33 +1348,85 @@
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.115);
 
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(ctx.destination);
 
         osc.start(now);
         osc.stop(now + 0.12);
       } catch (e) {}
     }
 
+    function playTypewriterKeySound(char) {
+      try {
+        var ctx = ensureAudioContext();
+        if (!ctx) return;
+
+        var now = ctx.currentTime;
+        var isSpace = char === " ";
+        var isPunct = /[.!?,;:"']/.test(char || "");
+
+        // Short mechanical key clack
+        var osc = ctx.createOscillator();
+        var oscGain = ctx.createGain();
+        osc.type = isPunct ? "square" : "triangle";
+
+        var baseFreq = isSpace ? 210 : (isPunct ? 680 : (460 + Math.random() * 190));
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(115, now + 0.022);
+
+        oscGain.gain.setValueAtTime(0.001, now);
+        oscGain.gain.linearRampToValueAtTime(isSpace ? 0.04 : 0.085, now + 0.002);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.024);
+
+        osc.connect(oscGain);
+        oscGain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.026);
+
+        // Crisp high-frequency keycap transient
+        var bufLen = Math.max(1, Math.floor(ctx.sampleRate * 0.014));
+        var noiseBuf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+        var data = noiseBuf.getChannelData(0);
+        for (var i = 0; i < bufLen; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufLen * 0.35));
+        }
+
+        var noiseSrc = ctx.createBufferSource();
+        noiseSrc.buffer = noiseBuf;
+
+        var filter = ctx.createBiquadFilter();
+        filter.type = "highpass";
+        filter.frequency.setValueAtTime(isPunct ? 2800 : 1900, now);
+
+        var noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(isSpace ? 0.03 : 0.09, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.014);
+
+        noiseSrc.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+        noiseSrc.start(now);
+        noiseSrc.stop(now + 0.015);
+      } catch (e) {}
+    }
+
     function playExplosionTone() {
       try {
-        var Ctx = window.AudioContext || window.webkitAudioContext;
-        if (!Ctx) return;
-        if (!audioCtx) audioCtx = new Ctx();
-        if (audioCtx.state === "suspended") audioCtx.resume();
+        var ctx = ensureAudioContext();
+        if (!ctx) return;
 
-        var osc = audioCtx.createOscillator();
-        var gain = audioCtx.createGain();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
         osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(185, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(38, audioCtx.currentTime + 0.45);
+        osc.frequency.setValueAtTime(185, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(38, ctx.currentTime + 0.45);
 
-        gain.gain.setValueAtTime(0.24, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.48);
+        gain.gain.setValueAtTime(0.24, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.48);
 
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(ctx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.5);
+        osc.stop(ctx.currentTime + 0.5);
       } catch (e) {}
     }
 
@@ -1612,7 +1670,10 @@
       if (textToType.length === 0) return;
 
       cardTypingTimers[index] = setInterval(function() {
+        var nextChar = textToType.charAt(cardTypingProgress[index]);
         cardTypingProgress[index] += 1;
+        playTypewriterKeySound(nextChar);
+
         if (cardTypingProgress[index] >= textToType.length) {
           cardTypingProgress[index] = textToType.length;
           clearCardTypingTimer(index);
