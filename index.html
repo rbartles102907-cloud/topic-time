@@ -86,6 +86,28 @@
       box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
     }
 
+    /* Face-Down Deck Back Styling */
+    .deck-back-surface {
+      background:
+        radial-gradient(circle at 50% 45%, rgba(236, 72, 153, 0.22), transparent 62%),
+        repeating-linear-gradient(45deg, rgba(99, 102, 241, 0.08) 0px, rgba(99, 102, 241, 0.08) 8px, transparent 8px, transparent 16px),
+        linear-gradient(135deg, #1e1b4b 0%, #0f172a 55%, #311042 100%);
+    }
+
+    @keyframes typing-cursor-blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .typing-caret {
+      display: inline-block;
+      width: 3px;
+      height: 1.05em;
+      margin-left: 2px;
+      vertical-align: -0.1em;
+      background-color: #000000;
+      animation: typing-cursor-blink 0.75s infinite;
+    }
+
     @keyframes flip-right-to-left {
       0% { transform: rotateY(0deg) scale(1); }
       50% { transform: rotateY(-90deg) scale(0.92); }
@@ -944,6 +966,11 @@
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
 
+    // Tracks per-card face-down state & live typing intervals in 4-Card mode
+    var cardRevealedStates = [false, false, false, false];
+    var cardTypingTimers = [null, null, null, null];
+    var cardTypingProgress = [0, 0, 0, 0];
+
     var sessionScores = JSON.parse(localStorage.getItem("nellieb_scores") || JSON.stringify([
       { name: "Rick", points: 1000 },
       { name: "Nellie", points: 999 },
@@ -1010,7 +1037,7 @@
           '</svg>' +
         '</div>',
         bullets: [
-          { icon: "fa-border-all text-indigo-400", title: "1 Card vs. 4 Cards", text: "Use 4 Cards to let chatters vote on a prompt, or switch to 1 Card for spotlight hot-seat rounds." },
+          { icon: "fa-border-all text-indigo-400", title: "Face-Down Deck in 4 Cards", text: "4-Card mode starts face-down showing Nellie and the topic badge—tap any card to flip it and watch the wording type out live!" },
           { icon: "fa-sliders text-pink-400", title: "Select All & Unselect All", text: "Open Categories to toggle every deck at once or isolate a single category in two clicks." },
           { icon: "fa-rotate text-cyan-400", title: "Sequential Deck Memory", text: "Every category steps cleanly through its questions without immediate repeats." }
         ]
@@ -1076,7 +1103,7 @@
         visual: '<div class="relative bg-gradient-to-br from-cyan-950/70 via-slate-900 to-indigo-950 border border-cyan-500/40 rounded-2xl p-4 grid grid-cols-3 gap-2.5 text-center">' +
           '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
             '<kbd class="px-2 py-1 rounded-lg bg-indigo-600 text-white font-mono text-xs font-black shadow">SPACE</kbd>' +
-            '<p class="text-[11px] font-bold text-slate-200 mt-2">Flip All Cards</p>' +
+            '<p class="text-[11px] font-bold text-slate-200 mt-2">Deal New Cards</p>' +
           '</div>' +
           '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
             '<div class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-pink-600 text-white"><i class="fa-solid fa-thumbtack text-xs rotate-45"></i></div>' +
@@ -1088,7 +1115,7 @@
           '</div>' +
         '</div>',
         bullets: [
-          { icon: "fa-hand-pointer text-pink-400", title: "Tap Any Card Directly", text: "Click anywhere on a single card to flip just that prompt without changing the other 3." },
+          { icon: "fa-hand-pointer text-pink-400", title: "Tap Face-Down Cards to Reveal", text: "In 4-Card mode, each card starts face-down with Nellie and its topic—tap to flip and type it out live." },
           { icon: "fa-bookmark text-indigo-400", title: "Build a Show Queue", text: "Pin great questions ahead of time, then open the Bookmark drawer to load them on demand." },
           { icon: "fa-circle-half-stroke text-amber-400", title: "Day & Night Modes", text: "Use the sun/moon toggle in the top right to match your room or stream lighting." }
         ]
@@ -1419,7 +1446,76 @@
       '</div>';
     }
 
+    // --- 4-CARD FACE-DOWN DECK & LIVE TYPING ENGINE ---
+    function clearCardTypingTimer(index) {
+      if (cardTypingTimers[index]) {
+        clearInterval(cardTypingTimers[index]);
+        cardTypingTimers[index] = null;
+      }
+    }
+
+    function clearAllCardTypingTimers() {
+      for (var i = 0; i < cardTypingTimers.length; i++) {
+        clearCardTypingTimer(i);
+      }
+    }
+
+    function startLiveTyping(index, fullText) {
+      clearCardTypingTimer(index);
+      var textToType = String(fullText || "");
+      cardTypingProgress[index] = 0;
+
+      var renderTypingFrame = function() {
+        var textEl = document.getElementById("typed-question-" + index);
+        if (!textEl) return;
+        var currentLen = cardTypingProgress[index];
+        var shown = textToType.slice(0, currentLen);
+        var isDone = currentLen >= textToType.length;
+        textEl.innerHTML = '&quot;' + escapeHtml(shown) + (isDone ? '&quot;' : '<span class="typing-caret"></span>');
+      };
+
+      renderTypingFrame();
+
+      if (textToType.length === 0) return;
+
+      cardTypingTimers[index] = setInterval(function() {
+        cardTypingProgress[index] += 2;
+        if (cardTypingProgress[index] >= textToType.length) {
+          cardTypingProgress[index] = textToType.length;
+          clearCardTypingTimer(index);
+        }
+        renderTypingFrame();
+      }, 22);
+    }
+
+    function getDeckBackMarkup(topic, index, catStyle) {
+      return '<div class="deck-back-surface rounded-[14px] h-full w-full p-4 sm:p-5 flex flex-col items-center justify-between text-center relative overflow-hidden border border-white/10">' +
+        '<div class="flex items-center justify-between w-full text-[10px] font-black uppercase tracking-widest text-cyan-300/90">' +
+          '<span><i class="fa-solid fa-clone mr-1 text-pink-400"></i>Deck Back</span>' +
+          '<span class="text-amber-300">Tap to Flip &amp; Type</span>' +
+        '</div>' +
+        '<div class="my-1 flex flex-col items-center justify-center gap-2.5">' +
+          '<div class="relative">' +
+            '<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-amber-300 to-cyan-400 shadow-lg anim-grow-shrink">' +
+              '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-contain rounded-full bg-slate-950/90">' +
+            '</div>' +
+            '<span class=" -bottom-1 -right-2 absolute px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow">FLIP</span>' +
+          '</div>' +
+          '<div class="flex flex-col items-center gap-1">' +
+            '<span class="text-[10px] font-bold uppercase tracking-widest text-slate-300/80">Topic</span>' +
+            '<span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + ' shadow-md">' +
+              escapeHtml(topic.category) +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="text-[11px] font-bold text-slate-300/90 flex items-center gap-1.5">' +
+          '<i class="fa-solid fa-keyboard text-cyan-400"></i> Click card to reveal question' +
+        '</div>' +
+      '</div>';
+    }
+
     function setLayoutView(count) {
+      clearAllCardTypingTimers();
       cardCountView = count;
       updateToggleUI();
       generateTopics();
@@ -1450,7 +1546,7 @@
         btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
         btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
         if (badge) badge.innerText = "4 Cards";
-        if (btnText) btnText.innerText = "Click to Change Cards";
+        if (btnText) btnText.innerText = "Deal 4 New Cards";
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-1.5 pb-2 flex-grow w-full flex flex-col justify-between overflow-hidden";
         if (globalTicker) globalTicker.classList.remove("hidden");
         if (bombTimerBox) bombTimerBox.classList.add("hidden");
@@ -1607,6 +1703,8 @@
         toggleCategoriesModal(true);
         return;
       }
+      clearAllCardTypingTimers();
+
       var genIcon = document.getElementById("generate-icon");
       if (genIcon) {
         genIcon.classList.add("animate-spin-once");
@@ -1622,6 +1720,12 @@
         var nextTopics = [];
         for (var i = 0; i < cardCountView; i++) {
           nextTopics[i] = generateSequentialTopic();
+          if (cardCountView === 4) {
+            cardRevealedStates[i] = false;
+            cardTypingProgress[i] = 0;
+          } else {
+            cardRevealedStates[i] = true;
+          }
         }
         currentTopics = nextTopics;
       });
@@ -1633,6 +1737,20 @@
 
     function handleCardTap(e, index) {
       if (e.target.closest("button") || e.target.closest("a")) return;
+
+      if (cardCountView === 4 && !cardRevealedStates[index]) {
+        // Flip face-down deck card and type wording live
+        cardRevealedStates[index] = true;
+        triggerCardFlip([index], function() {
+          renderTopicCards();
+          var topic = currentTopics[index];
+          if (topic) {
+            startLiveTyping(index, topic.text);
+          }
+        }, true);
+        return;
+      }
+
       refreshCardAtIndex(index);
     }
 
@@ -1642,30 +1760,50 @@
         toggleCategoriesModal(true);
         return;
       }
+      clearCardTypingTimer(index);
+
+      var shouldTypeLive = (cardCountView === 4);
+      cardRevealedStates[index] = true;
+
       triggerCardFlip([index], function() {
         currentTopics[index] = generateSequentialTopic();
-      });
+        renderTopicCards();
+        if (shouldTypeLive && currentTopics[index]) {
+          startLiveTyping(index, currentTopics[index].text);
+        }
+      }, true);
+
       if (cardCountView === 1) {
         resetBombTimer(false);
       }
     }
 
-    function triggerCardFlip(indices, dataUpdateFn) {
+    function triggerCardFlip(indices, dataUpdateFn, skipAutoRender) {
       var cardEls = indices.map(function(idx) {
         return document.getElementById("card-inner-" + idx);
       }).filter(Boolean);
 
       if (cardEls.length === 0) {
         dataUpdateFn();
-        renderTopicCards();
+        if (!skipAutoRender) renderTopicCards();
         return;
       }
 
-      cardEls.forEach(function(el) { el.classList.add("card-flipping"); });
+      cardEls.forEach(function(el) {
+        el.classList.remove("card-flipping");
+        void el.offsetWidth;
+        el.classList.add("card-flipping");
+      });
 
       setTimeout(function() {
         dataUpdateFn();
-        renderTopicCards();
+        if (!skipAutoRender) renderTopicCards();
+        var updatedEls = indices.map(function(idx) {
+          return document.getElementById("card-inner-" + idx);
+        }).filter(Boolean);
+        updatedEls.forEach(function(el) {
+          el.classList.remove("card-flipping");
+        });
       }, 250);
     }
 
@@ -1686,15 +1824,28 @@
 
         var isFav = favoritedTopicIds.has(topic.id);
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
+        var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
+
+        if (isFaceDown) {
+          return '<div class="card-container h-full w-full min-h-[175px]">' +
+            '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-1.5 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+              getDeckBackMarkup(topic, index, catStyle) +
+            '</div>' +
+          '</div>';
+        }
 
         var pillMarkup = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
           "<span>" + topic.category + "</span>" +
         '</span>';
 
+        var questionBodyHtml = (cardCountView === 4)
+          ? '<p id="typed-question-' + index + '" class="tiktok-card-text text-base sm:text-lg leading-snug font-extrabold tracking-tight">&quot;' + escapeHtml(topic.text) + '&quot;</p>'
+          : '<p class="tiktok-card-text text-lg sm:text-2xl text-center leading-relaxed font-extrabold tracking-tight">&quot;' + escapeHtml(topic.text) + '&quot;</p>';
+
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
-              '<div class="text-xs font-extrabold tracking-tight opacity-70">Click or Tap to Change</div>' +
+              '<div class="text-xs font-extrabold tracking-tight opacity-70">' + (cardCountView === 4 ? "Click or Tap for Next Topic" : "Click or Tap to Change") + '</div>' +
               '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
                 '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
                 '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Bookmark Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
@@ -1702,7 +1853,7 @@
               '</div>' +
             '</div>' +
             '<div class="my-2 flex-grow flex items-center justify-center">' +
-              '<p class="tiktok-card-text ' + (cardCountView === 1 ? "text-lg sm:text-2xl text-center leading-relaxed" : "text-base sm:text-lg leading-snug") + ' font-extrabold tracking-tight">&quot;' + topic.text + '&quot;</p>' +
+              questionBodyHtml +
             '</div>' +
             '<div class="mt-2 flex items-end justify-between gap-2 relative pt-2">' +
               '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
