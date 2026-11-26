@@ -506,7 +506,7 @@
     .blast-p5 { animation: blast-piece-5 0.75s ease-out forwards; }
   </style>
 </head>
-<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden relative font-['Plus_Jakarta_Sans']">
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden overflow-y-auto relative font-['Plus_Jakarta_Sans']">
 
   <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
@@ -589,9 +589,9 @@
     </div>
   </div>
 
-  <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-1.5 pb-1 flex-grow w-full flex flex-col justify-between overflow-hidden">
+  <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between">
     <!-- Compact Single-Row Control Bar: View Toggle + Presets Modal Button + Categories Modal Button -->
-    <div class="shrink-0 mb-1">
+    <div class="shrink-0 mb-2">
       <div class="flex flex-wrap items-center justify-center sm:justify-between gap-2 py-0.5 text-xs">
         <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
           <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
@@ -622,7 +622,7 @@
     </div>
 
     <!-- One-Time Tutorial Finder Note (Shown when user skips initial tutorial) -->
-    <div id="tutorial-finder-note" class="hidden shrink-0 mb-1.5 px-3.5 py-2 rounded-xl bg-indigo-500/15 dark:bg-indigo-500/20 border border-indigo-400/40 text-slate-800 dark:text-slate-100 text-xs flex items-center justify-between gap-3 shadow-sm">
+    <div id="tutorial-finder-note" class="hidden shrink-0 mb-2 px-3.5 py-2 rounded-xl bg-indigo-500/15 dark:bg-indigo-500/20 border border-indigo-400/40 text-slate-800 dark:text-slate-100 text-xs flex items-center justify-between gap-3 shadow-sm">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-circle-info text-indigo-500 dark:text-cyan-300 shrink-0"></i>
         <span id="tutorial-note-text">
@@ -640,9 +640,9 @@
     </div>
 
     <!-- Main Stage: Card + Vertical Right-Side Alarm Clock Rail (in 1-Card Mode) -->
-    <div class="w-full flex flex-col items-center justify-center my-auto flex-grow">
-      <div id="single-card-stage" class="w-full flex flex-col md:flex-row items-center md:items-stretch justify-center gap-3.5 py-0.5">
-        <div id="topics-grid" class="w-full py-0.5"></div>
+    <div class="w-full flex flex-col items-center justify-center my-auto flex-grow min-h-[300px]">
+      <div id="single-card-stage" class="w-full flex flex-col md:flex-row items-center md:items-stretch justify-center gap-3.5 py-1">
+        <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1"></div>
 
         <!-- Vertical Timer Panel: Timer on Top, Big Alarm Clock in Middle, Options Below -->
         <aside id="single-card-bomb-timer" class="hidden w-full md:w-56 shrink-0 bg-white/95 dark:bg-slate-900/95 border border-slate-300 dark:border-rose-500/40 rounded-2xl p-3.5 shadow-xl backdrop-blur-md flex flex-col items-center justify-between gap-2.5 transition-colors">
@@ -732,7 +732,7 @@
       </div>
     </div>
 
-    <div class="shrink-0 pt-1 pb-1 flex flex-col items-center justify-center gap-1">
+    <div class="shrink-0 pt-2 pb-1 flex flex-col items-center justify-center gap-1">
       <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
         <i id="generate-icon" class="fa-solid fa-dice text-xl group-hover:rotate-180 transition-transform duration-300"></i>
         <span id="generate-btn-text">Click to Change Cards</span>
@@ -999,12 +999,66 @@
       "Music Fun Facts": "data/questions-music-fun-facts.json"
     };
 
+    var FALLBACK_QUESTIONS = {
+      "Philosophy": [
+        "1. What is one belief you held strongly five years ago that you no longer hold today?",
+        "2. If you could know the absolute truth to one mystery of the universe, which one would you pick?"
+      ],
+      "Deep Questions": [
+        "1. What everyday habit do you think most people do backward?",
+        "2. What is something most people don't know about you until they've known you for years?"
+      ],
+      "Humor/Fun": [
+        "1. What is a weird food combination you secretly love?",
+        "2. If your life had a theme song that played every time you walked into a room, what would it be?"
+      ],
+      "Current Events": [
+        "1. What technology trend are you most excited or cautious about right now?",
+        "2. What news or cultural shift has changed how you spend your free time?"
+      ],
+      "Would You Rather": [
+        "1. Would you rather always have to tell the complete truth or never speak unless asked a direct question?",
+        "2. Would you rather travel back 100 years or jump 100 years into the future?"
+      ],
+      "Pop Culture": [
+        "1. What movie or show have you rewatched more times than you can count?",
+        "2. Which fictional universe would you actually want to live in for a week?"
+      ],
+      "Personal Stories": [
+        "1. If time could pause for one hour every day just for you, how would you spend it?",
+        "2. What is a spontaneous decision that turned out surprisingly well for you?"
+      ],
+      "Science & Tech": [
+        "1. If you could invent one gadget to solve an everyday annoyance, what would it do?",
+        "2. What scientific discovery still blows your mind when you stop to think about it?"
+      ],
+      "Did You Know?": [
+        "1. Did you know honey never spoils and has been found in ancient tombs?",
+        "2. Did you know octopuses have three hearts and blue blood?"
+      ],
+      "Music Fun Facts": [
+        "1. What song instantly puts you in a great mood regardless of how your day went?",
+        "2. What album can you listen to from start to finish without skipping a track?"
+      ]
+    };
+
     var QUESTION_BANKS = {};
     var categoryPointers = {};
     Object.keys(CATEGORY_FILES).forEach(function(cat) {
-      QUESTION_BANKS[cat] = [];
+      QUESTION_BANKS[cat] = (FALLBACK_QUESTIONS[cat] || []).slice();
       categoryPointers[cat] = 0;
     });
+
+    // Core app state declarations (ensures zero ReferenceErrors on initial load)
+    var cardCountView = 4;
+    var activePreset = "all";
+    var selectedCategories = new Set(Object.keys(CATEGORY_FILES));
+    var currentTopics = [];
+    var cardRevealedStates = [false, false, false, false];
+    var cardTypingTimers = [null, null, null, null];
+    var cardTypingProgress = [0, 0, 0, 0];
+    var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
+    var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
 
     var CATEGORY_STYLES = {
       "Philosophy": { bg: "bg-purple-100 dark:bg-purple-950/80", text: "text-purple-700 dark:text-purple-200", border: "border-purple-300 dark:border-purple-600" },
@@ -1782,7 +1836,6 @@
       );
       setText("tutorial-note-open-btn", t("openTutorial"));
       setText("bomb-boom-banner", t("boomBanner"));
-      setText("footer-shortcut-hint", "");
       var hintEl = document.getElementById("footer-shortcut-hint");
       if (hintEl) {
         hintEl.innerHTML = t("shortcutHintPrefix") +
@@ -1793,20 +1846,17 @@
       }
       setText("privacy-link-btn", t("privacyLink"));
 
-      // Welcome modal
       setHtml("welcome-badge", '<i class="fa-solid fa-sparkles"></i> ' + t("welcomeBadge"));
       setText("welcome-title", t("welcomeTitle"));
       setText("welcome-desc", t("welcomeDesc"));
       setText("welcome-decline-btn", t("welcomeNo"));
       setText("welcome-accept-btn", t("welcomeYes"));
 
-      // Presets & Categories modals
       setHtml("presets-modal-title", '<i class="fa-solid fa-sliders text-indigo-500"></i> ' + t("presetsTitle"));
       setText("presets-modal-subtitle", t("presetsSubtitle"));
       setHtml("categories-modal-title", '<i class="fa-solid fa-layer-group text-pink-500"></i> ' + t("categoriesTitle"));
       setText("categories-done-btn", t("doneBtn"));
 
-      // Tutorial modal chrome
       setHtml("tut-hero-badge", '<i class="fa-solid fa-sparkles"></i> ' + t("tutHeroBadge"));
       setHtml(
         "tut-hero-title",
@@ -1821,7 +1871,6 @@
       }
       setText("tut-prev-label", t("tutBack"));
 
-      // Scores modal
       setHtml("scores-modal-title", '<i class="fa-solid fa-trophy text-amber-500"></i> ' + t("scoresTitle"));
       setText("scores-modal-desc", t("scoresDesc"));
       setText("scores-th-user", t("thUser"));
@@ -1831,12 +1880,10 @@
       setText("scores-clear-btn", t("clearAll"));
       setText("scores-save-btn", t("saveApply"));
 
-      // Privacy modal
       setHtml("privacy-modal-title", '<i class="fa-solid fa-shield-halved text-indigo-500"></i> ' + t("privacyTitle"));
       setHtml("privacy-modal-body", t("privacyBody"));
       setText("privacy-close-btn", t("closeBtn"));
 
-      // Favorites drawer
       setText("favorites-drawer-title", t("savedTitle"));
       setText("favorites-drawer-sub", t("savedSub"));
       setHtml("favorites-clear-btn", '<i class="fa-solid fa-trash-can"></i> ' + t("clearSaved"));
@@ -2449,7 +2496,9 @@
             QUESTION_BANKS[cat] = data;
           }
         } catch (err) {
-          console.warn("Could not load JSON for " + cat + " (" + url + "):", err);
+          if (!Array.isArray(QUESTION_BANKS[cat]) || QUESTION_BANKS[cat].length === 0) {
+            QUESTION_BANKS[cat] = (FALLBACK_QUESTIONS[cat] || []).slice();
+          }
         }
       }));
     }
@@ -2600,17 +2649,17 @@
         if (btn4) btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
         if (badge) badge.innerText = t("oneCard");
         if (btnText) btnText.innerText = t("changeOneCard");
-        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-1.5 pb-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between";
         if (globalTicker) globalTicker.classList.add("hidden");
         if (bombTimerBox) bombTimerBox.classList.remove("hidden");
         if (floatingTicker) floatingTicker.classList.remove("hidden");
-        if (topicsGrid) topicsGrid.className = "w-full max-w-xl py-0.5 flex-grow flex items-center";
+        if (topicsGrid) topicsGrid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
       } else {
         if (btn4) btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
         if (btn1) btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
         if (badge) badge.innerText = t("fourCards");
         if (btnText) btnText.innerText = t("dealFourCards");
-        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-1.5 pb-2 flex-grow w-full flex flex-col justify-between overflow-hidden";
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between";
         if (globalTicker) globalTicker.classList.remove("hidden");
         if (bombTimerBox) bombTimerBox.classList.add("hidden");
         if (floatingTicker) floatingTicker.classList.add("hidden");
@@ -2621,11 +2670,7 @@
     function generateSequentialTopic(categoryOverride) {
       var availCategories = getPopulatedCategories();
       if (availCategories.length === 0) {
-        return {
-          id: "topic-loading",
-          category: "Philosophy",
-          text: "Open Categories above to pick at least one deck!"
-        };
+        availCategories = Object.keys(FALLBACK_QUESTIONS);
       }
 
       var category = (categoryOverride && QUESTION_BANKS[categoryOverride] && QUESTION_BANKS[categoryOverride].length > 0)
@@ -2903,7 +2948,7 @@
       if (!grid) return;
       
       if (cardCountView === 1) {
-        grid.className = "w-full max-w-xl py-0.5 flex-grow flex items-center";
+        grid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
       } else {
         grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
       }
@@ -2920,7 +2965,7 @@
         var displayText = getTranslatedTopicText(topic);
 
         if (isFaceDown) {
-          return '<div class="card-container h-full w-full min-h-[175px]">' +
+          return '<div class="card-container h-full w-full min-h-[185px]">' +
             '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-1.5 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
               getDeckBackMarkup(topic, index, catStyle) +
             '</div>' +
@@ -2935,7 +2980,7 @@
           ? '<p id="typed-question-' + index + '" class="tiktok-card-text text-base sm:text-lg leading-snug font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>'
           : '<p id="typed-question-' + index + '" class="tiktok-card-text text-lg sm:text-2xl text-center leading-relaxed font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>';
 
-        return '<div class="card-container h-full w-full min-h-[175px]">' +
+        return '<div class="card-container h-full w-full min-h-[185px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
               '<div class="text-xs font-extrabold tracking-tight opacity-70">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</div>' +
