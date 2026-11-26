@@ -2734,4 +2734,592 @@
 
       if (summaryEl) {
         summaryEl.innerText = t("selectedSummary")
-          .
+          .replace("{count}", String(selectedCategories.size))
+          .replace("{total}", String(allCategories.length));
+      }
+
+      if (!container) return;
+
+      container.innerHTML = allCategories.map(function(cat) {
+        var isSelected = selectedCategories.has(cat);
+        var style = CATEGORY_STYLES[cat];
+        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-3.5 py-2.5 rounded-xl border font-bold text-xs transition-all flex items-center justify-between gap-2 cursor-pointer ' +
+          (isSelected
+            ? (style.bg + " " + style.text + " " + style.border + " shadow-sm")
+            : "bg-slate-100/70 dark:bg-slate-800/40 text-slate-400 border-slate-200/60 dark:border-slate-800 opacity-65 hover:opacity-100") +
+          '"><span>' + escapeHtml(translateCategoryLabel(cat)) + "</span>" + (isSelected ? '<i class="fa-solid fa-circle-check text-sm"></i>' : '<i class="fa-regular fa-circle text-sm opacity-40"></i>') + "</button>";
+      }).join("");
+    }
+
+    function toggleCategory(cat) {
+      activePreset = "custom";
+      if (selectedCategories.has(cat)) {
+        if (selectedCategories.size === 1) {
+          showToast(t("selectedSummary").replace("{count}", "1").replace("{total}", String(Object.keys(CATEGORY_STYLES).length)), "warning");
+          return;
+        }
+        selectedCategories.delete(cat);
+      } else {
+        selectedCategories.add(cat);
+      }
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+    }
+
+    function generateTopics() {
+      if (selectedCategories.size === 0) {
+        showToast(t("unselectAll"), "warning");
+        toggleCategoriesModal(true);
+        return;
+      }
+      clearAllCardTypingTimers();
+
+      var genIcon = document.getElementById("generate-icon");
+      if (genIcon) {
+        genIcon.classList.add("animate-spin-once");
+        setTimeout(function() { genIcon.classList.remove("animate-spin-once"); }, 400);
+      }
+
+      var indicesToFlip = [];
+      for (var i = 0; i < cardCountView; i++) {
+        indicesToFlip.push(i);
+      }
+
+      triggerCardFlip(indicesToFlip, function() {
+        var nextTopics = [];
+        for (var i = 0; i < cardCountView; i++) {
+          nextTopics[i] = generateSequentialTopic();
+          if (cardCountView === 4) {
+            cardRevealedStates[i] = false;
+            cardTypingProgress[i] = 0;
+          } else {
+            cardRevealedStates[i] = true;
+            cardTypingProgress[i] = 0;
+          }
+        }
+        currentTopics = nextTopics;
+        renderTopicCards();
+        if (cardCountView === 1 && currentTopics[0]) {
+          startLiveTyping(0, getTranslatedTopicText(currentTopics[0]), false);
+        }
+      }, true);
+
+      if (cardCountView === 1) {
+        resetBombTimer(false);
+      }
+    }
+
+    function handleCardTap(e, index) {
+      if (e.target.closest("button") || e.target.closest("a")) return;
+
+      if (cardCountView === 4) {
+        if (!cardRevealedStates[index]) {
+          cardRevealedStates[index] = true;
+          triggerCardFlip([index], function() {
+            renderTopicCards();
+            var topic = currentTopics[index];
+            if (topic) {
+              startLiveTyping(index, getTranslatedTopicText(topic), true);
+            }
+          }, true);
+        } else {
+          clearCardTypingTimer(index);
+          var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
+          cardRevealedStates[index] = false;
+          cardTypingProgress[index] = 0;
+          triggerCardFlip([index], function() {
+            currentTopics[index] = generateSequentialTopic(prevCategory);
+            renderTopicCards();
+          }, true);
+        }
+        return;
+      }
+
+      refreshCardAtIndex(index);
+    }
+
+    function refreshCardAtIndex(index) {
+      if (selectedCategories.size === 0) {
+        showToast(t("unselectAll"), "warning");
+        toggleCategoriesModal(true);
+        return;
+      }
+      clearCardTypingTimer(index);
+
+      var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
+      var shouldTypeLive = true;
+      var playTypingAudio = (cardCountView === 4);
+      cardRevealedStates[index] = true;
+      cardTypingProgress[index] = 0;
+
+      triggerCardFlip([index], function() {
+        currentTopics[index] = generateSequentialTopic(prevCategory);
+        renderTopicCards();
+        if (shouldTypeLive && currentTopics[index]) {
+          startLiveTyping(index, getTranslatedTopicText(currentTopics[index]), playTypingAudio);
+        }
+      }, true);
+
+      if (cardCountView === 1) {
+        resetBombTimer(false);
+      }
+    }
+
+    function triggerCardFlip(indices, dataUpdateFn, skipAutoRender) {
+      playCardFlipSound();
+
+      var cardEls = indices.map(function(idx) {
+        return document.getElementById("card-inner-" + idx);
+      }).filter(Boolean);
+
+      if (cardEls.length === 0) {
+        dataUpdateFn();
+        if (!skipAutoRender) renderTopicCards();
+        return;
+      }
+
+      cardEls.forEach(function(el) {
+        el.classList.remove("card-flipping");
+        void el.offsetWidth;
+        el.classList.add("card-flipping");
+      });
+
+      setTimeout(function() {
+        dataUpdateFn();
+        if (!skipAutoRender) renderTopicCards();
+        var updatedEls = indices.map(function(idx) {
+          return document.getElementById("card-inner-" + idx);
+        }).filter(Boolean);
+        updatedEls.forEach(function(el) {
+          el.classList.remove("card-flipping");
+        });
+      }, 250);
+    }
+
+    function renderTopicCards() {
+      var grid = document.getElementById("topics-grid");
+      if (!grid) return;
+      
+      if (cardCountView === 1) {
+        grid.className = "w-full max-w-xl py-0.5 flex-grow flex items-center";
+      } else {
+        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
+      }
+
+      var rightCornerGroup = getNellieAndChatomizerMarkup(cardCountView);
+
+      var cardsHtml = currentTopics.map(function(topic, index) {
+        if (!topic) return "";
+
+        var isFav = favoritedTopicIds.has(topic.id);
+        var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
+        var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
+        var displayCat = translateCategoryLabel(topic.category);
+        var displayText = getTranslatedTopicText(topic);
+
+        if (isFaceDown) {
+          return '<div class="card-container h-full w-full min-h-[175px]">' +
+            '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-1.5 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+              getDeckBackMarkup(topic, index, catStyle) +
+            '</div>' +
+          '</div>';
+        }
+
+        var pillMarkup = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+          "<span>" + escapeHtml(displayCat) + "</span>" +
+        '</span>';
+
+        var questionBodyHtml = (cardCountView === 4)
+          ? '<p id="typed-question-' + index + '" class="tiktok-card-text text-base sm:text-lg leading-snug font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>'
+          : '<p id="typed-question-' + index + '" class="tiktok-card-text text-lg sm:text-2xl text-center leading-relaxed font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>';
+
+        return '<div class="card-container h-full w-full min-h-[175px]">' +
+          '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+            '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
+              '<div class="text-xs font-extrabold tracking-tight opacity-70">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</div>' +
+              '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
+                '<button onclick="refreshCardAtIndex(' + index + ')" title="' + escapeQuotes(t("refreshTitle")) + '" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
+                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="' + escapeQuotes(t("bookmarkTitle")) + '" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
+                '<button onclick="copyTopicText(\'' + escapeQuotes(displayText) + '\')" title="' + escapeQuotes(t("copyTitle")) + '" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="my-2 flex-grow flex items-center justify-center">' +
+              questionBodyHtml +
+            '</div>' +
+            '<div class="mt-2 flex items-end justify-between gap-2 relative pt-2">' +
+              '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
+                followModelLeftHelper(cardCountView) +
+                pillMarkup +
+              '</div>' +
+              rightCornerGroup +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+
+      grid.innerHTML = cardsHtml;
+    }
+
+    function followModelLeftHelper(viewCount) {
+      if (viewCount !== 1) return '';
+      return '<div class="flex items-center gap-1.5">' +
+        '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">' + escapeHtml(t("followMe")) + '</span>' +
+        '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
+      '</div>';
+    }
+
+    // --- LEADERBOARD & SESSION SCORES LOGIC ---
+
+    function toggleScoresModal(open) {
+      var modal = document.getElementById("scores-modal");
+      if (!modal) return;
+      if (open) {
+        populateScoresTable();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function populateScoresTable() {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+
+      if (sessionScores.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">' + escapeHtml(t("emptyPodium")) + '</td></tr>';
+        return;
+      }
+
+      var sortedScores = sessionScores.slice().sort(function(a, b) {
+        return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
+      });
+
+      tbody.innerHTML = sortedScores.map(function(item) {
+        return '<tr class="score-row">' +
+          '<td class="p-2"><input type="text" value="' + escapeQuotes(item.name) + '" placeholder="' + escapeQuotes(t("thUser")) + '" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2"><input type="number" value="' + item.points + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    function addScoreRow(name, points) {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+
+      if (tbody.querySelector("tr td[colspan]")) {
+        tbody.innerHTML = "";
+      }
+
+      var tr = document.createElement("tr");
+      tr.className = "score-row";
+      tr.innerHTML = '<td class="p-2"><input type="text" value="' + escapeQuotes(name || "") + '" placeholder="' + escapeQuotes(t("thUser")) + '" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2"><input type="number" value="' + (points !== undefined ? points : 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>';
+      tbody.appendChild(tr);
+    }
+
+    function removeScoreRow(btn) {
+      var row = btn.closest("tr");
+      if (row) row.remove();
+    }
+
+    function clearAllScores() {
+      sessionScores = [];
+      localStorage.removeItem("nellieb_scores");
+      populateScoresTable();
+      renderLeaderboardTicker();
+      showToast(t("clearAll"), "info");
+    }
+
+    function saveAndApplyScores() {
+      var rows = document.querySelectorAll("#scores-table-body .score-row");
+      var updated = [];
+
+      rows.forEach(function(row) {
+        var nameInput = row.querySelector(".score-name");
+        var ptsInput = row.querySelector(".score-pts");
+        if (nameInput && ptsInput) {
+          var name = nameInput.value.trim();
+          var points = parseInt(ptsInput.value) || 0;
+          if (name !== "") {
+            updated.push({ name: name, points: points });
+          }
+        }
+      });
+
+      updated.sort(function(a, b) {
+        return b.points - a.points;
+      });
+
+      sessionScores = updated;
+      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+      renderLeaderboardTicker();
+      toggleScoresModal(false);
+      showToast(t("saveApply"), "success");
+    }
+
+    function get3DRankBadge(idx, isFloating) {
+      var rankNum = idx + 1;
+      var suffix = rankNum === 1 ? "ST" : (rankNum === 2 ? "ND" : "RD");
+      var rankClass = idx === 0 ? "rank-3d-1" : (idx === 1 ? "rank-3d-2" : "rank-3d-3");
+      var delayStyle = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.35s;"' : ' style="animation-delay: 0.7s;"');
+      var sizeClass = isFloating
+        ? "h-9 sm:h-10 px-2.5 text-base sm:text-xl"
+        : "h-6 px-2 text-xs";
+      var supClass = isFloating
+        ? "text-[9px] sm:text-[11px] ml-0.5 -mt-1.5"
+        : "text-[7px] ml-0.5 -mt-1";
+
+      return '<span class="rank-3d-badge ' + rankClass + ' ' + sizeClass + ' shrink-0"' + delayStyle + ' title="' + rankNum + suffix.toLowerCase() + ' Place">' +
+        '<span>' + rankNum + '</span><sup class="' + supClass + '">' + suffix + '</sup>' +
+      '</span>';
+    }
+
+    function renderLeaderboardTicker() {
+      var ticker = document.getElementById("leaderboard-ticker");
+      var floatingTicker = document.getElementById("floating-leaderboard-ticker");
+      var ptsLabel = escapeHtml(t("ptsSuffix"));
+
+      var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 3);
+
+      if (sorted.length === 0) {
+        var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic">' + escapeHtml(t("emptyPodium")) + '</span>';
+        if (ticker) ticker.innerHTML = emptyHtml;
+        if (floatingTicker) floatingTicker.innerHTML = emptyHtml;
+        return;
+      }
+
+      var standardItemsHtml = sorted.map(function(item, idx) {
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
+        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
+        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
+        var rankBadge = get3DRankBadge(idx, false);
+
+        return '<div class="flex items-center gap-2.5 ' + cardClass + ' px-3.5 py-1 rounded-xl shrink-0">' +
+          rankBadge +
+          '<span class="' + nameClass + ' text-sm tracking-wide"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + ptsClass + ' text-sm">' + Number(item.points).toLocaleString() + ' ' + ptsLabel + '</span>' +
+        '</div>';
+      });
+
+      var floatingItemsHtml = sorted.map(function(item, idx) {
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
+        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
+        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
+        var rankBadge = get3DRankBadge(idx, true);
+
+        return '<div class="flex items-center gap-3 ' + cardClass + ' px-4 py-1.5 rounded-2xl shrink-0">' +
+          rankBadge +
+          '<span class="' + nameClass + ' text-xl sm:text-2xl tracking-tight"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + ptsClass + ' text-lg sm:text-2xl">' + Number(item.points).toLocaleString() + ' ' + ptsLabel + '</span>' +
+        '</div>';
+      });
+
+      var loopStandard = standardItemsHtml.concat(standardItemsHtml).concat(standardItemsHtml).join("");
+      var loopFloating = floatingItemsHtml.concat(floatingItemsHtml).concat(floatingItemsHtml).join("");
+
+      if (ticker) ticker.innerHTML = loopStandard;
+      if (floatingTicker) floatingTicker.innerHTML = loopFloating;
+    }
+
+    // --- FAVORITES & UTILS ---
+
+    function toggleFavorite(topicId, cardIndex) {
+      var topic = currentTopics[cardIndex];
+      if (!topic) return;
+
+      if (favoritedTopicIds.has(topic.id)) {
+        favoritedTopicIds.delete(topic.id);
+        showToast(t("clearSaved"), "info");
+      } else {
+        favoritedTopicIds.add(topic.id);
+        topicCache[topic.id] = topic;
+        localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+        showToast(t("bookmarkTitle"), "success");
+      }
+
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      renderTopicCards();
+      updateFavoritesUI();
+    }
+
+    function loadSavedTopicIntoView(topicId) {
+      var topic = topicCache[topicId];
+      if (!topic) return;
+
+      clearAllCardTypingTimers();
+      cardCountView = 1;
+      cardRevealedStates = [true, false, false, false];
+      currentTopics = [topic];
+      updateToggleUI();
+      renderTopicCards();
+      startLiveTyping(0, getTranslatedTopicText(topic), false);
+      resetBombTimer(false);
+      toggleFavoritesDrawer(false);
+      showToast(t("clickToLoad"), "success");
+    }
+
+    function updateFavoritesUI() {
+      var badge = document.getElementById("favorites-badge");
+      var listContainer = document.getElementById("saved-topics-list");
+      if (!badge || !listContainer) return;
+
+      badge.innerText = favoritedTopicIds.size;
+      if (favoritedTopicIds.size > 0) {
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+
+      if (favoritedTopicIds.size === 0) {
+        listContainer.innerHTML = '<div class="text-center py-10 px-4 text-slate-400"><i class="fa-regular fa-bookmark text-3xl mb-2 opacity-40"></i><p class="font-semibold text-xs">' + escapeHtml(t("noSavedEmpty")) + '</p><p class="text-[10px] mt-1">' + escapeHtml(t("noSavedSub")) + '</p></div>';
+        return;
+      }
+
+      var savedList = Array.from(favoritedTopicIds).map(function(id) {
+        return topicCache[id] || { id: id, category: "Philosophy", text: "Saved topic item" };
+      });
+
+      listContainer.innerHTML = savedList.map(function(topic) {
+        var st = CATEGORY_STYLES[topic.category] || { bg: "bg-indigo-100", text: "text-indigo-700" };
+        var dispCat = translateCategoryLabel(topic.category);
+        var dispText = getTranslatedTopicText(topic);
+        return '<div onclick="loadSavedTopicIntoView(\'' + topic.id + '\')" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex flex-col gap-2 relative cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">' +
+          '<div class="flex items-center justify-between">' +
+            '<span class="text-[9px] font-bold px-2 py-0.5 rounded ' + st.bg + " " + st.text + '">' + escapeHtml(dispCat) + '</span>' +
+            '<div class="flex items-center gap-1.5" onclick="event.stopPropagation()">' +
+              '<button onclick="copyTopicText(\'' + escapeQuotes(dispText) + '\')" title="' + escapeQuotes(t("copyTitle")) + '" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-500 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-regular fa-copy text-xs"></i></button>' +
+              '<button onclick="removeFavorite(\'' + topic.id + '\')" title="' + escapeQuotes(t("clearSaved")) + '" class="p-1.5 rounded-lg text-pink-500 hover:text-red-600 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+            '</div>' +
+          '</div>' +
+          '<p class="text-xs font-bold text-slate-800 dark:text-slate-100 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">&quot;' + escapeHtml(dispText) + '&quot;</p>' +
+          '<div class="text-[9px] text-indigo-500 dark:text-indigo-400 font-semibold flex items-center gap-1"><i class="fa-solid fa-arrow-right text-[8px]"></i> ' + escapeHtml(t("clickToLoad")) + '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    function removeFavorite(id) {
+      favoritedTopicIds.delete(id);
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast(t("clearSaved"), "info");
+    }
+
+    function clearAllFavorites() {
+      if (favoritedTopicIds.size === 0) return;
+      favoritedTopicIds.clear();
+      localStorage.removeItem("nellieb_favs");
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast(t("clearSaved"), "info");
+    }
+
+    function toggleFavoritesDrawer(open) {
+      var drawer = document.getElementById("favorites-drawer");
+      var content = document.getElementById("drawer-content");
+      if (!drawer || !content) return;
+
+      if (open) {
+        drawer.classList.remove("pointer-events-none");
+        drawer.classList.remove("opacity-0");
+        drawer.classList.add("opacity-100");
+        content.classList.remove("translate-x-full");
+      } else {
+        drawer.classList.remove("opacity-100");
+        drawer.classList.add("opacity-0");
+        content.classList.add("translate-x-full");
+        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
+      }
+    }
+
+    function togglePrivacyModal(open) {
+      var modal = document.getElementById("privacy-modal");
+      if (!modal) return;
+      if (open) modal.classList.remove("hidden");
+      else modal.classList.add("hidden");
+    }
+
+    function copyTopicText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      showToast(t("copyTitle"), "success");
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function showToast(message, type) {
+      var container = document.getElementById("toast-container");
+      if (!container) return;
+
+      var toast = document.createElement("div");
+      var icons = {
+        success: "fa-circle-check text-emerald-400",
+        warning: "fa-triangle-exclamation text-amber-400",
+        info: "fa-circle-info text-indigo-400"
+      };
+
+      toast.className = "px-3.5 py-2 rounded-xl bg-slate-900/90 text-white text-xs font-semibold shadow-xl backdrop-blur border border-slate-700 flex items-center gap-2 pointer-events-auto transition-all duration-200 translate-x-6 opacity-0";
+      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + escapeHtml(message) + "</span>";
+
+      container.appendChild(toast);
+      requestAnimationFrame(function() { toast.classList.remove("translate-x-6", "opacity-0"); });
+
+      setTimeout(function() {
+        toast.classList.add("translate-x-6", "opacity-0");
+        setTimeout(function() { toast.remove(); }, 200);
+      }, 2500);
+    }
+
+    function resetToInitial() { selectPreset("all"); }
+
+    function escapeQuotes(str) {
+      return String(str || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    function escapeHtml(str) {
+      return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    async function initApp() {
+      var selectEl = document.getElementById("language-select");
+      if (selectEl) selectEl.value = currentLanguage;
+      applyLanguageTranslations();
+      await loadAllQuestionBanks();
+      generateTopics();
+
+      if (!localStorage.getItem("nellieb_tutorial_seen")) {
+        setTimeout(function() {
+          toggleWelcomeTutorialModal(true);
+        }, 450);
+      }
+    }
+
+    initApp();
+
+    document.addEventListener("keydown", function(e) {
+      if (e.code === "Space" && !["INPUT", "BUTTON", "TEXTAREA", "SELECT"].includes(e.target.tagName)) {
+        e.preventDefault();
+        generateTopics();
+      }
+    });
+  </script>
+</body>
+</html>
