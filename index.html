@@ -56,9 +56,13 @@
       background-clip: padding-box;
       box-shadow: 0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(59, 130, 246, 0.4), 0 0 60px rgba(168, 85, 247, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
       transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1), box-shadow 0.3s ease, background 0.25s ease;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, background 0.25s ease;
       touch-action: manipulation;
       overflow: visible !important;
+    }
+
+    .glass-card:hover {
+      transform: scale(1.02);
     }
 
     .glass-card::before {
@@ -86,12 +90,20 @@
       box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
     }
 
-    /* Face-Down Deck Back Styling */
+    /* Face-Down Deck Back Styling with Slow Wave Pattern */
+    @keyframes deck-wave-drift {
+      0% { background-position: 50% 45%, 0px 0px, 0% 50%; }
+      50% { background-position: 50% 45%, 64px 64px, 100% 50%; }
+      100% { background-position: 50% 45%, 128px 128px, 0% 50%; }
+    }
+
     .deck-back-surface {
       background:
         radial-gradient(circle at 50% 45%, rgba(236, 72, 153, 0.22), transparent 62%),
-        repeating-linear-gradient(45deg, rgba(99, 102, 241, 0.08) 0px, rgba(99, 102, 241, 0.08) 8px, transparent 8px, transparent 16px),
+        repeating-linear-gradient(45deg, rgba(99, 102, 241, 0.09) 0px, rgba(99, 102, 241, 0.09) 8px, transparent 8px, transparent 16px),
         linear-gradient(135deg, #1e1b4b 0%, #0f172a 55%, #311042 100%);
+      background-size: 100% 100%, 128px 128px, 200% 200%;
+      animation: deck-wave-drift 24s linear infinite;
     }
 
     @keyframes typing-cursor-blink {
@@ -1478,28 +1490,28 @@
 
       if (textToType.length === 0) return;
 
+      // 50% slower typing cadence (1 character every 33ms vs previous 2 chars every 22ms)
       cardTypingTimers[index] = setInterval(function() {
-        cardTypingProgress[index] += 2;
+        cardTypingProgress[index] += 1;
         if (cardTypingProgress[index] >= textToType.length) {
           cardTypingProgress[index] = textToType.length;
           clearCardTypingTimer(index);
         }
         renderTypingFrame();
-      }, 22);
+      }, 33);
     }
 
     function getDeckBackMarkup(topic, index, catStyle) {
       return '<div class="deck-back-surface rounded-[14px] h-full w-full p-4 sm:p-5 flex flex-col items-center justify-between text-center relative overflow-hidden border border-white/10">' +
-        '<div class="flex items-center justify-between w-full text-[10px] font-black uppercase tracking-widest text-cyan-300/90">' +
-          '<span><i class="fa-solid fa-clone mr-1 text-pink-400"></i>Deck Back</span>' +
-          '<span class="text-amber-300">Tap to Flip &amp; Type</span>' +
+        '<div class="flex items-center justify-end w-full text-[10px] font-black uppercase tracking-widest text-amber-300">' +
+          '<span>Tap to Flip</span>' +
         '</div>' +
         '<div class="my-1 flex flex-col items-center justify-center gap-2.5">' +
           '<div class="relative">' +
             '<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-amber-300 to-cyan-400 shadow-lg anim-grow-shrink">' +
               '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-contain rounded-full bg-slate-950/90">' +
             '</div>' +
-            '<span class=" -bottom-1 -right-2 absolute px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow">FLIP</span>' +
+            '<span class="-bottom-1 -right-2 absolute px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow">FLIP</span>' +
           '</div>' +
           '<div class="flex flex-col items-center gap-1">' +
             '<span class="text-[10px] font-bold uppercase tracking-widest text-slate-300/80">Topic</span>' +
@@ -1738,16 +1750,28 @@
     function handleCardTap(e, index) {
       if (e.target.closest("button") || e.target.closest("a")) return;
 
-      if (cardCountView === 4 && !cardRevealedStates[index]) {
-        // Flip face-down deck card and type wording live
-        cardRevealedStates[index] = true;
-        triggerCardFlip([index], function() {
-          renderTopicCards();
-          var topic = currentTopics[index];
-          if (topic) {
-            startLiveTyping(index, topic.text);
-          }
-        }, true);
+      if (cardCountView === 4) {
+        if (!cardRevealedStates[index]) {
+          // Flip face-down deck card and type wording live
+          cardRevealedStates[index] = true;
+          triggerCardFlip([index], function() {
+            renderTopicCards();
+            var topic = currentTopics[index];
+            if (topic) {
+              startLiveTyping(index, topic.text);
+            }
+          }, true);
+        } else {
+          // Already revealed: flip back to deck back and queue next sequential question in same category
+          clearCardTypingTimer(index);
+          var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
+          cardRevealedStates[index] = false;
+          cardTypingProgress[index] = 0;
+          triggerCardFlip([index], function() {
+            currentTopics[index] = generateSequentialTopic(prevCategory);
+            renderTopicCards();
+          }, true);
+        }
         return;
       }
 
@@ -1762,11 +1786,12 @@
       }
       clearCardTypingTimer(index);
 
+      var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
       var shouldTypeLive = (cardCountView === 4);
       cardRevealedStates[index] = true;
 
       triggerCardFlip([index], function() {
-        currentTopics[index] = generateSequentialTopic();
+        currentTopics[index] = generateSequentialTopic(prevCategory);
         renderTopicCards();
         if (shouldTypeLive && currentTopics[index]) {
           startLiveTyping(index, currentTopics[index].text);
@@ -1845,7 +1870,7 @@
         return '<div class="card-container h-full w-full min-h-[175px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
-              '<div class="text-xs font-extrabold tracking-tight opacity-70">' + (cardCountView === 4 ? "Click or Tap for Next Topic" : "Click or Tap to Change") + '</div>' +
+              '<div class="text-xs font-extrabold tracking-tight opacity-70">' + (cardCountView === 4 ? "Click or Tap to Flip Back" : "Click or Tap to Change") + '</div>' +
               '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
                 '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
                 '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Bookmark Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
