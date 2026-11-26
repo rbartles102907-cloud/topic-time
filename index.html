@@ -37,6 +37,26 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
     .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
     .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+
+    /* High-contrast language select & dropdown options without requiring hover */
+    #language-select {
+      color: #0f172a;
+      background-color: transparent;
+    }
+    .dark #language-select {
+      color: #ffffff;
+      background-color: transparent;
+    }
+    #language-select option {
+      color: #0f172a;
+      background-color: #ffffff;
+      font-weight: 700;
+    }
+    .dark #language-select option {
+      color: #f8fafc;
+      background-color: #0f172a;
+      font-weight: 700;
+    }
     
     .card-container { perspective: 1000px; overflow: visible !important; }
 
@@ -532,9 +552,9 @@
 
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
         <!-- Language Dropdown & Quick ES/EN Toggle -->
-        <div class="flex items-center bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-xl p-0.5 shadow-sm" title="Select Language">
-          <i class="fa-solid fa-globe text-xs text-indigo-500 dark:text-cyan-400 pl-2 pr-1"></i>
-          <select id="language-select" onchange="setLanguage(this.value)" class="bg-transparent text-slate-800 dark:text-slate-100 text-[11px] sm:text-xs font-extrabold pr-1.5 py-1 focus:outline-none cursor-pointer">
+        <div class="flex items-center bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-0.5 shadow-sm" title="Select Language">
+          <i class="fa-solid fa-globe text-xs text-indigo-600 dark:text-cyan-300 pl-2 pr-1"></i>
+          <select id="language-select" onchange="setLanguage(this.value)" class="bg-transparent text-slate-900 dark:text-white text-[11px] sm:text-xs font-extrabold pr-1.5 py-1 focus:outline-none cursor-pointer">
             <option value="en">English</option>
             <option value="es">Español</option>
             <option value="fr">Français</option>
@@ -1057,6 +1077,7 @@
     var cardRevealedStates = [false, false, false, false];
     var cardTypingTimers = [null, null, null, null];
     var cardTypingProgress = [0, 0, 0, 0];
+    var cardRevealToken = [0, 0, 0, 0];
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
 
@@ -1662,11 +1683,23 @@
       "What is one belief you held strongly five years ago that you no longer hold today?": "¿Cuál es una creencia que defendías con fuerza hace cinco años y que hoy ya no sostienes?",
       "If you could know the absolute truth to one mystery of the universe, which one would you pick?": "Si pudieras conocer la verdad absoluta de un misterio del universo, ¿cuál elegirías?",
       "What everyday habit do you think most people do backward?": "¿Qué hábito diario crees que la mayoría de la gente hace al revés?",
-      "Would you rather always have to tell the complete truth or never speak unless asked a direct question?": "¿Preferirías decir siempre la verdad completa o no hablar a menos que te hagan una pregunta directa?",
-      "What song instantly puts you in a great mood regardless of how your day went?": "¿Qué canción te pone de buen humor al instante sin importar cómo te haya ido el día?",
+      "What is something most people don't know about you until they've known you for years?": "¿Qué es algo que la mayoría no sabe de ti hasta que te conocen desde hace años?",
       "What is a weird food combination you secretly love?": "¿Qué combinación extraña de comida te encanta en secreto?",
+      "If your life had a theme song that played every time you walked into a room, what would it be?": "Si tu vida tuviera un tema musical cada vez que entras a una habitación, ¿cuál sería?",
+      "What technology trend are you most excited or cautious about right now?": "¿Qué tendencia tecnológica te emociona o preocupa más en este momento?",
+      "What news or cultural shift has changed how you spend your free time?": "¿Qué noticia o cambio cultural ha transformado cómo pasas tu tiempo libre?",
+      "Would you rather always have to tell the complete truth or never speak unless asked a direct question?": "¿Preferirías decir siempre la verdad completa o no hablar a menos que te hagan una pregunta directa?",
+      "Would you rather travel back 100 years or jump 100 years into the future?": "¿Preferirías viajar 100 años atrás o saltar 100 años al futuro?",
+      "What movie or show have you rewatched more times than you can count?": "¿Qué película o serie has vuelto a ver más veces de las que puedes contar?",
+      "Which fictional universe would you actually want to live in for a week?": "¿En qué universo ficticio te gustaría vivir realmente durante una semana?",
       "If time could pause for one hour every day just for you, how would you spend it?": "Si el tiempo pudiera pausarse una hora cada día solo para ti, ¿cómo la pasarías?",
-      "What is something most people don't know about you until they've known you for years?": "¿Qué es algo que la mayoría no sabe de ti hasta que te conocen desde hace años?"
+      "What is a spontaneous decision that turned out surprisingly well for you?": "¿Cuál es una decisión espontánea que te salió sorprendentemente bien?",
+      "If you could invent one gadget to solve an everyday annoyance, what would it do?": "Si pudieras inventar un aparato para resolver una molestia diaria, ¿qué haría?",
+      "What scientific discovery still blows your mind when you stop to think about it?": "¿Qué descubrimiento científico todavía te asombra cuando te detienes a pensarlo?",
+      "Did you know honey never spoils and has been found in ancient tombs?": "¿Sabías que la miel nunca se echa a perder y se ha encontrado en tumbas antiguas?",
+      "Did you know octopuses have three hearts and blue blood?": "¿Sabías que los pulpos tienen tres corazones y sangre azul?",
+      "What song instantly puts you in a great mood regardless of how your day went?": "¿Qué canción te pone de buen humor al instante sin importar cómo te haya ido el día?",
+      "What album can you listen to from start to finish without skipping a track?": "¿Qué álbum puedes escuchar de principio a fin sin saltar ni una canción?"
     };
 
     function t(key) {
@@ -1724,24 +1757,47 @@
       var cacheKey = targetLang + "::" + text;
       if (translationCache[cacheKey]) return translationCache[cacheKey];
 
+      var numMatch = text.match(/^(\d+\.\s*)(.*)$/);
+      var prefix = numMatch ? numMatch[1] : "";
+      var bodyToTranslate = numMatch ? numMatch[2] : text;
+
       try {
+        var controller = new AbortController();
+        var timeoutId = setTimeout(function() { controller.abort(); }, 2500);
         var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=" +
-          encodeURIComponent(targetLang) + "&dt=t&q=" + encodeURIComponent(text);
-        var res = await fetch(url);
+          encodeURIComponent(targetLang) + "&dt=t&q=" + encodeURIComponent(bodyToTranslate);
+        var res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
         if (!res.ok) throw new Error("Translation HTTP " + res.status);
         var json = await res.json();
         if (Array.isArray(json) && Array.isArray(json[0])) {
-          var translated = json[0].map(function(seg) { return seg[0] || ""; }).join("").trim();
-          if (translated) {
-            translationCache[cacheKey] = translated;
+          var translatedBody = json[0].map(function(seg) { return seg[0] || ""; }).join("").trim();
+          if (translatedBody) {
+            var fullTranslated = prefix + translatedBody;
+            translationCache[cacheKey] = fullTranslated;
             localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
-            return translated;
+            return fullTranslated;
           }
         }
       } catch (e) {
-        // Fallback smoothly when offline or blocked
+        // Fallback smoothly when offline, slow, or blocked
       }
-      return fallbackTranslateText(text, targetLang);
+
+      var fallback = fallbackTranslateText(text, targetLang);
+      translationCache[cacheKey] = fallback;
+      localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
+      return fallback;
+    }
+
+    // Ensures translation is resolved BEFORE starting the typewriter effect
+    async function resolveTranslatedTopicText(topic, targetLang) {
+      var lang = targetLang || currentLanguage;
+      if (!topic || !topic.text) return "";
+      if (lang === "en") return topic.text;
+      var cacheKey = lang + "::" + topic.text;
+      if (translationCache[cacheKey]) return translationCache[cacheKey];
+      return await fetchRemoteTranslation(topic.text, lang);
     }
 
     function getTranslatedTopicText(topic) {
@@ -1753,19 +1809,18 @@
     }
 
     async function refreshVisibleCardTranslations() {
-      if (currentLanguage === "en") {
+      var targetLang = currentLanguage;
+      if (targetLang === "en") {
         renderTopicCards();
         return;
       }
 
-      for (var i = 0; i < currentTopics.length; i++) {
-        var tp = currentTopics[i];
-        if (!tp || !tp.text) continue;
-        var cacheKey = currentLanguage + "::" + tp.text;
-        if (!translationCache[cacheKey]) {
-          await fetchRemoteTranslation(tp.text, currentLanguage);
-        }
-      }
+      await Promise.all(currentTopics.map(function(tp) {
+        if (!tp || !tp.text) return Promise.resolve("");
+        return resolveTranslatedTopicText(tp, targetLang);
+      }));
+
+      if (currentLanguage !== targetLang) return;
 
       renderTopicCards();
       for (var idx = 0; idx < currentTopics.length; idx++) {
@@ -2601,6 +2656,24 @@
       }, 33);
     }
 
+    // Resolves translation before starting the typing animation so words type out in the active language
+    async function translateThenTypeCard(index, topic, playSound) {
+      if (!topic) return;
+      var token = (cardRevealToken[index] || 0) + 1;
+      cardRevealToken[index] = token;
+
+      clearCardTypingTimer(index);
+      var textEl = document.getElementById("typed-question-" + index);
+      if (textEl) {
+        textEl.innerHTML = '&quot;<span class="typing-caret"></span>';
+      }
+
+      var resolvedText = await resolveTranslatedTopicText(topic, currentLanguage);
+      if (cardRevealToken[index] !== token) return;
+
+      startLiveTyping(index, resolvedText, playSound);
+    }
+
     function getDeckBackMarkup(topic, index, catStyle) {
       return '<div class="deck-back-surface rounded-[14px] h-full w-full p-4 sm:p-5 flex flex-col items-center justify-between text-center relative overflow-hidden border border-white/10">' +
         '<div class="flex items-center justify-end w-full text-[10px] font-black uppercase tracking-widest text-amber-300">' +
@@ -2847,7 +2920,7 @@
         currentTopics = nextTopics;
         renderTopicCards();
         if (cardCountView === 1 && currentTopics[0]) {
-          startLiveTyping(0, getTranslatedTopicText(currentTopics[0]), false);
+          translateThenTypeCard(0, currentTopics[0], false);
         }
       }, true);
 
@@ -2866,7 +2939,7 @@
             renderTopicCards();
             var topic = currentTopics[index];
             if (topic) {
-              startLiveTyping(index, getTranslatedTopicText(topic), true);
+              translateThenTypeCard(index, topic, true);
             }
           }, true);
         } else {
@@ -2903,7 +2976,7 @@
         currentTopics[index] = generateSequentialTopic(prevCategory);
         renderTopicCards();
         if (shouldTypeLive && currentTopics[index]) {
-          startLiveTyping(index, getTranslatedTopicText(currentTopics[index]), playTypingAudio);
+          translateThenTypeCard(index, currentTopics[index], playTypingAudio);
         }
       }, true);
 
@@ -3203,7 +3276,7 @@
       currentTopics = [topic];
       updateToggleUI();
       renderTopicCards();
-      startLiveTyping(0, getTranslatedTopicText(topic), false);
+      translateThenTypeCard(0, topic, false);
       resetBombTimer(false);
       toggleFavoritesDrawer(false);
       showToast(t("clickToLoad"), "success");
