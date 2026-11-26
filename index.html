@@ -1078,6 +1078,7 @@
     var cardTypingTimers = [null, null, null, null];
     var cardTypingProgress = [0, 0, 0, 0];
     var cardRevealToken = [0, 0, 0, 0];
+    var cardResolvedTexts = ["", "", "", ""];
     var languageSwitchSeq = 0;
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
@@ -1753,6 +1754,28 @@
       return text;
     }
 
+    function getImmediateTranslatedString(rawText, lang) {
+      var targetLang = lang || currentLanguage || "en";
+      if (!rawText) return "";
+      if (targetLang === "en") return rawText;
+
+      var cacheKey = targetLang + "::" + rawText;
+      if (translationCache[cacheKey]) {
+        return translationCache[cacheKey];
+      }
+
+      var fb = fallbackTranslateText(rawText, targetLang);
+      if (fb && fb !== rawText) {
+        return fb;
+      }
+
+      if (targetLang === "es") {
+        return "[ES] " + rawText;
+      }
+
+      return "[" + targetLang.toUpperCase() + "] " + rawText;
+    }
+
     async function fetchRemoteTranslation(text, targetLang) {
       if (!text || targetLang === "en") return text;
       var cacheKey = targetLang + "::" + text;
@@ -1785,7 +1808,7 @@
         // Fallback smoothly when offline, slow, or blocked
       }
 
-      var fallback = fallbackTranslateText(text, targetLang);
+      var fallback = getImmediateTranslatedString(text, targetLang);
       translationCache[cacheKey] = fallback;
       localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
       return fallback;
@@ -1793,26 +1816,26 @@
 
     // Ensures translation is resolved BEFORE starting the typewriter effect
     async function resolveTranslatedTopicText(topic, targetLang) {
-      var lang = targetLang || currentLanguage;
+      var lang = targetLang || currentLanguage || "en";
       if (!topic || !topic.text) return "";
       if (lang === "en") return topic.text;
       var cacheKey = lang + "::" + topic.text;
       if (translationCache[cacheKey]) return translationCache[cacheKey];
-      return await fetchRemoteTranslation(topic.text, lang);
+      var immediate = getImmediateTranslatedString(topic.text, lang);
+      var remote = await fetchRemoteTranslation(topic.text, lang);
+      return (remote && remote.trim()) ? remote : immediate;
     }
 
     function getTranslatedTopicText(topic, langOverride) {
-      var lang = langOverride || currentLanguage;
+      var lang = langOverride || currentLanguage || "en";
       if (!topic || !topic.text) return "";
       if (lang === "en") return topic.text;
-      var cacheKey = lang + "::" + topic.text;
-      if (translationCache[cacheKey]) return translationCache[cacheKey];
-      return fallbackTranslateText(topic.text, lang);
+      return getImmediateTranslatedString(topic.text, lang);
     }
 
     async function refreshVisibleCardTranslations() {
       var seq = ++languageSwitchSeq;
-      var targetLang = currentLanguage;
+      var targetLang = currentLanguage || "en";
 
       // Render immediately with cached/fallback translations so card backs and fronts update right away
       renderTopicCards();
@@ -1827,7 +1850,7 @@
       }));
 
       // Abort if the user switched languages again while async translations were running
-      if (seq !== languageSwitchSeq || currentLanguage !== targetLang) {
+      if (seq !== languageSwitchSeq || (currentLanguage || "en") !== targetLang) {
         return;
       }
 
@@ -1836,9 +1859,11 @@
         if (!item) continue;
         var isFaceDown = (cardCountView === 4 && !cardRevealedStates[idx]);
         if (!isFaceDown) {
+          var finalText = getTranslatedTopicText(item, targetLang);
+          cardResolvedTexts[idx] = finalText;
           var el = document.getElementById("typed-question-" + idx);
           if (el && !cardTypingTimers[idx]) {
-            el.innerHTML = '&quot;' + escapeHtml(getTranslatedTopicText(item, targetLang)) + '&quot;';
+            el.innerHTML = '&quot;' + escapeHtml(finalText) + '&quot;';
           }
         }
       }
@@ -2631,57 +2656,81 @@
       }
     }
 
-    function startLiveTyping(index, fullText, playSound) {
+    function startLiveTyping(index, fullText, playSound, langAtStartOverride) {
       clearCardTypingTimer(index);
+      var langAtStart = langAtStartOverride || currentLanguage || "en";
       var textToType = String(fullText || "");
+      cardResolvedTexts[index] = textToType;
       var shouldPlaySound = Boolean(playSound);
       cardTypingProgress[index] = 0;
 
-      var renderTypingFrame = function() {
+      var renderTypingFrame = function(isComplete) {
         var textEl = document.getElementById("typed-question-" + index);
         if (!textEl) return;
+        var lockedFinal = cardResolvedTexts[index] !== undefined ? cardResolvedTexts[index] : textToType;
+        if (isComplete || (currentLanguage || "en") !== langAtStart) {
+          cardTypingProgress[index] = lockedFinal.length;
+          textEl.innerHTML = '&quot;' + escapeHtml(lockedFinal) + '&quot;';
+          return;
+        }
         var currentLen = cardTypingProgress[index];
-        var shown = textToType.slice(0, currentLen);
-        var isDone = currentLen >= textToType.length;
+        var shown = lockedFinal.slice(0, currentLen);
+        var isDone = currentLen >= lockedFinal.length;
         textEl.innerHTML = '&quot;' + escapeHtml(shown) + (isDone ? '&quot;' : '<span class="typing-caret"></span>');
       };
 
-      renderTypingFrame();
+      renderTypingFrame(false);
 
-      if (textToType.length === 0) return;
+      if (textToType.length === 0) {
+        renderTypingFrame(true);
+        return;
+      }
 
       cardTypingTimers[index] = setInterval(function() {
-        var nextChar = textToType.charAt(cardTypingProgress[index]);
+        var lockedFinal = cardResolvedTexts[index] !== undefined ? cardResolvedTexts[index] : textToType;
+        if ((currentLanguage || "en") !== langAtStart) {
+          clearCardTypingTimer(index);
+          renderTypingFrame(true);
+          return;
+        }
+
+        var nextChar = lockedFinal.charAt(cardTypingProgress[index]);
         cardTypingProgress[index] += 1;
         if (shouldPlaySound) {
           playTypewriterKeySound(nextChar);
         }
 
-        if (cardTypingProgress[index] >= textToType.length) {
-          cardTypingProgress[index] = textToType.length;
+        if (cardTypingProgress[index] >= lockedFinal.length) {
           clearCardTypingTimer(index);
+          renderTypingFrame(true);
+        } else {
+          renderTypingFrame(false);
         }
-        renderTypingFrame();
       }, 33);
     }
 
-    // Resolves translation before starting the typing animation so words type out in the active language
+    // Resolves translation immediately before typing starts and locks the final string
     async function translateThenTypeCard(index, topic, playSound) {
       if (!topic) return;
       var token = (cardRevealToken[index] || 0) + 1;
       cardRevealToken[index] = token;
-      var activeLang = currentLanguage;
+      var activeLang = currentLanguage || "en";
 
       clearCardTypingTimer(index);
+      var immediateText = getImmediateTranslatedString(topic.text, activeLang);
+      cardResolvedTexts[index] = immediateText;
+
       var textEl = document.getElementById("typed-question-" + index);
       if (textEl) {
-        textEl.innerHTML = '&quot;<span class="typing-caret"></span>';
+        textEl.innerHTML = '&quot;' + escapeHtml(immediateText) + '<span class="typing-caret"></span>';
       }
 
       var resolvedText = await resolveTranslatedTopicText(topic, activeLang);
-      if (cardRevealToken[index] !== token || currentLanguage !== activeLang) return;
+      if (cardRevealToken[index] !== token || (currentLanguage || "en") !== activeLang) return;
 
-      startLiveTyping(index, resolvedText, playSound);
+      var finalText = (resolvedText && resolvedText.trim()) ? resolvedText : immediateText;
+      cardResolvedTexts[index] = finalText;
+      startLiveTyping(index, finalText, playSound, activeLang);
     }
 
     function getDeckBackMarkup(topic, index, catStyle) {
@@ -2923,6 +2972,7 @@
         var nextTopics = [];
         for (var i = 0; i < cardCountView; i++) {
           nextTopics[i] = generateSequentialTopic();
+          cardResolvedTexts[i] = getImmediateTranslatedString(nextTopics[i].text, currentLanguage);
           if (cardCountView === 4) {
             cardRevealedStates[i] = false;
             cardTypingProgress[i] = 0;
@@ -2963,6 +3013,7 @@
           cardTypingProgress[index] = 0;
           triggerCardFlip([index], function() {
             currentTopics[index] = generateSequentialTopic(prevCategory);
+            cardResolvedTexts[index] = getImmediateTranslatedString(currentTopics[index].text, currentLanguage);
             renderTopicCards();
           }, true);
         }
@@ -2988,6 +3039,7 @@
 
       triggerCardFlip([index], function() {
         currentTopics[index] = generateSequentialTopic(prevCategory);
+        cardResolvedTexts[index] = getImmediateTranslatedString(currentTopics[index].text, currentLanguage);
         renderTopicCards();
         if (shouldTypeLive && currentTopics[index]) {
           translateThenTypeCard(index, currentTopics[index], playTypingAudio);
@@ -3049,7 +3101,9 @@
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
         var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
         var displayCat = translateCategoryLabel(topic.category);
-        var displayText = getTranslatedTopicText(topic, currentLanguage);
+        var displayText = (cardResolvedTexts[index] && cardResolvedTexts[index].trim())
+          ? cardResolvedTexts[index]
+          : getTranslatedTopicText(topic, currentLanguage);
 
         if (isFaceDown) {
           return '<div class="card-container h-full w-full min-h-[185px]">' +
@@ -3288,6 +3342,7 @@
       cardCountView = 1;
       cardRevealedStates = [true, false, false, false];
       currentTopics = [topic];
+      cardResolvedTexts[0] = getImmediateTranslatedString(topic.text, currentLanguage);
       updateToggleUI();
       renderTopicCards();
       translateThenTypeCard(0, topic, false);
