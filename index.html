@@ -1,146 +1,3457 @@
-<script>
-  // Increment this whenever the user changes language so stale async calls abort cleanly
-  var languageSwitchSeq = 0;
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E3K0G736WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  // Helper to format any category name using your existing category translation helper
-  function formatCardCategory(rawCategory) {
-    if (!rawCategory) return "";
-    if (typeof translateCategoryLabel === "function") {
-      return translateCategoryLabel(rawCategory);
+    gtag('config', 'G-E3K0G736WX');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nellie B - Chatomizer</title>
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png">
+  <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png">
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#f0f5ff', 100: '#e0ebff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' }
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Fredoka:wght@700&family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; }
+    .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
+    .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+
+    /* High-contrast language select & dropdown options without requiring hover */
+    #language-select {
+      color: #0f172a;
+      background-color: transparent;
     }
-    return String(rawCategory).toUpperCase();
-  }
-
-  // Deterministic lookup for the active language (no accidental English overwrite)
-  function getTranslatedTopicText(topic, langOverride) {
-    var lang = langOverride || currentLanguage || "en";
-    if (!topic || !topic.text) return "";
-    if (lang === "en") return topic.text;
-
-    var cacheKey = lang + "::" + topic.text;
-    if (typeof translationCache !== "undefined" && translationCache[cacheKey]) {
-      return translationCache[cacheKey];
+    .dark #language-select {
+      color: #ffffff;
+      background-color: transparent;
     }
-    if (typeof fallbackTranslateText === "function") {
+    #language-select option {
+      color: #0f172a;
+      background-color: #ffffff;
+      font-weight: 700;
+    }
+    .dark #language-select option {
+      color: #f8fafc;
+      background-color: #0f172a;
+      font-weight: 700;
+    }
+    
+    .card-container { perspective: 1000px; overflow: visible !important; }
+
+    /* RGB Chasing Neon Border Animation */
+    @keyframes rgb-chase {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .glass-card { 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)); 
+      backdrop-filter: blur(16px); 
+      position: relative;
+      border-radius: 1rem;
+      border: 3px solid transparent;
+      background-clip: padding-box;
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(59, 130, 246, 0.4), 0 0 60px rgba(168, 85, 247, 0.3), 0 10px 30px rgba(0, 0, 0, 0.5);
+      transform-style: preserve-3d;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, background 0.25s ease;
+      touch-action: manipulation;
+      overflow: visible !important;
+    }
+
+    .glass-card:hover {
+      transform: scale(1.02);
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 1.15rem;
+      z-index: -1;
+      background: linear-gradient(270deg, #ff007f, #7928ca, #00dfd8, #007cf0, #ff007f);
+      background-size: 400% 400%;
+      animation: rgb-chase 16s linear infinite;
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.6), inset 0 0 10px rgba(0, 223, 216, 0.6);
+    }
+    
+    .dark .glass-card { 
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98)); 
+      backdrop-filter: blur(16px); 
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.65), 0 0 50px rgba(56, 189, 248, 0.5), 0 0 80px rgba(139, 92, 246, 0.4), 0 15px 35px rgba(0, 0, 0, 0.8);
+    }
+
+    .dark .glass-card::before {
+      background: linear-gradient(270deg, #ff2a85, #8a2be2, #00f2fe, #4facfe, #ff2a85);
+      background-size: 400% 400%;
+      animation: rgb-chase 14s linear infinite;
+      box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
+    }
+
+    /* Face-Down Deck Back Styling with Slow Wave Pattern */
+    @keyframes deck-wave-drift {
+      0% { background-position: 50% 45%, 0px 0px, 0% 50%; }
+      50% { background-position: 50% 45%, 64px 64px, 100% 50%; }
+      100% { background-position: 50% 45%, 128px 128px, 0% 50%; }
+    }
+
+    .deck-back-surface {
+      background:
+        radial-gradient(circle at 50% 45%, rgba(236, 72, 153, 0.22), transparent 62%),
+        repeating-linear-gradient(45deg, rgba(99, 102, 241, 0.09) 0px, rgba(99, 102, 241, 0.09) 8px, transparent 8px, transparent 16px),
+        linear-gradient(135deg, #1e1b4b 0%, #0f172a 55%, #311042 100%);
+      background-size: 100% 100%, 128px 128px, 200% 200%;
+      animation: deck-wave-drift 24s linear infinite;
+    }
+
+    @keyframes typing-cursor-blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .typing-caret {
+      display: inline-block;
+      width: 3px;
+      height: 1.05em;
+      margin-left: 2px;
+      vertical-align: -0.1em;
+      background-color: #000000;
+      animation: typing-cursor-blink 0.75s infinite;
+    }
+
+    @keyframes flip-right-to-left {
+      0% { transform: rotateY(0deg) scale(1); }
+      50% { transform: rotateY(-90deg) scale(0.92); }
+      100% { transform: rotateY(-180deg) scale(1); }
+    }
+    .card-flipping { animation: flip-right-to-left 0.5s ease-in-out forwards; }
+
+    @keyframes char-grow-shrink {
+      0%, 100% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.05) translate(-2px, -3px); }
+    }
+    .anim-grow-shrink {
+      animation: char-grow-shrink 3s ease-in-out infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.45));
+    }
+
+    .card-character-avatar {
+      object-fit: contain;
+      pointer-events: none;
+      z-index: 25;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
+    }
+
+    @keyframes chatomizer-bob {
+      0%, 100% { transform: translateY(-28px) rotate(-3deg) scale(1); }
+      50% { transform: translateY(-31px) rotate(-1deg) scale(1.03); }
+    }
+    .chatomizer-logo-badge {
+      z-index: 25;
+      pointer-events: none;
+      animation: chatomizer-bob 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.45));
+    }
+
+    @keyframes flash-red-slow {
+      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
+      50% { color: #991b1b; opacity: 0.35; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
+    }
+    .flashing-follow-slow { animation: flash-red-slow 2.5s ease-in-out infinite; }
+
+    @keyframes point-right-bounce {
+      0%, 100% { transform: translateX(0) scale(1); }
+      50% { transform: translateX(6px) scale(1.08); }
+    }
+    .pointing-arrow-right { 
+      display: inline-block;
+      animation: point-right-bounce 1.2s ease-in-out infinite; 
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
+    }
+
+    @keyframes point-bounce-slow {
+      0%, 100% { transform: rotate(-45deg) translateX(0) scale(1); }
+      50% { transform: rotate(-45deg) translateX(6px) scale(1.08); }
+    }
+    .pointing-arrow-slow { 
+      transform: rotate(-45deg);
+      display: inline-block;
+      animation: point-bounce-slow 1.2s ease-in-out infinite; 
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
+    }
+
+    .tiktok-card-text { 
+      font-family: Arial, sans-serif !important;
+      color: #000000 !important; 
+      text-shadow: none !important;
+    }
+    .dark .tiktok-card-text { 
+      font-family: Arial, sans-serif !important;
+      color: #000000 !important; 
+      text-shadow: none !important;
+    }
+
+    .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
+    
+    @keyframes spin-once { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .animate-spin-once { animation: spin-once 0.4s ease-in-out; }
+
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes float-subtle {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+    }
+    .floating-ticker-card {
+      animation: float-subtle 4s ease-in-out infinite;
+    }
+
+    @keyframes metallic-shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes rank-3d-float {
+      0%, 100% { transform: perspective(300px) rotateY(-8deg) rotateX(6deg) scale(1); }
+      50% { transform: perspective(300px) rotateY(8deg) rotateX(-4deg) scale(1.08); }
+    }
+
+    .rank-3d-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      line-height: 1;
+      border-radius: 0.65rem;
+      transform-style: preserve-3d;
+      animation: rank-3d-float 3s ease-in-out infinite;
+      user-select: none;
+    }
+
+    .rank-3d-1 {
+      background: linear-gradient(145deg, #fef08a 0%, #f59e0b 45%, #b45309 100%);
+      color: #1c1917;
+      border: 1.5px solid #fffbeb;
+      box-shadow: 0 3px 0 #78350f, 0 5px 0 #451a03, 0 8px 14px rgba(245, 158, 11, 0.55), inset 0 2px 3px rgba(255, 255, 255, 0.85);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+    }
+
+    .rank-3d-2 {
+      background: linear-gradient(145deg, #ffffff 0%, #cbd5e1 45%, #64748b 100%);
+      color: #0f172a;
+      border: 1.5px solid #f8fafc;
+      box-shadow: 0 3px 0 #475569, 0 5px 0 #1e293b, 0 8px 14px rgba(56, 189, 248, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+    }
+
+    .rank-3d-3 {
+      background: linear-gradient(145deg, #fed7aa 0%, #ea580c 48%, #9a3412 100%);
+      color: #ffffff;
+      border: 1.5px solid #ffedd5;
+      box-shadow: 0 3px 0 #7c2d12, 0 5px 0 #431407, 0 8px 14px rgba(234, 88, 12, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.7);
+      text-shadow: 0 1.5px 2px rgba(67, 20, 7, 0.85);
+    }
+
+    @keyframes name-pop-1st {
+      0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.75)); }
+      25% { transform: translateY(-2.5px) scale(1.07); filter: drop-shadow(0 0 16px rgba(253, 224, 71, 1)); }
+      50% { transform: translateY(0) scale(1.02); filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.85)); }
+      75% { transform: translateY(-1.5px) scale(1.05); filter: drop-shadow(0 0 14px rgba(253, 224, 71, 0.95)); }
+    }
+
+    @keyframes name-pop-2nd {
+      0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6)); }
+      50% { transform: translateY(-2px) scale(1.05); filter: drop-shadow(0 0 13px rgba(186, 230, 253, 0.95)); }
+    }
+
+    @keyframes name-pop-3rd {
+      0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.6)); }
+      50% { transform: translateY(-1.5px) scale(1.04); filter: drop-shadow(0 0 12px rgba(253, 186, 116, 0.9)); }
+    }
+
+    .podium-name-1 {
+      display: inline-block;
+      font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      background: linear-gradient(110deg, #b45309 0%, #f59e0b 30%, #fef08a 50%, #f59e0b 70%, #b45309 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 2.2s linear infinite, name-pop-1st 1.8s ease-in-out infinite;
+    }
+    .dark .podium-name-1 {
+      background: linear-gradient(110deg, #fde047 0%, #ffffff 30%, #facc15 50%, #ffffff 70%, #fde047 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .podium-name-2 {
+      display: inline-block;
+      font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.025em;
+      background: linear-gradient(110deg, #0284c7 0%, #38bdf8 30%, #e0f2fe 50%, #38bdf8 70%, #0284c7 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 2.6s linear infinite, name-pop-2nd 2.1s ease-in-out infinite;
+    }
+    .dark .podium-name-2 {
+      background: linear-gradient(110deg, #e2e8f0 0%, #38bdf8 30%, #ffffff 50%, #38bdf8 70%, #e2e8f0 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .podium-name-3 {
+      display: inline-block;
+      font-family: 'Fredoka', 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.025em;
+      background: linear-gradient(110deg, #9a3412 0%, #ea580c 30%, #fed7aa 50%, #ea580c 70%, #9a3412 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 3s linear infinite, name-pop-3rd 2.4s ease-in-out infinite;
+    }
+    .dark .podium-name-3 {
+      background: linear-gradient(110deg, #fdba74 0%, #fb923c 30%, #ffffff 50%, #fb923c 70%, #fdba74 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .pts-gold {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(110deg, #92400e 0%, #b45309 25%, #d97706 50%, #b45309 75%, #78350f 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 2.8s linear infinite;
+    }
+    .dark .pts-gold {
+      background: linear-gradient(110deg, #f59e0b 0%, #fde047 25%, #ffffff 50%, #fde047 75%, #eab308 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.7)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-gold-glow {
+      border: 1.5px solid #f59e0b !important;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%) !important;
+      box-shadow: 0 3px 10px rgba(245, 158, 11, 0.25) !important;
+    }
+    .dark .card-gold-glow {
+      border: 1.5px solid rgba(250, 204, 21, 0.9) !important;
+      background: linear-gradient(135deg, #2b1f05 0%, #141b2d 100%) !important;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.45), inset 0 0 12px rgba(250, 204, 21, 0.2) !important;
+    }
+
+    .pts-silver {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(110deg, #334155 0%, #475569 25%, #0284c7 50%, #475569 75%, #1e293b 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 3.2s linear infinite;
+    }
+    .dark .pts-silver {
+      background: linear-gradient(110deg, #94a3b8 0%, #e2e8f0 25%, #ffffff 50%, #e2e8f0 75%, #cbd5e1 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 8px rgba(226, 232, 240, 0.65)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-silver-glow {
+      border: 1.5px solid #94a3b8 !important;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+      box-shadow: 0 3px 10px rgba(100, 116, 139, 0.2) !important;
+    }
+    .dark .card-silver-glow {
+      border: 1.5px solid rgba(203, 213, 225, 0.85) !important;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+      box-shadow: 0 0 14px rgba(203, 213, 225, 0.35), inset 0 0 10px rgba(226, 232, 240, 0.15) !important;
+    }
+
+    .pts-bronze {
+      font-family: 'Orbitron', 'Cinzel', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(110deg, #7c2d12 0%, #9a3412 25%, #ea580c 50%, #9a3412 75%, #431407 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: metallic-shimmer 3.6s linear infinite;
+    }
+    .dark .pts-bronze {
+      background: linear-gradient(110deg, #ea580c 0%, #fdba74 25%, #ffffff 50%, #fdba74 75%, #f97316 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9));
+    }
+
+    .card-bronze-glow {
+      border: 1.5px solid #ea580c !important;
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%) !important;
+      box-shadow: 0 3px 10px rgba(234, 88, 12, 0.2) !important;
+    }
+    .dark .card-bronze-glow {
+      border: 1.5px solid rgba(249, 115, 22, 0.85) !important;
+      background: linear-gradient(135deg, #2d1408 0%, #141b2d 100%) !important;
+      box-shadow: 0 0 14px rgba(234, 88, 12, 0.35), inset 0 0 10px rgba(251, 146, 60, 0.15) !important;
+    }
+
+    /* Twin-Bell Clock & Explosion Animations */
+    @keyframes clock-shake-ring {
+      0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      15% { transform: translate(-3px, 1px) rotate(-5deg) scale(1.03); }
+      30% { transform: translate(3px, -1px) rotate(5deg) scale(1.04); }
+      45% { transform: translate(-3px, -1px) rotate(-4deg) scale(1.03); }
+      60% { transform: translate(3px, 1px) rotate(4deg) scale(1.04); }
+      75% { transform: translate(-2px, 1px) rotate(-2deg) scale(1.02); }
+      90% { transform: translate(2px, -1px) rotate(2deg) scale(1.02); }
+    }
+    .clock-shaking {
+      animation: clock-shake-ring 0.28s linear infinite;
+    }
+
+    @keyframes wave-pulse {
+      0%, 100% { opacity: 0.25; transform: scale(0.92); }
+      50% { opacity: 1; transform: scale(1.06); }
+    }
+    .sound-wave-anim {
+      transform-origin: center;
+      animation: wave-pulse 0.6s ease-in-out infinite;
+    }
+
+    @keyframes clock-explode-body {
+      0% { transform: scale(1) rotate(0deg); opacity: 1; }
+      35% { transform: scale(1.22) rotate(6deg); opacity: 1; }
+      100% { transform: scale(0.15) rotate(-25deg); opacity: 0; }
+    }
+    .clock-exploded {
+      animation: clock-explode-body 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes nellie-pop-reveal {
+      0% { transform: scale(0.3) rotate(-14deg); opacity: 0; }
+      65% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .nellie-exploded-placeholder {
+      animation: nellie-pop-reveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.18s both, char-grow-shrink 2.8s ease-in-out 0.7s infinite;
+      filter: drop-shadow(0 0 16px rgba(236, 72, 153, 0.85)) drop-shadow(0 0 28px rgba(56, 189, 248, 0.65));
+    }
+
+    @keyframes blast-piece-1 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
+      100% { transform: translate(-52px, -44px) rotate(-150deg) scale(1.1); opacity: 0; }
+    }
+    @keyframes blast-piece-2 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
+      100% { transform: translate(54px, -40px) rotate(165deg) scale(1.1); opacity: 0; }
+    }
+    @keyframes blast-piece-3 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
+      100% { transform: translate(-48px, 42px) rotate(-120deg) scale(1); opacity: 0; }
+    }
+    @keyframes blast-piece-4 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.7); opacity: 1; }
+      100% { transform: translate(50px, 44px) rotate(135deg) scale(1); opacity: 0; }
+    }
+    @keyframes blast-piece-5 {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.8); opacity: 1; }
+      100% { transform: translate(0px, -58px) rotate(90deg) scale(1.25); opacity: 0; }
+    }
+    .blast-p1 { animation: blast-piece-1 0.75s ease-out forwards; }
+    .blast-p2 { animation: blast-piece-2 0.75s ease-out forwards; }
+    .blast-p3 { animation: blast-piece-3 0.75s ease-out forwards; }
+    .blast-p4 { animation: blast-piece-4 0.75s ease-out forwards; }
+    .blast-p5 { animation: blast-piece-5 0.75s ease-out forwards; }
+  </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden overflow-y-auto relative font-['Plus_Jakarta_Sans']">
+
+  <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="resetToInitial()">
+        <div class="w-9 h-9 rounded-full border-2 border-indigo-500 shadow-sm shrink-0 bg-slate-900 overflow-hidden flex items-center justify-center">
+          <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-cover">
+        </div>
+        <div>
+          <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
+            Nellie B - Chatomizer
+          </h1>
+          <p id="header-tagline" class="text-[10px] font-bold tracking-widest uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">LET&#39;S CHAT IT UP</p>
+        </div>
+      </div>
+
+      <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
+        <span id="header-follow-text" class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">Follow Me</span>
+        <span class="pointing-arrow-right text-xl sm:text-2xl text-red-500 select-none" title="Pointing to TikTok">👉</span>
+      </div>
+
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Language Dropdown & Quick ES/EN Toggle -->
+        <div class="flex items-center bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-0.5 shadow-sm" title="Select Language">
+          <i class="fa-solid fa-globe text-xs text-indigo-600 dark:text-cyan-300 pl-2 pr-1"></i>
+          <select id="language-select" onchange="setLanguage(this.value)" class="bg-transparent text-slate-900 dark:text-white text-[11px] sm:text-xs font-extrabold pr-1.5 py-1 focus:outline-none cursor-pointer">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="pt">Português</option>
+            <option value="it">Italiano</option>
+          </select>
+          <button id="quick-es-toggle-btn" onclick="toggleSpanishEnglish()" class="px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-black uppercase tracking-wider transition-colors cursor-pointer" title="Toggle between Spanish and English">
+            ES
+          </button>
+        </div>
+
+        <!-- Tutorial Button (Left of Scores) -->
+        <button id="header-tutorial-btn" onclick="toggleTutorialModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="How to Play & Party Guide">
+          <i class="fa-solid fa-graduation-cap text-sm text-cyan-200"></i>
+          <span id="header-tutorial-label" class="hidden sm:inline">Tutorial</span>
+        </button>
+
+        <button id="header-scores-btn" onclick="toggleScoresModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
+          <i class="fa-solid fa-trophy text-sm text-yellow-200"></i>
+          <span id="header-scores-label" class="hidden sm:inline">Scores</span>
+        </button>
+
+        <a href="https://www.tiktok.com/@nellie_b" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
+          <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
+          <span id="header-tiktok-desktop" class="hidden sm:inline">Go to My TikTok</span>
+          <span id="header-tiktok-mobile" class="sm:hidden">TikTok</span>
+        </a>
+
+        <button id="open-favorites-btn" onclick="toggleFavoritesDrawer(true)" class="relative p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95" title="Saved Topics">
+          <i class="fa-solid fa-bookmark text-sm"></i>
+          <span id="favorites-badge" class="hidden absolute -top-1 -right-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+        </button>
+
+        <button onclick="toggleDarkMode()" title="Toggle Theme" class="p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95">
+          <i class="fa-solid fa-sun text-amber-500 dark:hidden text-sm"></i>
+          <i class="fa-solid fa-moon hidden dark:block text-indigo-400 text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Global Top Scrolling Leaderboard Ticker -->
+  <div id="global-ticker-container" class="relative z-30 w-full bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-indigo-500/30 overflow-hidden py-1.5 shadow-sm transition-colors">
+    <div class="flex items-center">
+      <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1.5 shadow-md">
+        <i class="fa-solid fa-crown text-slate-950"></i> <span id="ticker-podium-label">TOP 3 PODIUM</span>
+      </div>
+      <div class="overflow-hidden whitespace-nowrap flex-grow relative">
+        <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-xs font-bold"></div>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between">
+    <!-- Compact Single-Row Control Bar: View Toggle + Presets Modal Button + Categories Modal Button -->
+    <div class="shrink-0 mb-2">
+      <div class="flex flex-wrap items-center justify-center sm:justify-between gap-2 py-0.5 text-xs">
+        <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
+          <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-square text-[11px]"></i> <span id="view-label-1">1 Card</span>
+          </button>
+          <button id="view-btn-4" onclick="setLayoutView(4)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-border-all text-[11px]"></i> <span id="view-label-4">4 Cards</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <!-- Presets Modal Trigger Button -->
+          <button onclick="togglePresetsModal(true)" class="px-3 py-1.5 rounded-xl bg-indigo-600/15 dark:bg-indigo-500/20 hover:bg-indigo-600/25 dark:hover:bg-indigo-500/30 border border-indigo-400/50 dark:border-indigo-400/40 text-indigo-700 dark:text-indigo-200 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-sm cursor-pointer" title="Choose a Preset Mix">
+            <i class="fa-solid fa-sliders text-indigo-500 dark:text-indigo-300"></i>
+            <span id="presets-prefix-label">Presets:</span>
+            <span id="active-preset-label" class="font-extrabold text-slate-900 dark:text-white">Balanced Mix</span>
+            <i class="fa-solid fa-chevron-down text-[10px] opacity-70"></i>
+          </button>
+
+          <!-- Categories Modal Trigger Button -->
+          <button onclick="toggleCategoriesModal(true)" class="px-3 py-1.5 rounded-xl bg-pink-600/15 dark:bg-pink-500/20 hover:bg-pink-600/25 dark:hover:bg-pink-500/30 border border-pink-400/50 dark:border-pink-400/40 text-pink-700 dark:text-pink-200 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-sm cursor-pointer" title="Select or Unselect Categories">
+            <i class="fa-solid fa-layer-group text-pink-500 dark:text-pink-300"></i>
+            <span id="categories-btn-label">Categories</span>
+            <span id="active-categories-badge" class="px-1.5 py-0.5 rounded-full bg-pink-600 text-white text-[10px] font-black leading-none">10/10</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- One-Time Tutorial Finder Note (Shown when user skips initial tutorial) -->
+    <div id="tutorial-finder-note" class="hidden shrink-0 mb-2 px-3.5 py-2 rounded-xl bg-indigo-500/15 dark:bg-indigo-500/20 border border-indigo-400/40 text-slate-800 dark:text-slate-100 text-xs flex items-center justify-between gap-3 shadow-sm">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-circle-info text-indigo-500 dark:text-cyan-300 shrink-0"></i>
+        <span id="tutorial-note-text">
+          Need the guide later? Click the <strong class="text-indigo-700 dark:text-cyan-300">Tutorial</strong> button in the top bar anytime.
+        </span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="tutorial-note-open-btn" onclick="openTutorialFromNote()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] cursor-pointer transition-colors">
+          Open Tutorial
+        </button>
+        <button onclick="dismissTutorialNote()" class="p-1 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer" title="Dismiss note">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Stage: Card + Vertical Right-Side Alarm Clock Rail (in 1-Card Mode) -->
+    <div class="w-full flex flex-col items-center justify-center my-auto flex-grow min-h-[300px]">
+      <div id="single-card-stage" class="w-full flex flex-col md:flex-row items-center md:items-stretch justify-center gap-3.5 py-1">
+        <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1"></div>
+
+        <!-- Vertical Timer Panel: Timer on Top, Big Alarm Clock in Middle, Options Below -->
+        <aside id="single-card-bomb-timer" class="hidden w-full md:w-56 shrink-0 bg-white/95 dark:bg-slate-900/95 border border-slate-300 dark:border-rose-500/40 rounded-2xl p-3.5 shadow-xl backdrop-blur-md flex flex-col items-center justify-between gap-2.5 transition-colors">
+          <!-- Top: Countdown & Progress -->
+          <div class="w-full flex flex-col items-center text-center">
+            <div class="flex items-center justify-center gap-2">
+              <span id="bomb-timer-display" class="font-mono font-black text-2xl sm:text-3xl tracking-wider text-slate-900 dark:text-white">00:30</span>
+            </div>
+            <span id="bomb-boom-banner" class="hidden mt-1 px-2.5 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] tracking-wider uppercase animate-bounce">BOOM! TIME&#39;S UP</span>
+            <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1.5">
+              <div id="bomb-progress-bar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-200" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <!-- Middle: Stand-Alone Twin-Bell Alarm Clock that Shakes & Explodes (with Nellie Placeholder After Blast) -->
+          <div class="relative flex items-center justify-center my-1 min-h-[124px] w-full select-none">
+            <div id="twin-bell-clock-wrapper" class="relative w-28 h-28 flex items-center justify-center">
+              <svg id="twin-bell-clock-svg" viewBox="0 0 140 140" class="w-28 h-28 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="clock-waves-left" class="opacity-40">
+                  <path d="M22 44C14 54 14 70 22 80" stroke="#38BDF8" stroke-width="3.2" stroke-linecap="round"/>
+                  <path d="M14 38C3 52 3 72 14 86" stroke="#F472B6" stroke-width="2.8" stroke-linecap="round"/>
+                </g>
+                <g id="clock-waves-right" class="opacity-40">
+                  <path d="M118 44C126 54 126 70 118 80" stroke="#38BDF8" stroke-width="3.2" stroke-linecap="round"/>
+                  <path d="M126 38C137 52 137 72 126 86" stroke="#F472B6" stroke-width="2.8" stroke-linecap="round"/>
+                </g>
+                <line x1="70" y1="20" x2="70" y2="34" stroke="#E2E8F0" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="70" cy="17" r="4.5" stroke="#FACC15" stroke-width="2.5"/>
+                <path d="M33 44C28 33 36 22 48 26C53 28 56 32 57 36" stroke="#F472B6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M107 44C112 33 104 22 92 26C87 28 84 32 83 36" stroke="#F472B6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="46" y1="106" x2="36" y2="122" stroke="#E2E8F0" stroke-width="4.5" stroke-linecap="round"/>
+                <line x1="94" y1="106" x2="104" y2="122" stroke="#E2E8F0" stroke-width="4.5" stroke-linecap="round"/>
+                <circle cx="70" cy="72" r="38" fill="#0F172A" stroke="#F8FAFC" stroke-width="4.5"/>
+                <circle cx="70" cy="72" r="32" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="2 6"/>
+                <line x1="70" y1="72" x2="70" y2="49" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>
+                <line id="clock-second-hand" x1="70" y1="72" x2="88" y2="62" stroke="#FF2A85" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="70" cy="72" r="4" fill="#F8FAFC"/>
+              </svg>
+
+              <div id="clock-nellie-placeholder" onclick="resetBombTimer(false)" title="Click to reset clock" class="hidden absolute inset-0 flex flex-col items-center justify-center cursor-pointer z-10">
+                <div class="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-amber-400 to-cyan-400 shadow-lg nellie-exploded-placeholder">
+                  <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie Waiting" class="w-full h-full object-contain rounded-full bg-slate-900/90">
+                </div>
+              </div>
+
+              <div id="clock-explosion-burst" class="hidden absolute inset-0 pointer-events-none flex items-center justify-center z-20">
+                <i class="fa-solid fa-burst text-5xl text-amber-400 blast-p5 drop-shadow-[0_0_14px_rgba(251,191,36,0.95)]"></i>
+                <span class="blast-shard blast-p1 absolute w-3 h-3 rounded-sm bg-rose-500"></span>
+                <span class="blast-shard blast-p2 absolute w-3 h-3 rounded-full bg-amber-300"></span>
+                <span class="blast-shard blast-p3 absolute w-3 h-2 rounded-sm bg-cyan-400"></span>
+                <span class="blast-shard blast-p4 absolute w-3 h-3 rounded-full bg-pink-500"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom: Options & Controls -->
+          <div class="w-full flex flex-col gap-1.5">
+            <div class="grid grid-cols-3 gap-1">
+              <button onclick="setBombDuration(15)" class="py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">15s</button>
+              <button onclick="setBombDuration(30)" class="py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">30s</button>
+              <button onclick="setBombDuration(60)" class="py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">60s</button>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button id="bomb-toggle-btn" onclick="toggleBombTimer()" class="flex-1 py-1.5 rounded-lg text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white shadow cursor-pointer flex items-center justify-center gap-1">
+                <i id="bomb-toggle-icon" class="fa-solid fa-play"></i>
+                <span id="bomb-toggle-label">Start</span>
+              </button>
+              <button id="bomb-reset-btn" onclick="resetBombTimer(false)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer" title="Reset Timer">
+                <i class="fa-solid fa-rotate-left"></i>
+              </button>
+            </div>
+          </div>
+        </aside>
+      </div>
+      
+      <div id="single-card-floating-ticker" class="hidden w-full max-w-3xl mx-auto mt-2">
+        <div class="floating-ticker-card bg-white/95 dark:bg-slate-950/95 border border-slate-300 dark:border-amber-500/40 rounded-2xl overflow-hidden py-2 px-1.5 shadow-xl dark:shadow-2xl backdrop-blur-md transition-colors">
+          <div class="flex items-center">
+            <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-xl z-10 shrink-0 flex items-center gap-1 shadow-md">
+              <i class="fa-solid fa-crown"></i> <span id="floating-podium-label">TOP 3</span>
+            </div>
+            <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
+              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-lg sm:text-2xl font-extrabold"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shrink-0 pt-2 pb-1 flex flex-col items-center justify-center gap-1">
+      <button id="generate-btn" onclick="generateTopics()" class="group relative w-full sm:w-auto px-7 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer">
+        <i id="generate-icon" class="fa-solid fa-dice text-xl group-hover:rotate-180 transition-transform duration-300"></i>
+        <span id="generate-btn-text">Click to Change Cards</span>
+        <span id="generate-btn-badge" class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full font-bold ml-1">4 Cards</span>
+      </button>
+
+      <p id="footer-shortcut-hint" class="text-[11px] text-slate-400 dark:text-slate-500 text-center">
+        Tap or click any card, press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[10px]">Spacebar</kbd>, or use <i class="fa-solid fa-rotate text-xs text-indigo-400"></i> to flip topics.
+      </p>
+    </div>
+  </main>
+
+  <footer class="relative z-30 w-full py-1.5 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
+    <p>&copy; Nellie B Chatomizer &bull; <button id="privacy-link-btn" onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
+  </footer>
+
+  <!-- Initial Welcome Modal Asking If User Wants the Tutorial -->
+  <div id="welcome-tutorial-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="declineInitialTutorial()" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md cursor-pointer"></div>
+    <div class="relative w-full max-w-md bg-white dark:bg-slate-900 border-2 border-indigo-500/50 rounded-3xl p-6 shadow-2xl z-10 text-center space-y-4">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 p-0.5 shadow-lg">
+        <div class="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
+          <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie Host" class="w-full h-full object-cover anim-grow-shrink">
+        </div>
+      </div>
+
+      <div class="space-y-1.5">
+        <span id="welcome-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-400/40 text-indigo-600 dark:text-indigo-300 text-[10px] font-black uppercase tracking-widest">
+          <i class="fa-solid fa-sparkles"></i> Welcome to Chatomizer
+        </span>
+        <h2 id="welcome-title" class="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+          Would you like to check out the Tutorial?
+        </h2>
+        <p id="welcome-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+          We can walk you through topic decks, the alarm timer, leaderboard scoring, and saved queues - or take you straight to the cards.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
+        <button id="welcome-decline-btn" onclick="declineInitialTutorial()" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition-colors cursor-pointer">
+          No, Go to Page
+        </button>
+        <button id="welcome-accept-btn" onclick="acceptInitialTutorial()" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-extrabold text-xs shadow-lg transition-all cursor-pointer">
+          Yes, Open Tutorial
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Presets Selection Modal -->
+  <div id="presets-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="togglePresetsModal(false)" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-indigo-500/40 rounded-2xl p-5 shadow-2xl z-10 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 id="presets-modal-title" class="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-indigo-500"></i> Choose a Preset Mix
+        </h3>
+        <button onclick="togglePresetsModal(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <p id="presets-modal-subtitle" class="text-xs text-slate-500 dark:text-slate-400">Pick a curated vibe to automatically select matching decks:</p>
+      <div id="mode-pills" class="flex flex-col gap-2"></div>
+    </div>
+  </div>
+
+  <!-- Categories Selection Modal (with Select All & Unselect All) -->
+  <div id="categories-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="toggleCategoriesModal(false)" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-pink-500/40 rounded-2xl p-5 shadow-2xl z-10 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 id="categories-modal-title" class="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-pink-500"></i> Select Question Categories
+        </h3>
+        <button onclick="toggleCategoriesModal(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Select All / Unselect All Action Bar -->
+      <div id="category-bulk-actions" class="flex items-center gap-2"></div>
+
+      <!-- Category Toggle Grid -->
+      <div id="category-pills" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[55vh] overflow-y-auto custom-scroll pr-1"></div>
+
+      <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <span id="modal-selected-summary" class="text-xs font-bold text-slate-500 dark:text-slate-400">10 of 10 selected</span>
+        <button id="categories-done-btn" onclick="toggleCategoriesModal(false)" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow cursor-pointer transition-colors">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fun & Interactive Tutorial Modal -->
+  <div id="tutorial-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5">
+    <div onclick="toggleTutorialModal(false)" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md cursor-pointer"></div>
+    <div class="relative w-full max-w-2xl bg-white dark:bg-slate-900 border-2 border-indigo-500/50 rounded-3xl shadow-2xl z-10 overflow-hidden flex flex-col max-h-[90vh]">
+      
+      <!-- Modal Hero Banner -->
+      <div class="relative bg-gradient-to-r from-indigo-950 via-purple-950 to-slate-950 p-5 sm:p-6 border-b border-indigo-500/30 flex items-center justify-between gap-4 overflow-hidden">
+        <div class="flex items-center gap-3.5 relative z-10">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 p-0.5 shadow-lg shrink-0">
+            <div class="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
+              <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie Host" class="w-full h-full object-cover anim-grow-shrink">
+            </div>
+          </div>
+          <div>
+            <div id="tut-hero-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-[10px] font-black uppercase tracking-widest mb-1">
+              <i class="fa-solid fa-sparkles"></i> Party Host Guide
+            </div>
+            <h2 id="tut-hero-title" class="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight">
+              Welcome to <span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer!</span>
+            </h2>
+            <p id="tut-hero-sub" class="text-xs text-slate-300 mt-0.5">Everything you need to host lively chats, debates &amp; party rounds.</p>
+          </div>
+        </div>
+
+        <button onclick="toggleTutorialModal(false)" class="relative z-10 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white transition-colors cursor-pointer shrink-0" title="Close Tutorial">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Interactive Step Tabs -->
+      <div class="grid grid-cols-4 gap-1.5 bg-slate-100 dark:bg-slate-950/90 p-2.5 border-b border-slate-200 dark:border-slate-800 shrink-0">
+        <button id="tut-tab-0" onclick="setTutorialStep(0)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-layer-group text-indigo-400"></i>
+          <span id="tut-tab-label-0">1. Decks</span>
+        </button>
+        <button id="tut-tab-1" onclick="setTutorialStep(1)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-bell text-rose-400"></i>
+          <span id="tut-tab-label-1">2. Timer</span>
+        </button>
+        <button id="tut-tab-2" onclick="setTutorialStep(2)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-trophy text-amber-400"></i>
+          <span id="tut-tab-label-2">3. Podium</span>
+        </button>
+        <button id="tut-tab-3" onclick="setTutorialStep(3)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
+          <span id="tut-tab-label-3">4. Pro Tips</span>
+        </button>
+      </div>
+
+      <!-- Tutorial Step Content Area -->
+      <div id="tutorial-step-body" class="p-5 sm:p-6 overflow-y-auto custom-scroll flex-grow space-y-4"></div>
+
+      <!-- Footer Navigation -->
+      <div class="p-4 bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
+        <div id="tutorial-dots" class="flex items-center gap-1.5"></div>
+        <div class="flex items-center gap-2">
+          <button id="tut-prev-btn" onclick="stepTutorial(-1)" class="px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold transition-colors cursor-pointer">
+            <i class="fa-solid fa-arrow-left mr-1"></i> <span id="tut-prev-label">Back</span>
+          </button>
+          <button id="tut-next-btn" onclick="stepTutorial(1)" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-extrabold shadow cursor-pointer">
+            <span id="tut-next-label">Next</span> <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manage Session Scores Modal -->
+  <div id="scores-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="toggleScoresModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 id="scores-modal-title" class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-trophy text-amber-500"></i> Manage Session Leaderboard Scores
+        </h3>
+        <button onclick="toggleScoresModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <p id="scores-modal-desc" class="text-xs text-slate-500 dark:text-slate-400">
+        Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!
+      </p>
+
+      <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden max-h-[50vh] overflow-y-auto custom-scroll">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 sticky top-0 z-10">
+            <tr>
+              <th id="scores-th-user" class="p-2.5 font-bold">Username</th>
+              <th id="scores-th-points" class="p-2.5 font-bold w-28">Session Points</th>
+              <th id="scores-th-action" class="p-2.5 font-bold w-12 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="scores-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button id="scores-add-btn" onclick="addScoreRow('', '')" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+          <i class="fa-solid fa-plus text-indigo-500"></i> Add User
+        </button>
+        <div class="flex items-center gap-2">
+          <button id="scores-clear-btn" onclick="clearAllScores()" class="px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors cursor-pointer">Clear All</button>
+          <button id="scores-save-btn" onclick="saveAndApplyScores()" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer shadow">Save & Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Modal -->
+  <div id="privacy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="togglePrivacyModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 id="privacy-modal-title" class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-indigo-500"></i> Privacy Policy
+        </h3>
+        <button onclick="togglePrivacyModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="text-xs space-y-2 max-h-[60vh] overflow-y-auto pr-1">
+        <p id="privacy-modal-body"><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.</p>
+      </div>
+      <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-right">
+        <button id="privacy-close-btn" onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favorites Drawer -->
+  <div id="favorites-drawer" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300">
+    <div id="drawer-backdrop" onclick="toggleFavoritesDrawer(false)" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+    <div id="drawer-content" class="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl p-5 flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-out pointer-events-auto border-l border-slate-200 dark:border-slate-800">
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-3">
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 rounded-lg bg-pink-100 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400">
+              <i class="fa-solid fa-bookmark text-sm"></i>
+            </div>
+            <div>
+              <h3 id="favorites-drawer-title" class="font-bold text-base text-slate-900 dark:text-white">Saved Topics</h3>
+              <p id="favorites-drawer-sub" class="text-[10px] text-slate-500 dark:text-slate-400">Click any prompt to load it</p>
+            </div>
+          </div>
+          <button onclick="toggleFavoritesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div id="saved-topics-list" class="space-y-2.5 overflow-y-auto max-h-[70vh] pr-1"></div>
+      </div>
+      <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+        <button id="favorites-clear-btn" onclick="clearAllFavorites()" class="w-full py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-trash-can"></i> Clear Saved
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Each category maps to a standalone JSON file under ./data/
+    var CATEGORY_FILES = {
+      "Philosophy": "data/questions-philosophy.json",
+      "Deep Questions": "data/questions-deep-questions.json",
+      "Humor/Fun": "data/questions-humor-fun.json",
+      "Current Events": "data/questions-current-events.json",
+      "Would You Rather": "data/questions-would-you-rather.json",
+      "Pop Culture": "data/questions-pop-culture.json",
+      "Personal Stories": "data/questions-personal-stories.json",
+      "Science & Tech": "data/questions-science-tech.json",
+      "Did You Know?": "data/questions-did-you-know.json",
+      "Music Fun Facts": "data/questions-music-fun-facts.json"
+    };
+
+    var FALLBACK_QUESTIONS = {
+      "Philosophy": [
+        "1. What is one belief you held strongly five years ago that you no longer hold today?",
+        "2. If you could know the absolute truth to one mystery of the universe, which one would you pick?"
+      ],
+      "Deep Questions": [
+        "1. What everyday habit do you think most people do backward?",
+        "2. What is something most people don't know about you until they've known you for years?"
+      ],
+      "Humor/Fun": [
+        "1. What is a weird food combination you secretly love?",
+        "2. If your life had a theme song that played every time you walked into a room, what would it be?"
+      ],
+      "Current Events": [
+        "1. What technology trend are you most excited or cautious about right now?",
+        "2. What news or cultural shift has changed how you spend your free time?"
+      ],
+      "Would You Rather": [
+        "1. Would you rather always have to tell the complete truth or never speak unless asked a direct question?",
+        "2. Would you rather travel back 100 years or jump 100 years into the future?"
+      ],
+      "Pop Culture": [
+        "1. What movie or show have you rewatched more times than you can count?",
+        "2. Which fictional universe would you actually want to live in for a week?"
+      ],
+      "Personal Stories": [
+        "1. If time could pause for one hour every day just for you, how would you spend it?",
+        "2. What is a spontaneous decision that turned out surprisingly well for you?"
+      ],
+      "Science & Tech": [
+        "1. If you could invent one gadget to solve an everyday annoyance, what would it do?",
+        "2. What scientific discovery still blows your mind when you stop to think about it?"
+      ],
+      "Did You Know?": [
+        "1. Did you know honey never spoils and has been found in ancient tombs?",
+        "2. Did you know octopuses have three hearts and blue blood?"
+      ],
+      "Music Fun Facts": [
+        "1. What song instantly puts you in a great mood regardless of how your day went?",
+        "2. What album can you listen to from start to finish without skipping a track?"
+      ]
+    };
+
+    var QUESTION_BANKS = {};
+    var categoryPointers = {};
+    Object.keys(CATEGORY_FILES).forEach(function(cat) {
+      QUESTION_BANKS[cat] = (FALLBACK_QUESTIONS[cat] || []).slice();
+      categoryPointers[cat] = 0;
+    });
+
+    // Core app state declarations
+    var cardCountView = 4;
+    var activePreset = "all";
+    var selectedCategories = new Set(Object.keys(CATEGORY_FILES));
+    var currentTopics = [];
+    var cardRevealedStates = [false, false, false, false];
+    var cardTypingTimers = [null, null, null, null];
+    var cardTypingProgress = [0, 0, 0, 0];
+    var cardRevealToken = [0, 0, 0, 0];
+    var languageSwitchSeq = 0;
+    var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
+    var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
+
+    var CATEGORY_STYLES = {
+      "Philosophy": { bg: "bg-purple-100 dark:bg-purple-950/80", text: "text-purple-700 dark:text-purple-200", border: "border-purple-300 dark:border-purple-600" },
+      "Deep Questions": { bg: "bg-indigo-100 dark:bg-indigo-950/80", text: "text-indigo-700 dark:text-indigo-200", border: "border-indigo-300 dark:border-indigo-600" },
+      "Humor/Fun": { bg: "bg-amber-100 dark:bg-amber-950/80", text: "text-amber-800 dark:text-amber-200", border: "border-amber-300 dark:border-amber-600" },
+      "Current Events": { bg: "bg-blue-100 dark:bg-blue-950/80", text: "text-blue-700 dark:text-blue-200", border: "border-blue-300 dark:border-blue-600" },
+      "Would You Rather": { bg: "bg-emerald-100 dark:bg-emerald-950/80", text: "text-emerald-700 dark:text-emerald-200", border: "border-emerald-300 dark:border-emerald-600" },
+      "Pop Culture": { bg: "bg-pink-100 dark:bg-pink-950/80", text: "text-pink-700 dark:text-pink-200", border: "border-pink-300 dark:border-pink-600" },
+      "Personal Stories": { bg: "bg-cyan-100 dark:bg-cyan-950/80", text: "text-cyan-700 dark:text-cyan-200", border: "border-cyan-300 dark:border-cyan-600" },
+      "Science & Tech": { bg: "bg-violet-100 dark:bg-violet-950/80", text: "text-violet-700 dark:text-violet-200", border: "border-violet-300 dark:border-violet-600" },
+      "Did You Know?": { bg: "bg-rose-100 dark:bg-rose-950/80", text: "text-rose-700 dark:text-rose-200", border: "border-rose-300 dark:border-rose-600" },
+      "Music Fun Facts": { bg: "bg-teal-100 dark:bg-teal-950/80", text: "text-teal-700 dark:text-teal-200", border: "border-teal-300 dark:border-teal-600" }
+    };
+
+    var PRESET_MODES = [
+      { id: "all", name: "Balanced Mix", desc: "All 10 categories in rotation", categories: Object.keys(CATEGORY_STYLES) },
+      { id: "icebreaker", name: "Casual Icebreakers", desc: "Humor, Would You Rather, Pop Culture, Stories & Music", categories: ["Humor/Fun", "Would You Rather", "Pop Culture", "Personal Stories", "Music Fun Facts"] },
+      { id: "deep", name: "Deep Discussions", desc: "Philosophy, Deep Questions & Science & Tech", categories: ["Philosophy", "Deep Questions", "Science & Tech"] },
+      { id: "latenight", name: "Late Night Debates", desc: "Philosophy, Did You Know?, Current Events, Tech & Music", categories: ["Philosophy", "Did You Know?", "Current Events", "Science & Tech", "Music Fun Facts"] },
+      { id: "funny", name: "Funny & Silly", desc: "Humor/Fun, Would You Rather, Did You Know? & Music", categories: ["Humor/Fun", "Would You Rather", "Did You Know?", "Music Fun Facts"] }
+    ];
+
+    // --- MULTI-LANGUAGE DICTIONARY & TRANSLATION CACHE ---
+    var currentLanguage = localStorage.getItem("nellieb_lang") || "en";
+    var translationCache = JSON.parse(localStorage.getItem("nellieb_tx_cache") || "{}");
+
+    var UI_TRANSLATIONS = {
+      en: {
+        tagline: "LET'S CHAT IT UP",
+        followMe: "Follow Me",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Switch to Spanish",
+        tutorial: "Tutorial",
+        scores: "Scores",
+        tiktokDesktop: "Go to My TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIUM",
+        podiumShort: "TOP 3",
+        oneCard: "1 Card",
+        fourCards: "4 Cards",
+        presetsPrefix: "Presets:",
+        categoriesBtn: "Categories",
+        tutorialNotePrefix: "Need the guide later? Click the ",
+        tutorialNoteSuffix: " button in the top bar anytime.",
+        openTutorial: "Open Tutorial",
+        boomBanner: "BOOM! TIME'S UP",
+        startBtn: "Start",
+        pauseBtn: "Pause",
+        changeOneCard: "Click to Change Card",
+        dealFourCards: "Deal 4 New Cards",
+        shortcutHintPrefix: "Tap or click any card, press ",
+        shortcutHintMid: ", or use ",
+        shortcutHintSuffix: " to flip topics.",
+        privacyLink: "Privacy Policy",
+        welcomeBadge: "Welcome to Chatomizer",
+        welcomeTitle: "Would you like to check out the Tutorial?",
+        welcomeDesc: "We can walk you through topic decks, the alarm timer, leaderboard scoring, and saved queues - or take you straight to the cards.",
+        welcomeNo: "No, Go to Page",
+        welcomeYes: "Yes, Open Tutorial",
+        presetsTitle: "Choose a Preset Mix",
+        presetsSubtitle: "Pick a curated vibe to automatically select matching decks:",
+        categoriesTitle: "Select Question Categories",
+        selectAll: "Select All",
+        unselectAll: "Unselect All",
+        selectedSummary: "{count} of {total} selected",
+        doneBtn: "Done",
+        tutHeroBadge: "Party Host Guide",
+        tutHeroTitlePrefix: "Welcome to ",
+        tutHeroSub: "Everything you need to host lively chats, debates & party rounds.",
+        tutTabs: ["1. Decks", "2. Timer", "3. Podium", "4. Pro Tips"],
+        tutBack: "Back",
+        tutNext: "Next",
+        tutFinish: "Let's Play!",
+        scoresTitle: "Manage Session Leaderboard Scores",
+        scoresDesc: "Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!",
+        thUser: "Username",
+        thPoints: "Session Points",
+        thAction: "Action",
+        addUser: "Add User",
+        clearAll: "Clear All",
+        saveApply: "Save & Apply",
+        privacyTitle: "Privacy Policy",
+        privacyBody: "<strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.",
+        closeBtn: "Close",
+        savedTitle: "Saved Topics",
+        savedSub: "Click any prompt to load it",
+        clearSaved: "Clear Saved",
+        tapToFlip: "Tap to Flip",
+        topicLabel: "Topic",
+        flipBadge: "FLIP",
+        clickToReveal: "Click card to reveal question",
+        flipBackHint: "Click or Tap to Flip Back",
+        changeCardHint: "Click or Tap to Change",
+        refreshTitle: "Refresh this question",
+        bookmarkTitle: "Bookmark Topic",
+        copyTitle: "Copy Prompt",
+        ptsSuffix: "PTS",
+        emptyPodium: "No podium leaders yet. Click \"Scores\" to enter contenders!",
+        noSavedEmpty: "No saved topics yet.",
+        noSavedSub: "Tap the pin icon on any card to bookmark it!",
+        clickToLoad: "Click to load topic"
+      },
+      es: {
+        tagline: "¡A CHARLAR SE HA DICHO!",
+        followMe: "Sígueme",
+        quickToggleLabel: "EN",
+        quickToggleTitle: "Cambiar a inglés",
+        tutorial: "Tutorial",
+        scores: "Marcador",
+        tiktokDesktop: "Ir a mi TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIO",
+        podiumShort: "TOP 3",
+        oneCard: "1 Carta",
+        fourCards: "4 Cartas",
+        presetsPrefix: "Modos:",
+        categoriesBtn: "Categorías",
+        tutorialNotePrefix: "¿Necesitas la guía luego? Pulsa el botón de ",
+        tutorialNoteSuffix: " en la barra superior cuando quieras.",
+        openTutorial: "Abrir Tutorial",
+        boomBanner: "¡BOOM! SE ACABÓ EL TIEMPO",
+        startBtn: "Iniciar",
+        pauseBtn: "Pausar",
+        changeOneCard: "Toca para cambiar carta",
+        dealFourCards: "Repartir 4 Cartas",
+        shortcutHintPrefix: "Toca cualquier carta, presiona ",
+        shortcutHintMid: " o usa ",
+        shortcutHintSuffix: " para girar temas.",
+        privacyLink: "Política de Privacidad",
+        welcomeBadge: "Bienvenido a Chatomizer",
+        welcomeTitle: "¿Te gustaría ver el Tutorial?",
+        welcomeDesc: "Te guiamos por los mazos, el reloj temporizador, los puntos del podio y tus temas guardados, o vamos directo a las cartas.",
+        welcomeNo: "No, Ir a la Página",
+        welcomeYes: "Sí, Abrir Tutorial",
+        presetsTitle: "Elige un Modo Predefinido",
+        presetsSubtitle: "Selecciona un ambiente para activar los mazos correspondientes:",
+        categoriesTitle: "Selecciona Categorías de Preguntas",
+        selectAll: "Seleccionar Todo",
+        unselectAll: "Deseleccionar Todo",
+        selectedSummary: "{count} de {total} seleccionadas",
+        doneBtn: "Listo",
+        tutHeroBadge: "Guía del Anfitrión",
+        tutHeroTitlePrefix: "¡Bienvenido a ",
+        tutHeroSub: "Todo lo que necesitas para animar charlas, debates y rondas.",
+        tutTabs: ["1. Mazos", "2. Reloj", "3. Podio", "4. Consejos"],
+        tutBack: "Atrás",
+        tutNext: "Siguiente",
+        tutFinish: "¡A Jugar!",
+        scoresTitle: "Administrar Puntos de la Sesión",
+        scoresDesc: "Escribe los nombres y puntos de la sesión. ¡Los 3 primeros ocupan el Podio en la marquesina!",
+        thUser: "Usuario",
+        thPoints: "Puntos",
+        thAction: "Acción",
+        addUser: "Agregar Usuario",
+        clearAll: "Borrar Todo",
+        saveApply: "Guardar y Aplicar",
+        privacyTitle: "Política de Privacidad",
+        privacyBody: "<strong>Tu privacidad importa:</strong> Este sitio es una herramienta interactiva de temas. No requiere registro ni solicita información de identificación personal.",
+        closeBtn: "Cerrar",
+        savedTitle: "Temas Guardados",
+        savedSub: "Toca una pregunta para cargarla",
+        clearSaved: "Borrar Guardados",
+        tapToFlip: "Toca para Girar",
+        topicLabel: "Tema",
+        flipBadge: "GIRAR",
+        clickToReveal: "Toca la carta para ver la pregunta",
+        flipBackHint: "Toca o haz clic para voltear",
+        changeCardHint: "Toca o haz clic para cambiar",
+        refreshTitle: "Cambiar esta pregunta",
+        bookmarkTitle: "Guardar tema",
+        copyTitle: "Copiar pregunta",
+        ptsSuffix: "PTS",
+        emptyPodium: "Aún no hay líderes en el podio. ¡Haz clic en \"Marcador\" para agregar jugadores!",
+        noSavedEmpty: "No hay temas guardados aún.",
+        noSavedSub: "¡Toca el ícono de chincheta en cualquier carta para guardarlo!",
+        clickToLoad: "Toca para cargar el tema"
+      },
+      fr: {
+        tagline: "ON DISCUTE ?",
+        followMe: "Suis-moi",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Passer en espagnol",
+        tutorial: "Tutoriel",
+        scores: "Scores",
+        tiktokDesktop: "Mon TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIUM",
+        podiumShort: "TOP 3",
+        oneCard: "1 Carte",
+        fourCards: "4 Cartes",
+        presetsPrefix: "Modes :",
+        categoriesBtn: "Catégories",
+        tutorialNotePrefix: "Besoin du guide plus tard ? Cliquez sur ",
+        tutorialNoteSuffix: " en haut à tout moment.",
+        openTutorial: "Ouvrir le Tutoriel",
+        boomBanner: "BOUM ! TEMPS ÉCOULÉ",
+        startBtn: "Démarrer",
+        pauseBtn: "Pause",
+        changeOneCard: "Changer la carte",
+        dealFourCards: "Tirer 4 Cartes",
+        shortcutHintPrefix: "Touchez une carte, appuyez sur ",
+        shortcutHintMid: " ou utilisez ",
+        shortcutHintSuffix: " pour changer.",
+        privacyLink: "Confidentialité",
+        welcomeBadge: "Bienvenue sur Chatomizer",
+        welcomeTitle: "Voulez-vous voir le Tutoriel ?",
+        welcomeDesc: "Découvrez les decks, le minuteur, le podium des scores et vos favoris, ou passez directement aux cartes.",
+        welcomeNo: "Non, Aller à la Page",
+        welcomeYes: "Oui, Ouvrir le Tutoriel",
+        presetsTitle: "Choisir un Mix Prédéfini",
+        presetsSubtitle: "Choisissez une ambiance pour activer les catégories associées :",
+        categoriesTitle: "Sélectionner les Catégories",
+        selectAll: "Tout Sélectionner",
+        unselectAll: "Tout Désélectionner",
+        selectedSummary: "{count} sur {total} sélectionnées",
+        doneBtn: "OK",
+        tutHeroBadge: "Guide de Soirée",
+        tutHeroTitlePrefix: "Bienvenue sur ",
+        tutHeroSub: "Tout pour animer vos discussions, débats et jeux.",
+        tutTabs: ["1. Decks", "2. Minuteur", "3. Podium", "4. Astuces"],
+        tutBack: "Retour",
+        tutNext: "Suivant",
+        tutFinish: "C'est Parti !",
+        scoresTitle: "Gérer les Scores de la Session",
+        scoresDesc: "Saisissez les pseudos et points. Les 3 meilleurs montent sur le Podium !",
+        thUser: "Pseudo",
+        thPoints: "Points",
+        thAction: "Action",
+        addUser: "Ajouter",
+        clearAll: "Tout Effacer",
+        saveApply: "Enregistrer",
+        privacyTitle: "Politique de Confidentialité",
+        privacyBody: "<strong>Votre vie privée compte :</strong> Outil interactif de questions sans inscription ni collecte de données personnelles.",
+        closeBtn: "Fermer",
+        savedTitle: "Sujets Enregistrés",
+        savedSub: "Cliquez pour charger la question",
+        clearSaved: "Effacer",
+        tapToFlip: "Toucher pour Retourner",
+        topicLabel: "Thème",
+        flipBadge: "RETOURNER",
+        clickToReveal: "Touchez la carte pour révéler",
+        flipBackHint: "Cliquez pour retourner",
+        changeCardHint: "Cliquez pour changer",
+        refreshTitle: "Actualiser cette question",
+        bookmarkTitle: "Enregistrer",
+        copyTitle: "Copier",
+        ptsSuffix: "PTS",
+        emptyPodium: "Aucun leader pour l'instant. Cliquez sur \"Scores\" !",
+        noSavedEmpty: "Aucun sujet enregistré.",
+        noSavedSub: "Épinglez une carte pour la sauvegarder !",
+        clickToLoad: "Cliquer pour charger"
+      },
+      de: {
+        tagline: "LASS UNS QUATSCHEN",
+        followMe: "Folge Mir",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Auf Spanisch wechseln",
+        tutorial: "Tutorial",
+        scores: "Punkte",
+        tiktokDesktop: "Zu meinem TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIUM",
+        podiumShort: "TOP 3",
+        oneCard: "1 Karte",
+        fourCards: "4 Karten",
+        presetsPrefix: "Mix:",
+        categoriesBtn: "Kategorien",
+        tutorialNotePrefix: "Anleitung später nötig? Klicke oben jederzeit auf ",
+        tutorialNoteSuffix: ".",
+        openTutorial: "Tutorial öffnen",
+        boomBanner: "BOOM! ZEIT ABGELAUFEN",
+        startBtn: "Start",
+        pauseBtn: "Pause",
+        changeOneCard: "Karte wechseln",
+        dealFourCards: "4 Karten ziehen",
+        shortcutHintPrefix: "Karte antippen, ",
+        shortcutHintMid: " drücken oder ",
+        shortcutHintSuffix: " nutzen.",
+        privacyLink: "Datenschutz",
+        welcomeBadge: "Willkommen bei Chatomizer",
+        welcomeTitle: "Möchtest du das Tutorial ansehen?",
+        welcomeDesc: "Entdecke Kartendecks, Wecker-Timer, Bestenliste und Favoriten – oder starte direkt mit den Karten.",
+        welcomeNo: "Nein, Zur Seite",
+        welcomeYes: "Ja, Tutorial öffnen",
+        presetsTitle: "Preset-Mix wählen",
+        presetsSubtitle: "Wähle eine Stimmung für passende Kategorien:",
+        categoriesTitle: "Fragekategorien wählen",
+        selectAll: "Alle wählen",
+        unselectAll: "Alle abwählen",
+        selectedSummary: "{count} von {total} ausgewählt",
+        doneBtn: "Fertig",
+        tutHeroBadge: "Party-Guide",
+        tutHeroTitlePrefix: "Willkommen bei ",
+        tutHeroSub: "Alles für lockere Runden, Debatten und Party-Fragen.",
+        tutTabs: ["1. Decks", "2. Timer", "3. Podium", "4. Tipps"],
+        tutBack: "Zurück",
+        tutNext: "Weiter",
+        tutFinish: "Los geht's!",
+        scoresTitle: "Session-Punkte verwalten",
+        scoresDesc: "Namen und Punkte eingeben. Die Top 3 erscheinen im Podium-Ticker!",
+        thUser: "Name",
+        thPoints: "Punkte",
+        thAction: "Aktion",
+        addUser: "Nutzer hinzufügen",
+        clearAll: "Alle löschen",
+        saveApply: "Speichern",
+        privacyTitle: "Datenschutzrichtlinie",
+        privacyBody: "<strong>Deine Privatsphäre zählt:</strong> Interaktives Fragetool ohne Registrierung oder Erfassung personenbezogener Daten.",
+        closeBtn: "Schließen",
+        savedTitle: "Gespeicherte Themen",
+        savedSub: "Zum Laden antippen",
+        clearSaved: "Löschen",
+        tapToFlip: "Tippen zum Umdrehen",
+        topicLabel: "Thema",
+        flipBadge: "DREHEN",
+        clickToReveal: "Karte antippen zum Aufdecken",
+        flipBackHint: "Klicken zum Zurückdrehen",
+        changeCardHint: "Klicken zum Wechseln",
+        refreshTitle: "Frage neu laden",
+        bookmarkTitle: "Merken",
+        copyTitle: "Kopieren",
+        ptsSuffix: "PKT",
+        emptyPodium: "Noch keine Podiumsplätze. Klicke auf „Punkte“!",
+        noSavedEmpty: "Noch keine Themen gespeichert.",
+        noSavedSub: "Tippe auf das Pin-Symbol einer Karte zum Merken!",
+        clickToLoad: "Zum Laden klicken"
+      },
+      pt: {
+        tagline: "BORA BATER PAPO",
+        followMe: "Siga-me",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Mudar para espanhol",
+        tutorial: "Tutorial",
+        scores: "Placar",
+        tiktokDesktop: "Ir ao TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PÓDIO",
+        podiumShort: "TOP 3",
+        oneCard: "1 Carta",
+        fourCards: "4 Cartas",
+        presetsPrefix: "Modos:",
+        categoriesBtn: "Categorias",
+        tutorialNotePrefix: "Precisa do guia depois? Clique em ",
+        tutorialNoteSuffix: " na barra superior quando quiser.",
+        openTutorial: "Abrir Tutorial",
+        boomBanner: "BOOM! TEMPO ESGOTADO",
+        startBtn: "Iniciar",
+        pauseBtn: "Pausar",
+        changeOneCard: "Trocar Carta",
+        dealFourCards: "Sortear 4 Cartas",
+        shortcutHintPrefix: "Toque em qualquer carta, aperte ",
+        shortcutHintMid: " ou use ",
+        shortcutHintSuffix: " para girar.",
+        privacyLink: "Privacidade",
+        welcomeBadge: "Bem-vindo ao Chatomizer",
+        welcomeTitle: "Quer conferir o Tutorial?",
+        welcomeDesc: "Veja como funcionam os baralhos, o alarme, o placar e os favoritos, ou vá direto para as cartas.",
+        welcomeNo: "Não, Ir para a Página",
+        welcomeYes: "Sim, Abrir Tutorial",
+        presetsTitle: "Escolha um Modo",
+        presetsSubtitle: "Selecione um estilo para ativar os baralhos correspondentes:",
+        categoriesTitle: "Selecionar Categorias",
+        selectAll: "Selecionar Tudo",
+        unselectAll: "Desmarcar Tudo",
+        selectedSummary: "{count} de {total} selecionadas",
+        doneBtn: "Pronto",
+        tutHeroBadge: "Guia do Host",
+        tutHeroTitlePrefix: "Bem-vindo ao ",
+        tutHeroSub: "Tudo para animar conversas, debates e rodadas.",
+        tutTabs: ["1. Baralhos", "2. Timer", "3. Pódio", "4. Dicas"],
+        tutBack: "Voltar",
+        tutNext: "Próximo",
+        tutFinish: "Vamos Jogar!",
+        scoresTitle: "Gerenciar Pontos da Sessão",
+        scoresDesc: "Adicione nomes e pontos. Os 3 melhores entram no Pódio!",
+        thUser: "Usuário",
+        thPoints: "Pontos",
+        thAction: "Ação",
+        addUser: "Adicionar Usuário",
+        clearAll: "Limpar Tudo",
+        saveApply: "Salvar e Aplicar",
+        privacyTitle: "Política de Privacidade",
+        privacyBody: "<strong>Sua privacidade importa:</strong> Ferramenta interativa sem necessidade de cadastro ou dados pessoais.",
+        closeBtn: "Fechar",
+        savedTitle: "Tópicos Salvos",
+        savedSub: "Clique para carregar",
+        clearSaved: "Limpar Salvos",
+        tapToFlip: "Toque para Virar",
+        topicLabel: "Tema",
+        flipBadge: "VIRAR",
+        clickToReveal: "Toque na carta para revelar",
+        flipBackHint: "Clique para virar de volta",
+        changeCardHint: "Clique para trocar",
+        refreshTitle: "Trocar pergunta",
+        bookmarkTitle: "Salvar tema",
+        copyTitle: "Copiar",
+        ptsSuffix: "PTS",
+        emptyPodium: "Ainda sem líderes no pódio. Clique em \"Placar\"!",
+        noSavedEmpty: "Nenhum tópico salvo ainda.",
+        noSavedSub: "Toque no alfinete de uma carta para salvar!",
+        clickToLoad: "Clique para carregar"
+      },
+      it: {
+        tagline: "FACCIAMOCI DUE CHIACCHIERE",
+        followMe: "Seguimi",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Passa allo spagnolo",
+        tutorial: "Tutorial",
+        scores: "Punteggi",
+        tiktokDesktop: "Vai su TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIO",
+        podiumShort: "TOP 3",
+        oneCard: "1 Carta",
+        fourCards: "4 Carte",
+        presetsPrefix: "Mix:",
+        categoriesBtn: "Categorie",
+        tutorialNotePrefix: "Ti serve la guida dopo? Clicca su ",
+        tutorialNoteSuffix: " in alto quando vuoi.",
+        openTutorial: "Apri Tutorial",
+        boomBanner: "BOOM! TEMPO SCADUTO",
+        startBtn: "Avvia",
+        pauseBtn: "Pausa",
+        changeOneCard: "Cambia Carta",
+        dealFourCards: "Pesca 4 Carte",
+        shortcutHintPrefix: "Tocca una carta, premi ",
+        shortcutHintMid: " o usa ",
+        shortcutHintSuffix: " per girare.",
+        privacyLink: "Privacy",
+        welcomeBadge: "Benvenuto su Chatomizer",
+        welcomeTitle: "Vuoi dare un'occhiata al Tutorial?",
+        welcomeDesc: "Scopri mazzi, timer a sveglia, classifica e preferiti, oppure vai subito alle carte.",
+        welcomeNo: "No, Vai alla Pagina",
+        welcomeYes: "Sì, Apri Tutorial",
+        presetsTitle: "Scegli un Mix Predefinito",
+        presetsSubtitle: "Seleziona un'atmosfera per attivare le categorie:",
+        categoriesTitle: "Seleziona Categorie",
+        selectAll: "Seleziona Tutto",
+        unselectAll: "Deseleziona Tutto",
+        selectedSummary: "{count} su {total} selezionate",
+        doneBtn: "Fatto",
+        tutHeroBadge: "Guida Host",
+        tutHeroTitlePrefix: "Benvenuto su ",
+        tutHeroSub: "Tutto per animare chiacchiere, dibattiti e sfide.",
+        tutTabs: ["1. Mazzi", "2. Timer", "3. Podio", "4. Consigli"],
+        tutBack: "Indietro",
+        tutNext: "Avanti",
+        tutFinish: "Giochiamo!",
+        scoresTitle: "Gestisci Punti Sessione",
+        scoresDesc: "Inserisci nomi e punti. I primi 3 salgono sul Podio!",
+        thUser: "Utente",
+        thPoints: "Punti",
+        thAction: "Azione",
+        addUser: "Aggiungi Utente",
+        clearAll: "Cancella Tutto",
+        saveApply: "Salva e Applica",
+        privacyTitle: "Informativa sulla Privacy",
+        privacyBody: "<strong>La tua privacy conta:</strong> Strumento interattivo senza registrazione né raccolta di dati personali.",
+        closeBtn: "Chiudi",
+        savedTitle: "Argomenti Salvati",
+        savedSub: "Tocca per caricare",
+        clearSaved: "Cancella Salvati",
+        tapToFlip: "Tocca per Girare",
+        topicLabel: "Tema",
+        flipBadge: "GIRA",
+        clickToReveal: "Tocca la carta per rivelare",
+        flipBackHint: "Clicca per girare",
+        changeCardHint: "Clicca per cambiare",
+        refreshTitle: "Cambia domanda",
+        bookmarkTitle: "Salva tema",
+        copyTitle: "Copia",
+        ptsSuffix: "PT",
+        emptyPodium: "Nessun leader sul podio. Clicca su \"Punteggi\"!",
+        noSavedEmpty: "Nessun argomento salvato.",
+        noSavedSub: "Tocca la puntina su una carta per salvarla!",
+        clickToLoad: "Clicca per caricare"
+      }
+    };
+
+    var CATEGORY_NAMES_I18N = {
+      en: {
+        "Philosophy": "Philosophy",
+        "Deep Questions": "Deep Questions",
+        "Humor/Fun": "Humor/Fun",
+        "Current Events": "Current Events",
+        "Would You Rather": "Would You Rather",
+        "Pop Culture": "Pop Culture",
+        "Personal Stories": "Personal Stories",
+        "Science & Tech": "Science & Tech",
+        "Did You Know?": "Did You Know?",
+        "Music Fun Facts": "Music Fun Facts"
+      },
+      es: {
+        "Philosophy": "Filosofía",
+        "Deep Questions": "Preguntas Profundas",
+        "Humor/Fun": "Humor y Diversión",
+        "Current Events": "Actualidad",
+        "Would You Rather": "¿Qué Preferirías?",
+        "Pop Culture": "Cultura Pop",
+        "Personal Stories": "Historias Personales",
+        "Science & Tech": "Ciencia y Tecnología",
+        "Did You Know?": "¿Sabías Que...?",
+        "Music Fun Facts": "Datos Curiosos de Música"
+      },
+      fr: {
+        "Philosophy": "Philosophie",
+        "Deep Questions": "Questions Profondes",
+        "Humor/Fun": "Humour et Fun",
+        "Current Events": "Actualités",
+        "Would You Rather": "Tu Préfères ?",
+        "Pop Culture": "Culture Pop",
+        "Personal Stories": "Histoires Persos",
+        "Science & Tech": "Sciences et Tech",
+        "Did You Know?": "Le Saviez-Vous ?",
+        "Music Fun Facts": "Anecdotes Musicales"
+      },
+      de: {
+        "Philosophy": "Philosophie",
+        "Deep Questions": "Tiefe Fragen",
+        "Humor/Fun": "Humor & Spaß",
+        "Current Events": "Aktuelles",
+        "Would You Rather": "Was Würdest Du Eher?",
+        "Pop Culture": "Popkultur",
+        "Personal Stories": "Persönliches",
+        "Science & Tech": "Wissenschaft & Tech",
+        "Did You Know?": "Wusstest Du Schon?",
+        "Music Fun Facts": "Musik-Fakten"
+      },
+      pt: {
+        "Philosophy": "Filosofia",
+        "Deep Questions": "Perguntas Profundas",
+        "Humor/Fun": "Humor e Diversão",
+        "Current Events": "Atualidades",
+        "Would You Rather": "O Que Você Preferiria?",
+        "Pop Culture": "Cultura Pop",
+        "Personal Stories": "Histórias Pessoais",
+        "Science & Tech": "Ciência e Tech",
+        "Did You Know?": "Você Sabia?",
+        "Music Fun Facts": "Curiosidades Musicais"
+      },
+      it: {
+        "Philosophy": "Filosofia",
+        "Deep Questions": "Domande Profonde",
+        "Humor/Fun": "Umorismo e Svago",
+        "Current Events": "Attualità",
+        "Would You Rather": "Cosa Preferiresti?",
+        "Pop Culture": "Cultura Pop",
+        "Personal Stories": "Storie Personali",
+        "Science & Tech": "Scienza e Tech",
+        "Did You Know?": "Lo Sapevi?",
+        "Music Fun Facts": "Curiosità Musicali"
+      }
+    };
+
+    var PRESET_I18N = {
+      en: {
+        all: { name: "Balanced Mix", desc: "All 10 categories in rotation" },
+        icebreaker: { name: "Casual Icebreakers", desc: "Humor, Would You Rather, Pop Culture, Stories & Music" },
+        deep: { name: "Deep Discussions", desc: "Philosophy, Deep Questions & Science & Tech" },
+        latenight: { name: "Late Night Debates", desc: "Philosophy, Did You Know?, Current Events, Tech & Music" },
+        funny: { name: "Funny & Silly", desc: "Humor/Fun, Would You Rather, Did You Know? & Music" }
+      },
+      es: {
+        all: { name: "Mezcla Equilibrada", desc: "Las 10 categorías en rotación" },
+        icebreaker: { name: "Rompehielos Casual", desc: "Humor, ¿Qué Preferirías?, Cultura Pop, Historias y Música" },
+        deep: { name: "Charlas Profundas", desc: "Filosofía, Preguntas Profundas y Ciencia y Tecnología" },
+        latenight: { name: "Debates Nocturnos", desc: "Filosofía, ¿Sabías Que...?, Actualidad, Tech y Música" },
+        funny: { name: "Divertido y Loco", desc: "Humor, ¿Qué Preferirías?, ¿Sabías Que...? y Música" }
+      },
+      fr: {
+        all: { name: "Mix Équilibré", desc: "Les 10 catégories en rotation" },
+        icebreaker: { name: "Brise-Glace", desc: "Humour, Tu Préfères, Pop, Histoires et Musique" },
+        deep: { name: "Discussions Profondes", desc: "Philosophie, Questions Profondes et Sciences & Tech" },
+        latenight: { name: "Débats Nocturnes", desc: "Philosophie, Le Saviez-Vous, Actus, Tech et Musique" },
+        funny: { name: "Drôle et Décalé", desc: "Humour, Tu Préfères, Le Saviez-Vous et Musique" }
+      },
+      de: {
+        all: { name: "Ausgewogener Mix", desc: "Alle 10 Kategorien im Wechsel" },
+        icebreaker: { name: "Lockerer Einstieg", desc: "Humor, Was Würdest Du, Pop, Stories & Musik" },
+        deep: { name: "Tiefe Gespräche", desc: "Philosophie, Tiefe Fragen & Wissenschaft & Tech" },
+        latenight: { name: "Späte Debatten", desc: "Philosophie, Wusstest Du, Aktuelles, Tech & Musik" },
+        funny: { name: "Lustig & Verrückt", desc: "Humor, Was Würdest Du, Wusstest Du & Musik" }
+      },
+      pt: {
+        all: { name: "Mix Equilibrado", desc: "Todas as 10 categorias em rotação" },
+        icebreaker: { name: "Quebra-Gelo", desc: "Humor, O Que Preferiria, Pop, Histórias e Música" },
+        deep: { name: "Conversas Profundas", desc: "Filosofia, Perguntas Profundas e Ciência e Tech" },
+        latenight: { name: "Debates da Madrugada", desc: "Filosofia, Você Sabia, Atualidades, Tech e Música" },
+        funny: { name: "Engraçado e Maluco", desc: "Humor, O Que Preferiria, Você Sabia e Música" }
+      },
+      it: {
+        all: { name: "Mix Bilanciato", desc: "Tutte le 10 categorie in rotazione" },
+        icebreaker: { name: "Rompighiaccio", desc: "Umorismo, Cosa Preferiresti, Pop, Storie e Musica" },
+        deep: { name: "Discussioni Profonde", desc: "Filosofia, Domande Profonde e Scienza e Tech" },
+        latenight: { name: "Dibattiti Serali", desc: "Filosofia, Lo Sapevi, Attualità, Tech e Musica" },
+        funny: { name: "Buffo e Leggero", desc: "Umorismo, Cosa Preferiresti, Lo Sapevi e Musica" }
+      }
+    };
+
+    var PHRASE_TRANSLATIONS_ES = {
+      "What is one belief you held strongly five years ago that you no longer hold today?": "¿Cuál es una creencia que defendías con fuerza hace cinco años y que hoy ya no sostienes?",
+      "If you could know the absolute truth to one mystery of the universe, which one would you pick?": "Si pudieras conocer la verdad absoluta de un misterio del universo, ¿cuál elegirías?",
+      "What everyday habit do you think most people do backward?": "¿Qué hábito diario crees que la mayoría de la gente hace al revés?",
+      "What is something most people don't know about you until they've known you for years?": "¿Qué es algo que la mayoría no sabe de ti hasta que te conocen desde hace años?",
+      "What is a weird food combination you secretly love?": "¿Qué combinación extraña de comida te encanta en secreto?",
+      "If your life had a theme song that played every time you walked into a room, what would it be?": "Si tu vida tuviera un tema musical cada vez que entras a una habitación, ¿cuál sería?",
+      "What technology trend are you most excited or cautious about right now?": "¿Qué tendencia tecnológica te emociona o preocupa más en este momento?",
+      "What news or cultural shift has changed how you spend your free time?": "¿Qué noticia o cambio cultural ha transformado cómo pasas tu tiempo libre?",
+      "Would you rather always have to tell the complete truth or never speak unless asked a direct question?": "¿Preferirías decir siempre la verdad completa o no hablar a menos que te hagan una pregunta directa?",
+      "Would you rather travel back 100 years or jump 100 years into the future?": "¿Preferirías viajar 100 años atrás o saltar 100 años al futuro?",
+      "What movie or show have you rewatched more times than you can count?": "¿Qué película o serie has vuelto a ver más veces de las que puedes contar?",
+      "Which fictional universe would you actually want to live in for a week?": "¿En qué universo ficticio te gustaría vivir realmente durante una semana?",
+      "If time could pause for one hour every day just for you, how would you spend it?": "Si el tiempo pudiera pausarse una hora cada día solo para ti, ¿cómo la pasarías?",
+      "What is a spontaneous decision that turned out surprisingly well for you?": "¿Cuál es una decisión espontánea que te salió sorprendentemente bien?",
+      "If you could invent one gadget to solve an everyday annoyance, what would it do?": "Si pudieras inventar un aparato para resolver una molestia diaria, ¿qué haría?",
+      "What scientific discovery still blows your mind when you stop to think about it?": "¿Qué descubrimiento científico todavía te asombra cuando te detienes a pensarlo?",
+      "Did you know honey never spoils and has been found in ancient tombs?": "¿Sabías que la miel nunca se echa a perder y se ha encontrado en tumbas antiguas?",
+      "Did you know octopuses have three hearts and blue blood?": "¿Sabías que los pulpos tienen tres corazones y sangre azul?",
+      "What song instantly puts you in a great mood regardless of how your day went?": "¿Qué canción te pone de buen humor al instante sin importar cómo te haya ido el día?",
+      "What album can you listen to from start to finish without skipping a track?": "¿Qué álbum puedes escuchar de principio a fin sin saltar ni una canción?"
+    };
+
+    function t(key) {
+      var dict = UI_TRANSLATIONS[currentLanguage] || UI_TRANSLATIONS.en;
+      if (dict[key] !== undefined) return dict[key];
+      return UI_TRANSLATIONS.en[key] !== undefined ? UI_TRANSLATIONS.en[key] : key;
+    }
+
+    function translateCategoryLabel(cat) {
+      var map = CATEGORY_NAMES_I18N[currentLanguage] || CATEGORY_NAMES_I18N.en;
+      return map[cat] || cat;
+    }
+
+    function getPresetDisplay(modeId) {
+      var dict = PRESET_I18N[currentLanguage] || PRESET_I18N.en;
+      if (dict[modeId]) return dict[modeId];
+      var base = PRESET_MODES.find(function(m) { return m.id === modeId; });
+      return base ? { name: base.name, desc: base.desc } : { name: "Custom", desc: "" };
+    }
+
+    function fallbackTranslateText(text, targetLang) {
+      if (!text || targetLang === "en") return text;
+      var numMatch = text.match(/^(\d+\.\s*)(.*)$/);
+      var prefix = numMatch ? numMatch[1] : "";
+      var body = numMatch ? numMatch[2] : text;
+
+      if (targetLang === "es" && PHRASE_TRANSLATIONS_ES[body]) {
+        return prefix + PHRASE_TRANSLATIONS_ES[body];
+      }
+
+      if (targetLang === "es") {
+        var esBody = body
+          .replace(/^Would you rather\b/i, "¿Preferirías")
+          .replace(/^If you could\b/i, "Si pudieras")
+          .replace(/^What is your\b/i, "¿Cuál es tu")
+          .replace(/^What is one\b/i, "¿Cuál es una")
+          .replace(/^What is the\b/i, "¿Cuál es el/la")
+          .replace(/^What would you do if\b/i, "¿Qué harías si")
+          .replace(/\bwith\b/gi, "con")
+          .replace(/\bwithout\b/gi, "sin")
+          .replace(/\bnever\b/gi, "nunca")
+          .replace(/\balways\b/gi, "siempre")
+          .replace(/\beveryday\b/gi, "cada día");
+        if (esBody.endsWith("?") && !esBody.startsWith("¿")) {
+          esBody = "¿" + esBody;
+        }
+        return prefix + esBody;
+      }
+
+      return text;
+    }
+
+    async function fetchRemoteTranslation(text, targetLang) {
+      if (!text || targetLang === "en") return text;
+      var cacheKey = targetLang + "::" + text;
+      if (translationCache[cacheKey]) return translationCache[cacheKey];
+
+      var numMatch = text.match(/^(\d+\.\s*)(.*)$/);
+      var prefix = numMatch ? numMatch[1] : "";
+      var bodyToTranslate = numMatch ? numMatch[2] : text;
+
+      try {
+        var controller = new AbortController();
+        var timeoutId = setTimeout(function() { controller.abort(); }, 2500);
+        var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=" +
+          encodeURIComponent(targetLang) + "&dt=t&q=" + encodeURIComponent(bodyToTranslate);
+        var res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        if (!res.ok) throw new Error("Translation HTTP " + res.status);
+        var json = await res.json();
+        if (Array.isArray(json) && Array.isArray(json[0])) {
+          var translatedBody = json[0].map(function(seg) { return seg[0] || ""; }).join("").trim();
+          if (translatedBody) {
+            var fullTranslated = prefix + translatedBody;
+            translationCache[cacheKey] = fullTranslated;
+            localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
+            return fullTranslated;
+          }
+        }
+      } catch (e) {
+        // Fallback smoothly when offline, slow, or blocked
+      }
+
+      var fallback = fallbackTranslateText(text, targetLang);
+      translationCache[cacheKey] = fallback;
+      localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
+      return fallback;
+    }
+
+    // Ensures translation is resolved BEFORE starting the typewriter effect
+    async function resolveTranslatedTopicText(topic, targetLang) {
+      var lang = targetLang || currentLanguage;
+      if (!topic || !topic.text) return "";
+      if (lang === "en") return topic.text;
+      var cacheKey = lang + "::" + topic.text;
+      if (translationCache[cacheKey]) return translationCache[cacheKey];
+      return await fetchRemoteTranslation(topic.text, lang);
+    }
+
+    function getTranslatedTopicText(topic, langOverride) {
+      var lang = langOverride || currentLanguage;
+      if (!topic || !topic.text) return "";
+      if (lang === "en") return topic.text;
+      var cacheKey = lang + "::" + topic.text;
+      if (translationCache[cacheKey]) return translationCache[cacheKey];
       return fallbackTranslateText(topic.text, lang);
     }
-    return topic.text;
-  }
 
-  // Build the face-down card back markup with 100% translated UI strings
-  function getDeckBackMarkup(topic, index) {
-    var categoryText = formatCardCategory(topic && topic.category ? topic.category : "");
-    var topActionText = t("Tap to Flip");
-    var centerBadgeText = t("Topic");
-    var revealHintText = t("Click card to reveal question");
+    async function refreshVisibleCardTranslations() {
+      var seq = ++languageSwitchSeq;
+      var targetLang = currentLanguage;
 
-    return (
-      '<div class="card-back-inner">' +
-        '<div class="card-back-top-row">' +
-          '<span class="card-back-action">' + escapeHtml(topActionText) + '</span>' +
-        '</div>' +
-        '<div class="card-back-center">' +
-          '<div class="card-back-avatar-wrap">' +
-            '<img src="nellie-avatar.png" alt="Nellie B" class="card-back-avatar" />' +
-            '<span class="card-back-pill">' + escapeHtml(centerBadgeText) + '</span>' +
-          '</div>' +
-          '<div class="card-back-topic-label">' + escapeHtml(t("Topic")) + '</div>' +
-          '<div class="card-back-category-badge">' + escapeHtml(categoryText) + '</div>' +
-        '</div>' +
-        '<div class="card-back-footer">' +
-          '<span class="card-back-hint">' + escapeHtml(revealHintText) + '</span>' +
-        '</div>' +
-      '</div>'
-    );
-  }
+      // Render immediately with cached/fallback translations so card backs and fronts update right away
+      renderTopicCards();
 
-  // Refresh visible cards safely across immediate and async translation phases
-  async function refreshVisibleCardTranslations() {
-    var seq = ++languageSwitchSeq;
-    var targetLang = currentLanguage || "en";
+      if (targetLang === "en") {
+        return;
+      }
 
-    // 1. Render immediately using dictionary/cache/fallback so both backs and fronts switch at once
-    renderTopicCards();
+      await Promise.all(currentTopics.map(function(tp) {
+        if (!tp || !tp.text) return Promise.resolve("");
+        return resolveTranslatedTopicText(tp, targetLang);
+      }));
 
-    if (targetLang === "en") {
-      return;
-    }
+      // Abort if the user switched languages again while async translations were running
+      if (seq !== languageSwitchSeq || currentLanguage !== targetLang) {
+        return;
+      }
 
-    // 2. Resolve any async translations for the currently displayed topics
-    if (Array.isArray(currentTopics) && typeof resolveTranslatedTopicText === "function") {
-      await Promise.all(
-        currentTopics.map(function(tp) {
-          if (!tp || !tp.text) return Promise.resolve("");
-          return resolveTranslatedTopicText(tp, targetLang);
-        })
-      );
-    }
-
-    // 3. Abort if the user changed language again while promises were in flight
-    if (seq !== languageSwitchSeq || (currentLanguage || "en") !== targetLang) {
-      return;
-    }
-
-    // 4. Update face-up question text elements without disturbing face-down backs or active typing timers
-    for (var idx = 0; idx < currentTopics.length; idx++) {
-      var item = currentTopics[idx];
-      if (!item) continue;
-
-      var isFaceDown = (typeof cardCountView !== "undefined" && cardCountView === 4 && !cardRevealedStates[idx]);
-      if (isFaceDown) continue;
-
-      var questionEl = document.getElementById("typed-question-" + idx);
-      var isActivelyTyping =
-        typeof cardTypingTimers !== "undefined" &&
-        cardTypingTimers &&
-        Boolean(cardTypingTimers[idx]);
-
-      if (questionEl && !isActivelyTyping) {
-        var resolvedText = getTranslatedTopicText(item, targetLang);
-        questionEl.innerHTML = "&quot;" + escapeHtml(resolvedText) + "&quot;";
+      for (var idx = 0; idx < currentTopics.length; idx++) {
+        var item = currentTopics[idx];
+        if (!item) continue;
+        var isFaceDown = (cardCountView === 4 && !cardRevealedStates[idx]);
+        if (!isFaceDown) {
+          var el = document.getElementById("typed-question-" + idx);
+          if (el && !cardTypingTimers[idx]) {
+            el.innerHTML = '&quot;' + escapeHtml(getTranslatedTopicText(item, targetLang)) + '&quot;';
+          }
+        }
       }
     }
-  }
 
-  // Central language setter used by both the dropdown and the quick-toggle button
-  function setLanguage(langCode) {
-    languageSwitchSeq += 1;
-    var nextLang = (typeof UI_TRANSLATIONS !== "undefined" && UI_TRANSLATIONS[langCode])
-      ? langCode
-      : "en";
+    function toggleSpanishEnglish() {
+      var nextLang = currentLanguage === "es" ? "en" : "es";
+      setLanguage(nextLang);
+    }
 
-    currentLanguage = nextLang;
-    try {
+    function setLanguage(langCode) {
+      languageSwitchSeq += 1;
+      currentLanguage = UI_TRANSLATIONS[langCode] ? langCode : "en";
       localStorage.setItem("nellieb_lang", currentLanguage);
-    } catch (e) {
-      // Ignore storage errors in restricted contexts
-    }
-
-    var selectEl = document.getElementById("language-select");
-    if (selectEl && selectEl.value !== currentLanguage) {
-      selectEl.value = currentLanguage;
-    }
-
-    if (typeof applyLanguageTranslations === "function") {
+      var selectEl = document.getElementById("language-select");
+      if (selectEl) selectEl.value = currentLanguage;
       applyLanguageTranslations();
-    }
-
-    refreshVisibleCardTranslations();
-
-    if (typeof showToast === "function") {
-      var langLabel = "English";
-      if (selectEl && selectEl.selectedIndex >= 0 && selectEl.options[selectEl.selectedIndex]) {
-        langLabel = selectEl.options[selectEl.selectedIndex].text;
-      } else if (currentLanguage === "es") {
-        langLabel = "Español";
-      }
-
+      refreshVisibleCardTranslations();
       showToast(
         currentLanguage === "es"
           ? "Idioma cambiado a Español"
-          : "Language switched to " + langLabel,
+          : "Language switched to " + (selectEl && selectEl.options[selectEl.selectedIndex] ? selectEl.options[selectEl.selectedIndex].text : "English"),
         "info"
       );
     }
-  }
-</script>
+
+    function applyLanguageTranslations() {
+      document.documentElement.lang = currentLanguage;
+
+      var setText = function(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.innerText = val;
+      };
+      var setHtml = function(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.innerHTML = val;
+      };
+
+      setText("header-tagline", t("tagline"));
+      setText("header-follow-text", t("followMe"));
+      setText("quick-es-toggle-btn", t("quickToggleLabel"));
+      var quickBtn = document.getElementById("quick-es-toggle-btn");
+      if (quickBtn) quickBtn.title = t("quickToggleTitle");
+
+      setText("header-tutorial-label", t("tutorial"));
+      setText("header-scores-label", t("scores"));
+      setText("header-tiktok-desktop", t("tiktokDesktop"));
+      setText("header-tiktok-mobile", t("tiktokMobile"));
+      setText("ticker-podium-label", t("podiumFull"));
+      setText("floating-podium-label", t("podiumShort"));
+      setText("view-label-1", t("oneCard"));
+      setText("view-label-4", t("fourCards"));
+      setText("presets-prefix-label", t("presetsPrefix"));
+      setText("categories-btn-label", t("categoriesBtn"));
+
+      setHtml(
+        "tutorial-note-text",
+        t("tutorialNotePrefix") + '<strong class="text-indigo-700 dark:text-cyan-300">' + t("tutorial") + '</strong>' + t("tutorialNoteSuffix")
+      );
+      setText("tutorial-note-open-btn", t("openTutorial"));
+      setText("bomb-boom-banner", t("boomBanner"));
+      var hintEl = document.getElementById("footer-shortcut-hint");
+      if (hintEl) {
+        hintEl.innerHTML = t("shortcutHintPrefix") +
+          '<kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[10px]">Spacebar</kbd>' +
+          t("shortcutHintMid") +
+          '<i class="fa-solid fa-rotate text-xs text-indigo-400"></i>' +
+          t("shortcutHintSuffix");
+      }
+      setText("privacy-link-btn", t("privacyLink"));
+
+      setHtml("welcome-badge", '<i class="fa-solid fa-sparkles"></i> ' + t("welcomeBadge"));
+      setText("welcome-title", t("welcomeTitle"));
+      setText("welcome-desc", t("welcomeDesc"));
+      setText("welcome-decline-btn", t("welcomeNo"));
+      setText("welcome-accept-btn", t("welcomeYes"));
+
+      setHtml("presets-modal-title", '<i class="fa-solid fa-sliders text-indigo-500"></i> ' + t("presetsTitle"));
+      setText("presets-modal-subtitle", t("presetsSubtitle"));
+      setHtml("categories-modal-title", '<i class="fa-solid fa-layer-group text-pink-500"></i> ' + t("categoriesTitle"));
+      setText("categories-done-btn", t("doneBtn"));
+
+      setHtml("tut-hero-badge", '<i class="fa-solid fa-sparkles"></i> ' + t("tutHeroBadge"));
+      setHtml(
+        "tut-hero-title",
+        t("tutHeroTitlePrefix") + '<span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer!</span>'
+      );
+      setText("tut-hero-sub", t("tutHeroSub"));
+      var tabs = t("tutTabs");
+      if (Array.isArray(tabs)) {
+        for (var i = 0; i < tabs.length; i++) {
+          setText("tut-tab-label-" + i, tabs[i]);
+        }
+      }
+      setText("tut-prev-label", t("tutBack"));
+
+      setHtml("scores-modal-title", '<i class="fa-solid fa-trophy text-amber-500"></i> ' + t("scoresTitle"));
+      setText("scores-modal-desc", t("scoresDesc"));
+      setText("scores-th-user", t("thUser"));
+      setText("scores-th-points", t("thPoints"));
+      setText("scores-th-action", t("thAction"));
+      setHtml("scores-add-btn", '<i class="fa-solid fa-plus text-indigo-500"></i> ' + t("addUser"));
+      setText("scores-clear-btn", t("clearAll"));
+      setText("scores-save-btn", t("saveApply"));
+
+      setHtml("privacy-modal-title", '<i class="fa-solid fa-shield-halved text-indigo-500"></i> ' + t("privacyTitle"));
+      setHtml("privacy-modal-body", t("privacyBody"));
+      setText("privacy-close-btn", t("closeBtn"));
+
+      setText("favorites-drawer-title", t("savedTitle"));
+      setText("favorites-drawer-sub", t("savedSub"));
+      setHtml("favorites-clear-btn", '<i class="fa-solid fa-trash-can"></i> ' + t("clearSaved"));
+
+      updateFilterButtonsUI();
+      updateToggleUI();
+      updateBombUI();
+      renderModePills();
+      renderCategoryPills();
+      renderLeaderboardTicker();
+      updateFavoritesUI();
+      if (!document.getElementById("tutorial-modal").classList.contains("hidden")) {
+        renderTutorialStep();
+      }
+    }
+
+    var sessionScores = JSON.parse(localStorage.getItem("nellieb_scores") || JSON.stringify([
+      { name: "Rick", points: 1000 },
+      { name: "Nellie", points: 999 },
+      { name: "Roberto", points: 998 }
+    ]));
+
+    // --- INITIAL WELCOME PROMPT & ONE-TIME TUTORIAL FINDER NOTE ---
+    function toggleWelcomeTutorialModal(open) {
+      var modal = document.getElementById("welcome-tutorial-modal");
+      if (!modal) return;
+      if (open) {
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function acceptInitialTutorial() {
+      localStorage.setItem("nellieb_tutorial_seen", "1");
+      toggleWelcomeTutorialModal(false);
+      toggleTutorialModal(true);
+    }
+
+    function declineInitialTutorial() {
+      localStorage.setItem("nellieb_tutorial_seen", "1");
+      toggleWelcomeTutorialModal(false);
+      showTutorialFinderNote();
+    }
+
+    function showTutorialFinderNote() {
+      var noteEl = document.getElementById("tutorial-finder-note");
+      if (noteEl) {
+        noteEl.classList.remove("hidden");
+      }
+    }
+
+    function dismissTutorialNote() {
+      var noteEl = document.getElementById("tutorial-finder-note");
+      if (noteEl) {
+        noteEl.classList.add("hidden");
+      }
+    }
+
+    function openTutorialFromNote() {
+      dismissTutorialNote();
+      toggleTutorialModal(true);
+    }
+
+    // --- PRESETS & CATEGORIES MODALS ---
+    function togglePresetsModal(open) {
+      var modal = document.getElementById("presets-modal");
+      if (!modal) return;
+      if (open) {
+        renderModePills();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function toggleCategoriesModal(open) {
+      var modal = document.getElementById("categories-modal");
+      if (!modal) return;
+      if (open) {
+        renderCategoryPills();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function updateFilterButtonsUI() {
+      var presetLabelEl = document.getElementById("active-preset-label");
+      var catBadgeEl = document.getElementById("active-categories-badge");
+      var totalCats = Object.keys(CATEGORY_STYLES).length;
+
+      if (presetLabelEl) {
+        presetLabelEl.innerText = getPresetDisplay(activePreset).name;
+      }
+
+      if (catBadgeEl) {
+        catBadgeEl.innerText = selectedCategories.size + "/" + totalCats;
+      }
+    }
+
+    // --- TUTORIAL MODAL STATE & CONTENT ---
+    var currentTutorialStep = 0;
+    var TUTORIAL_STEPS = [
+      {
+        title: "Pick Your Vibe & Filter Decks",
+        badge: "Step 1 of 4 - Topic Cards",
+        visual: '<div class="relative bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border border-indigo-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-hidden">' +
+          '<div class="space-y-2 text-left">' +
+            '<div class="flex flex-wrap gap-1.5">' +
+              '<span class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-[10px] font-black uppercase tracking-wider"><i class="fa-solid fa-sliders mr-1"></i>Presets</span>' +
+              '<span class="px-2.5 py-1 rounded-lg bg-pink-600 text-white text-[10px] font-black uppercase tracking-wider"><i class="fa-solid fa-layer-group mr-1"></i>Categories</span>' +
+            '</div>' +
+            '<p class="text-xs text-slate-300 leading-relaxed">Tap <strong>Presets</strong> for instant party mixes, or open <strong>Categories</strong> to hit <span class="text-emerald-400 font-bold">Select All</span> / <span class="text-rose-400 font-bold">Unselect All</span> and customize your decks!</p>' +
+          '</div>' +
+          '<svg viewBox="0 0 130 95" class="w-32 h-24 shrink-0" fill="none">' +
+            '<rect x="10" y="14" width="76" height="54" rx="10" transform="rotate(-8 10 14)" fill="#1E1B4B" stroke="#38BDF8" stroke-width="2.5"/>' +
+            '<rect x="34" y="22" width="82" height="58" rx="10" transform="rotate(6 34 22)" fill="#0F172A" stroke="#FF2A85" stroke-width="3"/>' +
+            '<circle cx="75" cy="51" r="14" fill="#FACC15" fill-opacity="0.2" stroke="#FACC15" stroke-width="2"/>' +
+            '<path d="M70 51L74 55L82 46" stroke="#FACC15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '</svg>' +
+        '</div>',
+        bullets: [
+          { icon: "fa-border-all text-indigo-400", title: "Face-Down Deck in 4 Cards", text: "4-Card mode starts face-down showing Nellie and the topic badge - tap any card to flip it and watch the wording type out live!" },
+          { icon: "fa-sliders text-pink-400", title: "Select All & Unselect All", text: "Open Categories to toggle every deck at once or isolate a single category in two clicks." },
+          { icon: "fa-rotate text-cyan-400", title: "Sequential Deck Memory", text: "Every category steps cleanly through its questions without immediate repeats." }
+        ]
+      },
+      {
+        title: "1-Card Spotlight & Exploding Clock",
+        badge: "Step 2 of 4 - Hot-Seat Timer",
+        visual: '<div class="relative bg-gradient-to-br from-rose-950/80 via-slate-900 to-amber-950/70 border border-rose-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">' +
+          '<div class="space-y-1.5 text-left">' +
+            '<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] uppercase tracking-wider">BOOM! TIME\'S UP</div>' +
+            '<p class="text-xs text-slate-200 leading-relaxed">In <strong>1 Card</strong> mode, a stand-alone twin-bell alarm clock sits right next to the card. Set <strong>15s, 30s, or 60s</strong> and hit <strong>Start</strong>!</p>' +
+            '<p class="text-[11px] text-amber-300 font-semibold"><i class="fa-solid fa-bolt mr-1"></i>At 10 seconds left it shakes violently - at 00:00 it explodes!</p>' +
+          '</div>' +
+          '<svg viewBox="0 0 120 120" class="w-24 h-24 shrink-0 clock-shaking" fill="none">' +
+            '<path d="M22 40C15 49 15 63 22 72" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>' +
+            '<path d="M98 40C105 49 105 63 98 72" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>' +
+            '<path d="M30 40C26 30 33 21 43 24C47 26 49 29 50 32" stroke="#F472B6" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<path d="M90 40C94 30 87 21 77 24C73 26 71 29 70 32" stroke="#F472B6" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<circle cx="60" cy="64" r="32" fill="#0F172A" stroke="#F8FAFC" stroke-width="4"/>' +
+            '<line x1="60" y1="64" x2="60" y2="44" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<line x1="60" y1="64" x2="76" y2="55" stroke="#FF2A85" stroke-width="3" stroke-linecap="round"/>' +
+            '<circle cx="60" cy="64" r="3.5" fill="#FFFFFF"/>' +
+          '</svg>' +
+        '</div>',
+        bullets: [
+          { icon: "fa-stopwatch text-emerald-400", title: "Flexible Round Lengths", text: "Tap 15s for rapid-fire lightning rounds, 30s for standard answers, or 60s for story prompts." },
+          { icon: "fa-volume-high text-amber-400", title: "Audio + Visual Tension", text: "The clock rattles in the final 10 seconds and plays an explosion blast when time expires." },
+          { icon: "fa-rotate-left text-sky-400", title: "Auto-Reset on Flip", text: "Flipping to the next card or clicking Nellie resets the clock back to your chosen duration." }
+        ]
+      },
+      {
+        title: "Crown Your Top 3 Podium Champions",
+        badge: "Step 3 of 4 - Live Leaderboard",
+        visual: '<div class="relative bg-gradient-to-br from-amber-950/70 via-slate-900 to-slate-950 border border-amber-500/40 rounded-2xl p-4 flex flex-col items-center gap-3">' +
+          '<div class="flex flex-wrap items-center justify-center gap-2.5">' +
+            '<div class="flex items-center gap-2 card-gold-glow px-3 py-1.5 rounded-xl">' +
+              '<span class="rank-3d-badge rank-3d-1 h-7 px-2 text-xs">1<sup>ST</sup></span>' +
+              '<span class="podium-name-1 text-sm">Rick</span>' +
+              '<span class="pts-gold text-xs">1,000 PTS</span>' +
+            '</div>' +
+            '<div class="flex items-center gap-2 card-silver-glow px-3 py-1.5 rounded-xl">' +
+              '<span class="rank-3d-badge rank-3d-2 h-7 px-2 text-xs">2<sup>ND</sup></span>' +
+              '<span class="podium-name-2 text-sm">Nellie</span>' +
+              '<span class="pts-silver text-xs">999 PTS</span>' +
+            '</div>' +
+            '<div class="flex items-center gap-2 card-bronze-glow px-3 py-1.5 rounded-xl">' +
+              '<span class="rank-3d-badge rank-3d-3 h-7 px-2 text-xs">3<sup>RD</sup></span>' +
+              '<span class="podium-name-3 text-sm">Roberto</span>' +
+              '<span class="pts-bronze text-xs">998 PTS</span>' +
+            '</div>' +
+          '</div>' +
+          '<p class="text-xs text-slate-300 text-center">Award points for best answers, fastest replies, or chat votes - the top 3 automatically animate in Gold, Silver &amp; Bronze!</p>' +
+        '</div>',
+        bullets: [
+          { icon: "fa-trophy text-amber-400", title: "Click 'Scores' in the Header", text: "Add players, update their session points, and hit Save & Apply to rank them live." },
+          { icon: "fa-crown text-yellow-300", title: "Floating 1-Card Podium", text: "In 1 Card view, the Top 3 marquee moves right below the card so viewers always see who is winning." },
+          { icon: "fa-floppy-disk text-emerald-400", title: "Saved Automatically", text: "Scores and bookmarked questions stay saved in your browser between rounds." }
+        ]
+      },
+      {
+        title: "Host Shortcuts & Hidden Gems",
+        badge: "Step 4 of 4 - Power Moves",
+        visual: '<div class="relative bg-gradient-to-br from-cyan-950/70 via-slate-900 to-indigo-950 border border-cyan-500/40 rounded-2xl p-4 grid grid-cols-3 gap-2.5 text-center">' +
+          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
+            '<kbd class="px-2 py-1 rounded-lg bg-indigo-600 text-white font-mono text-xs font-black shadow">SPACE</kbd>' +
+            '<p class="text-[11px] font-bold text-slate-200 mt-2">Deal New Cards</p>' +
+          '</div>' +
+          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
+            '<div class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-pink-600 text-white"><i class="fa-solid fa-thumbtack text-xs rotate-45"></i></div>' +
+            '<p class="text-[11px] font-bold text-slate-200 mt-2">Pin Favorites</p>' +
+          '</div>' +
+          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
+            '<div class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-600 text-white"><i class="fa-regular fa-copy text-xs"></i></div>' +
+            '<p class="text-[11px] font-bold text-slate-200 mt-2">1-Click Copy</p>' +
+          '</div>' +
+        '</div>',
+        bullets: [
+          { icon: "fa-hand-pointer text-pink-400", title: "Tap Face-Down Cards to Reveal", text: "In 4-Card mode, each card starts face-down with Nellie and its topic - tap to flip and type it out live." },
+          { icon: "fa-bookmark text-indigo-400", title: "Build a Show Queue", text: "Pin great questions ahead of time, then open the Bookmark drawer to load them on demand." },
+          { icon: "fa-circle-half-stroke text-amber-400", title: "Day & Night Modes", text: "Use the sun/moon toggle in the top right to match your room or stream lighting." }
+        ]
+      }
+    ];
+
+    var TUTORIAL_STEPS_ES = [
+      {
+        title: "Elige tu Ambiente y Filtra Mazos",
+        badge: "Paso 1 de 4 - Cartas de Tema",
+        visual: TUTORIAL_STEPS[0].visual,
+        bullets: [
+          { icon: "fa-border-all text-indigo-400", title: "Mazo Boca Abajo en 4 Cartas", text: "En 4 Cartas inician boca abajo con Nellie y la categoría; toca cualquiera para girarla y ver el texto escribirse en vivo." },
+          { icon: "fa-sliders text-pink-400", title: "Seleccionar Todo y Deseleccionar Todo", text: "Abre Categorías para activar todo el mazo o aislar una sola categoría en dos toques." },
+          { icon: "fa-rotate text-cyan-400", title: "Memoria Secuencial", text: "Cada categoría avanza en orden por sus preguntas sin repetir al instante." }
+        ]
+      },
+      {
+        title: "1 Carta Destacada y Reloj Explosivo",
+        badge: "Paso 2 de 4 - Temporizador",
+        visual: TUTORIAL_STEPS[1].visual,
+        bullets: [
+          { icon: "fa-stopwatch text-emerald-400", title: "Duraciones Flexibles", text: "Elige 15s para rondas rápidas, 30s para respuestas normales o 60s para historias." },
+          { icon: "fa-volume-high text-amber-400", title: "Tensión Visual y de Audio", text: "El reloj vibra en los últimos 10 segundos y suena una explosión al llegar a 00:00." },
+          { icon: "fa-rotate-left text-sky-400", title: "Reinicio Automático", text: "Al cambiar carta o tocar a Nellie, el reloj vuelve a tu tiempo elegido." }
+        ]
+      },
+      {
+        title: "Corona a Tu Top 3 del Podio",
+        badge: "Paso 3 de 4 - Marcador en Vivo",
+        visual: TUTORIAL_STEPS[2].visual,
+        bullets: [
+          { icon: "fa-trophy text-amber-400", title: "Pulsa 'Marcador' Arriba", text: "Agrega jugadores, actualiza sus puntos y pulsa Guardar y Aplicar." },
+          { icon: "fa-crown text-yellow-300", title: "Podio Flotante en 1 Carta", text: "En vista de 1 Carta, el Top 3 aparece justo debajo de la carta." },
+          { icon: "fa-floppy-disk text-emerald-400", title: "Guardado Automático", text: "Tus puntuaciones y favoritos quedan guardados en el navegador." }
+        ]
+      },
+      {
+        title: "Atajos del Anfitrión y Trucos",
+        badge: "Paso 4 de 4 - Movimientos Pro",
+        visual: TUTORIAL_STEPS[3].visual,
+        bullets: [
+          { icon: "fa-hand-pointer text-pink-400", title: "Toca para Revelar", text: "En 4 Cartas, cada tarjeta comienza boca abajo mostrando a Nellie y su categoría." },
+          { icon: "fa-bookmark text-indigo-400", title: "Crea Tu Lista", text: "Fija preguntas con la chincheta y ábrelas desde el panel de guardados." },
+          { icon: "fa-circle-half-stroke text-amber-400", title: "Modo Claro y Oscuro", text: "Cambia el tema con el botón de sol o luna arriba a la derecha." }
+        ]
+      }
+    ];
+
+    function getActiveTutorialSteps() {
+      return currentLanguage === "es" ? TUTORIAL_STEPS_ES : TUTORIAL_STEPS;
+    }
+
+    function toggleTutorialModal(open) {
+      var modal = document.getElementById("tutorial-modal");
+      if (!modal) return;
+      if (open) {
+        currentTutorialStep = 0;
+        renderTutorialStep();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+        localStorage.setItem("nellieb_tutorial_seen", "1");
+      }
+    }
+
+    function setTutorialStep(stepIndex) {
+      var steps = getActiveTutorialSteps();
+      currentTutorialStep = Math.max(0, Math.min(steps.length - 1, stepIndex));
+      renderTutorialStep();
+    }
+
+    function stepTutorial(delta) {
+      var steps = getActiveTutorialSteps();
+      if (currentTutorialStep + delta >= steps.length) {
+        toggleTutorialModal(false);
+        return;
+      }
+      setTutorialStep(currentTutorialStep + delta);
+    }
+
+    function renderTutorialStep() {
+      var steps = getActiveTutorialSteps();
+      var step = steps[currentTutorialStep];
+      var bodyEl = document.getElementById("tutorial-step-body");
+      var dotsEl = document.getElementById("tutorial-dots");
+      var prevBtn = document.getElementById("tut-prev-btn");
+      var nextBtn = document.getElementById("tut-next-btn");
+
+      for (var i = 0; i < steps.length; i++) {
+        var tab = document.getElementById("tut-tab-" + i);
+        if (!tab) continue;
+        if (i === currentTutorialStep) {
+          tab.className = "py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer bg-indigo-600 text-white shadow";
+        } else {
+          tab.className = "py-2 px-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer text-slate-600 dark:text-slate-400 hover:bg-slate-200/70 dark:hover:bg-slate-800/70";
+        }
+      }
+
+      if (bodyEl && step) {
+        var bulletsHtml = step.bullets.map(function(b) {
+          return '<div class="flex items-start gap-3 p-3 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60">' +
+            '<div class="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">' +
+              '<i class="fa-solid ' + b.icon + ' text-sm"></i>' +
+            '</div>' +
+            '<div>' +
+              '<h4 class="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">' + b.title + '</h4>' +
+              '<p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">' + b.text + '</p>' +
+            '</div>' +
+          '</div>';
+        }).join("");
+
+        bodyEl.innerHTML = '<div>' +
+            '<span class="text-[10px] font-black uppercase tracking-widest text-indigo-500 dark:text-indigo-400">' + step.badge + '</span>' +
+            '<h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white mt-0.5">' + step.title + '</h3>' +
+          '</div>' +
+          step.visual +
+          '<div class="space-y-2.5">' + bulletsHtml + '</div>';
+      }
+
+      if (dotsEl) {
+        dotsEl.innerHTML = steps.map(function(_, idx) {
+          return '<button onclick="setTutorialStep(' + idx + ')" class="h-2 rounded-full transition-all cursor-pointer ' +
+            (idx === currentTutorialStep ? "w-6 bg-indigo-500" : "w-2 bg-slate-300 dark:bg-slate-700") + '"></button>';
+        }).join("");
+      }
+
+      if (prevBtn) {
+        prevBtn.disabled = currentTutorialStep === 0;
+        prevBtn.className = currentTutorialStep === 0
+          ? "px-3.5 py-2 rounded-xl bg-slate-200/50 dark:bg-slate-800/40 text-slate-400 text-xs font-bold cursor-not-allowed"
+          : "px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold transition-colors cursor-pointer";
+      }
+
+      if (nextBtn) {
+        if (currentTutorialStep === steps.length - 1) {
+          nextBtn.innerHTML = t("tutFinish") + ' <i class="fa-solid fa-fire ml-1"></i>';
+        } else {
+          nextBtn.innerHTML = t("tutNext") + ' <i class="fa-solid fa-arrow-right ml-1"></i>';
+        }
+      }
+    }
+
+    // --- TWIN-BELL ALARM CLOCK & EXPLOSION TIMER STATE ---
+    var bombDuration = 30;
+    var bombRemaining = 30;
+    var bombInterval = null;
+    var bombRunning = false;
+    var audioCtx = null;
+
+    function ensureAudioContext() {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return null;
+      if (!audioCtx) audioCtx = new Ctx();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playCardFlipSound() {
+      try {
+        var ctx = ensureAudioContext();
+        if (!ctx) return;
+
+        var now = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(760, now + 0.055);
+        osc.frequency.exponentialRampToValueAtTime(240, now + 0.11);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.22, now + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.115);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.12);
+      } catch (e) {}
+    }
+
+    function playTypewriterKeySound(char) {
+      try {
+        var ctx = ensureAudioContext();
+        if (!ctx) return;
+
+        var now = ctx.currentTime;
+        var isSpace = char === " ";
+        var isPunct = /[.!?,;:"']/.test(char || "");
+
+        var osc = ctx.createOscillator();
+        var oscGain = ctx.createGain();
+        osc.type = isPunct ? "square" : "triangle";
+
+        var baseFreq = isSpace ? 210 : (isPunct ? 680 : (460 + Math.random() * 190));
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(115, now + 0.022);
+
+        oscGain.gain.setValueAtTime(0.001, now);
+        oscGain.gain.linearRampToValueAtTime(isSpace ? 0.04 : 0.085, now + 0.002);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.024);
+
+        osc.connect(oscGain);
+        oscGain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.026);
+
+        var bufLen = Math.max(1, Math.floor(ctx.sampleRate * 0.014));
+        var noiseBuf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+        var data = noiseBuf.getChannelData(0);
+        for (var i = 0; i < bufLen; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufLen * 0.35));
+        }
+
+        var noiseSrc = ctx.createBufferSource();
+        noiseSrc.buffer = noiseBuf;
+
+        var filter = ctx.createBiquadFilter();
+        filter.type = "highpass";
+        filter.frequency.setValueAtTime(isPunct ? 2800 : 1900, now);
+
+        var noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(isSpace ? 0.03 : 0.09, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.014);
+
+        noiseSrc.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+        noiseSrc.start(now);
+        noiseSrc.stop(now + 0.015);
+      } catch (e) {}
+    }
+
+    function playExplosionTone() {
+      try {
+        var ctx = ensureAudioContext();
+        if (!ctx) return;
+
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(185, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(38, ctx.currentTime + 0.45);
+
+        gain.gain.setValueAtTime(0.24, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.48);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.5);
+      } catch (e) {}
+    }
+
+    function formatBombClock(sec) {
+      var s = Math.max(0, Math.ceil(sec));
+      var mins = Math.floor(s / 60);
+      var rem = s % 60;
+      return String(mins).padStart(2, "0") + ":" + String(rem).padStart(2, "0");
+    }
+
+    function updateBombUI() {
+      var displayEl = document.getElementById("bomb-timer-display");
+      var barEl = document.getElementById("bomb-progress-bar");
+      var clockSvg = document.getElementById("twin-bell-clock-svg");
+      var wavesLeft = document.getElementById("clock-waves-left");
+      var wavesRight = document.getElementById("clock-waves-right");
+      var secondHand = document.getElementById("clock-second-hand");
+      var nelliePlaceholder = document.getElementById("clock-nellie-placeholder");
+      var burstEl = document.getElementById("clock-explosion-burst");
+      var bannerEl = document.getElementById("bomb-boom-banner");
+      var toggleIcon = document.getElementById("bomb-toggle-icon");
+      var toggleLabel = document.getElementById("bomb-toggle-label");
+      var shards = document.querySelectorAll("#clock-explosion-burst .blast-shard");
+
+      if (bannerEl) bannerEl.innerText = t("boomBanner");
+      if (displayEl) displayEl.innerText = formatBombClock(bombRemaining);
+      if (barEl) {
+        var pct = bombDuration > 0 ? Math.max(0, Math.min(100, (bombRemaining / bombDuration) * 100)) : 0;
+        barEl.style.width = pct + "%";
+      }
+
+      if (secondHand) {
+        var elapsed = Math.max(0, bombDuration - bombRemaining);
+        var angle = (elapsed * (360 / Math.max(1, bombDuration))) % 360;
+        secondHand.setAttribute("transform", "rotate(" + angle + " 70 72)");
+      }
+
+      if (toggleIcon) toggleIcon.className = bombRunning ? "fa-solid fa-pause" : "fa-solid fa-play";
+      if (toggleLabel) toggleLabel.innerText = bombRunning ? t("pauseBtn") : t("startBtn");
+
+      var shouldShake = bombRunning && bombRemaining <= 10 && bombRemaining > 0;
+      if (clockSvg) {
+        clockSvg.classList.remove("clock-exploded");
+        if (shouldShake) clockSvg.classList.add("clock-shaking");
+        else clockSvg.classList.remove("clock-shaking");
+      }
+
+      if (wavesLeft && wavesRight) {
+        if (shouldShake) {
+          wavesLeft.classList.remove("opacity-40");
+          wavesRight.classList.remove("opacity-40");
+          wavesLeft.classList.add("sound-wave-anim");
+          wavesRight.classList.add("sound-wave-anim");
+        } else {
+          wavesLeft.classList.remove("sound-wave-anim");
+          wavesRight.classList.remove("sound-wave-anim");
+          wavesLeft.classList.add("opacity-40");
+          wavesRight.classList.add("opacity-40");
+        }
+      }
+
+      if (bombRemaining <= 0) {
+        if (bannerEl) bannerEl.classList.remove("hidden");
+        if (clockSvg) {
+          clockSvg.classList.remove("clock-shaking");
+          clockSvg.classList.add("clock-exploded");
+        }
+        if (nelliePlaceholder) nelliePlaceholder.classList.remove("hidden");
+        if (burstEl) burstEl.classList.remove("hidden");
+        shards.forEach(function(sh, i) {
+          sh.classList.remove("blast-p1", "blast-p2", "blast-p3", "blast-p4");
+          void sh.offsetWidth;
+          sh.classList.add("blast-p" + ((i % 4) + 1));
+        });
+      } else {
+        if (bannerEl) bannerEl.classList.add("hidden");
+        if (nelliePlaceholder) nelliePlaceholder.classList.add("hidden");
+        if (burstEl) burstEl.classList.add("hidden");
+        shards.forEach(function(sh) {
+          sh.classList.remove("blast-p1", "blast-p2", "blast-p3", "blast-p4");
+        });
+      }
+    }
+
+    function triggerBombExplosion() {
+      bombRunning = false;
+      bombRemaining = 0;
+      if (bombInterval) {
+        clearInterval(bombInterval);
+        bombInterval = null;
+      }
+      updateBombUI();
+      playExplosionTone();
+      showToast(t("boomBanner"), "warning");
+    }
+
+    function toggleBombTimer() {
+      if (bombRunning) {
+        bombRunning = false;
+        if (bombInterval) {
+          clearInterval(bombInterval);
+          bombInterval = null;
+        }
+        updateBombUI();
+        return;
+      }
+
+      if (bombRemaining <= 0) {
+        bombRemaining = bombDuration;
+      }
+
+      bombRunning = true;
+      updateBombUI();
+
+      if (bombInterval) clearInterval(bombInterval);
+      bombInterval = setInterval(function() {
+        bombRemaining -= 1;
+        if (bombRemaining <= 0) {
+          triggerBombExplosion();
+        } else {
+          updateBombUI();
+        }
+      }, 1000);
+    }
+
+    function resetBombTimer(autoStart) {
+      bombRunning = false;
+      if (bombInterval) {
+        clearInterval(bombInterval);
+        bombInterval = null;
+      }
+      bombRemaining = bombDuration;
+      updateBombUI();
+      if (autoStart) {
+        toggleBombTimer();
+      }
+    }
+
+    function setBombDuration(seconds) {
+      bombDuration = seconds;
+      resetBombTimer(false);
+    }
+
+    async function loadAllQuestionBanks() {
+      var entries = Object.entries(CATEGORY_FILES);
+      await Promise.all(entries.map(async function(pair) {
+        var cat = pair[0];
+        var url = pair[1];
+        try {
+          var res = await fetch(url + "?v=" + Date.now(), { cache: "no-store" });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          var data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            QUESTION_BANKS[cat] = data;
+          }
+        } catch (err) {
+          if (!Array.isArray(QUESTION_BANKS[cat]) || QUESTION_BANKS[cat].length === 0) {
+            QUESTION_BANKS[cat] = (FALLBACK_QUESTIONS[cat] || []).slice();
+          }
+        }
+      }));
+    }
+
+    function getPopulatedCategories() {
+      return Array.from(selectedCategories).filter(function(cat) {
+        return Array.isArray(QUESTION_BANKS[cat]) && QUESTION_BANKS[cat].length > 0;
+      });
+    }
+
+    function getNellieAndChatomizerMarkup(viewCount) {
+      var logoSizeClass = viewCount === 1 ? "w-40 h-14 sm:w-48 sm:h-16" : "w-32 h-11 sm:w-36 sm:h-12";
+      var headSizeClass = viewCount === 1 ? "w-14 h-14 sm:w-16 sm:h-16" : "w-11 h-11 sm:w-12 sm:h-12";
+
+      return '<div class="flex items-end gap-0.5 pointer-events-none select-none z-20 ml-auto -mb-2 -mr-1">' +
+        '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink ' + headSizeClass + ' shrink-0">' +
+        '<div class="chatomizer-logo-badge -ml-1.5" title="Chatomizer Party Edition">' +
+          '<svg class="' + logoSizeClass + '" viewBox="0 0 230 70" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+            '<defs>' +
+              '<linearGradient id="chatBg" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#1E1B4B"/>' +
+                '<stop offset="50%" stop-color="#311042"/>' +
+                '<stop offset="100%" stop-color="#0F172A"/>' +
+              '</linearGradient>' +
+              '<linearGradient id="chatBorder" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#00F2FE"/>' +
+                '<stop offset="50%" stop-color="#FF007F"/>' +
+                '<stop offset="100%" stop-color="#FACC15"/>' +
+              '</linearGradient>' +
+              '<linearGradient id="chatTextGrad" x1="48" y1="16" x2="215" y2="48" gradientUnits="userSpaceOnUse">' +
+                '<stop offset="0%" stop-color="#FFFFFF"/>' +
+                '<stop offset="55%" stop-color="#FEF08A"/>' +
+                '<stop offset="100%" stop-color="#38BDF8"/>' +
+              '</linearGradient>' +
+            '</defs>' +
+            '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H34L10 68L22 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
+            '<g transform="translate(14, 18) rotate(-10)">' +
+              '<rect x="2" y="2" width="24" height="24" rx="6" fill="#FF007F" stroke="#FFFFFF" stroke-width="1.8"/>' +
+              '<circle cx="9" cy="9" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="19" cy="9" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="14" cy="14" r="2.4" fill="#FACC15"/>' +
+              '<circle cx="9" cy="19" r="2.2" fill="#FFFFFF"/>' +
+              '<circle cx="19" cy="19" r="2.2" fill="#FFFFFF"/>' +
+            '</g>' +
+            '<path d="M210 16L211.5 19.5L215 21L211.5 22.5L210 26L208.5 22.5L205 21L208.5 19.5L210 16Z" fill="#FACC15"/>' +
+            '<circle cx="48" cy="17" r="1.6" fill="#00F2FE"/>' +
+            '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="#090D16" stroke="#090D16" stroke-width="3.5" stroke-linejoin="round">CHATOMIZER</text>' +
+            '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="url(#chatTextGrad)">CHATOMIZER</text>' +
+            '<text x="50" y="50.5" font-family="\'Orbitron\', sans-serif" font-weight="800" font-size="6.8" letter-spacing="2.2" fill="#F472B6">PARTY EDITION</text>' +
+          '</svg>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // --- LIVE TYPING ENGINE (WITH SOUND IN 4-CARD MODE, SILENT IN 1-CARD MODE) ---
+    function clearCardTypingTimer(index) {
+      if (cardTypingTimers[index]) {
+        clearInterval(cardTypingTimers[index]);
+        cardTypingTimers[index] = null;
+      }
+    }
+
+    function clearAllCardTypingTimers() {
+      for (var i = 0; i < cardTypingTimers.length; i++) {
+        clearCardTypingTimer(i);
+      }
+    }
+
+    function startLiveTyping(index, fullText, playSound) {
+      clearCardTypingTimer(index);
+      var textToType = String(fullText || "");
+      var shouldPlaySound = Boolean(playSound);
+      cardTypingProgress[index] = 0;
+
+      var renderTypingFrame = function() {
+        var textEl = document.getElementById("typed-question-" + index);
+        if (!textEl) return;
+        var currentLen = cardTypingProgress[index];
+        var shown = textToType.slice(0, currentLen);
+        var isDone = currentLen >= textToType.length;
+        textEl.innerHTML = '&quot;' + escapeHtml(shown) + (isDone ? '&quot;' : '<span class="typing-caret"></span>');
+      };
+
+      renderTypingFrame();
+
+      if (textToType.length === 0) return;
+
+      cardTypingTimers[index] = setInterval(function() {
+        var nextChar = textToType.charAt(cardTypingProgress[index]);
+        cardTypingProgress[index] += 1;
+        if (shouldPlaySound) {
+          playTypewriterKeySound(nextChar);
+        }
+
+        if (cardTypingProgress[index] >= textToType.length) {
+          cardTypingProgress[index] = textToType.length;
+          clearCardTypingTimer(index);
+        }
+        renderTypingFrame();
+      }, 33);
+    }
+
+    // Resolves translation before starting the typing animation so words type out in the active language
+    async function translateThenTypeCard(index, topic, playSound) {
+      if (!topic) return;
+      var token = (cardRevealToken[index] || 0) + 1;
+      cardRevealToken[index] = token;
+      var activeLang = currentLanguage;
+
+      clearCardTypingTimer(index);
+      var textEl = document.getElementById("typed-question-" + index);
+      if (textEl) {
+        textEl.innerHTML = '&quot;<span class="typing-caret"></span>';
+      }
+
+      var resolvedText = await resolveTranslatedTopicText(topic, activeLang);
+      if (cardRevealToken[index] !== token || currentLanguage !== activeLang) return;
+
+      startLiveTyping(index, resolvedText, playSound);
+    }
+
+    function getDeckBackMarkup(topic, index, catStyle) {
+      var categoryLabel = translateCategoryLabel(topic && topic.category ? topic.category : "");
+      return '<div class="deck-back-surface rounded-[14px] h-full w-full p-4 sm:p-5 flex flex-col items-center justify-between text-center relative overflow-hidden border border-white/10">' +
+        '<div class="flex items-center justify-end w-full text-[10px] font-black uppercase tracking-widest text-amber-300">' +
+          '<span>' + escapeHtml(t("tapToFlip")) + '</span>' +
+        '</div>' +
+        '<div class="my-1 flex flex-col items-center justify-center gap-2.5">' +
+          '<div class="relative">' +
+            '<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-amber-300 to-cyan-400 shadow-lg anim-grow-shrink">' +
+              '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-contain rounded-full bg-slate-950/90">' +
+            '</div>' +
+            '<span class="-bottom-1 -right-2 absolute px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow">' + escapeHtml(t("flipBadge")) + '</span>' +
+          '</div>' +
+          '<div class="flex flex-col items-center gap-1">' +
+            '<span class="text-[10px] font-bold uppercase tracking-widest text-slate-300/80">' + escapeHtml(t("topicLabel")) + '</span>' +
+            '<span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + ' shadow-md">' +
+              escapeHtml(categoryLabel) +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="text-[11px] font-bold text-slate-300/90 flex items-center gap-1.5">' +
+          '<i class="fa-solid fa-keyboard text-cyan-400"></i> ' + escapeHtml(t("clickToReveal")) +
+        '</div>' +
+      '</div>';
+    }
+
+    function setLayoutView(count) {
+      clearAllCardTypingTimers();
+      cardCountView = count;
+      updateToggleUI();
+      generateTopics();
+    }
+
+    function updateToggleUI() {
+      var btn1 = document.getElementById("view-btn-1");
+      var btn4 = document.getElementById("view-btn-4");
+      var badge = document.getElementById("generate-btn-badge");
+      var btnText = document.getElementById("generate-btn-text");
+      var mainArea = document.getElementById("main-content-area");
+      var globalTicker = document.getElementById("global-ticker-container");
+      var floatingTicker = document.getElementById("single-card-floating-ticker");
+      var bombTimerBox = document.getElementById("single-card-bomb-timer");
+      var topicsGrid = document.getElementById("topics-grid");
+
+      if (cardCountView === 1) {
+        if (btn1) btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
+        if (btn4) btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
+        if (badge) badge.innerText = t("oneCard");
+        if (btnText) btnText.innerText = t("changeOneCard");
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between";
+        if (globalTicker) globalTicker.classList.add("hidden");
+        if (bombTimerBox) bombTimerBox.classList.remove("hidden");
+        if (floatingTicker) floatingTicker.classList.remove("hidden");
+        if (topicsGrid) topicsGrid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
+      } else {
+        if (btn4) btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
+        if (btn1) btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
+        if (badge) badge.innerText = t("fourCards");
+        if (btnText) btnText.innerText = t("dealFourCards");
+        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between";
+        if (globalTicker) globalTicker.classList.remove("hidden");
+        if (bombTimerBox) bombTimerBox.classList.add("hidden");
+        if (floatingTicker) floatingTicker.classList.add("hidden");
+        if (topicsGrid) topicsGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
+      }
+    }
+
+    function generateSequentialTopic(categoryOverride) {
+      var availCategories = getPopulatedCategories();
+      if (availCategories.length === 0) {
+        availCategories = Object.keys(FALLBACK_QUESTIONS);
+      }
+
+      var category = (categoryOverride && QUESTION_BANKS[categoryOverride] && QUESTION_BANKS[categoryOverride].length > 0)
+        ? categoryOverride
+        : availCategories[Math.floor(Math.random() * availCategories.length)];
+
+      var questionsList = QUESTION_BANKS[category];
+      var pointer = categoryPointers[category] || 0;
+      var text = questionsList[pointer % questionsList.length];
+
+      categoryPointers[category] = (pointer + 1) % questionsList.length;
+
+      var numMatch = text.match(/^(\d+)\./);
+      var qNum = numMatch ? numMatch[1] : (pointer + 1);
+
+      var topic = {
+        id: "topic-" + category.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase() + "-" + qNum,
+        category: category,
+        text: text
+      };
+
+      topicCache[topic.id] = topic;
+      localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+      if (currentLanguage !== "en") {
+        var langAtGeneration = currentLanguage;
+        fetchRemoteTranslation(text, langAtGeneration).then(function() {
+          if (currentLanguage === langAtGeneration) {
+            renderTopicCards();
+          }
+        });
+      }
+      return topic;
+    }
+
+    function renderModePills() {
+      var container = document.getElementById("mode-pills");
+      if (!container) return;
+      container.innerHTML = PRESET_MODES.map(function(mode) {
+        var isActive = activePreset === mode.id;
+        var disp = getPresetDisplay(mode.id);
+        return '<button onclick="selectPreset(\'' + mode.id + '\')" class="w-full p-3 rounded-xl border text-left transition-all flex items-center justify-between gap-3 cursor-pointer ' +
+          (isActive
+            ? "bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-500/20"
+            : "bg-slate-100/80 dark:bg-slate-800/70 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-indigo-400") +
+          '">' +
+          '<div>' +
+            '<div class="font-extrabold text-xs sm:text-sm">' + escapeHtml(disp.name) + '</div>' +
+            '<div class="text-[11px] ' + (isActive ? "text-indigo-100" : "text-slate-500 dark:text-slate-400") + ' mt-0.5">' + escapeHtml(disp.desc) + '</div>' +
+          '</div>' +
+          (isActive ? '<i class="fa-solid fa-circle-check text-base shrink-0"></i>' : '<i class="fa-regular fa-circle text-sm opacity-40 shrink-0"></i>') +
+        "</button>";
+      }).join("");
+    }
+
+    function selectPreset(modeId) {
+      activePreset = modeId;
+      var preset = PRESET_MODES.find(function(m) { return m.id === modeId; });
+      if (preset) {
+        selectedCategories = new Set(preset.categories);
+      }
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      togglePresetsModal(false);
+      generateTopics();
+    }
+
+    function selectAllCategories() {
+      activePreset = "all";
+      selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+      showToast(t("selectAll"), "success");
+    }
+
+    function unselectAllCategories() {
+      activePreset = "custom";
+      selectedCategories.clear();
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      showToast(t("unselectAll"), "info");
+    }
+
+    function renderCategoryPills() {
+      var container = document.getElementById("category-pills");
+      var bulkContainer = document.getElementById("category-bulk-actions");
+      var summaryEl = document.getElementById("modal-selected-summary");
+
+      var allCategories = Object.keys(CATEGORY_STYLES);
+      var allSelected = selectedCategories.size === allCategories.length;
+      var hasAnySelected = selectedCategories.size > 0;
+
+      if (bulkContainer) {
+        bulkContainer.innerHTML =
+          '<button onclick="selectAllCategories()" class="flex-1 py-2 px-3 rounded-xl border font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ' +
+            (!allSelected
+              ? "bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-500 shadow-sm"
+              : "bg-slate-200/50 dark:bg-slate-800/50 text-slate-400 border-slate-300/60 dark:border-slate-700/60 opacity-60") +
+            '"><i class="fa-solid fa-check-double text-[11px]"></i><span>' + escapeHtml(t("selectAll")) + '</span></button>' +
+          '<button onclick="unselectAllCategories()" class="flex-1 py-2 px-3 rounded-xl border font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ' +
+            (hasAnySelected
+              ? "bg-rose-600 hover:bg-rose-500 text-white border-rose-500 shadow-sm"
+              : "bg-slate-200/50 dark:bg-slate-800/50 text-slate-400 border-slate-300/60 dark:border-slate-700/60 opacity-60") +
+            '"><i class="fa-solid fa-xmark text-[11px]"></i><span>' + escapeHtml(t("unselectAll")) + '</span></button>';
+      }
+
+      if (summaryEl) {
+        summaryEl.innerText = t("selectedSummary")
+          .replace("{count}", String(selectedCategories.size))
+          .replace("{total}", String(allCategories.length));
+      }
+
+      if (!container) return;
+
+      container.innerHTML = allCategories.map(function(cat) {
+        var isSelected = selectedCategories.has(cat);
+        var style = CATEGORY_STYLES[cat];
+        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-3.5 py-2.5 rounded-xl border font-bold text-xs transition-all flex items-center justify-between gap-2 cursor-pointer ' +
+          (isSelected
+            ? (style.bg + " " + style.text + " " + style.border + " shadow-sm")
+            : "bg-slate-100/70 dark:bg-slate-800/40 text-slate-400 border-slate-200/60 dark:border-slate-800 opacity-65 hover:opacity-100") +
+          '"><span>' + escapeHtml(translateCategoryLabel(cat)) + "</span>" + (isSelected ? '<i class="fa-solid fa-circle-check text-sm"></i>' : '<i class="fa-regular fa-circle text-sm opacity-40"></i>') + "</button>";
+      }).join("");
+    }
+
+    function toggleCategory(cat) {
+      activePreset = "custom";
+      if (selectedCategories.has(cat)) {
+        if (selectedCategories.size === 1) {
+          showToast(t("selectedSummary").replace("{count}", "1").replace("{total}", String(Object.keys(CATEGORY_STYLES).length)), "warning");
+          return;
+        }
+        selectedCategories.delete(cat);
+      } else {
+        selectedCategories.add(cat);
+      }
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+    }
+
+    function generateTopics() {
+      if (selectedCategories.size === 0) {
+        showToast(t("unselectAll"), "warning");
+        toggleCategoriesModal(true);
+        return;
+      }
+      clearAllCardTypingTimers();
+
+      var genIcon = document.getElementById("generate-icon");
+      if (genIcon) {
+        genIcon.classList.add("animate-spin-once");
+        setTimeout(function() { genIcon.classList.remove("animate-spin-once"); }, 400);
+      }
+
+      var indicesToFlip = [];
+      for (var i = 0; i < cardCountView; i++) {
+        indicesToFlip.push(i);
+      }
+
+      triggerCardFlip(indicesToFlip, function() {
+        var nextTopics = [];
+        for (var i = 0; i < cardCountView; i++) {
+          nextTopics[i] = generateSequentialTopic();
+          if (cardCountView === 4) {
+            cardRevealedStates[i] = false;
+            cardTypingProgress[i] = 0;
+          } else {
+            cardRevealedStates[i] = true;
+            cardTypingProgress[i] = 0;
+          }
+        }
+        currentTopics = nextTopics;
+        renderTopicCards();
+        if (cardCountView === 1 && currentTopics[0]) {
+          translateThenTypeCard(0, currentTopics[0], false);
+        }
+      }, true);
+
+      if (cardCountView === 1) {
+        resetBombTimer(false);
+      }
+    }
+
+    function handleCardTap(e, index) {
+      if (e.target.closest("button") || e.target.closest("a")) return;
+
+      if (cardCountView === 4) {
+        if (!cardRevealedStates[index]) {
+          cardRevealedStates[index] = true;
+          triggerCardFlip([index], function() {
+            renderTopicCards();
+            var topic = currentTopics[index];
+            if (topic) {
+              translateThenTypeCard(index, topic, true);
+            }
+          }, true);
+        } else {
+          clearCardTypingTimer(index);
+          var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
+          cardRevealedStates[index] = false;
+          cardTypingProgress[index] = 0;
+          triggerCardFlip([index], function() {
+            currentTopics[index] = generateSequentialTopic(prevCategory);
+            renderTopicCards();
+          }, true);
+        }
+        return;
+      }
+
+      refreshCardAtIndex(index);
+    }
+
+    function refreshCardAtIndex(index) {
+      if (selectedCategories.size === 0) {
+        showToast(t("unselectAll"), "warning");
+        toggleCategoriesModal(true);
+        return;
+      }
+      clearCardTypingTimer(index);
+
+      var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
+      var shouldTypeLive = true;
+      var playTypingAudio = (cardCountView === 4);
+      cardRevealedStates[index] = true;
+      cardTypingProgress[index] = 0;
+
+      triggerCardFlip([index], function() {
+        currentTopics[index] = generateSequentialTopic(prevCategory);
+        renderTopicCards();
+        if (shouldTypeLive && currentTopics[index]) {
+          translateThenTypeCard(index, currentTopics[index], playTypingAudio);
+        }
+      }, true);
+
+      if (cardCountView === 1) {
+        resetBombTimer(false);
+      }
+    }
+
+    function triggerCardFlip(indices, dataUpdateFn, skipAutoRender) {
+      playCardFlipSound();
+
+      var cardEls = indices.map(function(idx) {
+        return document.getElementById("card-inner-" + idx);
+      }).filter(Boolean);
+
+      if (cardEls.length === 0) {
+        dataUpdateFn();
+        if (!skipAutoRender) renderTopicCards();
+        return;
+      }
+
+      cardEls.forEach(function(el) {
+        el.classList.remove("card-flipping");
+        void el.offsetWidth;
+        el.classList.add("card-flipping");
+      });
+
+      setTimeout(function() {
+        dataUpdateFn();
+        if (!skipAutoRender) renderTopicCards();
+        var updatedEls = indices.map(function(idx) {
+          return document.getElementById("card-inner-" + idx);
+        }).filter(Boolean);
+        updatedEls.forEach(function(el) {
+          el.classList.remove("card-flipping");
+        });
+      }, 250);
+    }
+
+    function renderTopicCards() {
+      var grid = document.getElementById("topics-grid");
+      if (!grid) return;
+      
+      if (cardCountView === 1) {
+        grid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
+      } else {
+        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
+      }
+
+      var rightCornerGroup = getNellieAndChatomizerMarkup(cardCountView);
+
+      var cardsHtml = currentTopics.map(function(topic, index) {
+        if (!topic) return "";
+
+        var isFav = favoritedTopicIds.has(topic.id);
+        var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
+        var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
+        var displayCat = translateCategoryLabel(topic.category);
+        var displayText = getTranslatedTopicText(topic, currentLanguage);
+
+        if (isFaceDown) {
+          return '<div class="card-container h-full w-full min-h-[185px]">' +
+            '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-1.5 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+              getDeckBackMarkup(topic, index, catStyle) +
+            '</div>' +
+          '</div>';
+        }
+
+        var pillMarkup = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+          "<span>" + escapeHtml(displayCat) + "</span>" +
+        '</span>';
+
+        var questionBodyHtml = (cardCountView === 4)
+          ? '<p id="typed-question-' + index + '" class="tiktok-card-text text-base sm:text-lg leading-snug font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>'
+          : '<p id="typed-question-' + index + '" class="tiktok-card-text text-lg sm:text-2xl text-center leading-relaxed font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>';
+
+        return '<div class="card-container h-full w-full min-h-[185px]">' +
+          '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+            '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
+              '<div class="text-xs font-extrabold tracking-tight opacity-70">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</div>' +
+              '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
+                '<button onclick="refreshCardAtIndex(' + index + ')" title="' + escapeQuotes(t("refreshTitle")) + '" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
+                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="' + escapeQuotes(t("bookmarkTitle")) + '" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
+                '<button onclick="copyTopicText(\'' + escapeQuotes(displayText) + '\')" title="' + escapeQuotes(t("copyTitle")) + '" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="my-2 flex-grow flex items-center justify-center">' +
+              questionBodyHtml +
+            '</div>' +
+            '<div class="mt-2 flex items-end justify-between gap-2 relative pt-2">' +
+              '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
+                followModelLeftHelper(cardCountView) +
+                pillMarkup +
+              '</div>' +
+              rightCornerGroup +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+
+      grid.innerHTML = cardsHtml;
+    }
+
+    function followModelLeftHelper(viewCount) {
+      if (viewCount !== 1) return '';
+      return '<div class="flex items-center gap-1.5">' +
+        '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">' + escapeHtml(t("followMe")) + '</span>' +
+        '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
+      '</div>';
+    }
+
+    // --- LEADERBOARD & SESSION SCORES LOGIC ---
+
+    function toggleScoresModal(open) {
+      var modal = document.getElementById("scores-modal");
+      if (!modal) return;
+      if (open) {
+        populateScoresTable();
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function populateScoresTable() {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+
+      if (sessionScores.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">' + escapeHtml(t("emptyPodium")) + '</td></tr>';
+        return;
+      }
+
+      var sortedScores = sessionScores.slice().sort(function(a, b) {
+        return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
+      });
+
+      tbody.innerHTML = sortedScores.map(function(item) {
+        return '<tr class="score-row">' +
+          '<td class="p-2"><input type="text" value="' + escapeQuotes(item.name) + '" placeholder="' + escapeQuotes(t("thUser")) + '" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2"><input type="number" value="' + item.points + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    function addScoreRow(name, points) {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+
+      if (tbody.querySelector("tr td[colspan]")) {
+        tbody.innerHTML = "";
+      }
+
+      var tr = document.createElement("tr");
+      tr.className = "score-row";
+      tr.innerHTML = '<td class="p-2"><input type="text" value="' + escapeQuotes(name || "") + '" placeholder="' + escapeQuotes(t("thUser")) + '" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2"><input type="number" value="' + (points !== undefined ? points : 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>';
+      tbody.appendChild(tr);
+    }
+
+    function removeScoreRow(btn) {
+      var row = btn.closest("tr");
+      if (row) row.remove();
+    }
+
+    function clearAllScores() {
+      sessionScores = [];
+      localStorage.removeItem("nellieb_scores");
+      populateScoresTable();
+      renderLeaderboardTicker();
+      showToast(t("clearAll"), "info");
+    }
+
+    function saveAndApplyScores() {
+      var rows = document.querySelectorAll("#scores-table-body .score-row");
+      var updated = [];
+
+      rows.forEach(function(row) {
+        var nameInput = row.querySelector(".score-name");
+        var ptsInput = row.querySelector(".score-pts");
+        if (nameInput && ptsInput) {
+          var name = nameInput.value.trim();
+          var points = parseInt(ptsInput.value) || 0;
+          if (name !== "") {
+            updated.push({ name: name, points: points });
+          }
+        }
+      });
+
+      updated.sort(function(a, b) {
+        return b.points - a.points;
+      });
+
+      sessionScores = updated;
+      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+      renderLeaderboardTicker();
+      toggleScoresModal(false);
+      showToast(t("saveApply"), "success");
+    }
+
+    function get3DRankBadge(idx, isFloating) {
+      var rankNum = idx + 1;
+      var suffix = rankNum === 1 ? "ST" : (rankNum === 2 ? "ND" : "RD");
+      var rankClass = idx === 0 ? "rank-3d-1" : (idx === 1 ? "rank-3d-2" : "rank-3d-3");
+      var delayStyle = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.35s;"' : ' style="animation-delay: 0.7s;"');
+      var sizeClass = isFloating
+        ? "h-9 sm:h-10 px-2.5 text-base sm:text-xl"
+        : "h-6 px-2 text-xs";
+      var supClass = isFloating
+        ? "text-[9px] sm:text-[11px] ml-0.5 -mt-1.5"
+        : "text-[7px] ml-0.5 -mt-1";
+
+      return '<span class="rank-3d-badge ' + rankClass + ' ' + sizeClass + ' shrink-0"' + delayStyle + ' title="' + rankNum + suffix.toLowerCase() + ' Place">' +
+        '<span>' + rankNum + '</span><sup class="' + supClass + '">' + suffix + '</sup>' +
+      '</span>';
+    }
+
+    function renderLeaderboardTicker() {
+      var ticker = document.getElementById("leaderboard-ticker");
+      var floatingTicker = document.getElementById("floating-leaderboard-ticker");
+      var ptsLabel = escapeHtml(t("ptsSuffix"));
+
+      var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 3);
+
+      if (sorted.length === 0) {
+        var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic">' + escapeHtml(t("emptyPodium")) + '</span>';
+        if (ticker) ticker.innerHTML = emptyHtml;
+        if (floatingTicker) floatingTicker.innerHTML = emptyHtml;
+        return;
+      }
+
+      var standardItemsHtml = sorted.map(function(item, idx) {
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
+        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
+        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
+        var rankBadge = get3DRankBadge(idx, false);
+
+        return '<div class="flex items-center gap-2.5 ' + cardClass + ' px-3.5 py-1 rounded-xl shrink-0">' +
+          rankBadge +
+          '<span class="' + nameClass + ' text-sm tracking-wide"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + ptsClass + ' text-sm">' + Number(item.points).toLocaleString() + ' ' + ptsLabel + '</span>' +
+        '</div>';
+      });
+
+      var floatingItemsHtml = sorted.map(function(item, idx) {
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
+        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
+        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
+        var rankBadge = get3DRankBadge(idx, true);
+
+        return '<div class="flex items-center gap-3 ' + cardClass + ' px-4 py-1.5 rounded-2xl shrink-0">' +
+          rankBadge +
+          '<span class="' + nameClass + ' text-xl sm:text-2xl tracking-tight"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
+          '<span class="' + ptsClass + ' text-lg sm:text-2xl">' + Number(item.points).toLocaleString() + ' ' + ptsLabel + '</span>' +
+        '</div>';
+      });
+
+      var loopStandard = standardItemsHtml.concat(standardItemsHtml).concat(standardItemsHtml).join("");
+      var loopFloating = floatingItemsHtml.concat(floatingItemsHtml).concat(floatingItemsHtml).join("");
+
+      if (ticker) ticker.innerHTML = loopStandard;
+      if (floatingTicker) floatingTicker.innerHTML = loopFloating;
+    }
+
+    // --- FAVORITES & UTILS ---
+
+    function toggleFavorite(topicId, cardIndex) {
+      var topic = currentTopics[cardIndex];
+      if (!topic) return;
+
+      if (favoritedTopicIds.has(topic.id)) {
+        favoritedTopicIds.delete(topic.id);
+        showToast(t("clearSaved"), "info");
+      } else {
+        favoritedTopicIds.add(topic.id);
+        topicCache[topic.id] = topic;
+        localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+        showToast(t("bookmarkTitle"), "success");
+      }
+
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      renderTopicCards();
+      updateFavoritesUI();
+    }
+
+    function loadSavedTopicIntoView(topicId) {
+      var topic = topicCache[topicId];
+      if (!topic) return;
+
+      clearAllCardTypingTimers();
+      cardCountView = 1;
+      cardRevealedStates = [true, false, false, false];
+      currentTopics = [topic];
+      updateToggleUI();
+      renderTopicCards();
+      translateThenTypeCard(0, topic, false);
+      resetBombTimer(false);
+      toggleFavoritesDrawer(false);
+      showToast(t("clickToLoad"), "success");
+    }
+
+    function updateFavoritesUI() {
+      var badge = document.getElementById("favorites-badge");
+      var listContainer = document.getElementById("saved-topics-list");
+      if (!badge || !listContainer) return;
+
+      badge.innerText = favoritedTopicIds.size;
+      if (favoritedTopicIds.size > 0) {
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+
+      if (favoritedTopicIds.size === 0) {
+        listContainer.innerHTML = '<div class="text-center py-10 px-4 text-slate-400"><i class="fa-regular fa-bookmark text-3xl mb-2 opacity-40"></i><p class="font-semibold text-xs">' + escapeHtml(t("noSavedEmpty")) + '</p><p class="text-[10px] mt-1">' + escapeHtml(t("noSavedSub")) + '</p></div>';
+        return;
+      }
+
+      var savedList = Array.from(favoritedTopicIds).map(function(id) {
+        return topicCache[id] || { id: id, category: "Philosophy", text: "Saved topic item" };
+      });
+
+      listContainer.innerHTML = savedList.map(function(topic) {
+        var st = CATEGORY_STYLES[topic.category] || { bg: "bg-indigo-100", text: "text-indigo-700" };
+        var dispCat = translateCategoryLabel(topic.category);
+        var dispText = getTranslatedTopicText(topic, currentLanguage);
+        return '<div onclick="loadSavedTopicIntoView(\'' + topic.id + '\')" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex flex-col gap-2 relative cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">' +
+          '<div class="flex items-center justify-between">' +
+            '<span class="text-[9px] font-bold px-2 py-0.5 rounded ' + st.bg + " " + st.text + '">' + escapeHtml(dispCat) + '</span>' +
+            '<div class="flex items-center gap-1.5" onclick="event.stopPropagation()">' +
+              '<button onclick="copyTopicText(\'' + escapeQuotes(dispText) + '\')" title="' + escapeQuotes(t("copyTitle")) + '" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-500 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-regular fa-copy text-xs"></i></button>' +
+              '<button onclick="removeFavorite(\'' + topic.id + '\')" title="' + escapeQuotes(t("clearSaved")) + '" class="p-1.5 rounded-lg text-pink-500 hover:text-red-600 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+            '</div>' +
+          '</div>' +
+          '<p class="text-xs font-bold text-slate-800 dark:text-slate-100 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">&quot;' + escapeHtml(dispText) + '&quot;</p>' +
+          '<div class="text-[9px] text-indigo-500 dark:text-indigo-400 font-semibold flex items-center gap-1"><i class="fa-solid fa-arrow-right text-[8px]"></i> ' + escapeHtml(t("clickToLoad")) + '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    function removeFavorite(id) {
+      favoritedTopicIds.delete(id);
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast(t("clearSaved"), "info");
+    }
+
+    function clearAllFavorites() {
+      if (favoritedTopicIds.size === 0) return;
+      favoritedTopicIds.clear();
+      localStorage.removeItem("nellieb_favs");
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast(t("clearSaved"), "info");
+    }
+
+    function toggleFavoritesDrawer(open) {
+      var drawer = document.getElementById("favorites-drawer");
+      var content = document.getElementById("drawer-content");
+      if (!drawer || !content) return;
+
+      if (open) {
+        drawer.classList.remove("pointer-events-none");
+        drawer.classList.remove("opacity-0");
+        drawer.classList.add("opacity-100");
+        content.classList.remove("translate-x-full");
+      } else {
+        drawer.classList.remove("opacity-100");
+        drawer.classList.add("opacity-0");
+        content.classList.add("translate-x-full");
+        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
+      }
+    }
+
+    function togglePrivacyModal(open) {
+      var modal = document.getElementById("privacy-modal");
+      if (!modal) return;
+      if (open) modal.classList.remove("hidden");
+      else modal.classList.add("hidden");
+    }
+
+    function copyTopicText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        var textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      showToast(t("copyTitle"), "success");
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function showToast(message, type) {
+      var container = document.getElementById("toast-container");
+      if (!container) return;
+
+      var toast = document.createElement("div");
+      var icons = {
+        success: "fa-circle-check text-emerald-400",
+        warning: "fa-triangle-exclamation text-amber-400",
+        info: "fa-circle-info text-indigo-400"
+      };
+
+      toast.className = "px-3.5 py-2 rounded-xl bg-slate-900/90 text-white text-xs font-semibold shadow-xl backdrop-blur border border-slate-700 flex items-center gap-2 pointer-events-auto transition-all duration-200 translate-x-6 opacity-0";
+      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + escapeHtml(message) + "</span>";
+
+      container.appendChild(toast);
+      requestAnimationFrame(function() { toast.classList.remove("translate-x-6", "opacity-0"); });
+
+      setTimeout(function() {
+        toast.classList.add("translate-x-6", "opacity-0");
+        setTimeout(function() { toast.remove(); }, 200);
+      }, 2500);
+    }
+
+    function resetToInitial() { selectPreset("all"); }
+
+    function escapeQuotes(str) {
+      return String(str || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    function escapeHtml(str) {
+      return String(str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    async function initApp() {
+      var selectEl = document.getElementById("language-select");
+      if (selectEl) selectEl.value = currentLanguage;
+      applyLanguageTranslations();
+      await loadAllQuestionBanks();
+      generateTopics();
+
+      if (!localStorage.getItem("nellieb_tutorial_seen")) {
+        setTimeout(function() {
+          toggleWelcomeTutorialModal(true);
+        }, 450);
+      }
+    }
+
+    initApp();
+
+    document.addEventListener("keydown", function(e) {
+      if (e.code === "Space" && !["INPUT", "BUTTON", "TEXTAREA", "SELECT"].includes(e.target.tagName)) {
+        e.preventDefault();
+        generateTopics();
+      }
+    });
+  </script>
+</body>
+</html>
