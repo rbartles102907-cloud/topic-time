@@ -521,31 +521,47 @@
           <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
             Nellie B - Chatomizer
           </h1>
-          <p class="text-[10px] font-bold tracking-widest uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">LET&#39;S CHAT IT UP</p>
+          <p id="header-tagline" class="text-[10px] font-bold tracking-widest uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">LET&#39;S CHAT IT UP</p>
         </div>
       </div>
 
       <div class="flex-1 flex items-center justify-center gap-2 hidden xs:flex sm:flex">
-        <span class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">Follow Me</span>
+        <span id="header-follow-text" class="flashing-follow-slow font-black text-lg sm:text-2xl tracking-wider uppercase drop-shadow">Follow Me</span>
         <span class="pointing-arrow-right text-xl sm:text-2xl text-red-500 select-none" title="Pointing to TikTok">👉</span>
       </div>
 
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Language Dropdown & Quick ES/EN Toggle -->
+        <div class="flex items-center bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-xl p-0.5 shadow-sm" title="Select Language">
+          <i class="fa-solid fa-globe text-xs text-indigo-500 dark:text-cyan-400 pl-2 pr-1"></i>
+          <select id="language-select" onchange="setLanguage(this.value)" class="bg-transparent text-slate-800 dark:text-slate-100 text-[11px] sm:text-xs font-extrabold pr-1.5 py-1 focus:outline-none cursor-pointer">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="pt">Português</option>
+            <option value="it">Italiano</option>
+          </select>
+          <button id="quick-es-toggle-btn" onclick="toggleSpanishEnglish()" class="px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-black uppercase tracking-wider transition-colors cursor-pointer" title="Toggle between Spanish and English">
+            ES
+          </button>
+        </div>
+
         <!-- Tutorial Button (Left of Scores) -->
         <button id="header-tutorial-btn" onclick="toggleTutorialModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="How to Play & Party Guide">
           <i class="fa-solid fa-graduation-cap text-sm text-cyan-200"></i>
-          <span class="hidden sm:inline">Tutorial</span>
+          <span id="header-tutorial-label" class="hidden sm:inline">Tutorial</span>
         </button>
 
-        <button onclick="toggleScoresModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
+        <button id="header-scores-btn" onclick="toggleScoresModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
           <i class="fa-solid fa-trophy text-sm text-yellow-200"></i>
-          <span class="hidden sm:inline">Scores</span>
+          <span id="header-scores-label" class="hidden sm:inline">Scores</span>
         </button>
 
         <a href="https://www.tiktok.com/@nellie_b" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
           <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
-          <span class="hidden sm:inline">Go to My TikTok</span>
-          <span class="sm:hidden">TikTok</span>
+          <span id="header-tiktok-desktop" class="hidden sm:inline">Go to My TikTok</span>
+          <span id="header-tiktok-mobile" class="sm:hidden">TikTok</span>
         </a>
 
         <button id="open-favorites-btn" onclick="toggleFavoritesDrawer(true)" class="relative p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95" title="Saved Topics">
@@ -565,7 +581,7 @@
   <div id="global-ticker-container" class="relative z-30 w-full bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-indigo-500/30 overflow-hidden py-1.5 shadow-sm transition-colors">
     <div class="flex items-center">
       <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1.5 shadow-md">
-        <i class="fa-solid fa-crown text-slate-950"></i> TOP 3 PODIUM
+        <i class="fa-solid fa-crown text-slate-950"></i> <span id="ticker-podium-label">TOP 3 PODIUM</span>
       </div>
       <div class="overflow-hidden whitespace-nowrap flex-grow relative">
         <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-xs font-bold"></div>
@@ -579,10 +595,10 @@
       <div class="flex flex-wrap items-center justify-center sm:justify-between gap-2 py-0.5 text-xs">
         <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
           <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-square text-[11px]"></i> 1 Card
+            <i class="fa-solid fa-square text-[11px]"></i> <span id="view-label-1">1 Card</span>
           </button>
           <button id="view-btn-4" onclick="setLayoutView(4)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-border-all text-[11px]"></i> 4 Cards
+            <i class="fa-solid fa-border-all text-[11px]"></i> <span id="view-label-4">4 Cards</span>
           </button>
         </div>
 
@@ -590,7 +606,7 @@
           <!-- Presets Modal Trigger Button -->
           <button onclick="togglePresetsModal(true)" class="px-3 py-1.5 rounded-xl bg-indigo-600/15 dark:bg-indigo-500/20 hover:bg-indigo-600/25 dark:hover:bg-indigo-500/30 border border-indigo-400/50 dark:border-indigo-400/40 text-indigo-700 dark:text-indigo-200 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-sm cursor-pointer" title="Choose a Preset Mix">
             <i class="fa-solid fa-sliders text-indigo-500 dark:text-indigo-300"></i>
-            <span>Presets:</span>
+            <span id="presets-prefix-label">Presets:</span>
             <span id="active-preset-label" class="font-extrabold text-slate-900 dark:text-white">Balanced Mix</span>
             <i class="fa-solid fa-chevron-down text-[10px] opacity-70"></i>
           </button>
@@ -598,7 +614,7 @@
           <!-- Categories Modal Trigger Button -->
           <button onclick="toggleCategoriesModal(true)" class="px-3 py-1.5 rounded-xl bg-pink-600/15 dark:bg-pink-500/20 hover:bg-pink-600/25 dark:hover:bg-pink-500/30 border border-pink-400/50 dark:border-pink-400/40 text-pink-700 dark:text-pink-200 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-sm cursor-pointer" title="Select or Unselect Categories">
             <i class="fa-solid fa-layer-group text-pink-500 dark:text-pink-300"></i>
-            <span>Categories</span>
+            <span id="categories-btn-label">Categories</span>
             <span id="active-categories-badge" class="px-1.5 py-0.5 rounded-full bg-pink-600 text-white text-[10px] font-black leading-none">10/10</span>
           </button>
         </div>
@@ -609,12 +625,12 @@
     <div id="tutorial-finder-note" class="hidden shrink-0 mb-1.5 px-3.5 py-2 rounded-xl bg-indigo-500/15 dark:bg-indigo-500/20 border border-indigo-400/40 text-slate-800 dark:text-slate-100 text-xs flex items-center justify-between gap-3 shadow-sm">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-circle-info text-indigo-500 dark:text-cyan-300 shrink-0"></i>
-        <span>
+        <span id="tutorial-note-text">
           Need the guide later? Click the <strong class="text-indigo-700 dark:text-cyan-300">Tutorial</strong> button in the top bar anytime.
         </span>
       </div>
       <div class="flex items-center gap-2 shrink-0">
-        <button onclick="openTutorialFromNote()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] cursor-pointer transition-colors">
+        <button id="tutorial-note-open-btn" onclick="openTutorialFromNote()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] cursor-pointer transition-colors">
           Open Tutorial
         </button>
         <button onclick="dismissTutorialNote()" class="p-1 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer" title="Dismiss note">
@@ -645,7 +661,6 @@
           <div class="relative flex items-center justify-center my-1 min-h-[124px] w-full select-none">
             <div id="twin-bell-clock-wrapper" class="relative w-28 h-28 flex items-center justify-center">
               <svg id="twin-bell-clock-svg" viewBox="0 0 140 140" class="w-28 h-28 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Left & Right Sound Waves -->
                 <g id="clock-waves-left" class="opacity-40">
                   <path d="M22 44C14 54 14 70 22 80" stroke="#38BDF8" stroke-width="3.2" stroke-linecap="round"/>
                   <path d="M14 38C3 52 3 72 14 86" stroke="#F472B6" stroke-width="2.8" stroke-linecap="round"/>
@@ -654,35 +669,25 @@
                   <path d="M118 44C126 54 126 70 118 80" stroke="#38BDF8" stroke-width="3.2" stroke-linecap="round"/>
                   <path d="M126 38C137 52 137 72 126 86" stroke="#F472B6" stroke-width="2.8" stroke-linecap="round"/>
                 </g>
-
-                <!-- Top Ringer Bar & Twin Bells -->
                 <line x1="70" y1="20" x2="70" y2="34" stroke="#E2E8F0" stroke-width="3.5" stroke-linecap="round"/>
                 <circle cx="70" cy="17" r="4.5" stroke="#FACC15" stroke-width="2.5"/>
                 <path d="M33 44C28 33 36 22 48 26C53 28 56 32 57 36" stroke="#F472B6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M107 44C112 33 104 22 92 26C87 28 84 32 83 36" stroke="#F472B6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-
-                <!-- Feet -->
                 <line x1="46" y1="106" x2="36" y2="122" stroke="#E2E8F0" stroke-width="4.5" stroke-linecap="round"/>
                 <line x1="94" y1="106" x2="104" y2="122" stroke="#E2E8F0" stroke-width="4.5" stroke-linecap="round"/>
-
-                <!-- Clock Body -->
                 <circle cx="70" cy="72" r="38" fill="#0F172A" stroke="#F8FAFC" stroke-width="4.5"/>
                 <circle cx="70" cy="72" r="32" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="2 6"/>
-
-                <!-- Clock Hands -->
                 <line x1="70" y1="72" x2="70" y2="49" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>
                 <line id="clock-second-hand" x1="70" y1="72" x2="88" y2="62" stroke="#FF2A85" stroke-width="3" stroke-linecap="round"/>
                 <circle cx="70" cy="72" r="4" fill="#F8FAFC"/>
               </svg>
 
-              <!-- Nellie Head Placeholder Shown After Clock Explodes -->
               <div id="clock-nellie-placeholder" onclick="resetBombTimer(false)" title="Click to reset clock" class="hidden absolute inset-0 flex flex-col items-center justify-center cursor-pointer z-10">
                 <div class="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-amber-400 to-cyan-400 shadow-lg nellie-exploded-placeholder">
                   <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie Waiting" class="w-full h-full object-contain rounded-full bg-slate-900/90">
                 </div>
               </div>
 
-              <!-- Explosion Burst & Shards -->
               <div id="clock-explosion-burst" class="hidden absolute inset-0 pointer-events-none flex items-center justify-center z-20">
                 <i class="fa-solid fa-burst text-5xl text-amber-400 blast-p5 drop-shadow-[0_0_14px_rgba(251,191,36,0.95)]"></i>
                 <span class="blast-shard blast-p1 absolute w-3 h-3 rounded-sm bg-rose-500"></span>
@@ -705,7 +710,7 @@
                 <i id="bomb-toggle-icon" class="fa-solid fa-play"></i>
                 <span id="bomb-toggle-label">Start</span>
               </button>
-              <button onclick="resetBombTimer(false)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer" title="Reset Timer">
+              <button id="bomb-reset-btn" onclick="resetBombTimer(false)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer" title="Reset Timer">
                 <i class="fa-solid fa-rotate-left"></i>
               </button>
             </div>
@@ -717,7 +722,7 @@
         <div class="floating-ticker-card bg-white/95 dark:bg-slate-950/95 border border-slate-300 dark:border-amber-500/40 rounded-2xl overflow-hidden py-2 px-1.5 shadow-xl dark:shadow-2xl backdrop-blur-md transition-colors">
           <div class="flex items-center">
             <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-xl z-10 shrink-0 flex items-center gap-1 shadow-md">
-              <i class="fa-solid fa-crown"></i> TOP 3
+              <i class="fa-solid fa-crown"></i> <span id="floating-podium-label">TOP 3</span>
             </div>
             <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
               <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-lg sm:text-2xl font-extrabold"></div>
@@ -734,14 +739,14 @@
         <span id="generate-btn-badge" class="text-[11px] bg-white/20 px-2.5 py-0.5 rounded-full font-bold ml-1">4 Cards</span>
       </button>
 
-      <p class="text-[11px] text-slate-400 dark:text-slate-500 text-center">
+      <p id="footer-shortcut-hint" class="text-[11px] text-slate-400 dark:text-slate-500 text-center">
         Tap or click any card, press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[10px]">Spacebar</kbd>, or use <i class="fa-solid fa-rotate text-xs text-indigo-400"></i> to flip topics.
       </p>
     </div>
   </main>
 
   <footer class="relative z-30 w-full py-1.5 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
-    <p>&copy; Nellie B Chatomizer &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
+    <p>&copy; Nellie B Chatomizer &bull; <button id="privacy-link-btn" onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
   </footer>
 
   <!-- Initial Welcome Modal Asking If User Wants the Tutorial -->
@@ -755,22 +760,22 @@
       </div>
 
       <div class="space-y-1.5">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-400/40 text-indigo-600 dark:text-indigo-300 text-[10px] font-black uppercase tracking-widest">
+        <span id="welcome-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-400/40 text-indigo-600 dark:text-indigo-300 text-[10px] font-black uppercase tracking-widest">
           <i class="fa-solid fa-sparkles"></i> Welcome to Chatomizer
         </span>
-        <h2 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+        <h2 id="welcome-title" class="text-xl font-black text-slate-900 dark:text-white tracking-tight">
           Would you like to check out the Tutorial?
         </h2>
-        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p id="welcome-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
           We can walk you through topic decks, the alarm timer, leaderboard scoring, and saved queues - or take you straight to the cards.
         </p>
       </div>
 
       <div class="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
-        <button onclick="declineInitialTutorial()" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition-colors cursor-pointer">
+        <button id="welcome-decline-btn" onclick="declineInitialTutorial()" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition-colors cursor-pointer">
           No, Go to Page
         </button>
-        <button onclick="acceptInitialTutorial()" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-extrabold text-xs shadow-lg transition-all cursor-pointer">
+        <button id="welcome-accept-btn" onclick="acceptInitialTutorial()" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-extrabold text-xs shadow-lg transition-all cursor-pointer">
           Yes, Open Tutorial
         </button>
       </div>
@@ -782,14 +787,14 @@
     <div onclick="togglePresetsModal(false)" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm cursor-pointer"></div>
     <div class="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-indigo-500/40 rounded-2xl p-5 shadow-2xl z-10 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-        <h3 class="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+        <h3 id="presets-modal-title" class="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-sliders text-indigo-500"></i> Choose a Preset Mix
         </h3>
         <button onclick="togglePresetsModal(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
-      <p class="text-xs text-slate-500 dark:text-slate-400">Pick a curated vibe to automatically select matching decks:</p>
+      <p id="presets-modal-subtitle" class="text-xs text-slate-500 dark:text-slate-400">Pick a curated vibe to automatically select matching decks:</p>
       <div id="mode-pills" class="flex flex-col gap-2"></div>
     </div>
   </div>
@@ -799,7 +804,7 @@
     <div onclick="toggleCategoriesModal(false)" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm cursor-pointer"></div>
     <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-pink-500/40 rounded-2xl p-5 shadow-2xl z-10 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-        <h3 class="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+        <h3 id="categories-modal-title" class="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-layer-group text-pink-500"></i> Select Question Categories
         </h3>
         <button onclick="toggleCategoriesModal(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
@@ -815,7 +820,7 @@
 
       <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
         <span id="modal-selected-summary" class="text-xs font-bold text-slate-500 dark:text-slate-400">10 of 10 selected</span>
-        <button onclick="toggleCategoriesModal(false)" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow cursor-pointer transition-colors">Done</button>
+        <button id="categories-done-btn" onclick="toggleCategoriesModal(false)" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow cursor-pointer transition-colors">Done</button>
       </div>
     </div>
   </div>
@@ -834,13 +839,13 @@
             </div>
           </div>
           <div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-[10px] font-black uppercase tracking-widest mb-1">
+            <div id="tut-hero-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-[10px] font-black uppercase tracking-widest mb-1">
               <i class="fa-solid fa-sparkles"></i> Party Host Guide
             </div>
-            <h2 class="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight">
+            <h2 id="tut-hero-title" class="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight">
               Welcome to <span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer!</span>
             </h2>
-            <p class="text-xs text-slate-300 mt-0.5">Everything you need to host lively chats, debates &amp; party rounds.</p>
+            <p id="tut-hero-sub" class="text-xs text-slate-300 mt-0.5">Everything you need to host lively chats, debates &amp; party rounds.</p>
           </div>
         </div>
 
@@ -853,19 +858,19 @@
       <div class="grid grid-cols-4 gap-1.5 bg-slate-100 dark:bg-slate-950/90 p-2.5 border-b border-slate-200 dark:border-slate-800 shrink-0">
         <button id="tut-tab-0" onclick="setTutorialStep(0)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-layer-group text-indigo-400"></i>
-          <span>1. Decks</span>
+          <span id="tut-tab-label-0">1. Decks</span>
         </button>
         <button id="tut-tab-1" onclick="setTutorialStep(1)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-bell text-rose-400"></i>
-          <span>2. Timer</span>
+          <span id="tut-tab-label-1">2. Timer</span>
         </button>
         <button id="tut-tab-2" onclick="setTutorialStep(2)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-trophy text-amber-400"></i>
-          <span>3. Podium</span>
+          <span id="tut-tab-label-2">3. Podium</span>
         </button>
         <button id="tut-tab-3" onclick="setTutorialStep(3)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
-          <span>4. Pro Tips</span>
+          <span id="tut-tab-label-3">4. Pro Tips</span>
         </button>
       </div>
 
@@ -877,10 +882,10 @@
         <div id="tutorial-dots" class="flex items-center gap-1.5"></div>
         <div class="flex items-center gap-2">
           <button id="tut-prev-btn" onclick="stepTutorial(-1)" class="px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold transition-colors cursor-pointer">
-            <i class="fa-solid fa-arrow-left mr-1"></i> Back
+            <i class="fa-solid fa-arrow-left mr-1"></i> <span id="tut-prev-label">Back</span>
           </button>
           <button id="tut-next-btn" onclick="stepTutorial(1)" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-extrabold shadow cursor-pointer">
-            Next <i class="fa-solid fa-arrow-right ml-1"></i>
+            <span id="tut-next-label">Next</span> <i class="fa-solid fa-arrow-right ml-1"></i>
           </button>
         </div>
       </div>
@@ -892,7 +897,7 @@
     <div onclick="toggleScoresModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
     <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+        <h3 id="scores-modal-title" class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-trophy text-amber-500"></i> Manage Session Leaderboard Scores
         </h3>
         <button onclick="toggleScoresModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
@@ -900,7 +905,7 @@
         </button>
       </div>
 
-      <p class="text-xs text-slate-500 dark:text-slate-400">
+      <p id="scores-modal-desc" class="text-xs text-slate-500 dark:text-slate-400">
         Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!
       </p>
 
@@ -908,9 +913,9 @@
         <table class="w-full text-left text-xs border-collapse">
           <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 sticky top-0 z-10">
             <tr>
-              <th class="p-2.5 font-bold">Username</th>
-              <th class="p-2.5 font-bold w-28">Session Points</th>
-              <th class="p-2.5 font-bold w-12 text-center">Action</th>
+              <th id="scores-th-user" class="p-2.5 font-bold">Username</th>
+              <th id="scores-th-points" class="p-2.5 font-bold w-28">Session Points</th>
+              <th id="scores-th-action" class="p-2.5 font-bold w-12 text-center">Action</th>
             </tr>
           </thead>
           <tbody id="scores-table-body" class="divide-y divide-slate-200 dark:divide-slate-800"></tbody>
@@ -918,12 +923,12 @@
       </div>
 
       <div class="flex items-center justify-between pt-2">
-        <button onclick="addScoreRow('', '')" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+        <button id="scores-add-btn" onclick="addScoreRow('', '')" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
           <i class="fa-solid fa-plus text-indigo-500"></i> Add User
         </button>
         <div class="flex items-center gap-2">
-          <button onclick="clearAllScores()" class="px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors cursor-pointer">Clear All</button>
-          <button onclick="saveAndApplyScores()" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer shadow">Save & Apply</button>
+          <button id="scores-clear-btn" onclick="clearAllScores()" class="px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors cursor-pointer">Clear All</button>
+          <button id="scores-save-btn" onclick="saveAndApplyScores()" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer shadow">Save & Apply</button>
         </div>
       </div>
     </div>
@@ -934,7 +939,7 @@
     <div onclick="togglePrivacyModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
     <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-3">
       <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-        <h3 class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+        <h3 id="privacy-modal-title" class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-shield-halved text-indigo-500"></i> Privacy Policy
         </h3>
         <button onclick="togglePrivacyModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
@@ -942,10 +947,10 @@
         </button>
       </div>
       <div class="text-xs space-y-2 max-h-[60vh] overflow-y-auto pr-1">
-        <p><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.</p>
+        <p id="privacy-modal-body"><strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.</p>
       </div>
       <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-right">
-        <button onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
+        <button id="privacy-close-btn" onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
       </div>
     </div>
   </div>
@@ -961,8 +966,8 @@
               <i class="fa-solid fa-bookmark text-sm"></i>
             </div>
             <div>
-              <h3 class="font-bold text-base text-slate-900 dark:text-white">Saved Topics</h3>
-              <p class="text-[10px] text-slate-500 dark:text-slate-400">Click any prompt to load it</p>
+              <h3 id="favorites-drawer-title" class="font-bold text-base text-slate-900 dark:text-white">Saved Topics</h3>
+              <p id="favorites-drawer-sub" class="text-[10px] text-slate-500 dark:text-slate-400">Click any prompt to load it</p>
             </div>
           </div>
           <button onclick="toggleFavoritesDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
@@ -972,7 +977,7 @@
         <div id="saved-topics-list" class="space-y-2.5 overflow-y-auto max-h-[70vh] pr-1"></div>
       </div>
       <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
-        <button onclick="clearAllFavorites()" class="w-full py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
+        <button id="favorites-clear-btn" onclick="clearAllFavorites()" class="w-full py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
           <i class="fa-solid fa-trash-can"></i> Clear Saved
         </button>
       </div>
@@ -1022,17 +1027,831 @@
       { id: "funny", name: "Funny & Silly", desc: "Humor/Fun, Would You Rather, Did You Know? & Music", categories: ["Humor/Fun", "Would You Rather", "Did You Know?", "Music Fun Facts"] }
     ];
 
-    var currentTopics = [];
-    var cardCountView = 4;
-    var activePreset = "all";
-    var selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
-    var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
-    var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
+    // --- MULTI-LANGUAGE DICTIONARY & TRANSLATION CACHE ---
+    var currentLanguage = localStorage.getItem("nellieb_lang") || "en";
+    var translationCache = JSON.parse(localStorage.getItem("nellieb_tx_cache") || "{}");
 
-    // Tracks per-card face-down state & live typing intervals in 4-Card mode
-    var cardRevealedStates = [false, false, false, false];
-    var cardTypingTimers = [null, null, null, null];
-    var cardTypingProgress = [0, 0, 0, 0];
+    var UI_TRANSLATIONS = {
+      en: {
+        tagline: "LET'S CHAT IT UP",
+        followMe: "Follow Me",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Switch to Spanish",
+        tutorial: "Tutorial",
+        scores: "Scores",
+        tiktokDesktop: "Go to My TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIUM",
+        podiumShort: "TOP 3",
+        oneCard: "1 Card",
+        fourCards: "4 Cards",
+        presetsPrefix: "Presets:",
+        categoriesBtn: "Categories",
+        tutorialNotePrefix: "Need the guide later? Click the ",
+        tutorialNoteSuffix: " button in the top bar anytime.",
+        openTutorial: "Open Tutorial",
+        boomBanner: "BOOM! TIME'S UP",
+        startBtn: "Start",
+        pauseBtn: "Pause",
+        changeOneCard: "Click to Change Card",
+        dealFourCards: "Deal 4 New Cards",
+        shortcutHintPrefix: "Tap or click any card, press ",
+        shortcutHintMid: ", or use ",
+        shortcutHintSuffix: " to flip topics.",
+        privacyLink: "Privacy Policy",
+        welcomeBadge: "Welcome to Chatomizer",
+        welcomeTitle: "Would you like to check out the Tutorial?",
+        welcomeDesc: "We can walk you through topic decks, the alarm timer, leaderboard scoring, and saved queues - or take you straight to the cards.",
+        welcomeNo: "No, Go to Page",
+        welcomeYes: "Yes, Open Tutorial",
+        presetsTitle: "Choose a Preset Mix",
+        presetsSubtitle: "Pick a curated vibe to automatically select matching decks:",
+        categoriesTitle: "Select Question Categories",
+        selectAll: "Select All",
+        unselectAll: "Unselect All",
+        selectedSummary: "{count} of {total} selected",
+        doneBtn: "Done",
+        tutHeroBadge: "Party Host Guide",
+        tutHeroTitlePrefix: "Welcome to ",
+        tutHeroSub: "Everything you need to host lively chats, debates & party rounds.",
+        tutTabs: ["1. Decks", "2. Timer", "3. Podium", "4. Pro Tips"],
+        tutBack: "Back",
+        tutNext: "Next",
+        tutFinish: "Let's Play!",
+        scoresTitle: "Manage Session Leaderboard Scores",
+        scoresDesc: "Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!",
+        thUser: "Username",
+        thPoints: "Session Points",
+        thAction: "Action",
+        addUser: "Add User",
+        clearAll: "Clear All",
+        saveApply: "Save & Apply",
+        privacyTitle: "Privacy Policy",
+        privacyBody: "<strong>Your Privacy Matters:</strong> This website is an interactive topic generation tool. We do not require account registration, nor do we collect or request personal identifying information.",
+        closeBtn: "Close",
+        savedTitle: "Saved Topics",
+        savedSub: "Click any prompt to load it",
+        clearSaved: "Clear Saved",
+        tapToFlip: "Tap to Flip",
+        topicLabel: "Topic",
+        flipBadge: "FLIP",
+        clickToReveal: "Click card to reveal question",
+        flipBackHint: "Click or Tap to Flip Back",
+        changeCardHint: "Click or Tap to Change",
+        refreshTitle: "Refresh this question",
+        bookmarkTitle: "Bookmark Topic",
+        copyTitle: "Copy Prompt",
+        ptsSuffix: "PTS",
+        emptyPodium: "No podium leaders yet. Click \"Scores\" to enter contenders!",
+        noSavedEmpty: "No saved topics yet.",
+        noSavedSub: "Tap the pin icon on any card to bookmark it!",
+        clickToLoad: "Click to load topic"
+      },
+      es: {
+        tagline: "¡A CHARLAR SE HA DICHO!",
+        followMe: "Sígueme",
+        quickToggleLabel: "EN",
+        quickToggleTitle: "Cambiar a inglés",
+        tutorial: "Tutorial",
+        scores: "Marcador",
+        tiktokDesktop: "Ir a mi TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIO",
+        podiumShort: "TOP 3",
+        oneCard: "1 Carta",
+        fourCards: "4 Cartas",
+        presetsPrefix: "Modos:",
+        categoriesBtn: "Categorías",
+        tutorialNotePrefix: "¿Necesitas la guía luego? Pulsa el botón de ",
+        tutorialNoteSuffix: " en la barra superior cuando quieras.",
+        openTutorial: "Abrir Tutorial",
+        boomBanner: "¡BOOM! SE ACABÓ EL TIEMPO",
+        startBtn: "Iniciar",
+        pauseBtn: "Pausar",
+        changeOneCard: "Toca para cambiar carta",
+        dealFourCards: "Repartir 4 Cartas",
+        shortcutHintPrefix: "Toca cualquier carta, presiona ",
+        shortcutHintMid: " o usa ",
+        shortcutHintSuffix: " para girar temas.",
+        privacyLink: "Política de Privacidad",
+        welcomeBadge: "Bienvenido a Chatomizer",
+        welcomeTitle: "¿Te gustaría ver el Tutorial?",
+        welcomeDesc: "Te guiamos por los mazos, el reloj temporizador, los puntos del podio y tus temas guardados, o vamos directo a las cartas.",
+        welcomeNo: "No, Ir a la Página",
+        welcomeYes: "Sí, Abrir Tutorial",
+        presetsTitle: "Elige un Modo Predefinido",
+        presetsSubtitle: "Selecciona un ambiente para activar los mazos correspondientes:",
+        categoriesTitle: "Selecciona Categorías de Preguntas",
+        selectAll: "Seleccionar Todo",
+        unselectAll: "Deseleccionar Todo",
+        selectedSummary: "{count} de {total} seleccionadas",
+        doneBtn: "Listo",
+        tutHeroBadge: "Guía del Anfitrión",
+        tutHeroTitlePrefix: "¡Bienvenido a ",
+        tutHeroSub: "Todo lo que necesitas para animar charlas, debates y rondas.",
+        tutTabs: ["1. Mazos", "2. Reloj", "3. Podio", "4. Consejos"],
+        tutBack: "Atrás",
+        tutNext: "Siguiente",
+        tutFinish: "¡A Jugar!",
+        scoresTitle: "Administrar Puntos de la Sesión",
+        scoresDesc: "Escribe los nombres y puntos de la sesión. ¡Los 3 primeros ocupan el Podio en la marquesina!",
+        thUser: "Usuario",
+        thPoints: "Puntos",
+        thAction: "Acción",
+        addUser: "Agregar Usuario",
+        clearAll: "Borrar Todo",
+        saveApply: "Guardar y Aplicar",
+        privacyTitle: "Política de Privacidad",
+        privacyBody: "<strong>Tu privacidad importa:</strong> Este sitio es una herramienta interactiva de temas. No requiere registro ni solicita información de identificación personal.",
+        closeBtn: "Cerrar",
+        savedTitle: "Temas Guardados",
+        savedSub: "Toca una pregunta para cargarla",
+        clearSaved: "Borrar Guardados",
+        tapToFlip: "Toca para Girar",
+        topicLabel: "Tema",
+        flipBadge: "GIRAR",
+        clickToReveal: "Toca la carta para ver la pregunta",
+        flipBackHint: "Toca o haz clic para voltear",
+        changeCardHint: "Toca o haz clic para cambiar",
+        refreshTitle: "Cambiar esta pregunta",
+        bookmarkTitle: "Guardar tema",
+        copyTitle: "Copiar pregunta",
+        ptsSuffix: "PTS",
+        emptyPodium: "Aún no hay líderes en el podio. ¡Haz clic en \"Marcador\" para agregar jugadores!",
+        noSavedEmpty: "No hay temas guardados aún.",
+        noSavedSub: "¡Toca el ícono de chincheta en cualquier carta para guardarlo!",
+        clickToLoad: "Toca para cargar el tema"
+      },
+      fr: {
+        tagline: "ON DISCUTE ?",
+        followMe: "Suis-moi",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Passer en espagnol",
+        tutorial: "Tutoriel",
+        scores: "Scores",
+        tiktokDesktop: "Mon TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIUM",
+        podiumShort: "TOP 3",
+        oneCard: "1 Carte",
+        fourCards: "4 Cartes",
+        presetsPrefix: "Modes :",
+        categoriesBtn: "Catégories",
+        tutorialNotePrefix: "Besoin du guide plus tard ? Cliquez sur ",
+        tutorialNoteSuffix: " en haut à tout moment.",
+        openTutorial: "Ouvrir le Tutoriel",
+        boomBanner: "BOUM ! TEMPS ÉCOULÉ",
+        startBtn: "Démarrer",
+        pauseBtn: "Pause",
+        changeOneCard: "Changer la carte",
+        dealFourCards: "Tirer 4 Cartes",
+        shortcutHintPrefix: "Touchez une carte, appuyez sur ",
+        shortcutHintMid: " ou utilisez ",
+        shortcutHintSuffix: " pour changer.",
+        privacyLink: "Confidentialité",
+        welcomeBadge: "Bienvenue sur Chatomizer",
+        welcomeTitle: "Voulez-vous voir le Tutoriel ?",
+        welcomeDesc: "Découvrez les decks, le minuteur, le podium des scores et vos favoris, ou passez directement aux cartes.",
+        welcomeNo: "Non, Aller à la Page",
+        welcomeYes: "Oui, Ouvrir le Tutoriel",
+        presetsTitle: "Choisir un Mix Prédéfini",
+        presetsSubtitle: "Choisissez une ambiance pour activer les catégories associées :",
+        categoriesTitle: "Sélectionner les Catégories",
+        selectAll: "Tout Sélectionner",
+        unselectAll: "Tout Désélectionner",
+        selectedSummary: "{count} sur {total} sélectionnées",
+        doneBtn: "OK",
+        tutHeroBadge: "Guide de Soirée",
+        tutHeroTitlePrefix: "Bienvenue sur ",
+        tutHeroSub: "Tout pour animer vos discussions, débats et jeux.",
+        tutTabs: ["1. Decks", "2. Minuteur", "3. Podium", "4. Astuces"],
+        tutBack: "Retour",
+        tutNext: "Suivant",
+        tutFinish: "C'est Parti !",
+        scoresTitle: "Gérer les Scores de la Session",
+        scoresDesc: "Saisissez les pseudos et points. Les 3 meilleurs montent sur le Podium !",
+        thUser: "Pseudo",
+        thPoints: "Points",
+        thAction: "Action",
+        addUser: "Ajouter",
+        clearAll: "Tout Effacer",
+        saveApply: "Enregistrer",
+        privacyTitle: "Politique de Confidentialité",
+        privacyBody: "<strong>Votre vie privée compte :</strong> Outil interactif de questions sans inscription ni collecte de données personnelles.",
+        closeBtn: "Fermer",
+        savedTitle: "Sujets Enregistrés",
+        savedSub: "Cliquez pour charger la question",
+        clearSaved: "Effacer",
+        tapToFlip: "Toucher pour Retourner",
+        topicLabel: "Thème",
+        flipBadge: "RETOURNER",
+        clickToReveal: "Touchez la carte pour révéler",
+        flipBackHint: "Cliquez pour retourner",
+        changeCardHint: "Cliquez pour changer",
+        refreshTitle: "Actualiser cette question",
+        bookmarkTitle: "Enregistrer",
+        copyTitle: "Copier",
+        ptsSuffix: "PTS",
+        emptyPodium: "Aucun leader pour l'instant. Cliquez sur \"Scores\" !",
+        noSavedEmpty: "Aucun sujet enregistré.",
+        noSavedSub: "Épinglez une carte pour la sauvegarder !",
+        clickToLoad: "Cliquer pour charger"
+      },
+      de: {
+        tagline: "LASS UNS QUATSCHEN",
+        followMe: "Folge Mir",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Auf Spanisch wechseln",
+        tutorial: "Tutorial",
+        scores: "Punkte",
+        tiktokDesktop: "Zu meinem TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIUM",
+        podiumShort: "TOP 3",
+        oneCard: "1 Karte",
+        fourCards: "4 Karten",
+        presetsPrefix: "Mix:",
+        categoriesBtn: "Kategorien",
+        tutorialNotePrefix: "Anleitung später nötig? Klicke oben jederzeit auf ",
+        tutorialNoteSuffix: ".",
+        openTutorial: "Tutorial öffnen",
+        boomBanner: "BOOM! ZEIT ABGELAUFEN",
+        startBtn: "Start",
+        pauseBtn: "Pause",
+        changeOneCard: "Karte wechseln",
+        dealFourCards: "4 Karten ziehen",
+        shortcutHintPrefix: "Karte antippen, ",
+        shortcutHintMid: " drücken oder ",
+        shortcutHintSuffix: " nutzen.",
+        privacyLink: "Datenschutz",
+        welcomeBadge: "Willkommen bei Chatomizer",
+        welcomeTitle: "Möchtest du das Tutorial ansehen?",
+        welcomeDesc: "Entdecke Kartendecks, Wecker-Timer, Bestenliste und Favoriten – oder starte direkt mit den Karten.",
+        welcomeNo: "Nein, Zur Seite",
+        welcomeYes: "Ja, Tutorial öffnen",
+        presetsTitle: "Preset-Mix wählen",
+        presetsSubtitle: "Wähle eine Stimmung für passende Kategorien:",
+        categoriesTitle: "Fragekategorien wählen",
+        selectAll: "Alle wählen",
+        unselectAll: "Alle abwählen",
+        selectedSummary: "{count} von {total} ausgewählt",
+        doneBtn: "Fertig",
+        tutHeroBadge: "Party-Guide",
+        tutHeroTitlePrefix: "Willkommen bei ",
+        tutHeroSub: "Alles für lockere Runden, Debatten und Party-Fragen.",
+        tutTabs: ["1. Decks", "2. Timer", "3. Podium", "4. Tipps"],
+        tutBack: "Zurück",
+        tutNext: "Weiter",
+        tutFinish: "Los geht's!",
+        scoresTitle: "Session-Punkte verwalten",
+        scoresDesc: "Namen und Punkte eingeben. Die Top 3 erscheinen im Podium-Ticker!",
+        thUser: "Name",
+        thPoints: "Punkte",
+        thAction: "Aktion",
+        addUser: "Nutzer hinzufügen",
+        clearAll: "Alle löschen",
+        saveApply: "Speichern",
+        privacyTitle: "Datenschutzrichtlinie",
+        privacyBody: "<strong>Deine Privatsphäre zählt:</strong> Interaktives Fragetool ohne Registrierung oder Erfassung personenbezogener Daten.",
+        closeBtn: "Schließen",
+        savedTitle: "Gespeicherte Themen",
+        savedSub: "Zum Laden antippen",
+        clearSaved: "Löschen",
+        tapToFlip: "Tippen zum Umdrehen",
+        topicLabel: "Thema",
+        flipBadge: "DREHEN",
+        clickToReveal: "Karte antippen zum Aufdecken",
+        flipBackHint: "Klicken zum Zurückdrehen",
+        changeCardHint: "Klicken zum Wechseln",
+        refreshTitle: "Frage neu laden",
+        bookmarkTitle: "Merken",
+        copyTitle: "Kopieren",
+        ptsSuffix: "PKT",
+        emptyPodium: "Noch keine Podiumsplätze. Klicke auf „Punkte“!",
+        noSavedEmpty: "Noch keine Themen gespeichert.",
+        noSavedSub: "Tippe auf das Pin-Symbol einer Karte zum Merken!",
+        clickToLoad: "Zum Laden klicken"
+      },
+      pt: {
+        tagline: "BORA BATER PAPO",
+        followMe: "Siga-me",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Mudar para espanhol",
+        tutorial: "Tutorial",
+        scores: "Placar",
+        tiktokDesktop: "Ir ao TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PÓDIO",
+        podiumShort: "TOP 3",
+        oneCard: "1 Carta",
+        fourCards: "4 Cartas",
+        presetsPrefix: "Modos:",
+        categoriesBtn: "Categorias",
+        tutorialNotePrefix: "Precisa do guia depois? Clique em ",
+        tutorialNoteSuffix: " na barra superior quando quiser.",
+        openTutorial: "Abrir Tutorial",
+        boomBanner: "BOOM! TEMPO ESGOTADO",
+        startBtn: "Iniciar",
+        pauseBtn: "Pausar",
+        changeOneCard: "Trocar Carta",
+        dealFourCards: "Sortear 4 Cartas",
+        shortcutHintPrefix: "Toque em qualquer carta, aperte ",
+        shortcutHintMid: " ou use ",
+        shortcutHintSuffix: " para girar.",
+        privacyLink: "Privacidade",
+        welcomeBadge: "Bem-vindo ao Chatomizer",
+        welcomeTitle: "Quer conferir o Tutorial?",
+        welcomeDesc: "Veja como funcionam os baralhos, o alarme, o placar e os favoritos, ou vá direto para as cartas.",
+        welcomeNo: "Não, Ir para a Página",
+        welcomeYes: "Sim, Abrir Tutorial",
+        presetsTitle: "Escolha um Modo",
+        presetsSubtitle: "Selecione um estilo para ativar os baralhos correspondentes:",
+        categoriesTitle: "Selecionar Categorias",
+        selectAll: "Selecionar Tudo",
+        unselectAll: "Desmarcar Tudo",
+        selectedSummary: "{count} de {total} selecionadas",
+        doneBtn: "Pronto",
+        tutHeroBadge: "Guia do Host",
+        tutHeroTitlePrefix: "Bem-vindo ao ",
+        tutHeroSub: "Tudo para animar conversas, debates e rodadas.",
+        tutTabs: ["1. Baralhos", "2. Timer", "3. Pódio", "4. Dicas"],
+        tutBack: "Voltar",
+        tutNext: "Próximo",
+        tutFinish: "Vamos Jogar!",
+        scoresTitle: "Gerenciar Pontos da Sessão",
+        scoresDesc: "Adicione nomes e pontos. Os 3 melhores entram no Pódio!",
+        thUser: "Usuário",
+        thPoints: "Pontos",
+        thAction: "Ação",
+        addUser: "Adicionar Usuário",
+        clearAll: "Limpar Tudo",
+        saveApply: "Salvar e Aplicar",
+        privacyTitle: "Política de Privacidade",
+        privacyBody: "<strong>Sua privacidade importa:</strong> Ferramenta interativa sem necessidade de cadastro ou dados pessoais.",
+        closeBtn: "Fechar",
+        savedTitle: "Tópicos Salvos",
+        savedSub: "Clique para carregar",
+        clearSaved: "Limpar Salvos",
+        tapToFlip: "Toque para Virar",
+        topicLabel: "Tema",
+        flipBadge: "VIRAR",
+        clickToReveal: "Toque na carta para revelar",
+        flipBackHint: "Clique para virar de volta",
+        changeCardHint: "Clique para trocar",
+        refreshTitle: "Trocar pergunta",
+        bookmarkTitle: "Salvar tema",
+        copyTitle: "Copiar",
+        ptsSuffix: "PTS",
+        emptyPodium: "Ainda sem líderes no pódio. Clique em \"Placar\"!",
+        noSavedEmpty: "Nenhum tópico salvo ainda.",
+        noSavedSub: "Toque no alfinete de uma carta para salvar!",
+        clickToLoad: "Clique para carregar"
+      },
+      it: {
+        tagline: "FACCIAMOCI DUE CHIACCHIERE",
+        followMe: "Seguimi",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Passa allo spagnolo",
+        tutorial: "Tutorial",
+        scores: "Punteggi",
+        tiktokDesktop: "Vai su TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOP 3 PODIO",
+        podiumShort: "TOP 3",
+        oneCard: "1 Carta",
+        fourCards: "4 Carte",
+        presetsPrefix: "Mix:",
+        categoriesBtn: "Categorie",
+        tutorialNotePrefix: "Ti serve la guida dopo? Clicca su ",
+        tutorialNoteSuffix: " in alto quando vuoi.",
+        openTutorial: "Apri Tutorial",
+        boomBanner: "BOOM! TEMPO SCADUTO",
+        startBtn: "Avvia",
+        pauseBtn: "Pausa",
+        changeOneCard: "Cambia Carta",
+        dealFourCards: "Pesca 4 Carte",
+        shortcutHintPrefix: "Tocca una carta, premi ",
+        shortcutHintMid: " o usa ",
+        shortcutHintSuffix: " per girare.",
+        privacyLink: "Privacy",
+        welcomeBadge: "Benvenuto su Chatomizer",
+        welcomeTitle: "Vuoi dare un'occhiata al Tutorial?",
+        welcomeDesc: "Scopri mazzi, timer a sveglia, classifica e preferiti, oppure vai subito alle carte.",
+        welcomeNo: "No, Vai alla Pagina",
+        welcomeYes: "Sì, Apri Tutorial",
+        presetsTitle: "Scegli un Mix Predefinito",
+        presetsSubtitle: "Seleziona un'atmosfera per attivare le categorie:",
+        categoriesTitle: "Seleziona Categorie",
+        selectAll: "Seleziona Tutto",
+        unselectAll: "Deseleziona Tutto",
+        selectedSummary: "{count} su {total} selezionate",
+        doneBtn: "Fatto",
+        tutHeroBadge: "Guida Host",
+        tutHeroTitlePrefix: "Benvenuto su ",
+        tutHeroSub: "Tutto per animare chiacchiere, dibattiti e sfide.",
+        tutTabs: ["1. Mazzi", "2. Timer", "3. Podio", "4. Consigli"],
+        tutBack: "Indietro",
+        tutNext: "Avanti",
+        tutFinish: "Giochiamo!",
+        scoresTitle: "Gestisci Punti Sessione",
+        scoresDesc: "Inserisci nomi e punti. I primi 3 salgono sul Podio!",
+        thUser: "Utente",
+        thPoints: "Punti",
+        thAction: "Azione",
+        addUser: "Aggiungi Utente",
+        clearAll: "Cancella Tutto",
+        saveApply: "Salva e Applica",
+        privacyTitle: "Informativa sulla Privacy",
+        privacyBody: "<strong>La tua privacy conta:</strong> Strumento interattivo senza registrazione né raccolta di dati personali.",
+        closeBtn: "Chiudi",
+        savedTitle: "Argomenti Salvati",
+        savedSub: "Tocca per caricare",
+        clearSaved: "Cancella Salvati",
+        tapToFlip: "Tocca per Girare",
+        topicLabel: "Tema",
+        flipBadge: "GIRA",
+        clickToReveal: "Tocca la carta per rivelare",
+        flipBackHint: "Clicca per girare",
+        changeCardHint: "Clicca per cambiare",
+        refreshTitle: "Cambia domanda",
+        bookmarkTitle: "Salva tema",
+        copyTitle: "Copia",
+        ptsSuffix: "PT",
+        emptyPodium: "Nessun leader sul podio. Clicca su \"Punteggi\"!",
+        noSavedEmpty: "Nessun argomento salvato.",
+        noSavedSub: "Tocca la puntina su una carta per salvarla!",
+        clickToLoad: "Clicca per caricare"
+      }
+    };
+
+    var CATEGORY_NAMES_I18N = {
+      en: {
+        "Philosophy": "Philosophy",
+        "Deep Questions": "Deep Questions",
+        "Humor/Fun": "Humor/Fun",
+        "Current Events": "Current Events",
+        "Would You Rather": "Would You Rather",
+        "Pop Culture": "Pop Culture",
+        "Personal Stories": "Personal Stories",
+        "Science & Tech": "Science & Tech",
+        "Did You Know?": "Did You Know?",
+        "Music Fun Facts": "Music Fun Facts"
+      },
+      es: {
+        "Philosophy": "Filosofía",
+        "Deep Questions": "Preguntas Profundas",
+        "Humor/Fun": "Humor y Diversión",
+        "Current Events": "Actualidad",
+        "Would You Rather": "¿Qué Preferirías?",
+        "Pop Culture": "Cultura Pop",
+        "Personal Stories": "Historias Personales",
+        "Science & Tech": "Ciencia y Tecnología",
+        "Did You Know?": "¿Sabías Que...?",
+        "Music Fun Facts": "Datos Curiosos de Música"
+      },
+      fr: {
+        "Philosophy": "Philosophie",
+        "Deep Questions": "Questions Profondes",
+        "Humor/Fun": "Humour et Fun",
+        "Current Events": "Actualités",
+        "Would You Rather": "Tu Préfères ?",
+        "Pop Culture": "Culture Pop",
+        "Personal Stories": "Histoires Persos",
+        "Science & Tech": "Sciences et Tech",
+        "Did You Know?": "Le Saviez-Vous ?",
+        "Music Fun Facts": "Anecdotes Musicales"
+      },
+      de: {
+        "Philosophy": "Philosophie",
+        "Deep Questions": "Tiefe Fragen",
+        "Humor/Fun": "Humor & Spaß",
+        "Current Events": "Aktuelles",
+        "Would You Rather": "Was Würdest Du Eher?",
+        "Pop Culture": "Popkultur",
+        "Personal Stories": "Persönliches",
+        "Science & Tech": "Wissenschaft & Tech",
+        "Did You Know?": "Wusstest Du Schon?",
+        "Music Fun Facts": "Musik-Fakten"
+      },
+      pt: {
+        "Philosophy": "Filosofia",
+        "Deep Questions": "Perguntas Profundas",
+        "Humor/Fun": "Humor e Diversão",
+        "Current Events": "Atualidades",
+        "Would You Rather": "O Que Você Preferiria?",
+        "Pop Culture": "Cultura Pop",
+        "Personal Stories": "Histórias Pessoais",
+        "Science & Tech": "Ciência e Tech",
+        "Did You Know?": "Você Sabia?",
+        "Music Fun Facts": "Curiosidades Musicais"
+      },
+      it: {
+        "Philosophy": "Filosofia",
+        "Deep Questions": "Domande Profonde",
+        "Humor/Fun": "Umorismo e Svago",
+        "Current Events": "Attualità",
+        "Would You Rather": "Cosa Preferiresti?",
+        "Pop Culture": "Cultura Pop",
+        "Personal Stories": "Storie Personali",
+        "Science & Tech": "Scienza e Tech",
+        "Did You Know?": "Lo Sapevi?",
+        "Music Fun Facts": "Curiosità Musicali"
+      }
+    };
+
+    var PRESET_I18N = {
+      en: {
+        all: { name: "Balanced Mix", desc: "All 10 categories in rotation" },
+        icebreaker: { name: "Casual Icebreakers", desc: "Humor, Would You Rather, Pop Culture, Stories & Music" },
+        deep: { name: "Deep Discussions", desc: "Philosophy, Deep Questions & Science & Tech" },
+        latenight: { name: "Late Night Debates", desc: "Philosophy, Did You Know?, Current Events, Tech & Music" },
+        funny: { name: "Funny & Silly", desc: "Humor/Fun, Would You Rather, Did You Know? & Music" }
+      },
+      es: {
+        all: { name: "Mezcla Equilibrada", desc: "Las 10 categorías en rotación" },
+        icebreaker: { name: "Rompehielos Casual", desc: "Humor, ¿Qué Preferirías?, Cultura Pop, Historias y Música" },
+        deep: { name: "Charlas Profundas", desc: "Filosofía, Preguntas Profundas y Ciencia y Tecnología" },
+        latenight: { name: "Debates Nocturnos", desc: "Filosofía, ¿Sabías Que...?, Actualidad, Tech y Música" },
+        funny: { name: "Divertido y Loco", desc: "Humor, ¿Qué Preferirías?, ¿Sabías Que...? y Música" }
+      },
+      fr: {
+        all: { name: "Mix Équilibré", desc: "Les 10 catégories en rotation" },
+        icebreaker: { name: "Brise-Glace", desc: "Humour, Tu Préfères, Pop, Histoires et Musique" },
+        deep: { name: "Discussions Profondes", desc: "Philosophie, Questions Profondes et Sciences & Tech" },
+        latenight: { name: "Débats Nocturnes", desc: "Philosophie, Le Saviez-Vous, Actus, Tech et Musique" },
+        funny: { name: "Drôle et Décalé", desc: "Humour, Tu Préfères, Le Saviez-Vous et Musique" }
+      },
+      de: {
+        all: { name: "Ausgewogener Mix", desc: "Alle 10 Kategorien im Wechsel" },
+        icebreaker: { name: "Lockerer Einstieg", desc: "Humor, Was Würdest Du, Pop, Stories & Musik" },
+        deep: { name: "Tiefe Gespräche", desc: "Philosophie, Tiefe Fragen & Wissenschaft & Tech" },
+        latenight: { name: "Späte Debatten", desc: "Philosophie, Wusstest Du, Aktuelles, Tech & Musik" },
+        funny: { name: "Lustig & Verrückt", desc: "Humor, Was Würdest Du, Wusstest Du & Musik" }
+      },
+      pt: {
+        all: { name: "Mix Equilibrado", desc: "Todas as 10 categorias em rotação" },
+        icebreaker: { name: "Quebra-Gelo", desc: "Humor, O Que Preferiria, Pop, Histórias e Música" },
+        deep: { name: "Conversas Profundas", desc: "Filosofia, Perguntas Profundas e Ciência e Tech" },
+        latenight: { name: "Debates da Madrugada", desc: "Filosofia, Você Sabia, Atualidades, Tech e Música" },
+        funny: { name: "Engraçado e Maluco", desc: "Humor, O Que Preferiria, Você Sabia e Música" }
+      },
+      it: {
+        all: { name: "Mix Bilanciato", desc: "Tutte le 10 categorie in rotazione" },
+        icebreaker: { name: "Rompighiaccio", desc: "Umorismo, Cosa Preferiresti, Pop, Storie e Musica" },
+        deep: { name: "Discussioni Profonde", desc: "Filosofia, Domande Profonde e Scienza e Tech" },
+        latenight: { name: "Dibattiti Serali", desc: "Filosofia, Lo Sapevi, Attualità, Tech e Musica" },
+        funny: { name: "Buffo e Leggero", desc: "Umorismo, Cosa Preferiresti, Lo Sapevi e Musica" }
+      }
+    };
+
+    var PHRASE_TRANSLATIONS_ES = {
+      "What is one belief you held strongly five years ago that you no longer hold today?": "¿Cuál es una creencia que defendías con fuerza hace cinco años y que hoy ya no sostienes?",
+      "If you could know the absolute truth to one mystery of the universe, which one would you pick?": "Si pudieras conocer la verdad absoluta de un misterio del universo, ¿cuál elegirías?",
+      "What everyday habit do you think most people do backward?": "¿Qué hábito diario crees que la mayoría de la gente hace al revés?",
+      "Would you rather always have to tell the complete truth or never speak unless asked a direct question?": "¿Preferirías decir siempre la verdad completa o no hablar a menos que te hagan una pregunta directa?",
+      "What song instantly puts you in a great mood regardless of how your day went?": "¿Qué canción te pone de buen humor al instante sin importar cómo te haya ido el día?",
+      "What is a weird food combination you secretly love?": "¿Qué combinación extraña de comida te encanta en secreto?",
+      "If time could pause for one hour every day just for you, how would you spend it?": "Si el tiempo pudiera pausarse una hora cada día solo para ti, ¿cómo la pasarías?",
+      "What is something most people don't know about you until they've known you for years?": "¿Qué es algo que la mayoría no sabe de ti hasta que te conocen desde hace años?"
+    };
+
+    function t(key) {
+      var dict = UI_TRANSLATIONS[currentLanguage] || UI_TRANSLATIONS.en;
+      if (dict[key] !== undefined) return dict[key];
+      return UI_TRANSLATIONS.en[key] !== undefined ? UI_TRANSLATIONS.en[key] : key;
+    }
+
+    function translateCategoryLabel(cat) {
+      var map = CATEGORY_NAMES_I18N[currentLanguage] || CATEGORY_NAMES_I18N.en;
+      return map[cat] || cat;
+    }
+
+    function getPresetDisplay(modeId) {
+      var dict = PRESET_I18N[currentLanguage] || PRESET_I18N.en;
+      if (dict[modeId]) return dict[modeId];
+      var base = PRESET_MODES.find(function(m) { return m.id === modeId; });
+      return base ? { name: base.name, desc: base.desc } : { name: "Custom", desc: "" };
+    }
+
+    function fallbackTranslateText(text, targetLang) {
+      if (!text || targetLang === "en") return text;
+      var numMatch = text.match(/^(\d+\.\s*)(.*)$/);
+      var prefix = numMatch ? numMatch[1] : "";
+      var body = numMatch ? numMatch[2] : text;
+
+      if (targetLang === "es" && PHRASE_TRANSLATIONS_ES[body]) {
+        return prefix + PHRASE_TRANSLATIONS_ES[body];
+      }
+
+      if (targetLang === "es") {
+        var esBody = body
+          .replace(/^Would you rather\b/i, "¿Preferirías")
+          .replace(/^If you could\b/i, "Si pudieras")
+          .replace(/^What is your\b/i, "¿Cuál es tu")
+          .replace(/^What is one\b/i, "¿Cuál es una")
+          .replace(/^What is the\b/i, "¿Cuál es el/la")
+          .replace(/^What would you do if\b/i, "¿Qué harías si")
+          .replace(/\bwith\b/gi, "con")
+          .replace(/\bwithout\b/gi, "sin")
+          .replace(/\bnever\b/gi, "nunca")
+          .replace(/\balways\b/gi, "siempre")
+          .replace(/\beveryday\b/gi, "cada día");
+        if (esBody.endsWith("?") && !esBody.startsWith("¿")) {
+          esBody = "¿" + esBody;
+        }
+        return prefix + esBody;
+      }
+
+      return text;
+    }
+
+    async function fetchRemoteTranslation(text, targetLang) {
+      if (!text || targetLang === "en") return text;
+      var cacheKey = targetLang + "::" + text;
+      if (translationCache[cacheKey]) return translationCache[cacheKey];
+
+      try {
+        var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=" +
+          encodeURIComponent(targetLang) + "&dt=t&q=" + encodeURIComponent(text);
+        var res = await fetch(url);
+        if (!res.ok) throw new Error("Translation HTTP " + res.status);
+        var json = await res.json();
+        if (Array.isArray(json) && Array.isArray(json[0])) {
+          var translated = json[0].map(function(seg) { return seg[0] || ""; }).join("").trim();
+          if (translated) {
+            translationCache[cacheKey] = translated;
+            localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
+            return translated;
+          }
+        }
+      } catch (e) {
+        // Fallback smoothly when offline or blocked
+      }
+      return fallbackTranslateText(text, targetLang);
+    }
+
+    function getTranslatedTopicText(topic) {
+      if (!topic || !topic.text) return "";
+      if (currentLanguage === "en") return topic.text;
+      var cacheKey = currentLanguage + "::" + topic.text;
+      if (translationCache[cacheKey]) return translationCache[cacheKey];
+      return fallbackTranslateText(topic.text, currentLanguage);
+    }
+
+    async function refreshVisibleCardTranslations() {
+      if (currentLanguage === "en") {
+        renderTopicCards();
+        return;
+      }
+
+      for (var i = 0; i < currentTopics.length; i++) {
+        var tp = currentTopics[i];
+        if (!tp || !tp.text) continue;
+        var cacheKey = currentLanguage + "::" + tp.text;
+        if (!translationCache[cacheKey]) {
+          await fetchRemoteTranslation(tp.text, currentLanguage);
+        }
+      }
+
+      renderTopicCards();
+      for (var idx = 0; idx < currentTopics.length; idx++) {
+        var item = currentTopics[idx];
+        if (!item) continue;
+        var isFaceDown = (cardCountView === 4 && !cardRevealedStates[idx]);
+        if (!isFaceDown) {
+          var el = document.getElementById("typed-question-" + idx);
+          if (el) {
+            el.innerHTML = '&quot;' + escapeHtml(getTranslatedTopicText(item)) + '&quot;';
+          }
+        }
+      }
+    }
+
+    function toggleSpanishEnglish() {
+      var nextLang = currentLanguage === "es" ? "en" : "es";
+      setLanguage(nextLang);
+    }
+
+    function setLanguage(langCode) {
+      currentLanguage = UI_TRANSLATIONS[langCode] ? langCode : "en";
+      localStorage.setItem("nellieb_lang", currentLanguage);
+      var selectEl = document.getElementById("language-select");
+      if (selectEl) selectEl.value = currentLanguage;
+      applyLanguageTranslations();
+      refreshVisibleCardTranslations();
+      showToast(
+        currentLanguage === "es"
+          ? "Idioma cambiado a Español"
+          : "Language switched to " + (selectEl && selectEl.options[selectEl.selectedIndex] ? selectEl.options[selectEl.selectedIndex].text : "English"),
+        "info"
+      );
+    }
+
+    function applyLanguageTranslations() {
+      document.documentElement.lang = currentLanguage;
+
+      var setText = function(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.innerText = val;
+      };
+      var setHtml = function(id, val) {
+        var el = document.getElementById(id);
+        if (el) el.innerHTML = val;
+      };
+
+      setText("header-tagline", t("tagline"));
+      setText("header-follow-text", t("followMe"));
+      setText("quick-es-toggle-btn", t("quickToggleLabel"));
+      var quickBtn = document.getElementById("quick-es-toggle-btn");
+      if (quickBtn) quickBtn.title = t("quickToggleTitle");
+
+      setText("header-tutorial-label", t("tutorial"));
+      setText("header-scores-label", t("scores"));
+      setText("header-tiktok-desktop", t("tiktokDesktop"));
+      setText("header-tiktok-mobile", t("tiktokMobile"));
+      setText("ticker-podium-label", t("podiumFull"));
+      setText("floating-podium-label", t("podiumShort"));
+      setText("view-label-1", t("oneCard"));
+      setText("view-label-4", t("fourCards"));
+      setText("presets-prefix-label", t("presetsPrefix"));
+      setText("categories-btn-label", t("categoriesBtn"));
+
+      setHtml(
+        "tutorial-note-text",
+        t("tutorialNotePrefix") + '<strong class="text-indigo-700 dark:text-cyan-300">' + t("tutorial") + '</strong>' + t("tutorialNoteSuffix")
+      );
+      setText("tutorial-note-open-btn", t("openTutorial"));
+      setText("bomb-boom-banner", t("boomBanner"));
+      setText("footer-shortcut-hint", "");
+      var hintEl = document.getElementById("footer-shortcut-hint");
+      if (hintEl) {
+        hintEl.innerHTML = t("shortcutHintPrefix") +
+          '<kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 rounded font-mono text-[10px]">Spacebar</kbd>' +
+          t("shortcutHintMid") +
+          '<i class="fa-solid fa-rotate text-xs text-indigo-400"></i>' +
+          t("shortcutHintSuffix");
+      }
+      setText("privacy-link-btn", t("privacyLink"));
+
+      // Welcome modal
+      setHtml("welcome-badge", '<i class="fa-solid fa-sparkles"></i> ' + t("welcomeBadge"));
+      setText("welcome-title", t("welcomeTitle"));
+      setText("welcome-desc", t("welcomeDesc"));
+      setText("welcome-decline-btn", t("welcomeNo"));
+      setText("welcome-accept-btn", t("welcomeYes"));
+
+      // Presets & Categories modals
+      setHtml("presets-modal-title", '<i class="fa-solid fa-sliders text-indigo-500"></i> ' + t("presetsTitle"));
+      setText("presets-modal-subtitle", t("presetsSubtitle"));
+      setHtml("categories-modal-title", '<i class="fa-solid fa-layer-group text-pink-500"></i> ' + t("categoriesTitle"));
+      setText("categories-done-btn", t("doneBtn"));
+
+      // Tutorial modal chrome
+      setHtml("tut-hero-badge", '<i class="fa-solid fa-sparkles"></i> ' + t("tutHeroBadge"));
+      setHtml(
+        "tut-hero-title",
+        t("tutHeroTitlePrefix") + '<span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer!</span>'
+      );
+      setText("tut-hero-sub", t("tutHeroSub"));
+      var tabs = t("tutTabs");
+      if (Array.isArray(tabs)) {
+        for (var i = 0; i < tabs.length; i++) {
+          setText("tut-tab-label-" + i, tabs[i]);
+        }
+      }
+      setText("tut-prev-label", t("tutBack"));
+
+      // Scores modal
+      setHtml("scores-modal-title", '<i class="fa-solid fa-trophy text-amber-500"></i> ' + t("scoresTitle"));
+      setText("scores-modal-desc", t("scoresDesc"));
+      setText("scores-th-user", t("thUser"));
+      setText("scores-th-points", t("thPoints"));
+      setText("scores-th-action", t("thAction"));
+      setHtml("scores-add-btn", '<i class="fa-solid fa-plus text-indigo-500"></i> ' + t("addUser"));
+      setText("scores-clear-btn", t("clearAll"));
+      setText("scores-save-btn", t("saveApply"));
+
+      // Privacy modal
+      setHtml("privacy-modal-title", '<i class="fa-solid fa-shield-halved text-indigo-500"></i> ' + t("privacyTitle"));
+      setHtml("privacy-modal-body", t("privacyBody"));
+      setText("privacy-close-btn", t("closeBtn"));
+
+      // Favorites drawer
+      setText("favorites-drawer-title", t("savedTitle"));
+      setText("favorites-drawer-sub", t("savedSub"));
+      setHtml("favorites-clear-btn", '<i class="fa-solid fa-trash-can"></i> ' + t("clearSaved"));
+
+      updateFilterButtonsUI();
+      updateToggleUI();
+      updateBombUI();
+      renderModePills();
+      renderCategoryPills();
+      renderLeaderboardTicker();
+      updateFavoritesUI();
+      if (!document.getElementById("tutorial-modal").classList.contains("hidden")) {
+        renderTutorialStep();
+      }
+    }
 
     var sessionScores = JSON.parse(localStorage.getItem("nellieb_scores") || JSON.stringify([
       { name: "Rick", points: 1000 },
@@ -1111,8 +1930,7 @@
       var totalCats = Object.keys(CATEGORY_STYLES).length;
 
       if (presetLabelEl) {
-        var found = PRESET_MODES.find(function(m) { return m.id === activePreset; });
-        presetLabelEl.innerText = found ? found.name : "Custom";
+        presetLabelEl.innerText = getPresetDisplay(activePreset).name;
       }
 
       if (catBadgeEl) {
@@ -1227,6 +2045,53 @@
       }
     ];
 
+    var TUTORIAL_STEPS_ES = [
+      {
+        title: "Elige tu Ambiente y Filtra Mazos",
+        badge: "Paso 1 de 4 - Cartas de Tema",
+        visual: TUTORIAL_STEPS[0].visual,
+        bullets: [
+          { icon: "fa-border-all text-indigo-400", title: "Mazo Boca Abajo en 4 Cartas", text: "En 4 Cartas inician boca abajo con Nellie y la categoría; toca cualquiera para girarla y ver el texto escribirse en vivo." },
+          { icon: "fa-sliders text-pink-400", title: "Seleccionar Todo y Deseleccionar Todo", text: "Abre Categorías para activar todo el mazo o aislar una sola categoría en dos toques." },
+          { icon: "fa-rotate text-cyan-400", title: "Memoria Secuencial", text: "Cada categoría avanza en orden por sus preguntas sin repetir al instante." }
+        ]
+      },
+      {
+        title: "1 Carta Destacada y Reloj Explosivo",
+        badge: "Paso 2 de 4 - Temporizador",
+        visual: TUTORIAL_STEPS[1].visual,
+        bullets: [
+          { icon: "fa-stopwatch text-emerald-400", title: "Duraciones Flexibles", text: "Elige 15s para rondas rápidas, 30s para respuestas normales o 60s para historias." },
+          { icon: "fa-volume-high text-amber-400", title: "Tensión Visual y de Audio", text: "El reloj vibra en los últimos 10 segundos y suena una explosión al llegar a 00:00." },
+          { icon: "fa-rotate-left text-sky-400", title: "Reinicio Automático", text: "Al cambiar carta o tocar a Nellie, el reloj vuelve a tu tiempo elegido." }
+        ]
+      },
+      {
+        title: "Corona a Tu Top 3 del Podio",
+        badge: "Paso 3 de 4 - Marcador en Vivo",
+        visual: TUTORIAL_STEPS[2].visual,
+        bullets: [
+          { icon: "fa-trophy text-amber-400", title: "Pulsa 'Marcador' Arriba", text: "Agrega jugadores, actualiza sus puntos y pulsa Guardar y Aplicar." },
+          { icon: "fa-crown text-yellow-300", title: "Podio Flotante en 1 Carta", text: "En vista de 1 Carta, el Top 3 aparece justo debajo de la carta." },
+          { icon: "fa-floppy-disk text-emerald-400", title: "Guardado Automático", text: "Tus puntuaciones y favoritos quedan guardados en el navegador." }
+        ]
+      },
+      {
+        title: "Atajos del Anfitrión y Trucos",
+        badge: "Paso 4 de 4 - Movimientos Pro",
+        visual: TUTORIAL_STEPS[3].visual,
+        bullets: [
+          { icon: "fa-hand-pointer text-pink-400", title: "Toca para Revelar", text: "En 4 Cartas, cada tarjeta comienza boca abajo mostrando a Nellie y su categoría." },
+          { icon: "fa-bookmark text-indigo-400", title: "Crea Tu Lista", text: "Fija preguntas con la chincheta y ábrelas desde el panel de guardados." },
+          { icon: "fa-circle-half-stroke text-amber-400", title: "Modo Claro y Oscuro", text: "Cambia el tema con el botón de sol o luna arriba a la derecha." }
+        ]
+      }
+    ];
+
+    function getActiveTutorialSteps() {
+      return currentLanguage === "es" ? TUTORIAL_STEPS_ES : TUTORIAL_STEPS;
+    }
+
     function toggleTutorialModal(open) {
       var modal = document.getElementById("tutorial-modal");
       if (!modal) return;
@@ -1241,12 +2106,14 @@
     }
 
     function setTutorialStep(stepIndex) {
-      currentTutorialStep = Math.max(0, Math.min(TUTORIAL_STEPS.length - 1, stepIndex));
+      var steps = getActiveTutorialSteps();
+      currentTutorialStep = Math.max(0, Math.min(steps.length - 1, stepIndex));
       renderTutorialStep();
     }
 
     function stepTutorial(delta) {
-      if (currentTutorialStep + delta >= TUTORIAL_STEPS.length) {
+      var steps = getActiveTutorialSteps();
+      if (currentTutorialStep + delta >= steps.length) {
         toggleTutorialModal(false);
         return;
       }
@@ -1254,13 +2121,14 @@
     }
 
     function renderTutorialStep() {
-      var step = TUTORIAL_STEPS[currentTutorialStep];
+      var steps = getActiveTutorialSteps();
+      var step = steps[currentTutorialStep];
       var bodyEl = document.getElementById("tutorial-step-body");
       var dotsEl = document.getElementById("tutorial-dots");
       var prevBtn = document.getElementById("tut-prev-btn");
       var nextBtn = document.getElementById("tut-next-btn");
 
-      for (var i = 0; i < TUTORIAL_STEPS.length; i++) {
+      for (var i = 0; i < steps.length; i++) {
         var tab = document.getElementById("tut-tab-" + i);
         if (!tab) continue;
         if (i === currentTutorialStep) {
@@ -1292,7 +2160,7 @@
       }
 
       if (dotsEl) {
-        dotsEl.innerHTML = TUTORIAL_STEPS.map(function(_, idx) {
+        dotsEl.innerHTML = steps.map(function(_, idx) {
           return '<button onclick="setTutorialStep(' + idx + ')" class="h-2 rounded-full transition-all cursor-pointer ' +
             (idx === currentTutorialStep ? "w-6 bg-indigo-500" : "w-2 bg-slate-300 dark:bg-slate-700") + '"></button>';
         }).join("");
@@ -1306,10 +2174,10 @@
       }
 
       if (nextBtn) {
-        if (currentTutorialStep === TUTORIAL_STEPS.length - 1) {
-          nextBtn.innerHTML = 'Let\'s Play! <i class="fa-solid fa-fire ml-1"></i>';
+        if (currentTutorialStep === steps.length - 1) {
+          nextBtn.innerHTML = t("tutFinish") + ' <i class="fa-solid fa-fire ml-1"></i>';
         } else {
-          nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right ml-1"></i>';
+          nextBtn.innerHTML = t("tutNext") + ' <i class="fa-solid fa-arrow-right ml-1"></i>';
         }
       }
     }
@@ -1364,7 +2232,6 @@
         var isSpace = char === " ";
         var isPunct = /[.!?,;:"']/.test(char || "");
 
-        // Short mechanical key clack
         var osc = ctx.createOscillator();
         var oscGain = ctx.createGain();
         osc.type = isPunct ? "square" : "triangle";
@@ -1382,7 +2249,6 @@
         osc.start(now);
         osc.stop(now + 0.026);
 
-        // Crisp high-frequency keycap transient
         var bufLen = Math.max(1, Math.floor(ctx.sampleRate * 0.014));
         var noiseBuf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
         var data = noiseBuf.getChannelData(0);
@@ -1451,6 +2317,7 @@
       var toggleLabel = document.getElementById("bomb-toggle-label");
       var shards = document.querySelectorAll("#clock-explosion-burst .blast-shard");
 
+      if (bannerEl) bannerEl.innerText = t("boomBanner");
       if (displayEl) displayEl.innerText = formatBombClock(bombRemaining);
       if (barEl) {
         var pct = bombDuration > 0 ? Math.max(0, Math.min(100, (bombRemaining / bombDuration) * 100)) : 0;
@@ -1464,7 +2331,7 @@
       }
 
       if (toggleIcon) toggleIcon.className = bombRunning ? "fa-solid fa-pause" : "fa-solid fa-play";
-      if (toggleLabel) toggleLabel.innerText = bombRunning ? "Pause" : "Start";
+      if (toggleLabel) toggleLabel.innerText = bombRunning ? t("pauseBtn") : t("startBtn");
 
       var shouldShake = bombRunning && bombRemaining <= 10 && bombRemaining > 0;
       if (clockSvg) {
@@ -1519,7 +2386,7 @@
       }
       updateBombUI();
       playExplosionTone();
-      showToast("BOOM! TIME'S UP", "warning");
+      showToast(t("boomBanner"), "warning");
     }
 
     function toggleBombTimer() {
@@ -1637,7 +2504,7 @@
       '</div>';
     }
 
-    // --- 4-CARD FACE-DOWN DECK & LIVE TYPING ENGINE ---
+    // --- LIVE TYPING ENGINE (WITH SOUND IN 4-CARD MODE, SILENT IN 1-CARD MODE) ---
     function clearCardTypingTimer(index) {
       if (cardTypingTimers[index]) {
         clearInterval(cardTypingTimers[index]);
@@ -1651,9 +2518,10 @@
       }
     }
 
-    function startLiveTyping(index, fullText) {
+    function startLiveTyping(index, fullText, playSound) {
       clearCardTypingTimer(index);
       var textToType = String(fullText || "");
+      var shouldPlaySound = Boolean(playSound);
       cardTypingProgress[index] = 0;
 
       var renderTypingFrame = function() {
@@ -1672,7 +2540,9 @@
       cardTypingTimers[index] = setInterval(function() {
         var nextChar = textToType.charAt(cardTypingProgress[index]);
         cardTypingProgress[index] += 1;
-        playTypewriterKeySound(nextChar);
+        if (shouldPlaySound) {
+          playTypewriterKeySound(nextChar);
+        }
 
         if (cardTypingProgress[index] >= textToType.length) {
           cardTypingProgress[index] = textToType.length;
@@ -1685,24 +2555,24 @@
     function getDeckBackMarkup(topic, index, catStyle) {
       return '<div class="deck-back-surface rounded-[14px] h-full w-full p-4 sm:p-5 flex flex-col items-center justify-between text-center relative overflow-hidden border border-white/10">' +
         '<div class="flex items-center justify-end w-full text-[10px] font-black uppercase tracking-widest text-amber-300">' +
-          '<span>Tap to Flip</span>' +
+          '<span>' + escapeHtml(t("tapToFlip")) + '</span>' +
         '</div>' +
         '<div class="my-1 flex flex-col items-center justify-center gap-2.5">' +
           '<div class="relative">' +
             '<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-amber-300 to-cyan-400 shadow-lg anim-grow-shrink">' +
               '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-contain rounded-full bg-slate-950/90">' +
             '</div>' +
-            '<span class="-bottom-1 -right-2 absolute px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow">FLIP</span>' +
+            '<span class="-bottom-1 -right-2 absolute px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow">' + escapeHtml(t("flipBadge")) + '</span>' +
           '</div>' +
           '<div class="flex flex-col items-center gap-1">' +
-            '<span class="text-[10px] font-bold uppercase tracking-widest text-slate-300/80">Topic</span>' +
+            '<span class="text-[10px] font-bold uppercase tracking-widest text-slate-300/80">' + escapeHtml(t("topicLabel")) + '</span>' +
             '<span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + ' shadow-md">' +
-              escapeHtml(topic.category) +
+              escapeHtml(translateCategoryLabel(topic.category)) +
             '</span>' +
           '</div>' +
         '</div>' +
         '<div class="text-[11px] font-bold text-slate-300/90 flex items-center gap-1.5">' +
-          '<i class="fa-solid fa-keyboard text-cyan-400"></i> Click card to reveal question' +
+          '<i class="fa-solid fa-keyboard text-cyan-400"></i> ' + escapeHtml(t("clickToReveal")) +
         '</div>' +
       '</div>';
     }
@@ -1726,20 +2596,20 @@
       var topicsGrid = document.getElementById("topics-grid");
 
       if (cardCountView === 1) {
-        btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
-        btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
-        if (badge) badge.innerText = "1 Card";
-        if (btnText) btnText.innerText = "Click to Change Card";
+        if (btn1) btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
+        if (btn4) btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
+        if (badge) badge.innerText = t("oneCard");
+        if (btnText) btnText.innerText = t("changeOneCard");
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-1.5 pb-1 flex-grow w-full flex flex-col justify-between overflow-hidden";
         if (globalTicker) globalTicker.classList.add("hidden");
         if (bombTimerBox) bombTimerBox.classList.remove("hidden");
         if (floatingTicker) floatingTicker.classList.remove("hidden");
         if (topicsGrid) topicsGrid.className = "w-full max-w-xl py-0.5 flex-grow flex items-center";
       } else {
-        btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
-        btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
-        if (badge) badge.innerText = "4 Cards";
-        if (btnText) btnText.innerText = "Deal 4 New Cards";
+        if (btn4) btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
+        if (btn1) btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
+        if (badge) badge.innerText = t("fourCards");
+        if (btnText) btnText.innerText = t("dealFourCards");
         if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-1.5 pb-2 flex-grow w-full flex flex-col justify-between overflow-hidden";
         if (globalTicker) globalTicker.classList.remove("hidden");
         if (bombTimerBox) bombTimerBox.classList.add("hidden");
@@ -1753,7 +2623,7 @@
       if (availCategories.length === 0) {
         return {
           id: "topic-loading",
-          category: "Select Category",
+          category: "Philosophy",
           text: "Open Categories above to pick at least one deck!"
         };
       }
@@ -1779,6 +2649,11 @@
 
       topicCache[topic.id] = topic;
       localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+      if (currentLanguage !== "en") {
+        fetchRemoteTranslation(text, currentLanguage).then(function() {
+          renderTopicCards();
+        });
+      }
       return topic;
     }
 
@@ -1787,14 +2662,15 @@
       if (!container) return;
       container.innerHTML = PRESET_MODES.map(function(mode) {
         var isActive = activePreset === mode.id;
+        var disp = getPresetDisplay(mode.id);
         return '<button onclick="selectPreset(\'' + mode.id + '\')" class="w-full p-3 rounded-xl border text-left transition-all flex items-center justify-between gap-3 cursor-pointer ' +
           (isActive
             ? "bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-500/20"
             : "bg-slate-100/80 dark:bg-slate-800/70 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-indigo-400") +
           '">' +
           '<div>' +
-            '<div class="font-extrabold text-xs sm:text-sm">' + mode.name + '</div>' +
-            '<div class="text-[11px] ' + (isActive ? "text-indigo-100" : "text-slate-500 dark:text-slate-400") + ' mt-0.5">' + mode.desc + '</div>' +
+            '<div class="font-extrabold text-xs sm:text-sm">' + escapeHtml(disp.name) + '</div>' +
+            '<div class="text-[11px] ' + (isActive ? "text-indigo-100" : "text-slate-500 dark:text-slate-400") + ' mt-0.5">' + escapeHtml(disp.desc) + '</div>' +
           '</div>' +
           (isActive ? '<i class="fa-solid fa-circle-check text-base shrink-0"></i>' : '<i class="fa-regular fa-circle text-sm opacity-40 shrink-0"></i>') +
         "</button>";
@@ -1821,7 +2697,7 @@
       renderModePills();
       renderCategoryPills();
       generateTopics();
-      showToast("All categories selected!", "success");
+      showToast(t("selectAll"), "success");
     }
 
     function unselectAllCategories() {
@@ -1830,7 +2706,7 @@
       updateFilterButtonsUI();
       renderModePills();
       renderCategoryPills();
-      showToast("All categories unselected - pick the category you want!", "info");
+      showToast(t("unselectAll"), "info");
     }
 
     function renderCategoryPills() {
@@ -1848,591 +2724,14 @@
             (!allSelected
               ? "bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-500 shadow-sm"
               : "bg-slate-200/50 dark:bg-slate-800/50 text-slate-400 border-slate-300/60 dark:border-slate-700/60 opacity-60") +
-            '" title="Check all categories"><i class="fa-solid fa-check-double text-[11px]"></i><span>Select All</span></button>' +
+            '"><i class="fa-solid fa-check-double text-[11px]"></i><span>' + escapeHtml(t("selectAll")) + '</span></button>' +
           '<button onclick="unselectAllCategories()" class="flex-1 py-2 px-3 rounded-xl border font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ' +
             (hasAnySelected
               ? "bg-rose-600 hover:bg-rose-500 text-white border-rose-500 shadow-sm"
               : "bg-slate-200/50 dark:bg-slate-800/50 text-slate-400 border-slate-300/60 dark:border-slate-700/60 opacity-60") +
-            '" title="Uncheck all categories so you can pick just one"><i class="fa-solid fa-xmark text-[11px]"></i><span>Unselect All</span></button>';
+            '"><i class="fa-solid fa-xmark text-[11px]"></i><span>' + escapeHtml(t("unselectAll")) + '</span></button>';
       }
 
       if (summaryEl) {
-        summaryEl.innerText = selectedCategories.size + " of " + allCategories.length + " selected";
-      }
-
-      if (!container) return;
-
-      container.innerHTML = allCategories.map(function(cat) {
-        var isSelected = selectedCategories.has(cat);
-        var style = CATEGORY_STYLES[cat];
-        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-3.5 py-2.5 rounded-xl border font-bold text-xs transition-all flex items-center justify-between gap-2 cursor-pointer ' +
-          (isSelected
-            ? (style.bg + " " + style.text + " " + style.border + " shadow-sm")
-            : "bg-slate-100/70 dark:bg-slate-800/40 text-slate-400 border-slate-200/60 dark:border-slate-800 opacity-65 hover:opacity-100") +
-          '"><span>' + cat + "</span>" + (isSelected ? '<i class="fa-solid fa-circle-check text-sm"></i>' : '<i class="fa-regular fa-circle text-sm opacity-40"></i>') + "</button>";
-      }).join("");
-    }
-
-    function toggleCategory(cat) {
-      activePreset = "custom";
-      if (selectedCategories.has(cat)) {
-        if (selectedCategories.size === 1) {
-          showToast("At least one category must remain selected!", "warning");
-          return;
-        }
-        selectedCategories.delete(cat);
-      } else {
-        selectedCategories.add(cat);
-      }
-      updateFilterButtonsUI();
-      renderModePills();
-      renderCategoryPills();
-      generateTopics();
-    }
-
-    function generateTopics() {
-      if (selectedCategories.size === 0) {
-        showToast("Select at least one category first!", "warning");
-        toggleCategoriesModal(true);
-        return;
-      }
-      clearAllCardTypingTimers();
-
-      var genIcon = document.getElementById("generate-icon");
-      if (genIcon) {
-        genIcon.classList.add("animate-spin-once");
-        setTimeout(function() { genIcon.classList.remove("animate-spin-once"); }, 400);
-      }
-
-      var indicesToFlip = [];
-      for (var i = 0; i < cardCountView; i++) {
-        indicesToFlip.push(i);
-      }
-
-      triggerCardFlip(indicesToFlip, function() {
-        var nextTopics = [];
-        for (var i = 0; i < cardCountView; i++) {
-          nextTopics[i] = generateSequentialTopic();
-          if (cardCountView === 4) {
-            cardRevealedStates[i] = false;
-            cardTypingProgress[i] = 0;
-          } else {
-            cardRevealedStates[i] = true;
-          }
-        }
-        currentTopics = nextTopics;
-      });
-
-      if (cardCountView === 1) {
-        resetBombTimer(false);
-      }
-    }
-
-    function handleCardTap(e, index) {
-      if (e.target.closest("button") || e.target.closest("a")) return;
-
-      if (cardCountView === 4) {
-        if (!cardRevealedStates[index]) {
-          cardRevealedStates[index] = true;
-          triggerCardFlip([index], function() {
-            renderTopicCards();
-            var topic = currentTopics[index];
-            if (topic) {
-              startLiveTyping(index, topic.text);
-            }
-          }, true);
-        } else {
-          clearCardTypingTimer(index);
-          var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
-          cardRevealedStates[index] = false;
-          cardTypingProgress[index] = 0;
-          triggerCardFlip([index], function() {
-            currentTopics[index] = generateSequentialTopic(prevCategory);
-            renderTopicCards();
-          }, true);
-        }
-        return;
-      }
-
-      refreshCardAtIndex(index);
-    }
-
-    function refreshCardAtIndex(index) {
-      if (selectedCategories.size === 0) {
-        showToast("Select at least one category first!", "warning");
-        toggleCategoriesModal(true);
-        return;
-      }
-      clearCardTypingTimer(index);
-
-      var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
-      var shouldTypeLive = (cardCountView === 4);
-      cardRevealedStates[index] = true;
-
-      triggerCardFlip([index], function() {
-        currentTopics[index] = generateSequentialTopic(prevCategory);
-        renderTopicCards();
-        if (shouldTypeLive && currentTopics[index]) {
-          startLiveTyping(index, currentTopics[index].text);
-        }
-      }, true);
-
-      if (cardCountView === 1) {
-        resetBombTimer(false);
-      }
-    }
-
-    function triggerCardFlip(indices, dataUpdateFn, skipAutoRender) {
-      playCardFlipSound();
-
-      var cardEls = indices.map(function(idx) {
-        return document.getElementById("card-inner-" + idx);
-      }).filter(Boolean);
-
-      if (cardEls.length === 0) {
-        dataUpdateFn();
-        if (!skipAutoRender) renderTopicCards();
-        return;
-      }
-
-      cardEls.forEach(function(el) {
-        el.classList.remove("card-flipping");
-        void el.offsetWidth;
-        el.classList.add("card-flipping");
-      });
-
-      setTimeout(function() {
-        dataUpdateFn();
-        if (!skipAutoRender) renderTopicCards();
-        var updatedEls = indices.map(function(idx) {
-          return document.getElementById("card-inner-" + idx);
-        }).filter(Boolean);
-        updatedEls.forEach(function(el) {
-          el.classList.remove("card-flipping");
-        });
-      }, 250);
-    }
-
-    function renderTopicCards() {
-      var grid = document.getElementById("topics-grid");
-      if (!grid) return;
-      
-      if (cardCountView === 1) {
-        grid.className = "w-full max-w-xl py-0.5 flex-grow flex items-center";
-      } else {
-        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
-      }
-
-      var rightCornerGroup = getNellieAndChatomizerMarkup(cardCountView);
-
-      var cardsHtml = currentTopics.map(function(topic, index) {
-        if (!topic) return "";
-
-        var isFav = favoritedTopicIds.has(topic.id);
-        var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
-        var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
-
-        if (isFaceDown) {
-          return '<div class="card-container h-full w-full min-h-[175px]">' +
-            '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-1.5 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
-              getDeckBackMarkup(topic, index, catStyle) +
-            '</div>' +
-          '</div>';
-        }
-
-        var pillMarkup = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
-          "<span>" + topic.category + "</span>" +
-        '</span>';
-
-        var questionBodyHtml = (cardCountView === 4)
-          ? '<p id="typed-question-' + index + '" class="tiktok-card-text text-base sm:text-lg leading-snug font-extrabold tracking-tight">&quot;' + escapeHtml(topic.text) + '&quot;</p>'
-          : '<p class="tiktok-card-text text-lg sm:text-2xl text-center leading-relaxed font-extrabold tracking-tight">&quot;' + escapeHtml(topic.text) + '&quot;</p>';
-
-        return '<div class="card-container h-full w-full min-h-[175px]">' +
-          '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
-            '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
-              '<div class="text-xs font-extrabold tracking-tight opacity-70">' + (cardCountView === 4 ? "Click or Tap to Flip Back" : "Click or Tap to Change") + '</div>' +
-              '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
-                '<button onclick="refreshCardAtIndex(' + index + ')" title="Refresh this question" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
-                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="Bookmark Topic" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
-                '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
-              '</div>' +
-            '</div>' +
-            '<div class="my-2 flex-grow flex items-center justify-center">' +
-              questionBodyHtml +
-            '</div>' +
-            '<div class="mt-2 flex items-end justify-between gap-2 relative pt-2">' +
-              '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
-                followModelLeftHelper(cardCountView) +
-                pillMarkup +
-              '</div>' +
-              rightCornerGroup +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }).join("");
-
-      grid.innerHTML = cardsHtml;
-    }
-
-    function followModelLeftHelper(viewCount) {
-      if (viewCount !== 1) return '';
-      return '<div class="flex items-center gap-1.5">' +
-        '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">Follow Me</span>' +
-        '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
-      '</div>';
-    }
-
-    // --- LEADERBOARD & SESSION SCORES LOGIC ---
-
-    function toggleScoresModal(open) {
-      var modal = document.getElementById("scores-modal");
-      if (!modal) return;
-      if (open) {
-        populateScoresTable();
-        modal.classList.remove("hidden");
-      } else {
-        modal.classList.add("hidden");
-      }
-    }
-
-    function populateScoresTable() {
-      var tbody = document.getElementById("scores-table-body");
-      if (!tbody) return;
-
-      if (sessionScores.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">No users added yet. Click "Add User" below!</td></tr>';
-        return;
-      }
-
-      var sortedScores = sessionScores.slice().sort(function(a, b) {
-        return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
-      });
-
-      tbody.innerHTML = sortedScores.map(function(item) {
-        return '<tr class="score-row">' +
-          '<td class="p-2"><input type="text" value="' + escapeQuotes(item.name) + '" placeholder="Username" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-          '<td class="p-2"><input type="number" value="' + item.points + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-          '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="Remove"><i class="fa-solid fa-trash-can text-xs"></i></button></td>' +
-        '</tr>';
-      }).join("");
-    }
-
-    function addScoreRow(name, points) {
-      var tbody = document.getElementById("scores-table-body");
-      if (!tbody) return;
-
-      if (tbody.querySelector("tr td[colspan]")) {
-        tbody.innerHTML = "";
-      }
-
-      var tr = document.createElement("tr");
-      tr.className = "score-row";
-      tr.innerHTML = '<td class="p-2"><input type="text" value="' + escapeQuotes(name || "") + '" placeholder="Username" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-        '<td class="p-2"><input type="number" value="' + (points !== undefined ? points : 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-        '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="Remove"><i class="fa-solid fa-trash-can text-xs"></i></button></td>';
-      tbody.appendChild(tr);
-    }
-
-    function removeScoreRow(btn) {
-      var row = btn.closest("tr");
-      if (row) row.remove();
-    }
-
-    function clearAllScores() {
-      sessionScores = [];
-      localStorage.removeItem("nellieb_scores");
-      populateScoresTable();
-      renderLeaderboardTicker();
-      showToast("Cleared leaderboard scores", "info");
-    }
-
-    function saveAndApplyScores() {
-      var rows = document.querySelectorAll("#scores-table-body .score-row");
-      var updated = [];
-
-      rows.forEach(function(row) {
-        var nameInput = row.querySelector(".score-name");
-        var ptsInput = row.querySelector(".score-pts");
-        if (nameInput && ptsInput) {
-          var name = nameInput.value.trim();
-          var points = parseInt(ptsInput.value) || 0;
-          if (name !== "") {
-            updated.push({ name: name, points: points });
-          }
-        }
-      });
-
-      updated.sort(function(a, b) {
-        return b.points - a.points;
-      });
-
-      sessionScores = updated;
-      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
-      renderLeaderboardTicker();
-      toggleScoresModal(false);
-      showToast("Leaderboard updated successfully!", "success");
-    }
-
-    function get3DRankBadge(idx, isFloating) {
-      var rankNum = idx + 1;
-      var suffix = rankNum === 1 ? "ST" : (rankNum === 2 ? "ND" : "RD");
-      var rankClass = idx === 0 ? "rank-3d-1" : (idx === 1 ? "rank-3d-2" : "rank-3d-3");
-      var delayStyle = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.35s;"' : ' style="animation-delay: 0.7s;"');
-      var sizeClass = isFloating
-        ? "h-9 sm:h-10 px-2.5 text-base sm:text-xl"
-        : "h-6 px-2 text-xs";
-      var supClass = isFloating
-        ? "text-[9px] sm:text-[11px] ml-0.5 -mt-1.5"
-        : "text-[7px] ml-0.5 -mt-1";
-
-      return '<span class="rank-3d-badge ' + rankClass + ' ' + sizeClass + ' shrink-0"' + delayStyle + ' title="' + rankNum + suffix.toLowerCase() + ' Place">' +
-        '<span>' + rankNum + '</span><sup class="' + supClass + '">' + suffix + '</sup>' +
-      '</span>';
-    }
-
-    function renderLeaderboardTicker() {
-      var ticker = document.getElementById("leaderboard-ticker");
-      var floatingTicker = document.getElementById("floating-leaderboard-ticker");
-
-      var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 3);
-
-      if (sorted.length === 0) {
-        var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic">No podium leaders yet. Click "Scores" to enter contenders!</span>';
-        if (ticker) ticker.innerHTML = emptyHtml;
-        if (floatingTicker) floatingTicker.innerHTML = emptyHtml;
-        return;
-      }
-
-      var standardItemsHtml = sorted.map(function(item, idx) {
-        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
-        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
-        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
-        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
-        var rankBadge = get3DRankBadge(idx, false);
-
-        return '<div class="flex items-center gap-2.5 ' + cardClass + ' px-3.5 py-1 rounded-xl shrink-0">' +
-          rankBadge +
-          '<span class="' + nameClass + ' text-sm tracking-wide"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
-          '<span class="' + ptsClass + ' text-sm">' + Number(item.points).toLocaleString() + ' PTS</span>' +
-        '</div>';
-      });
-
-      var floatingItemsHtml = sorted.map(function(item, idx) {
-        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
-        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
-        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
-        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
-        var rankBadge = get3DRankBadge(idx, true);
-
-        return '<div class="flex items-center gap-3 ' + cardClass + ' px-4 py-1.5 rounded-2xl shrink-0">' +
-          rankBadge +
-          '<span class="' + nameClass + ' text-xl sm:text-2xl tracking-tight"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
-          '<span class="' + ptsClass + ' text-lg sm:text-2xl">' + Number(item.points).toLocaleString() + ' PTS</span>' +
-        '</div>';
-      });
-
-      var loopStandard = standardItemsHtml.concat(standardItemsHtml).concat(standardItemsHtml).join("");
-      var loopFloating = floatingItemsHtml.concat(floatingItemsHtml).concat(floatingItemsHtml).join("");
-
-      if (ticker) ticker.innerHTML = loopStandard;
-      if (floatingTicker) floatingTicker.innerHTML = loopFloating;
-    }
-
-    // --- FAVORITES & UTILS ---
-
-    function toggleFavorite(topicId, cardIndex) {
-      var topic = currentTopics[cardIndex];
-      if (!topic) return;
-
-      if (favoritedTopicIds.has(topic.id)) {
-        favoritedTopicIds.delete(topic.id);
-        showToast("Removed from saved topics", "info");
-      } else {
-        favoritedTopicIds.add(topic.id);
-        topicCache[topic.id] = topic;
-        localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
-        showToast("Bookmarked topic!", "success");
-      }
-
-      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
-      renderTopicCards();
-      updateFavoritesUI();
-    }
-
-    function loadSavedTopicIntoView(topicId) {
-      var topic = topicCache[topicId];
-      if (!topic) return;
-
-      clearAllCardTypingTimers();
-      cardCountView = 1;
-      cardRevealedStates = [true, false, false, false];
-      currentTopics = [topic];
-      updateToggleUI();
-      renderTopicCards();
-      resetBombTimer(false);
-      toggleFavoritesDrawer(false);
-      showToast("Loaded saved topic", "success");
-    }
-
-    function updateFavoritesUI() {
-      var badge = document.getElementById("favorites-badge");
-      var listContainer = document.getElementById("saved-topics-list");
-      if (!badge || !listContainer) return;
-
-      badge.innerText = favoritedTopicIds.size;
-      if (favoritedTopicIds.size > 0) {
-        badge.classList.remove("hidden");
-      } else {
-        badge.classList.add("hidden");
-      }
-
-      if (favoritedTopicIds.size === 0) {
-        listContainer.innerHTML = '<div class="text-center py-10 px-4 text-slate-400"><i class="fa-regular fa-bookmark text-3xl mb-2 opacity-40"></i><p class="font-semibold text-xs">No saved topics yet.</p><p class="text-[10px] mt-1">Tap the pin icon on any card to bookmark it!</p></div>';
-        return;
-      }
-
-      var savedList = Array.from(favoritedTopicIds).map(function(id) {
-        return topicCache[id] || { id: id, category: "Saved", text: "Saved topic item" };
-      });
-
-      listContainer.innerHTML = savedList.map(function(topic) {
-        var st = CATEGORY_STYLES[topic.category] || { bg: "bg-indigo-100", text: "text-indigo-700" };
-        return '<div onclick="loadSavedTopicIntoView(\'' + topic.id + '\')" class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex flex-col gap-2 relative cursor-pointer hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group">' +
-          '<div class="flex items-center justify-between">' +
-            '<span class="text-[9px] font-bold px-2 py-0.5 rounded ' + st.bg + " " + st.text + '">' + topic.category + '</span>' +
-            '<div class="flex items-center gap-1.5" onclick="event.stopPropagation()">' +
-              '<button onclick="copyTopicText(\'' + escapeQuotes(topic.text) + '\')" title="Copy Prompt" class="p-1.5 rounded-lg text-slate-400 hover:text-indigo-500 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-regular fa-copy text-xs"></i></button>' +
-              '<button onclick="removeFavorite(\'' + topic.id + '\')" title="Remove" class="p-1.5 rounded-lg text-pink-500 hover:text-red-600 hover:bg-slate-200 dark:hover:bg-slate-700"><i class="fa-solid fa-xmark text-xs"></i></button>' +
-            '</div>' +
-          '</div>' +
-          '<p class="text-xs font-bold text-slate-800 dark:text-slate-100 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">&quot;' + topic.text + '&quot;</p>' +
-          '<div class="text-[9px] text-indigo-500 dark:text-indigo-400 font-semibold flex items-center gap-1"><i class="fa-solid fa-arrow-right text-[8px]"></i> Click to load topic</div>' +
-        '</div>';
-      }).join("");
-    }
-
-    function removeFavorite(id) {
-      favoritedTopicIds.delete(id);
-      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
-      updateFavoritesUI();
-      renderTopicCards();
-      showToast("Removed topic", "info");
-    }
-
-    function clearAllFavorites() {
-      if (favoritedTopicIds.size === 0) return;
-      favoritedTopicIds.clear();
-      localStorage.removeItem("nellieb_favs");
-      updateFavoritesUI();
-      renderTopicCards();
-      showToast("Cleared all saved topics", "info");
-    }
-
-    function toggleFavoritesDrawer(open) {
-      var drawer = document.getElementById("favorites-drawer");
-      var content = document.getElementById("drawer-content");
-      if (!drawer || !content) return;
-
-      if (open) {
-        drawer.classList.remove("pointer-events-none");
-        drawer.classList.remove("opacity-0");
-        drawer.classList.add("opacity-100");
-        content.classList.remove("translate-x-full");
-      } else {
-        drawer.classList.remove("opacity-100");
-        drawer.classList.add("opacity-0");
-        content.classList.add("translate-x-full");
-        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
-      }
-    }
-
-    function togglePrivacyModal(open) {
-      var modal = document.getElementById("privacy-modal");
-      if (!modal) return;
-      if (open) modal.classList.remove("hidden");
-      else modal.classList.add("hidden");
-    }
-
-    function copyTopicText(text) {
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text);
-      } else {
-        var textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-      }
-      showToast("Topic copied to clipboard!", "success");
-    }
-
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle("dark");
-    }
-
-    function showToast(message, type) {
-      var container = document.getElementById("toast-container");
-      if (!container) return;
-
-      var toast = document.createElement("div");
-      var icons = {
-        success: "fa-circle-check text-emerald-400",
-        warning: "fa-triangle-exclamation text-amber-400",
-        info: "fa-circle-info text-indigo-400"
-      };
-
-      toast.className = "px-3.5 py-2 rounded-xl bg-slate-900/90 text-white text-xs font-semibold shadow-xl backdrop-blur border border-slate-700 flex items-center gap-2 pointer-events-auto transition-all duration-200 translate-x-6 opacity-0";
-      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i> <span>' + message + "</span>";
-
-      container.appendChild(toast);
-      requestAnimationFrame(function() { toast.classList.remove("translate-x-6", "opacity-0"); });
-
-      setTimeout(function() {
-        toast.classList.add("translate-x-6", "opacity-0");
-        setTimeout(function() { toast.remove(); }, 200);
-      }, 2500);
-    }
-
-    function resetToInitial() { selectPreset("all"); }
-
-    function escapeQuotes(str) {
-      return str.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-    }
-
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    }
-
-    async function initApp() {
-      updateToggleUI();
-      updateFilterButtonsUI();
-      renderModePills();
-      renderCategoryPills();
-      updateFavoritesUI();
-      renderLeaderboardTicker();
-      updateBombUI();
-      await loadAllQuestionBanks();
-      generateTopics();
-
-      if (!localStorage.getItem("nellieb_tutorial_seen")) {
-        setTimeout(function() {
-          toggleWelcomeTutorialModal(true);
-        }, 450);
-      }
-    }
-
-    initApp();
-
-    document.addEventListener("keydown", function(e) {
-      if (e.code === "Space" && !["INPUT", "BUTTON", "TEXTAREA"].includes(e.target.tagName)) {
-        e.preventDefault();
-        generateTopics();
-      }
-    });
-  </script>
-</body>
-</html>
+        summaryEl.innerText = t("selectedSummary")
+          .
