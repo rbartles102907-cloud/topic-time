@@ -38,7 +38,6 @@
     .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
     .dark .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
 
-    /* High-contrast language select & dropdown options without requiring hover */
     #language-select {
       color: #0f172a;
       background-color: transparent;
@@ -57,19 +56,18 @@
       background-color: #0f172a;
       font-weight: 700;
     }
-    
+
     .card-container { perspective: 1000px; overflow: visible !important; }
 
-    /* RGB Chasing Neon Border Animation */
     @keyframes rgb-chase {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
-    .glass-card { 
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92)); 
-      backdrop-filter: blur(16px); 
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.92));
+      backdrop-filter: blur(16px);
       position: relative;
       border-radius: 1rem;
       border: 3px solid transparent;
@@ -96,10 +94,10 @@
       animation: rgb-chase 16s linear infinite;
       box-shadow: 0 0 15px rgba(255, 0, 127, 0.6), inset 0 0 10px rgba(0, 223, 216, 0.6);
     }
-    
-    .dark .glass-card { 
-      background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98)); 
-      backdrop-filter: blur(16px); 
+
+    .dark .glass-card {
+      background: linear-gradient(135deg, rgba(26, 35, 50, 0.96), rgba(12, 18, 32, 0.98));
+      backdrop-filter: blur(16px);
       box-shadow: 0 0 25px rgba(236, 72, 153, 0.65), 0 0 50px rgba(56, 189, 248, 0.5), 0 0 80px rgba(139, 92, 246, 0.4), 0 15px 35px rgba(0, 0, 0, 0.8);
     }
 
@@ -110,7 +108,6 @@
       box-shadow: 0 0 20px rgba(255, 42, 133, 0.8), inset 0 0 12px rgba(0, 242, 254, 0.8);
     }
 
-    /* Face-Down Deck Back Styling with Slow Wave Pattern */
     @keyframes deck-wave-drift {
       0% { background-position: 50% 45%, 0px 0px, 0% 50%; }
       50% { background-position: 50% 45%, 64px 64px, 100% 50%; }
@@ -184,38 +181,38 @@
       0%, 100% { transform: translateX(0) scale(1); }
       50% { transform: translateX(6px) scale(1.08); }
     }
-    .pointing-arrow-right { 
+    .pointing-arrow-right {
       display: inline-block;
-      animation: point-right-bounce 1.2s ease-in-out infinite; 
-      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
+      animation: point-right-bounce 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6));
     }
 
     @keyframes point-bounce-slow {
       0%, 100% { transform: rotate(-45deg) translateX(0) scale(1); }
       50% { transform: rotate(-45deg) translateX(6px) scale(1.08); }
     }
-    .pointing-arrow-slow { 
+    .pointing-arrow-slow {
       transform: rotate(-45deg);
       display: inline-block;
-      animation: point-bounce-slow 1.2s ease-in-out infinite; 
-      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6)); 
+      animation: point-bounce-slow 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 4px 6px rgba(239, 68, 68, 0.6));
     }
 
-    .tiktok-card-text { 
+    .tiktok-card-text {
       font-family: Arial, sans-serif !important;
-      color: #000000 !important; 
+      color: #000000 !important;
       text-shadow: none !important;
     }
-    .dark .tiktok-card-text { 
+    .dark .tiktok-card-text {
       font-family: Arial, sans-serif !important;
-      color: #000000 !important; 
+      color: #000000 !important;
       text-shadow: none !important;
     }
 
     .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 8px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.6); border-radius: 8px; }
-    
+
     @keyframes spin-once { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .animate-spin-once { animation: spin-once 0.4s ease-in-out; }
 
@@ -457,7 +454,6 @@
       box-shadow: 0 0 14px rgba(234, 88, 12, 0.35), inset 0 0 10px rgba(251, 146, 60, 0.15) !important;
     }
 
-    /* Twin-Bell Clock & Explosion Animations */
     @keyframes clock-shake-ring {
       0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
       15% { transform: translate(-3px, 1px) rotate(-5deg) scale(1.03); }
@@ -567,7 +563,6 @@
           </button>
         </div>
 
-        <!-- Tutorial Button (Left of Scores) -->
         <button id="header-tutorial-btn" onclick="toggleTutorialModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="How to Play & Party Guide">
           <i class="fa-solid fa-graduation-cap text-sm text-cyan-200"></i>
           <span id="header-tutorial-label" class="hidden sm:inline">Tutorial</span>
@@ -610,7 +605,6 @@
   </div>
 
   <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between">
-    <!-- Compact Single-Row Control Bar: View Toggle + Presets Modal Button + Categories Modal Button -->
     <div class="shrink-0 mb-2">
       <div class="flex flex-wrap items-center justify-center sm:justify-between gap-2 py-0.5 text-xs">
         <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
@@ -623,7 +617,6 @@
         </div>
 
         <div class="flex items-center gap-2 shrink-0">
-          <!-- Presets Modal Trigger Button -->
           <button onclick="togglePresetsModal(true)" class="px-3 py-1.5 rounded-xl bg-indigo-600/15 dark:bg-indigo-500/20 hover:bg-indigo-600/25 dark:hover:bg-indigo-500/30 border border-indigo-400/50 dark:border-indigo-400/40 text-indigo-700 dark:text-indigo-200 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-sm cursor-pointer" title="Choose a Preset Mix">
             <i class="fa-solid fa-sliders text-indigo-500 dark:text-indigo-300"></i>
             <span id="presets-prefix-label">Presets:</span>
@@ -631,7 +624,6 @@
             <i class="fa-solid fa-chevron-down text-[10px] opacity-70"></i>
           </button>
 
-          <!-- Categories Modal Trigger Button -->
           <button onclick="toggleCategoriesModal(true)" class="px-3 py-1.5 rounded-xl bg-pink-600/15 dark:bg-pink-500/20 hover:bg-pink-600/25 dark:hover:bg-pink-500/30 border border-pink-400/50 dark:border-pink-400/40 text-pink-700 dark:text-pink-200 font-bold text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-sm cursor-pointer" title="Select or Unselect Categories">
             <i class="fa-solid fa-layer-group text-pink-500 dark:text-pink-300"></i>
             <span id="categories-btn-label">Categories</span>
@@ -641,7 +633,6 @@
       </div>
     </div>
 
-    <!-- One-Time Tutorial Finder Note (Shown when user skips initial tutorial) -->
     <div id="tutorial-finder-note" class="hidden shrink-0 mb-2 px-3.5 py-2 rounded-xl bg-indigo-500/15 dark:bg-indigo-500/20 border border-indigo-400/40 text-slate-800 dark:text-slate-100 text-xs flex items-center justify-between gap-3 shadow-sm">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-circle-info text-indigo-500 dark:text-cyan-300 shrink-0"></i>
@@ -659,14 +650,11 @@
       </div>
     </div>
 
-    <!-- Main Stage: Card + Vertical Right-Side Alarm Clock Rail (in 1-Card Mode) -->
     <div class="w-full flex flex-col items-center justify-center my-auto flex-grow min-h-[300px]">
       <div id="single-card-stage" class="w-full flex flex-col md:flex-row items-center md:items-stretch justify-center gap-3.5 py-1">
         <div id="topics-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1"></div>
 
-        <!-- Vertical Timer Panel: Timer on Top, Big Alarm Clock in Middle, Options Below -->
         <aside id="single-card-bomb-timer" class="hidden w-full md:w-56 shrink-0 bg-white/95 dark:bg-slate-900/95 border border-slate-300 dark:border-rose-500/40 rounded-2xl p-3.5 shadow-xl backdrop-blur-md flex flex-col items-center justify-between gap-2.5 transition-colors">
-          <!-- Top: Countdown & Progress -->
           <div class="w-full flex flex-col items-center text-center">
             <div class="flex items-center justify-center gap-2">
               <span id="bomb-timer-display" class="font-mono font-black text-2xl sm:text-3xl tracking-wider text-slate-900 dark:text-white">00:30</span>
@@ -677,7 +665,6 @@
             </div>
           </div>
 
-          <!-- Middle: Stand-Alone Twin-Bell Alarm Clock that Shakes & Explodes (with Nellie Placeholder After Blast) -->
           <div class="relative flex items-center justify-center my-1 min-h-[124px] w-full select-none">
             <div id="twin-bell-clock-wrapper" class="relative w-28 h-28 flex items-center justify-center">
               <svg id="twin-bell-clock-svg" viewBox="0 0 140 140" class="w-28 h-28 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -718,7 +705,6 @@
             </div>
           </div>
 
-          <!-- Bottom: Options & Controls -->
           <div class="w-full flex flex-col gap-1.5">
             <div class="grid grid-cols-3 gap-1">
               <button onclick="setBombDuration(15)" class="py-1 rounded-lg text-[11px] font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 cursor-pointer">15s</button>
@@ -737,7 +723,7 @@
           </div>
         </aside>
       </div>
-      
+
       <div id="single-card-floating-ticker" class="hidden w-full max-w-3xl mx-auto mt-2">
         <div class="floating-ticker-card bg-white/95 dark:bg-slate-950/95 border border-slate-300 dark:border-amber-500/40 rounded-2xl overflow-hidden py-2 px-1.5 shadow-xl dark:shadow-2xl backdrop-blur-md transition-colors">
           <div class="flex items-center">
@@ -819,7 +805,7 @@
     </div>
   </div>
 
-  <!-- Categories Selection Modal (with Select All & Unselect All) -->
+  <!-- Categories Selection Modal -->
   <div id="categories-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div onclick="toggleCategoriesModal(false)" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm cursor-pointer"></div>
     <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-pink-500/40 rounded-2xl p-5 shadow-2xl z-10 space-y-4">
@@ -832,10 +818,7 @@
         </button>
       </div>
 
-      <!-- Select All / Unselect All Action Bar -->
       <div id="category-bulk-actions" class="flex items-center gap-2"></div>
-
-      <!-- Category Toggle Grid -->
       <div id="category-pills" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[55vh] overflow-y-auto custom-scroll pr-1"></div>
 
       <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
@@ -849,8 +832,6 @@
   <div id="tutorial-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5">
     <div onclick="toggleTutorialModal(false)" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md cursor-pointer"></div>
     <div class="relative w-full max-w-2xl bg-white dark:bg-slate-900 border-2 border-indigo-500/50 rounded-3xl shadow-2xl z-10 overflow-hidden flex flex-col max-h-[90vh]">
-      
-      <!-- Modal Hero Banner -->
       <div class="relative bg-gradient-to-r from-indigo-950 via-purple-950 to-slate-950 p-5 sm:p-6 border-b border-indigo-500/30 flex items-center justify-between gap-4 overflow-hidden">
         <div class="flex items-center gap-3.5 relative z-10">
           <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 p-0.5 shadow-lg shrink-0">
@@ -874,7 +855,6 @@
         </button>
       </div>
 
-      <!-- Interactive Step Tabs -->
       <div class="grid grid-cols-4 gap-1.5 bg-slate-100 dark:bg-slate-950/90 p-2.5 border-b border-slate-200 dark:border-slate-800 shrink-0">
         <button id="tut-tab-0" onclick="setTutorialStep(0)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-layer-group text-indigo-400"></i>
@@ -894,10 +874,8 @@
         </button>
       </div>
 
-      <!-- Tutorial Step Content Area -->
       <div id="tutorial-step-body" class="p-5 sm:p-6 overflow-y-auto custom-scroll flex-grow space-y-4"></div>
 
-      <!-- Footer Navigation -->
       <div class="p-4 bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
         <div id="tutorial-dots" class="flex items-center gap-1.5"></div>
         <div class="flex items-center gap-2">
@@ -1005,7 +983,6 @@
   </div>
 
   <script>
-    // Each category maps to a standalone JSON file under ./data/
     var CATEGORY_FILES = {
       "Philosophy": "data/questions-philosophy.json",
       "Deep Questions": "data/questions-deep-questions.json",
@@ -1069,7 +1046,6 @@
       categoryPointers[cat] = 0;
     });
 
-    // Core app state declarations
     var cardCountView = 4;
     var activePreset = "all";
     var selectedCategories = new Set(Object.keys(CATEGORY_FILES));
@@ -1104,9 +1080,17 @@
       { id: "funny", name: "Funny & Silly", desc: "Humor/Fun, Would You Rather, Did You Know? & Music", categories: ["Humor/Fun", "Would You Rather", "Did You Know?", "Music Fun Facts"] }
     ];
 
-    // --- MULTI-LANGUAGE DICTIONARY & TRANSLATION CACHE ---
-    var currentLanguage = localStorage.getItem("nellieb_lang") || "en";
+    var SUPPORTED_LANGS = ["en", "es", "fr", "de", "pt", "it"];
+    var currentLanguage = normalizeLangCode(localStorage.getItem("nellieb_lang") || "en");
     var translationCache = JSON.parse(localStorage.getItem("nellieb_tx_cache") || "{}");
+
+    function normalizeLangCode(code) {
+      var raw = String(code || "en").toLowerCase().trim();
+      var base = raw.split("-")[0];
+      if (SUPPORTED_LANGS.indexOf(raw) !== -1) return raw;
+      if (SUPPORTED_LANGS.indexOf(base) !== -1) return base;
+      return "en";
+    }
 
     var UI_TRANSLATIONS = {
       en: {
@@ -1172,7 +1156,7 @@
         tapToFlip: "Tap to Flip",
         topicLabel: "Topic",
         flipBadge: "FLIP",
-        clickToReveal: "Click card to reveal question",
+        clickToReveal: "Touch the card to reveal",
         flipBackHint: "Click or Tap to Flip Back",
         changeCardHint: "Click or Tap to Change",
         refreshTitle: "Refresh this question",
@@ -1247,7 +1231,7 @@
         tapToFlip: "Toca para Girar",
         topicLabel: "Tema",
         flipBadge: "GIRAR",
-        clickToReveal: "Toca la carta para ver la pregunta",
+        clickToReveal: "Toca la carta para revelar",
         flipBackHint: "Toca o haz clic para voltear",
         changeCardHint: "Toca o haz clic para cambiar",
         refreshTitle: "Cambiar esta pregunta",
@@ -1705,34 +1689,38 @@
     };
 
     function t(key) {
-      var dict = UI_TRANSLATIONS[currentLanguage] || UI_TRANSLATIONS.en;
+      var lang = normalizeLangCode(currentLanguage);
+      var dict = UI_TRANSLATIONS[lang] || UI_TRANSLATIONS.en;
       if (dict[key] !== undefined) return dict[key];
       return UI_TRANSLATIONS.en[key] !== undefined ? UI_TRANSLATIONS.en[key] : key;
     }
 
     function translateCategoryLabel(cat) {
-      var map = CATEGORY_NAMES_I18N[currentLanguage] || CATEGORY_NAMES_I18N.en;
+      var lang = normalizeLangCode(currentLanguage);
+      var map = CATEGORY_NAMES_I18N[lang] || CATEGORY_NAMES_I18N.en;
       return map[cat] || cat;
     }
 
     function getPresetDisplay(modeId) {
-      var dict = PRESET_I18N[currentLanguage] || PRESET_I18N.en;
+      var lang = normalizeLangCode(currentLanguage);
+      var dict = PRESET_I18N[lang] || PRESET_I18N.en;
       if (dict[modeId]) return dict[modeId];
       var base = PRESET_MODES.find(function(m) { return m.id === modeId; });
       return base ? { name: base.name, desc: base.desc } : { name: "Custom", desc: "" };
     }
 
     function fallbackTranslateText(text, targetLang) {
-      if (!text || targetLang === "en") return text;
+      var lang = normalizeLangCode(targetLang);
+      if (!text || lang === "en") return text;
       var numMatch = text.match(/^(\d+\.\s*)(.*)$/);
       var prefix = numMatch ? numMatch[1] : "";
       var body = numMatch ? numMatch[2] : text;
 
-      if (targetLang === "es" && PHRASE_TRANSLATIONS_ES[body]) {
+      if (lang === "es" && PHRASE_TRANSLATIONS_ES[body]) {
         return prefix + PHRASE_TRANSLATIONS_ES[body];
       }
 
-      if (targetLang === "es") {
+      if (lang === "es") {
         var esBody = body
           .replace(/^Would you rather\b/i, "¿Preferirías")
           .replace(/^If you could\b/i, "Si pudieras")
@@ -1755,7 +1743,7 @@
     }
 
     function getImmediateTranslatedString(rawText, lang) {
-      var targetLang = lang || currentLanguage || "en";
+      var targetLang = normalizeLangCode(lang || currentLanguage || "en");
       if (!rawText) return "";
       if (targetLang === "en") return rawText;
 
@@ -1769,16 +1757,14 @@
         return fb;
       }
 
-      if (targetLang === "es") {
-        return "[ES] " + rawText;
-      }
-
-      return "[" + targetLang.toUpperCase() + "] " + rawText;
+      // Default cleanly to English when unable to translate
+      return rawText;
     }
 
     async function fetchRemoteTranslation(text, targetLang) {
-      if (!text || targetLang === "en") return text;
-      var cacheKey = targetLang + "::" + text;
+      var lang = normalizeLangCode(targetLang);
+      if (!text || lang === "en") return text;
+      var cacheKey = lang + "::" + text;
       if (translationCache[cacheKey]) return translationCache[cacheKey];
 
       var numMatch = text.match(/^(\d+\.\s*)(.*)$/);
@@ -1789,7 +1775,7 @@
         var controller = new AbortController();
         var timeoutId = setTimeout(function() { controller.abort(); }, 2500);
         var url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=" +
-          encodeURIComponent(targetLang) + "&dt=t&q=" + encodeURIComponent(bodyToTranslate);
+          encodeURIComponent(lang) + "&dt=t&q=" + encodeURIComponent(bodyToTranslate);
         var res = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
 
@@ -1808,26 +1794,28 @@
         // Fallback smoothly when offline, slow, or blocked
       }
 
-      var fallback = getImmediateTranslatedString(text, targetLang);
-      translationCache[cacheKey] = fallback;
-      localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
-      return fallback;
+      var fallback = getImmediateTranslatedString(text, lang);
+      if (fallback && fallback !== text) {
+        translationCache[cacheKey] = fallback;
+        localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
+      }
+      return fallback || text;
     }
 
-    // Ensures translation is resolved BEFORE starting the typewriter effect
     async function resolveTranslatedTopicText(topic, targetLang) {
-      var lang = targetLang || currentLanguage || "en";
+      var lang = normalizeLangCode(targetLang || currentLanguage || "en");
       if (!topic || !topic.text) return "";
       if (lang === "en") return topic.text;
       var cacheKey = lang + "::" + topic.text;
       if (translationCache[cacheKey]) return translationCache[cacheKey];
       var immediate = getImmediateTranslatedString(topic.text, lang);
       var remote = await fetchRemoteTranslation(topic.text, lang);
-      return (remote && remote.trim()) ? remote : immediate;
+      if (remote && remote.trim()) return remote;
+      return (immediate && immediate.trim()) ? immediate : topic.text;
     }
 
     function getTranslatedTopicText(topic, langOverride) {
-      var lang = langOverride || currentLanguage || "en";
+      var lang = normalizeLangCode(langOverride || currentLanguage || "en");
       if (!topic || !topic.text) return "";
       if (lang === "en") return topic.text;
       return getImmediateTranslatedString(topic.text, lang);
@@ -1835,22 +1823,31 @@
 
     async function refreshVisibleCardTranslations() {
       var seq = ++languageSwitchSeq;
-      var targetLang = currentLanguage || "en";
+      var targetLang = normalizeLangCode(currentLanguage || "en");
 
-      // Render immediately with cached/fallback translations so card backs and fronts update right away
+      for (var i = 0; i < currentTopics.length; i++) {
+        if (currentTopics[i]) {
+          cardResolvedTexts[i] = getImmediateTranslatedString(currentTopics[i].text, targetLang);
+        }
+      }
+
       renderTopicCards();
 
       if (targetLang === "en") {
         return;
       }
 
-      await Promise.all(currentTopics.map(function(tp) {
+      await Promise.all(currentTopics.map(function(tp, idx) {
         if (!tp || !tp.text) return Promise.resolve("");
-        return resolveTranslatedTopicText(tp, targetLang);
+        return resolveTranslatedTopicText(tp, targetLang).then(function(resolved) {
+          if (seq === languageSwitchSeq && normalizeLangCode(currentLanguage) === targetLang) {
+            cardResolvedTexts[idx] = resolved || tp.text;
+          }
+          return resolved;
+        });
       }));
 
-      // Abort if the user switched languages again while async translations were running
-      if (seq !== languageSwitchSeq || (currentLanguage || "en") !== targetLang) {
+      if (seq !== languageSwitchSeq || normalizeLangCode(currentLanguage) !== targetLang) {
         return;
       }
 
@@ -1859,7 +1856,7 @@
         if (!item) continue;
         var isFaceDown = (cardCountView === 4 && !cardRevealedStates[idx]);
         if (!isFaceDown) {
-          var finalText = getTranslatedTopicText(item, targetLang);
+          var finalText = cardResolvedTexts[idx] || getTranslatedTopicText(item, targetLang);
           cardResolvedTexts[idx] = finalText;
           var el = document.getElementById("typed-question-" + idx);
           if (el && !cardTypingTimers[idx]) {
@@ -1870,13 +1867,13 @@
     }
 
     function toggleSpanishEnglish() {
-      var nextLang = currentLanguage === "es" ? "en" : "es";
+      var nextLang = normalizeLangCode(currentLanguage) === "es" ? "en" : "es";
       setLanguage(nextLang);
     }
 
     function setLanguage(langCode) {
       languageSwitchSeq += 1;
-      currentLanguage = UI_TRANSLATIONS[langCode] ? langCode : "en";
+      currentLanguage = normalizeLangCode(langCode);
       localStorage.setItem("nellieb_lang", currentLanguage);
       var selectEl = document.getElementById("language-select");
       if (selectEl) selectEl.value = currentLanguage;
@@ -1891,6 +1888,7 @@
     }
 
     function applyLanguageTranslations() {
+      currentLanguage = normalizeLangCode(currentLanguage);
       document.documentElement.lang = currentLanguage;
 
       var setText = function(id, val) {
@@ -1995,7 +1993,6 @@
       { name: "Roberto", points: 998 }
     ]));
 
-    // --- INITIAL WELCOME PROMPT & ONE-TIME TUTORIAL FINDER NOTE ---
     function toggleWelcomeTutorialModal(open) {
       var modal = document.getElementById("welcome-tutorial-modal");
       if (!modal) return;
@@ -2037,7 +2034,6 @@
       toggleTutorialModal(true);
     }
 
-    // --- PRESETS & CATEGORIES MODALS ---
     function togglePresetsModal(open) {
       var modal = document.getElementById("presets-modal");
       if (!modal) return;
@@ -2074,7 +2070,6 @@
       }
     }
 
-    // --- TUTORIAL MODAL STATE & CONTENT ---
     var currentTutorialStep = 0;
     var TUTORIAL_STEPS = [
       {
@@ -2225,7 +2220,7 @@
     ];
 
     function getActiveTutorialSteps() {
-      return currentLanguage === "es" ? TUTORIAL_STEPS_ES : TUTORIAL_STEPS;
+      return normalizeLangCode(currentLanguage) === "es" ? TUTORIAL_STEPS_ES : TUTORIAL_STEPS;
     }
 
     function toggleTutorialModal(open) {
@@ -2318,7 +2313,6 @@
       }
     }
 
-    // --- TWIN-BELL ALARM CLOCK & EXPLOSION TIMER STATE ---
     var bombDuration = 30;
     var bombRemaining = 30;
     var bombInterval = null;
@@ -2642,7 +2636,6 @@
       '</div>';
     }
 
-    // --- LIVE TYPING ENGINE (WITH SOUND IN 4-CARD MODE, SILENT IN 1-CARD MODE) ---
     function clearCardTypingTimer(index) {
       if (cardTypingTimers[index]) {
         clearInterval(cardTypingTimers[index]);
@@ -2658,7 +2651,7 @@
 
     function startLiveTyping(index, fullText, playSound, langAtStartOverride) {
       clearCardTypingTimer(index);
-      var langAtStart = langAtStartOverride || currentLanguage || "en";
+      var langAtStart = normalizeLangCode(langAtStartOverride || currentLanguage || "en");
       var textToType = String(fullText || "");
       cardResolvedTexts[index] = textToType;
       var shouldPlaySound = Boolean(playSound);
@@ -2668,7 +2661,7 @@
         var textEl = document.getElementById("typed-question-" + index);
         if (!textEl) return;
         var lockedFinal = cardResolvedTexts[index] !== undefined ? cardResolvedTexts[index] : textToType;
-        if (isComplete || (currentLanguage || "en") !== langAtStart) {
+        if (isComplete || normalizeLangCode(currentLanguage) !== langAtStart) {
           cardTypingProgress[index] = lockedFinal.length;
           textEl.innerHTML = '&quot;' + escapeHtml(lockedFinal) + '&quot;';
           return;
@@ -2688,7 +2681,7 @@
 
       cardTypingTimers[index] = setInterval(function() {
         var lockedFinal = cardResolvedTexts[index] !== undefined ? cardResolvedTexts[index] : textToType;
-        if ((currentLanguage || "en") !== langAtStart) {
+        if (normalizeLangCode(currentLanguage) !== langAtStart) {
           clearCardTypingTimer(index);
           renderTypingFrame(true);
           return;
@@ -2709,26 +2702,24 @@
       }, 33);
     }
 
-    // Resolves translation immediately before typing starts and locks the final string
+    // Always translates completely first, then types out the translated text and locks it until language changes or card flips/refreshes
     async function translateThenTypeCard(index, topic, playSound) {
       if (!topic) return;
       var token = (cardRevealToken[index] || 0) + 1;
       cardRevealToken[index] = token;
-      var activeLang = currentLanguage || "en";
+      var activeLang = normalizeLangCode(currentLanguage || "en");
 
       clearCardTypingTimer(index);
-      var immediateText = getImmediateTranslatedString(topic.text, activeLang);
-      cardResolvedTexts[index] = immediateText;
 
       var textEl = document.getElementById("typed-question-" + index);
       if (textEl) {
-        textEl.innerHTML = '&quot;' + escapeHtml(immediateText) + '<span class="typing-caret"></span>';
+        textEl.innerHTML = '&quot;<span class="typing-caret"></span>';
       }
 
       var resolvedText = await resolveTranslatedTopicText(topic, activeLang);
-      if (cardRevealToken[index] !== token || (currentLanguage || "en") !== activeLang) return;
+      if (cardRevealToken[index] !== token || normalizeLangCode(currentLanguage) !== activeLang) return;
 
-      var finalText = (resolvedText && resolvedText.trim()) ? resolvedText : immediateText;
+      var finalText = (resolvedText && resolvedText.trim()) ? resolvedText : topic.text;
       cardResolvedTexts[index] = finalText;
       startLiveTyping(index, finalText, playSound, activeLang);
     }
@@ -2827,10 +2818,10 @@
 
       topicCache[topic.id] = topic;
       localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
-      if (currentLanguage !== "en") {
-        var langAtGeneration = currentLanguage;
+      if (normalizeLangCode(currentLanguage) !== "en") {
+        var langAtGeneration = normalizeLangCode(currentLanguage);
         fetchRemoteTranslation(text, langAtGeneration).then(function() {
-          if (currentLanguage === langAtGeneration) {
+          if (normalizeLangCode(currentLanguage) === langAtGeneration) {
             renderTopicCards();
           }
         });
@@ -3085,7 +3076,7 @@
     function renderTopicCards() {
       var grid = document.getElementById("topics-grid");
       if (!grid) return;
-      
+
       if (cardCountView === 1) {
         grid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
       } else {
@@ -3155,8 +3146,6 @@
         '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
       '</div>';
     }
-
-    // --- LEADERBOARD & SESSION SCORES LOGIC ---
 
     function toggleScoresModal(open) {
       var modal = document.getElementById("scores-modal");
@@ -3312,8 +3301,6 @@
       if (ticker) ticker.innerHTML = loopStandard;
       if (floatingTicker) floatingTicker.innerHTML = loopFloating;
     }
-
-    // --- FAVORITES & UTILS ---
 
     function toggleFavorite(topicId, cardIndex) {
       var topic = currentTopics[cardIndex];
