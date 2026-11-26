@@ -547,7 +547,7 @@
       </div>
 
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <!-- Language Dropdown & Quick ES/EN Toggle -->
+        <!-- Language Dropdown & Quick ES Toggle -->
         <div class="flex items-center bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-0.5 shadow-sm" title="Select Language">
           <i class="fa-solid fa-globe text-xs text-indigo-600 dark:text-cyan-300 pl-2 pr-1"></i>
           <select id="language-select" onchange="setLanguage(this.value)" class="bg-transparent text-slate-900 dark:text-white text-[11px] sm:text-xs font-extrabold pr-1.5 py-1 focus:outline-none cursor-pointer">
@@ -1171,8 +1171,8 @@
       es: {
         tagline: "¡A CHARLAR SE HA DICHO!",
         followMe: "Sígueme",
-        quickToggleLabel: "EN",
-        quickToggleTitle: "Cambiar a inglés",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Alternar entre español e inglés",
         tutorial: "Tutorial",
         scores: "Marcador",
         tiktokDesktop: "Ir a mi TikTok",
@@ -2702,7 +2702,7 @@
       }, 33);
     }
 
-    // Always translates completely first, then types out the translated text and locks it until language changes or card flips/refreshes
+    // Translates completely first, then types out the translated text and locks it until language changes or card flips/refreshes
     async function translateThenTypeCard(index, topic, playSound) {
       if (!topic) return;
       var token = (cardRevealToken[index] || 0) + 1;
@@ -2820,9 +2820,17 @@
       localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
       if (normalizeLangCode(currentLanguage) !== "en") {
         var langAtGeneration = normalizeLangCode(currentLanguage);
-        fetchRemoteTranslation(text, langAtGeneration).then(function() {
+        fetchRemoteTranslation(text, langAtGeneration).then(function(resolved) {
           if (normalizeLangCode(currentLanguage) === langAtGeneration) {
-            renderTopicCards();
+            for (var idx = 0; idx < currentTopics.length; idx++) {
+              if (currentTopics[idx] && currentTopics[idx].id === topic.id && !cardTypingTimers[idx]) {
+                cardResolvedTexts[idx] = resolved || text;
+                var el = document.getElementById("typed-question-" + idx);
+                if (el) {
+                  el.innerHTML = '&quot;' + escapeHtml(cardResolvedTexts[idx]) + '&quot;';
+                }
+              }
+            }
           }
         });
       }
