@@ -223,7 +223,7 @@
     .animate-marquee {
       display: flex;
       width: max-content;
-      animation: marquee 22s linear infinite;
+      animation: marquee 26s linear infinite;
     }
     .animate-marquee:hover {
       animation-play-state: paused;
@@ -454,6 +454,14 @@
       box-shadow: 0 0 14px rgba(234, 88, 12, 0.35), inset 0 0 10px rgba(251, 146, 60, 0.15) !important;
     }
 
+    @keyframes bounty-pulse {
+      0%, 100% { transform: scale(1) rotate(-0.5deg); box-shadow: 0 0 10px rgba(245, 158, 11, 0.45), 0 0 18px rgba(236, 72, 153, 0.25); }
+      50% { transform: scale(1.04) rotate(0.5deg); box-shadow: 0 0 16px rgba(250, 204, 21, 0.85), 0 0 26px rgba(0, 242, 254, 0.4); }
+    }
+    .bounty-badge-pop {
+      animation: bounty-pulse 2s ease-in-out infinite;
+    }
+
     @keyframes clock-shake-ring {
       0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
       15% { transform: translate(-3px, 1px) rotate(-5deg) scale(1.03); }
@@ -568,7 +576,7 @@
           <span id="header-tutorial-label" class="hidden sm:inline">Tutorial</span>
         </button>
 
-        <button id="header-scores-btn" onclick="toggleScoresModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
+        <button id="header-scores-btn" onclick="openScoresModal(false)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="Manage Session Scores">
           <i class="fa-solid fa-trophy text-sm text-yellow-200"></i>
           <span id="header-scores-label" class="hidden sm:inline">Scores</span>
         </button>
@@ -592,14 +600,14 @@
     </div>
   </header>
 
-  <!-- Global Top Scrolling Leaderboard Ticker -->
+  <!-- Global Scrolling Leaderboard Ticker (All Players Up to 10) -->
   <div id="global-ticker-container" class="relative z-30 w-full bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-indigo-500/30 overflow-hidden py-1.5 shadow-sm transition-colors">
     <div class="flex items-center">
-      <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1.5 shadow-md">
-        <i class="fa-solid fa-crown text-slate-950"></i> <span id="ticker-podium-label">TOP 3 PODIUM</span>
+      <div id="global-ticker-badge" class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3 py-1 z-10 shrink-0 flex items-center gap-1.5 shadow-md">
+        <i class="fa-solid fa-crown text-slate-950"></i> <span id="ticker-podium-label">LEADERBOARD</span>
       </div>
       <div class="overflow-hidden whitespace-nowrap flex-grow relative">
-        <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-xs font-bold"></div>
+        <div id="leaderboard-ticker" class="animate-marquee flex items-center gap-5 text-xs font-bold"></div>
       </div>
     </div>
   </div>
@@ -607,12 +615,20 @@
   <main id="main-content-area" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between">
     <div class="shrink-0 mb-2">
       <div class="flex flex-wrap items-center justify-center sm:justify-between gap-2 py-0.5 text-xs">
-        <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
-          <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-square text-[11px]"></i> <span id="view-label-1">1 Card</span>
-          </button>
-          <button id="view-btn-4" onclick="setLayoutView(4)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-border-all text-[11px]"></i> <span id="view-label-4">4 Cards</span>
+        <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+          <div class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner">
+            <button id="view-btn-1" onclick="setLayoutView(1)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-square text-[11px]"></i> <span id="view-label-1">1 Card</span>
+            </button>
+            <button id="view-btn-4" onclick="setLayoutView(4)" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-border-all text-[11px]"></i> <span id="view-label-4">4 Cards</span>
+            </button>
+          </div>
+
+          <button id="game-mode-btn" onclick="activateGameModeAndOpenScores()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-md shadow-emerald-500/25 cursor-pointer border border-emerald-300/40" title="Start or configure Game Mode">
+            <i class="fa-solid fa-gamepad text-yellow-200"></i>
+            <span id="game-mode-btn-label">Game Mode</span>
+            <span id="game-mode-status-pill" class="hidden px-1.5 py-0.5 rounded-md bg-black/30 text-[10px] font-black tracking-wide">R1/5</span>
           </button>
         </div>
 
@@ -656,6 +672,9 @@
 
         <aside id="single-card-bomb-timer" class="hidden w-full md:w-56 shrink-0 bg-white/95 dark:bg-slate-900/95 border border-slate-300 dark:border-rose-500/40 rounded-2xl p-3.5 shadow-xl backdrop-blur-md flex flex-col items-center justify-between gap-2.5 transition-colors">
           <div class="w-full flex flex-col items-center text-center">
+            <div id="game-round-tracker-badge" class="hidden w-full mb-1 px-2 py-1 rounded-lg bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-pink-600/20 border border-indigo-400/40 text-[10px] font-black uppercase tracking-wider text-indigo-700 dark:text-cyan-300">
+              Round 1/5 &bull; Q 1/1
+            </div>
             <div class="flex items-center justify-center gap-2">
               <span id="bomb-timer-display" class="font-mono font-black text-2xl sm:text-3xl tracking-wider text-slate-900 dark:text-white">00:30</span>
             </div>
@@ -665,7 +684,7 @@
             </div>
           </div>
 
-          <div class="relative flex items-center justify-center my-1 min-h-[124px] w-full select-none">
+          <div class="relative flex items-center justify-center my-1 min-h-[116px] w-full select-none">
             <div id="twin-bell-clock-wrapper" class="relative w-28 h-28 flex items-center justify-center">
               <svg id="twin-bell-clock-svg" viewBox="0 0 140 140" class="w-28 h-28 overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="clock-waves-left" class="opacity-40">
@@ -720,6 +739,10 @@
                 <i class="fa-solid fa-rotate-left"></i>
               </button>
             </div>
+            <button id="end-round-btn" onclick="completeCurrentRound()" class="w-full py-1.5 rounded-lg text-xs font-black bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-white shadow cursor-pointer flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-flag-checkered"></i>
+              <span id="end-round-label">End Round</span>
+            </button>
           </div>
         </aside>
       </div>
@@ -728,10 +751,10 @@
         <div class="floating-ticker-card bg-white/95 dark:bg-slate-950/95 border border-slate-300 dark:border-amber-500/40 rounded-2xl overflow-hidden py-2 px-1.5 shadow-xl dark:shadow-2xl backdrop-blur-md transition-colors">
           <div class="flex items-center">
             <div class="bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-xl z-10 shrink-0 flex items-center gap-1 shadow-md">
-              <i class="fa-solid fa-crown"></i> <span id="floating-podium-label">TOP 3</span>
+              <i class="fa-solid fa-crown"></i> <span id="floating-podium-label">ALL PLAYERS</span>
             </div>
             <div class="overflow-hidden whitespace-nowrap flex-grow relative ml-2">
-              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-6 text-lg sm:text-2xl font-extrabold"></div>
+              <div id="floating-leaderboard-ticker" class="animate-marquee flex items-center gap-5 text-lg sm:text-2xl font-extrabold"></div>
             </div>
           </div>
         </div>
@@ -890,10 +913,10 @@
     </div>
   </div>
 
-  <!-- Manage Session Scores Modal -->
+  <!-- Manage Session Scores & Game Mode Modal -->
   <div id="scores-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div onclick="toggleScoresModal(false)" class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm cursor-pointer"></div>
-    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-4">
+    <div onclick="toggleScoresModal(false)" class="absolute inset-0 bg-slate-900/75 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
       <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
         <h3 id="scores-modal-title" class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
           <i class="fa-solid fa-trophy text-amber-500"></i> Manage Session Leaderboard Scores
@@ -903,11 +926,47 @@
         </button>
       </div>
 
+      <!-- Game Mode Settings Panel -->
+      <div id="game-mode-settings-panel" class="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-indigo-500/10 to-pink-500/10 border border-emerald-400/40 dark:border-emerald-500/40 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+            <input id="game-mode-enabled-checkbox" type="checkbox" onchange="onGameModeToggleCheckbox(this.checked)" class="w-4 h-4 rounded accent-emerald-500 cursor-pointer">
+            <span class="text-xs sm:text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-gamepad text-emerald-500"></i> Game Mode Active
+            </span>
+          </label>
+          <span id="game-mode-player-count-badge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-indigo-600/20 text-indigo-700 dark:text-cyan-300">
+            3 / 10 Players
+          </span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label for="game-rounds-input" class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+              How Many Rounds
+            </label>
+            <input id="game-rounds-input" type="number" min="1" max="99" value="5" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label for="game-qpr-input" class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+              Questions / Round
+            </label>
+            <input id="game-qpr-input" type="number" min="1" max="50" value="1" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label for="game-ppr-input" class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+              Points / Round
+            </label>
+            <input id="game-ppr-input" type="number" min="1" max="100000" step="5" value="100" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+      </div>
+
       <p id="scores-modal-desc" class="text-xs text-slate-500 dark:text-slate-400">
-        Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!
+        Enter up to 10 players and their session points below. Every player scrolls live in rank order!
       </p>
 
-      <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden max-h-[50vh] overflow-y-auto custom-scroll">
+      <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden max-h-[42vh] overflow-y-auto custom-scroll">
         <table class="w-full text-left text-xs border-collapse">
           <thead class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 sticky top-0 z-10">
             <tr>
@@ -920,14 +979,53 @@
         </table>
       </div>
 
-      <div class="flex items-center justify-between pt-2">
-        <button id="scores-add-btn" onclick="addScoreRow('', '')" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
-          <i class="fa-solid fa-plus text-indigo-500"></i> Add User
-        </button>
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+        <div class="flex items-center gap-1.5">
+          <button id="scores-add-btn" onclick="addScoreRow('', 0)" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+            <i class="fa-solid fa-plus text-indigo-500"></i> Add User
+          </button>
+          <button id="scores-expand-10-btn" onclick="expandRowsToMaxPlayers()" class="px-3 py-1.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-400/40 text-indigo-700 dark:text-indigo-200 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer" title="Expand rows up to 10 players">
+            <i class="fa-solid fa-users-plus"></i> Fill 10 Slots
+          </button>
+        </div>
         <div class="flex items-center gap-2">
           <button id="scores-clear-btn" onclick="clearAllScores()" class="px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors cursor-pointer">Clear All</button>
-          <button id="scores-save-btn" onclick="saveAndApplyScores()" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer shadow">Save & Apply</button>
+          <button id="scores-save-btn" onclick="saveAndApplyScores()" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer shadow">Save &amp; Apply</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Round Winner Picker Modal -->
+  <div id="round-winner-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="closeRoundWinnerModal()" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md cursor-pointer"></div>
+    <div class="relative w-full max-w-md bg-white dark:bg-slate-900 border-2 border-amber-400/60 rounded-3xl p-5 sm:p-6 shadow-2xl z-10 text-slate-800 dark:text-slate-100 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <span id="winner-modal-round-tag" class="text-[10px] font-black uppercase tracking-widest text-amber-500">Round Complete</span>
+          <h3 id="winner-modal-title" class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-crown text-amber-400"></i> Pick the Round Winner!
+          </h3>
+        </div>
+        <button onclick="closeRoundWinnerModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-3 rounded-2xl bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-cyan-500/20 border border-amber-400/40 text-center">
+        <div class="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-300">Round Prize Pool</div>
+        <div id="winner-modal-prize" class="text-2xl font-black pts-gold mt-0.5">+100 PTS</div>
+      </div>
+
+      <div id="winner-candidates-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[45vh] overflow-y-auto custom-scroll pr-1"></div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
+        <button onclick="openScoresModal(true)" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold cursor-pointer">
+          <i class="fa-solid fa-user-plus mr-1"></i> Manage Players
+        </button>
+        <button onclick="closeRoundWinnerModal()" class="px-4 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+          Skip Points
+        </button>
       </div>
     </div>
   </div>
@@ -983,6 +1081,8 @@
   </div>
 
   <script>
+    var MAX_GAME_PLAYERS = 10;
+
     var CATEGORY_FILES = {
       "Philosophy": "data/questions-philosophy.json",
       "Deep Questions": "data/questions-deep-questions.json",
@@ -1059,6 +1159,26 @@
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
 
+    // Game Mode State
+    var gameState = JSON.parse(localStorage.getItem("nellieb_game_mode") || JSON.stringify({
+      enabled: false,
+      totalRounds: 5,
+      questionsPerRound: 1,
+      pointsPerRound: 100,
+      currentRound: 1,
+      currentQuestionInRound: 1,
+      roundStarted: false
+    }));
+    gameState.totalRounds = Math.max(1, parseInt(gameState.totalRounds) || 5);
+    gameState.questionsPerRound = Math.max(1, parseInt(gameState.questionsPerRound) || 1);
+    gameState.pointsPerRound = Math.max(1, parseInt(gameState.pointsPerRound) || 100);
+    gameState.currentRound = Math.max(1, parseInt(gameState.currentRound) || 1);
+    gameState.currentQuestionInRound = Math.max(1, parseInt(gameState.currentQuestionInRound) || 1);
+
+    function saveGameState() {
+      localStorage.setItem("nellieb_game_mode", JSON.stringify(gameState));
+    }
+
     var CATEGORY_STYLES = {
       "Philosophy": { bg: "bg-purple-100 dark:bg-purple-950/80", text: "text-purple-700 dark:text-purple-200", border: "border-purple-300 dark:border-purple-600" },
       "Deep Questions": { bg: "bg-indigo-100 dark:bg-indigo-950/80", text: "text-indigo-700 dark:text-indigo-200", border: "border-indigo-300 dark:border-indigo-600" },
@@ -1100,10 +1220,12 @@
         quickToggleTitle: "Switch to Spanish",
         tutorial: "Tutorial",
         scores: "Scores",
+        gameMode: "Game Mode",
+        endRound: "End Round",
         tiktokDesktop: "Go to My TikTok",
         tiktokMobile: "TikTok",
-        podiumFull: "TOP 3 PODIUM",
-        podiumShort: "TOP 3",
+        podiumFull: "ALL PLAYERS",
+        podiumShort: "PLAYERS",
         oneCard: "1 Card",
         fourCards: "4 Cards",
         presetsPrefix: "Presets:",
@@ -1139,8 +1261,8 @@
         tutBack: "Back",
         tutNext: "Next",
         tutFinish: "Let's Play!",
-        scoresTitle: "Manage Session Leaderboard Scores",
-        scoresDesc: "Enter user names and their session points below. The top 3 scorers claim the Podium positions in the scrolling ticker!",
+        scoresTitle: "Game Mode & Session Leaderboard",
+        scoresDesc: "Enter up to 10 players and their session points below. Every player scrolls live in rank order!",
         thUser: "Username",
         thPoints: "Session Points",
         thAction: "Action",
@@ -1163,7 +1285,7 @@
         bookmarkTitle: "Bookmark Topic",
         copyTitle: "Copy Prompt",
         ptsSuffix: "PTS",
-        emptyPodium: "No podium leaders yet. Click \"Scores\" to enter contenders!",
+        emptyPodium: "No players yet. Click \"Game Mode\" or \"Scores\" to add up to 10 contenders!",
         noSavedEmpty: "No saved topics yet.",
         noSavedSub: "Tap the pin icon on any card to bookmark it!",
         clickToLoad: "Click to load topic"
@@ -1175,10 +1297,12 @@
         quickToggleTitle: "Alternar entre español e inglés",
         tutorial: "Tutorial",
         scores: "Marcador",
+        gameMode: "Modo Juego",
+        endRound: "Fin Ronda",
         tiktokDesktop: "Ir a mi TikTok",
         tiktokMobile: "TikTok",
-        podiumFull: "TOP 3 PODIO",
-        podiumShort: "TOP 3",
+        podiumFull: "TODOS LOS JUGADORES",
+        podiumShort: "JUGADORES",
         oneCard: "1 Carta",
         fourCards: "4 Cartas",
         presetsPrefix: "Modos:",
@@ -1214,8 +1338,8 @@
         tutBack: "Atrás",
         tutNext: "Siguiente",
         tutFinish: "¡A Jugar!",
-        scoresTitle: "Administrar Puntos de la Sesión",
-        scoresDesc: "Escribe los nombres y puntos de la sesión. ¡Los 3 primeros ocupan el Podio en la marquesina!",
+        scoresTitle: "Modo Juego y Marcador de Sesión",
+        scoresDesc: "Agrega hasta 10 jugadores y sus puntos. ¡Todos los jugadores giran en orden de ranking!",
         thUser: "Usuario",
         thPoints: "Puntos",
         thAction: "Acción",
@@ -1238,7 +1362,7 @@
         bookmarkTitle: "Guardar tema",
         copyTitle: "Copiar pregunta",
         ptsSuffix: "PTS",
-        emptyPodium: "Aún no hay líderes en el podio. ¡Haz clic en \"Marcador\" para agregar jugadores!",
+        emptyPodium: "Aún no hay jugadores. ¡Haz clic en \"Modo Juego\" o \"Marcador\" para agregar hasta 10!",
         noSavedEmpty: "No hay temas guardados aún.",
         noSavedSub: "¡Toca el ícono de chincheta en cualquier carta para guardarlo!",
         clickToLoad: "Toca para cargar el tema"
@@ -1250,10 +1374,12 @@
         quickToggleTitle: "Passer en espagnol",
         tutorial: "Tutoriel",
         scores: "Scores",
+        gameMode: "Mode Jeu",
+        endRound: "Fin Manche",
         tiktokDesktop: "Mon TikTok",
         tiktokMobile: "TikTok",
-        podiumFull: "TOP 3 PODIUM",
-        podiumShort: "TOP 3",
+        podiumFull: "TOUS LES JOUEURS",
+        podiumShort: "JOUEURS",
         oneCard: "1 Carte",
         fourCards: "4 Cartes",
         presetsPrefix: "Modes :",
@@ -1289,8 +1415,8 @@
         tutBack: "Retour",
         tutNext: "Suivant",
         tutFinish: "C'est Parti !",
-        scoresTitle: "Gérer les Scores de la Session",
-        scoresDesc: "Saisissez les pseudos et points. Les 3 meilleurs montent sur le Podium !",
+        scoresTitle: "Mode Jeu & Scores de la Session",
+        scoresDesc: "Ajoutez jusqu'à 10 joueurs. Tous les joueurs défilent par classement !",
         thUser: "Pseudo",
         thPoints: "Points",
         thAction: "Action",
@@ -1313,7 +1439,7 @@
         bookmarkTitle: "Enregistrer",
         copyTitle: "Copier",
         ptsSuffix: "PTS",
-        emptyPodium: "Aucun leader pour l'instant. Cliquez sur \"Scores\" !",
+        emptyPodium: "Aucun joueur pour l'instant. Cliquez sur \"Mode Jeu\" !",
         noSavedEmpty: "Aucun sujet enregistré.",
         noSavedSub: "Épinglez une carte pour la sauvegarder !",
         clickToLoad: "Cliquer pour charger"
@@ -1325,10 +1451,12 @@
         quickToggleTitle: "Auf Spanisch wechseln",
         tutorial: "Tutorial",
         scores: "Punkte",
+        gameMode: "Spielmodus",
+        endRound: "Runde Ende",
         tiktokDesktop: "Zu meinem TikTok",
         tiktokMobile: "TikTok",
-        podiumFull: "TOP 3 PODIUM",
-        podiumShort: "TOP 3",
+        podiumFull: "ALLE SPIELER",
+        podiumShort: "SPIELER",
         oneCard: "1 Karte",
         fourCards: "4 Karten",
         presetsPrefix: "Mix:",
@@ -1364,8 +1492,8 @@
         tutBack: "Zurück",
         tutNext: "Weiter",
         tutFinish: "Los geht's!",
-        scoresTitle: "Session-Punkte verwalten",
-        scoresDesc: "Namen und Punkte eingeben. Die Top 3 erscheinen im Podium-Ticker!",
+        scoresTitle: "Spielmodus & Session-Punkte",
+        scoresDesc: "Bis zu 10 Spieler eingeben. Alle Spieler laufen in Rangfolge!",
         thUser: "Name",
         thPoints: "Punkte",
         thAction: "Aktion",
@@ -1388,7 +1516,7 @@
         bookmarkTitle: "Merken",
         copyTitle: "Kopieren",
         ptsSuffix: "PKT",
-        emptyPodium: "Noch keine Podiumsplätze. Klicke auf „Punkte“!",
+        emptyPodium: "Noch keine Spieler. Klicke auf „Spielmodus“!",
         noSavedEmpty: "Noch keine Themen gespeichert.",
         noSavedSub: "Tippe auf das Pin-Symbol einer Karte zum Merken!",
         clickToLoad: "Zum Laden klicken"
@@ -1400,10 +1528,12 @@
         quickToggleTitle: "Mudar para espanhol",
         tutorial: "Tutorial",
         scores: "Placar",
+        gameMode: "Modo Jogo",
+        endRound: "Fim Rodada",
         tiktokDesktop: "Ir ao TikTok",
         tiktokMobile: "TikTok",
-        podiumFull: "TOP 3 PÓDIO",
-        podiumShort: "TOP 3",
+        podiumFull: "TODOS OS JOGADORES",
+        podiumShort: "JOGADORES",
         oneCard: "1 Carta",
         fourCards: "4 Cartas",
         presetsPrefix: "Modos:",
@@ -1439,8 +1569,8 @@
         tutBack: "Voltar",
         tutNext: "Próximo",
         tutFinish: "Vamos Jogar!",
-        scoresTitle: "Gerenciar Pontos da Sessão",
-        scoresDesc: "Adicione nomes e pontos. Os 3 melhores entram no Pódio!",
+        scoresTitle: "Modo Jogo & Pontos da Sessão",
+        scoresDesc: "Adicione até 10 jogadores. Todos rolam em ordem de classificação!",
         thUser: "Usuário",
         thPoints: "Pontos",
         thAction: "Ação",
@@ -1463,7 +1593,7 @@
         bookmarkTitle: "Salvar tema",
         copyTitle: "Copiar",
         ptsSuffix: "PTS",
-        emptyPodium: "Ainda sem líderes no pódio. Clique em \"Placar\"!",
+        emptyPodium: "Ainda sem jogadores. Clique em \"Modo Jogo\"!",
         noSavedEmpty: "Nenhum tópico salvo ainda.",
         noSavedSub: "Toque no alfinete de uma carta para salvar!",
         clickToLoad: "Clique para carregar"
@@ -1475,10 +1605,12 @@
         quickToggleTitle: "Passa allo spagnolo",
         tutorial: "Tutorial",
         scores: "Punteggi",
+        gameMode: "Modalità Gioco",
+        endRound: "Fine Round",
         tiktokDesktop: "Vai su TikTok",
         tiktokMobile: "TikTok",
-        podiumFull: "TOP 3 PODIO",
-        podiumShort: "TOP 3",
+        podiumFull: "TUTTI I GIOCATORI",
+        podiumShort: "GIOCATORI",
         oneCard: "1 Carta",
         fourCards: "4 Carte",
         presetsPrefix: "Mix:",
@@ -1514,8 +1646,8 @@
         tutBack: "Indietro",
         tutNext: "Avanti",
         tutFinish: "Giochiamo!",
-        scoresTitle: "Gestisci Punti Sessione",
-        scoresDesc: "Inserisci nomi e punti. I primi 3 salgono sul Podio!",
+        scoresTitle: "Modalità Gioco & Punti Sessione",
+        scoresDesc: "Inserisci fino a 10 giocatori. Tutti scorrono in ordine di classifica!",
         thUser: "Utente",
         thPoints: "Punti",
         thAction: "Azione",
@@ -1538,7 +1670,7 @@
         bookmarkTitle: "Salva tema",
         copyTitle: "Copia",
         ptsSuffix: "PT",
-        emptyPodium: "Nessun leader sul podio. Clicca su \"Punteggi\"!",
+        emptyPodium: "Nessun giocatore. Clicca su \"Modalità Gioco\"!",
         noSavedEmpty: "Nessun argomento salvato.",
         noSavedSub: "Tocca la puntina su una carta per salvarla!",
         clickToLoad: "Clicca per caricare"
@@ -1757,7 +1889,6 @@
         return fb;
       }
 
-      // Default cleanly to English when unable to translate
       return rawText;
     }
 
@@ -1790,9 +1921,7 @@
             return fullTranslated;
           }
         }
-      } catch (e) {
-        // Fallback smoothly when offline, slow, or blocked
-      }
+      } catch (e) {}
 
       var fallback = getImmediateTranslatedString(text, lang);
       if (fallback && fallback !== text) {
@@ -1908,6 +2037,8 @@
 
       setText("header-tutorial-label", t("tutorial"));
       setText("header-scores-label", t("scores"));
+      setText("game-mode-btn-label", t("gameMode"));
+      setText("end-round-label", t("endRound"));
       setText("header-tiktok-desktop", t("tiktokDesktop"));
       setText("header-tiktok-mobile", t("tiktokMobile"));
       setText("ticker-podium-label", t("podiumFull"));
@@ -1977,6 +2108,7 @@
 
       updateFilterButtonsUI();
       updateToggleUI();
+      updateGameModeUI();
       updateBombUI();
       renderModePills();
       renderCategoryPills();
@@ -1991,7 +2123,186 @@
       { name: "Rick", points: 1000 },
       { name: "Nellie", points: 999 },
       { name: "Roberto", points: 998 }
-    ]));
+    ])).slice(0, MAX_GAME_PLAYERS);
+
+    function activateGameModeAndOpenScores() {
+      gameState.enabled = true;
+      if (!gameState.currentRound || gameState.currentRound > gameState.totalRounds) {
+        gameState.currentRound = 1;
+        gameState.currentQuestionInRound = 1;
+      }
+      saveGameState();
+      updateGameModeUI();
+      openScoresModal(true);
+    }
+
+    function openScoresModal(focusGameMode) {
+      var modal = document.getElementById("scores-modal");
+      if (!modal) return;
+      var cb = document.getElementById("game-mode-enabled-checkbox");
+      var roundsInput = document.getElementById("game-rounds-input");
+      var qprInput = document.getElementById("game-qpr-input");
+      var pprInput = document.getElementById("game-ppr-input");
+
+      if (cb) cb.checked = Boolean(gameState.enabled);
+      if (roundsInput) roundsInput.value = gameState.totalRounds;
+      if (qprInput) qprInput.value = gameState.questionsPerRound;
+      if (pprInput) pprInput.value = gameState.pointsPerRound;
+
+      populateScoresTable();
+      updatePlayerCountBadge();
+      modal.classList.remove("hidden");
+      if (focusGameMode && roundsInput) {
+        roundsInput.focus();
+      }
+    }
+
+    function onGameModeToggleCheckbox(checked) {
+      gameState.enabled = Boolean(checked);
+      if (gameState.enabled && (!gameState.currentRound || gameState.currentRound < 1)) {
+        gameState.currentRound = 1;
+        gameState.currentQuestionInRound = 1;
+      }
+      saveGameState();
+      updateGameModeUI();
+    }
+
+    function updatePlayerCountBadge() {
+      var count = document.querySelectorAll("#scores-table-body .score-row").length;
+      var badge = document.getElementById("game-mode-player-count-badge");
+      if (badge) {
+        badge.innerText = Math.min(count, MAX_GAME_PLAYERS) + " / " + MAX_GAME_PLAYERS + " Players";
+      }
+    }
+
+    function updateGameModeUI() {
+      var btn = document.getElementById("game-mode-btn");
+      var statusPill = document.getElementById("game-mode-status-pill");
+      var roundBadge = document.getElementById("game-round-tracker-badge");
+      var endRoundBtn = document.getElementById("end-round-btn");
+
+      if (gameState.enabled) {
+        if (btn) {
+          btn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-pink-600 to-purple-600 hover:from-amber-400 hover:via-pink-500 hover:to-purple-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-lg shadow-pink-500/30 cursor-pointer border border-amber-300/60";
+        }
+        if (statusPill) {
+          statusPill.classList.remove("hidden");
+          statusPill.innerText = "R" + gameState.currentRound + "/" + gameState.totalRounds + " • +" + gameState.pointsPerRound;
+        }
+        if (roundBadge) {
+          roundBadge.classList.remove("hidden");
+          roundBadge.innerText = "Round " + gameState.currentRound + "/" + gameState.totalRounds + " • Q " + gameState.currentQuestionInRound + "/" + gameState.questionsPerRound + " • +" + gameState.pointsPerRound + " PTS";
+        }
+        if (endRoundBtn) {
+          endRoundBtn.classList.remove("hidden");
+        }
+      } else {
+        if (btn) {
+          btn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-md shadow-emerald-500/25 cursor-pointer border border-emerald-300/40";
+        }
+        if (statusPill) {
+          statusPill.classList.add("hidden");
+        }
+        if (roundBadge) {
+          roundBadge.classList.add("hidden");
+        }
+        if (endRoundBtn) {
+          endRoundBtn.classList.add("hidden");
+        }
+      }
+    }
+
+    function advanceQuestionOrTriggerRoundEnd(sourceLabel) {
+      if (!gameState.enabled) return;
+
+      if (gameState.currentQuestionInRound < gameState.questionsPerRound) {
+        gameState.currentQuestionInRound += 1;
+        saveGameState();
+        updateGameModeUI();
+        renderTopicCards();
+        showToast("Question " + gameState.currentQuestionInRound + " of " + gameState.questionsPerRound + " (Round " + gameState.currentRound + ")", "info");
+        return;
+      }
+
+      openRoundWinnerModal(sourceLabel || "Round Complete");
+    }
+
+    function completeCurrentRound() {
+      if (!gameState.enabled) {
+        activateGameModeAndOpenScores();
+        return;
+      }
+      openRoundWinnerModal("Round " + gameState.currentRound + " Complete!");
+    }
+
+    function openRoundWinnerModal(subtitleText) {
+      var modal = document.getElementById("round-winner-modal");
+      var tagEl = document.getElementById("winner-modal-round-tag");
+      var prizeEl = document.getElementById("winner-modal-prize");
+      var listEl = document.getElementById("winner-candidates-list");
+      if (!modal || !listEl) return;
+
+      if (tagEl) {
+        tagEl.innerText = "ROUND " + gameState.currentRound + " OF " + gameState.totalRounds + " • " + subtitleText.toUpperCase();
+      }
+      if (prizeEl) {
+        prizeEl.innerText = "+" + Number(gameState.pointsPerRound).toLocaleString() + " " + t("ptsSuffix");
+      }
+
+      if (sessionScores.length === 0) {
+        listEl.innerHTML = '<div class="col-span-2 text-center py-4 text-xs text-slate-400">Add at least one player to award round points!</div>';
+      } else {
+        listEl.innerHTML = sessionScores.map(function(player, idx) {
+          return '<button onclick="awardRoundPointsToPlayer(' + idx + ')" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-gradient-to-r hover:from-amber-500/20 hover:to-pink-500/20 border-2 border-slate-200 dark:border-slate-700 hover:border-amber-400 text-left transition-all cursor-pointer flex items-center justify-between gap-2 group">' +
+            '<div class="flex items-center gap-2 min-w-0">' +
+              '<span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-500 font-black text-xs flex items-center justify-center shrink-0">' + (idx + 1) + '</span>' +
+              '<span class="font-extrabold text-sm text-slate-900 dark:text-white truncate group-hover:text-amber-500 transition-colors">' + escapeHtml(player.name) + '</span>' +
+            '</div>' +
+            '<span class="text-xs font-black text-emerald-500 shrink-0">+' + gameState.pointsPerRound + '</span>' +
+          '</button>';
+        }).join("");
+      }
+
+      modal.classList.remove("hidden");
+    }
+
+    function closeRoundWinnerModal() {
+      var modal = document.getElementById("round-winner-modal");
+      if (modal) modal.classList.add("hidden");
+      advanceRoundCounterAfterWinner();
+    }
+
+    function awardRoundPointsToPlayer(playerIdx) {
+      var player = sessionScores[playerIdx];
+      if (!player) return;
+
+      var ptsAwarded = Number(gameState.pointsPerRound) || 0;
+      player.points = (parseInt(player.points) || 0) + ptsAwarded;
+      sessionScores.sort(function(a, b) { return b.points - a.points; });
+      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+
+      var modal = document.getElementById("round-winner-modal");
+      if (modal) modal.classList.add("hidden");
+
+      renderLeaderboardTicker();
+      advanceRoundCounterAfterWinner();
+      showToast(player.name + " wins +" + ptsAwarded + " " + t("ptsSuffix") + "!", "success");
+    }
+
+    function advanceRoundCounterAfterWinner() {
+      if (gameState.currentRound < gameState.totalRounds) {
+        gameState.currentRound += 1;
+        gameState.currentQuestionInRound = 1;
+      } else {
+        showToast("All " + gameState.totalRounds + " rounds completed! Starting Round 1.", "success");
+        gameState.currentRound = 1;
+        gameState.currentQuestionInRound = 1;
+      }
+      gameState.roundStarted = false;
+      saveGameState();
+      updateGameModeUI();
+      renderTopicCards();
+    }
 
     function toggleWelcomeTutorialModal(open) {
       var modal = document.getElementById("welcome-tutorial-modal");
@@ -2123,8 +2434,8 @@
         ]
       },
       {
-        title: "Crown Your Top 3 Podium Champions",
-        badge: "Step 3 of 4 - Live Leaderboard",
+        title: "Game Mode & Live Player Ticker",
+        badge: "Step 3 of 4 - Rounds & Points",
         visual: '<div class="relative bg-gradient-to-br from-amber-950/70 via-slate-900 to-slate-950 border border-amber-500/40 rounded-2xl p-4 flex flex-col items-center gap-3">' +
           '<div class="flex flex-wrap items-center justify-center gap-2.5">' +
             '<div class="flex items-center gap-2 card-gold-glow px-3 py-1.5 rounded-xl">' +
@@ -2143,12 +2454,12 @@
               '<span class="pts-bronze text-xs">998 PTS</span>' +
             '</div>' +
           '</div>' +
-          '<p class="text-xs text-slate-300 text-center">Award points for best answers, fastest replies, or chat votes - the top 3 automatically animate in Gold, Silver &amp; Bronze!</p>' +
+          '<p class="text-xs text-slate-300 text-center">Click <strong>Game Mode</strong> to set rounds, questions per round, points per round, and up to 10 players!</p>' +
         '</div>',
         bullets: [
-          { icon: "fa-trophy text-amber-400", title: "Click 'Scores' in the Header", text: "Add players, update their session points, and hit Save & Apply to rank them live." },
-          { icon: "fa-crown text-yellow-300", title: "Floating 1-Card Podium", text: "In 1 Card view, the Top 3 marquee moves right below the card so viewers always see who is winning." },
-          { icon: "fa-floppy-disk text-emerald-400", title: "Saved Automatically", text: "Scores and bookmarked questions stay saved in your browser between rounds." }
+          { icon: "fa-gamepad text-emerald-400", title: "Set Rounds & Bounty Points", text: "Default is 5 rounds, 1 question per round, and 100 points per round—with up to 10 players." },
+          { icon: "fa-crown text-yellow-300", title: "All Players Scroll in Order", text: "Every player scrolls live in rank order so everyone can chase the top spot." },
+          { icon: "fa-flag-checkered text-pink-400", title: "Pick Each Round's Winner", text: "When a round ends or the timer finishes, pick the winner to award points and advance." }
         ]
       },
       {
@@ -2198,13 +2509,13 @@
         ]
       },
       {
-        title: "Corona a Tu Top 3 del Podio",
-        badge: "Paso 3 de 4 - Marcador en Vivo",
+        title: "Modo Juego y Marcador en Vivo",
+        badge: "Paso 3 de 4 - Rondas y Puntos",
         visual: TUTORIAL_STEPS[2].visual,
         bullets: [
-          { icon: "fa-trophy text-amber-400", title: "Pulsa 'Marcador' Arriba", text: "Agrega jugadores, actualiza sus puntos y pulsa Guardar y Aplicar." },
-          { icon: "fa-crown text-yellow-300", title: "Podio Flotante en 1 Carta", text: "En vista de 1 Carta, el Top 3 aparece justo debajo de la carta." },
-          { icon: "fa-floppy-disk text-emerald-400", title: "Guardado Automático", text: "Tus puntuaciones y favoritos quedan guardados en el navegador." }
+          { icon: "fa-gamepad text-emerald-400", title: "Configura Rondas y Puntos", text: "Por defecto son 5 rondas, 1 pregunta por ronda y 100 puntos por ronda, hasta 10 jugadores." },
+          { icon: "fa-crown text-yellow-300", title: "Todos Desfilan en Orden", text: "Todos los jugadores aparecen en la marquesina según su puesto." },
+          { icon: "fa-flag-checkered text-pink-400", title: "Elige al Ganador de la Ronda", text: "Al terminar la ronda o el reloj, elige al ganador para sumar sus puntos." }
         ]
       },
       {
@@ -2517,6 +2828,9 @@
       updateBombUI();
       playExplosionTone();
       showToast(t("boomBanner"), "warning");
+      if (gameState.enabled && cardCountView === 1) {
+        advanceQuestionOrTriggerRoundEnd("Timer Expired");
+      }
     }
 
     function toggleBombTimer() {
@@ -2532,6 +2846,11 @@
 
       if (bombRemaining <= 0) {
         bombRemaining = bombDuration;
+      }
+
+      if (gameState.enabled && cardCountView === 1) {
+        gameState.roundStarted = true;
+        saveGameState();
       }
 
       bombRunning = true;
@@ -2702,7 +3021,6 @@
       }, 33);
     }
 
-    // Translates completely first, then types out the translated text and locks it until language changes or card flips/refreshes
     async function translateThenTypeCard(index, topic, playSound) {
       if (!topic) return;
       var token = (cardRevealToken[index] || 0) + 1;
@@ -2724,11 +3042,27 @@
       startLiveTyping(index, finalText, playSound, activeLang);
     }
 
+    function getBountyBadgeMarkup(compact) {
+      if (!gameState.enabled) return "";
+      var ptsText = "+" + Number(gameState.pointsPerRound).toLocaleString() + " " + t("ptsSuffix");
+      if (compact) {
+        return '<span class="bounty-badge-pop inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[10px] uppercase tracking-wider shadow">' +
+          '<i class="fa-solid fa-bolt"></i> ' + escapeHtml(ptsText) + ' BOUNTY' +
+        '</span>';
+      }
+      return '<div class="bounty-badge-pop inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[11px] sm:text-xs uppercase tracking-wider shadow-md border border-white/70">' +
+        '<i class="fa-solid fa-fire-flame-curved text-rose-900"></i>' +
+        '<span>' + escapeHtml(ptsText) + '</span>' +
+        '<span class="px-1.5 py-0.2 rounded bg-slate-950/20 text-[9px]">R' + gameState.currentRound + '/' + gameState.totalRounds + '</span>' +
+      '</div>';
+    }
+
     function getDeckBackMarkup(topic, index, catStyle) {
       var categoryLabel = translateCategoryLabel(topic && topic.category ? topic.category : "");
       return '<div class="deck-back-surface rounded-[14px] h-full w-full p-4 sm:p-5 flex flex-col items-center justify-between text-center relative overflow-hidden border border-white/10">' +
-        '<div class="flex items-center justify-end w-full text-[10px] font-black uppercase tracking-widest text-amber-300">' +
-          '<span>' + escapeHtml(t("tapToFlip")) + '</span>' +
+        '<div class="flex items-center justify-between w-full gap-2 text-[10px] font-black uppercase tracking-widest text-amber-300">' +
+          getBountyBadgeMarkup(true) +
+          '<span class="ml-auto">' + escapeHtml(t("tapToFlip")) + '</span>' +
         '</div>' +
         '<div class="my-1 flex flex-col items-center justify-center gap-2.5">' +
           '<div class="relative">' +
@@ -2789,6 +3123,7 @@
         if (floatingTicker) floatingTicker.classList.add("hidden");
         if (topicsGrid) topicsGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
       }
+      updateGameModeUI();
     }
 
     function generateSequentialTopic(categoryOverride) {
@@ -3120,10 +3455,15 @@
           ? '<p id="typed-question-' + index + '" class="tiktok-card-text text-base sm:text-lg leading-snug font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>'
           : '<p id="typed-question-' + index + '" class="tiktok-card-text text-lg sm:text-2xl text-center leading-relaxed font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>';
 
+        var middleBountySlot = (cardCountView === 1 && gameState.enabled)
+          ? '<div class="flex-1 flex items-center justify-center px-1">' + getBountyBadgeMarkup(false) + '</div>'
+          : '';
+
         return '<div class="card-container h-full w-full min-h-[185px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
-              '<div class="text-xs font-extrabold tracking-tight opacity-70">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</div>' +
+              '<div class="text-xs font-extrabold tracking-tight opacity-70 shrink-0">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</div>' +
+              middleBountySlot +
               '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
                 '<button onclick="refreshCardAtIndex(' + index + ')" title="' + escapeQuotes(t("refreshTitle")) + '" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
                 '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="' + escapeQuotes(t("bookmarkTitle")) + '" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
@@ -3159,8 +3499,7 @@
       var modal = document.getElementById("scores-modal");
       if (!modal) return;
       if (open) {
-        populateScoresTable();
-        modal.classList.remove("hidden");
+        openScoresModal(false);
       } else {
         modal.classList.add("hidden");
       }
@@ -3170,12 +3509,14 @@
       var tbody = document.getElementById("scores-table-body");
       if (!tbody) return;
 
-      if (sessionScores.length === 0) {
+      var cappedScores = sessionScores.slice(0, MAX_GAME_PLAYERS);
+      if (cappedScores.length === 0) {
         tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">' + escapeHtml(t("emptyPodium")) + '</td></tr>';
+        updatePlayerCountBadge();
         return;
       }
 
-      var sortedScores = sessionScores.slice().sort(function(a, b) {
+      var sortedScores = cappedScores.slice().sort(function(a, b) {
         return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
       });
 
@@ -3186,6 +3527,7 @@
           '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>' +
         '</tr>';
       }).join("");
+      updatePlayerCountBadge();
     }
 
     function addScoreRow(name, points) {
@@ -3196,17 +3538,40 @@
         tbody.innerHTML = "";
       }
 
+      var currentRows = tbody.querySelectorAll(".score-row").length;
+      if (currentRows >= MAX_GAME_PLAYERS) {
+        showToast("Maximum " + MAX_GAME_PLAYERS + " players allowed in Game Mode.", "warning");
+        return;
+      }
+
       var tr = document.createElement("tr");
       tr.className = "score-row";
       tr.innerHTML = '<td class="p-2"><input type="text" value="' + escapeQuotes(name || "") + '" placeholder="' + escapeQuotes(t("thUser")) + '" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
         '<td class="p-2"><input type="number" value="' + (points !== undefined ? points : 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
         '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>';
       tbody.appendChild(tr);
+      updatePlayerCountBadge();
+    }
+
+    function expandRowsToMaxPlayers() {
+      var tbody = document.getElementById("scores-table-body");
+      if (!tbody) return;
+      if (tbody.querySelector("tr td[colspan]")) {
+        tbody.innerHTML = "";
+      }
+      var currentCount = tbody.querySelectorAll(".score-row").length;
+      while (currentCount < MAX_GAME_PLAYERS) {
+        addScoreRow("", 0);
+        currentCount++;
+      }
+      updatePlayerCountBadge();
+      showToast("Expanded to " + MAX_GAME_PLAYERS + " player slots!", "info");
     }
 
     function removeScoreRow(btn) {
       var row = btn.closest("tr");
       if (row) row.remove();
+      updatePlayerCountBadge();
     }
 
     function clearAllScores() {
@@ -3218,10 +3583,24 @@
     }
 
     function saveAndApplyScores() {
+      var cb = document.getElementById("game-mode-enabled-checkbox");
+      var roundsInput = document.getElementById("game-rounds-input");
+      var qprInput = document.getElementById("game-qpr-input");
+      var pprInput = document.getElementById("game-ppr-input");
+
+      if (cb) gameState.enabled = Boolean(cb.checked);
+      if (roundsInput) gameState.totalRounds = Math.max(1, Math.min(99, parseInt(roundsInput.value) || 5));
+      if (qprInput) gameState.questionsPerRound = Math.max(1, Math.min(50, parseInt(qprInput.value) || 1));
+      if (pprInput) gameState.pointsPerRound = Math.max(1, Math.min(100000, parseInt(pprInput.value) || 100));
+      gameState.currentRound = Math.max(1, Math.min(gameState.totalRounds, gameState.currentRound || 1));
+      gameState.currentQuestionInRound = Math.max(1, Math.min(gameState.questionsPerRound, gameState.currentQuestionInRound || 1));
+      saveGameState();
+
       var rows = document.querySelectorAll("#scores-table-body .score-row");
       var updated = [];
 
       rows.forEach(function(row) {
+        if (updated.length >= MAX_GAME_PLAYERS) return;
         var nameInput = row.querySelector(".score-name");
         var ptsInput = row.querySelector(".score-pts");
         if (nameInput && ptsInput) {
@@ -3237,27 +3616,30 @@
         return b.points - a.points;
       });
 
-      sessionScores = updated;
+      sessionScores = updated.slice(0, MAX_GAME_PLAYERS);
       localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+      updateGameModeUI();
+      renderTopicCards();
       renderLeaderboardTicker();
       toggleScoresModal(false);
       showToast(t("saveApply"), "success");
     }
 
-    function get3DRankBadge(idx, isFloating) {
+    function getRankBadgeByIndex(idx, isFloating) {
       var rankNum = idx + 1;
       var suffix = rankNum === 1 ? "ST" : (rankNum === 2 ? "ND" : "RD");
-      var rankClass = idx === 0 ? "rank-3d-1" : (idx === 1 ? "rank-3d-2" : "rank-3d-3");
-      var delayStyle = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.35s;"' : ' style="animation-delay: 0.7s;"');
-      var sizeClass = isFloating
-        ? "h-9 sm:h-10 px-2.5 text-base sm:text-xl"
-        : "h-6 px-2 text-xs";
-      var supClass = isFloating
-        ? "text-[9px] sm:text-[11px] ml-0.5 -mt-1.5"
-        : "text-[7px] ml-0.5 -mt-1";
-
-      return '<span class="rank-3d-badge ' + rankClass + ' ' + sizeClass + ' shrink-0"' + delayStyle + ' title="' + rankNum + suffix.toLowerCase() + ' Place">' +
-        '<span>' + rankNum + '</span><sup class="' + supClass + '">' + suffix + '</sup>' +
+      if (idx < 3) {
+        var rankClass = idx === 0 ? "rank-3d-1" : (idx === 1 ? "rank-3d-2" : "rank-3d-3");
+        var delayStyle = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.35s;"' : ' style="animation-delay: 0.7s;"');
+        var sizeClass = isFloating ? "h-9 sm:h-10 px-2.5 text-base sm:text-xl" : "h-6 px-2 text-xs";
+        var supClass = isFloating ? "text-[9px] sm:text-[11px] ml-0.5 -mt-1.5" : "text-[7px] ml-0.5 -mt-1";
+        return '<span class="rank-3d-badge ' + rankClass + ' ' + sizeClass + ' shrink-0"' + delayStyle + ' title="' + rankNum + suffix.toLowerCase() + ' Place">' +
+          '<span>' + rankNum + '</span><sup class="' + supClass + '">' + suffix + '</sup>' +
+        '</span>';
+      }
+      var pillSize = isFloating ? "h-9 px-2.5 text-sm sm:text-base" : "h-6 px-2 text-[11px]";
+      return '<span class="inline-flex items-center justify-center rounded-xl bg-indigo-600/80 text-white font-black ' + pillSize + ' shrink-0 border border-cyan-300/40">' +
+        '#' + rankNum +
       '</span>';
     }
 
@@ -3266,21 +3648,23 @@
       var floatingTicker = document.getElementById("floating-leaderboard-ticker");
       var ptsLabel = escapeHtml(t("ptsSuffix"));
 
-      var sorted = sessionScores.slice().sort(function(a, b) { return b.points - a.points; }).slice(0, 3);
+      var allRanked = sessionScores.slice(0, MAX_GAME_PLAYERS).sort(function(a, b) {
+        return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
+      });
 
-      if (sorted.length === 0) {
+      if (allRanked.length === 0) {
         var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic">' + escapeHtml(t("emptyPodium")) + '</span>';
         if (ticker) ticker.innerHTML = emptyHtml;
         if (floatingTicker) floatingTicker.innerHTML = emptyHtml;
         return;
       }
 
-      var standardItemsHtml = sorted.map(function(item, idx) {
-        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
-        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
-        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
-        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
-        var rankBadge = get3DRankBadge(idx, false);
+      var standardItemsHtml = allRanked.map(function(item, idx) {
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : (idx === 2 ? "pts-bronze" : "text-cyan-600 dark:text-cyan-300 font-black"));
+        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : (idx === 2 ? "podium-name-3" : "text-slate-900 dark:text-white font-extrabold"));
+        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : (idx === 2 ? ' style="animation-delay: 0.6s;"' : ''));
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : (idx === 2 ? "card-bronze-glow" : "bg-slate-200/80 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700"));
+        var rankBadge = getRankBadgeByIndex(idx, false);
 
         return '<div class="flex items-center gap-2.5 ' + cardClass + ' px-3.5 py-1 rounded-xl shrink-0">' +
           rankBadge +
@@ -3289,12 +3673,12 @@
         '</div>';
       });
 
-      var floatingItemsHtml = sorted.map(function(item, idx) {
-        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : "pts-bronze");
-        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : "podium-name-3");
-        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : ' style="animation-delay: 0.6s;"');
-        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : "card-bronze-glow");
-        var rankBadge = get3DRankBadge(idx, true);
+      var floatingItemsHtml = allRanked.map(function(item, idx) {
+        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : (idx === 2 ? "pts-bronze" : "text-cyan-600 dark:text-cyan-300 font-black"));
+        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : (idx === 2 ? "podium-name-3" : "text-slate-900 dark:text-white font-extrabold"));
+        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : (idx === 2 ? ' style="animation-delay: 0.6s;"' : ''));
+        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : (idx === 2 ? "card-bronze-glow" : "bg-slate-200/80 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700"));
+        var rankBadge = getRankBadgeByIndex(idx, true);
 
         return '<div class="flex items-center gap-3 ' + cardClass + ' px-4 py-1.5 rounded-2xl shrink-0">' +
           rankBadge +
@@ -3303,8 +3687,8 @@
         '</div>';
       });
 
-      var loopStandard = standardItemsHtml.concat(standardItemsHtml).concat(standardItemsHtml).join("");
-      var loopFloating = floatingItemsHtml.concat(floatingItemsHtml).concat(floatingItemsHtml).join("");
+      var loopStandard = standardItemsHtml.concat(standardItemsHtml).join("");
+      var loopFloating = floatingItemsHtml.concat(floatingItemsHtml).join("");
 
       if (ticker) ticker.innerHTML = loopStandard;
       if (floatingTicker) floatingTicker.innerHTML = loopFloating;
