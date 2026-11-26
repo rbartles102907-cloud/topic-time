@@ -1032,7 +1032,7 @@
     var TUTORIAL_STEPS = [
       {
         title: "Pick Your Vibe & Filter Decks",
-        badge: "Step 1 of 4 • Topic Cards",
+        badge: "Step 1 of 4 - Topic Cards",
         visual: '<div class="relative bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border border-indigo-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-hidden">' +
           '<div class="space-y-2 text-left">' +
             '<div class="flex flex-wrap gap-1.5">' +
@@ -1049,19 +1049,19 @@
           '</svg>' +
         '</div>',
         bullets: [
-          { icon: "fa-border-all text-indigo-400", title: "Face-Down Deck in 4 Cards", text: "4-Card mode starts face-down showing Nellie and the topic badge—tap any card to flip it and watch the wording type out live!" },
+          { icon: "fa-border-all text-indigo-400", title: "Face-Down Deck in 4 Cards", text: "4-Card mode starts face-down showing Nellie and the topic badge - tap any card to flip it and watch the wording type out live!" },
           { icon: "fa-sliders text-pink-400", title: "Select All & Unselect All", text: "Open Categories to toggle every deck at once or isolate a single category in two clicks." },
           { icon: "fa-rotate text-cyan-400", title: "Sequential Deck Memory", text: "Every category steps cleanly through its questions without immediate repeats." }
         ]
       },
       {
         title: "1-Card Spotlight & Exploding Clock",
-        badge: "Step 2 of 4 • Hot-Seat Timer",
+        badge: "Step 2 of 4 - Hot-Seat Timer",
         visual: '<div class="relative bg-gradient-to-br from-rose-950/80 via-slate-900 to-amber-950/70 border border-rose-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">' +
           '<div class="space-y-1.5 text-left">' +
             '<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] uppercase tracking-wider">BOOM! TIME\'S UP</div>' +
             '<p class="text-xs text-slate-200 leading-relaxed">In <strong>1 Card</strong> mode, a stand-alone twin-bell alarm clock sits right next to the card. Set <strong>15s, 30s, or 60s</strong> and hit <strong>Start</strong>!</p>' +
-            '<p class="text-[11px] text-amber-300 font-semibold"><i class="fa-solid fa-bolt mr-1"></i>At 10 seconds left it shakes violently—at 00:00 it explodes!</p>' +
+            '<p class="text-[11px] text-amber-300 font-semibold"><i class="fa-solid fa-bolt mr-1"></i>At 10 seconds left it shakes violently - at 00:00 it explodes!</p>' +
           '</div>' +
           '<svg viewBox="0 0 120 120" class="w-24 h-24 shrink-0 clock-shaking" fill="none">' +
             '<path d="M22 40C15 49 15 63 22 72" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>' +
@@ -1082,7 +1082,7 @@
       },
       {
         title: "Crown Your Top 3 Podium Champions",
-        badge: "Step 3 of 4 • Live Leaderboard",
+        badge: "Step 3 of 4 - Live Leaderboard",
         visual: '<div class="relative bg-gradient-to-br from-amber-950/70 via-slate-900 to-slate-950 border border-amber-500/40 rounded-2xl p-4 flex flex-col items-center gap-3">' +
           '<div class="flex flex-wrap items-center justify-center gap-2.5">' +
             '<div class="flex items-center gap-2 card-gold-glow px-3 py-1.5 rounded-xl">' +
@@ -1101,7 +1101,7 @@
               '<span class="pts-bronze text-xs">998 PTS</span>' +
             '</div>' +
           '</div>' +
-          '<p class="text-xs text-slate-300 text-center">Award points for best answers, fastest replies, or chat votes—the top 3 automatically animate in Gold, Silver &amp; Bronze!</p>' +
+          '<p class="text-xs text-slate-300 text-center">Award points for best answers, fastest replies, or chat votes - the top 3 automatically animate in Gold, Silver &amp; Bronze!</p>' +
         '</div>',
         bullets: [
           { icon: "fa-trophy text-amber-400", title: "Click 'Scores' in the Header", text: "Add players, update their session points, and hit Save & Apply to rank them live." },
@@ -1111,7 +1111,7 @@
       },
       {
         title: "Host Shortcuts & Hidden Gems",
-        badge: "Step 4 of 4 • Power Moves",
+        badge: "Step 4 of 4 - Power Moves",
         visual: '<div class="relative bg-gradient-to-br from-cyan-950/70 via-slate-900 to-indigo-950 border border-cyan-500/40 rounded-2xl p-4 grid grid-cols-3 gap-2.5 text-center">' +
           '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
             '<kbd class="px-2 py-1 rounded-lg bg-indigo-600 text-white font-mono text-xs font-black shadow">SPACE</kbd>' +
@@ -1127,7 +1127,7 @@
           '</div>' +
         '</div>',
         bullets: [
-          { icon: "fa-hand-pointer text-pink-400", title: "Tap Face-Down Cards to Reveal", text: "In 4-Card mode, each card starts face-down with Nellie and its topic—tap to flip and type it out live." },
+          { icon: "fa-hand-pointer text-pink-400", title: "Tap Face-Down Cards to Reveal", text: "In 4-Card mode, each card starts face-down with Nellie and its topic - tap to flip and type it out live." },
           { icon: "fa-bookmark text-indigo-400", title: "Build a Show Queue", text: "Pin great questions ahead of time, then open the Bookmark drawer to load them on demand." },
           { icon: "fa-circle-half-stroke text-amber-400", title: "Day & Night Modes", text: "Use the sun/moon toggle in the top right to match your room or stream lighting." }
         ]
@@ -1649,7 +1649,7 @@
       updateFilterButtonsUI();
       renderModePills();
       renderCategoryPills();
-      showToast("All categories unselected — pick the category you want!", "info");
+      showToast("All categories unselected - pick the category you want!", "info");
     }
 
     function renderCategoryPills() {
@@ -2083,9 +2083,13 @@
       var topic = topicCache[topicId];
       if (!topic) return;
 
-      setLayoutView(1);
+      clearAllCardTypingTimers();
+      cardCountView = 1;
+      cardRevealedStates = [true, false, false, false];
       currentTopics = [topic];
+      updateToggleUI();
       renderTopicCards();
+      resetBombTimer(false);
       toggleFavoritesDrawer(false);
       showToast("Loaded saved topic", "success");
     }
