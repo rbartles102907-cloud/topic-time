@@ -519,7 +519,7 @@
         </div>
         <div>
           <h1 class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 dark:from-indigo-400 dark:via-purple-300 dark:to-pink-400 bg-clip-text text-transparent leading-none">
-            Nellie B &#8211; Chatomizer
+            Nellie B - Chatomizer
           </h1>
           <p class="text-[10px] font-bold tracking-widest uppercase text-indigo-500 dark:text-indigo-400 mt-0.5">LET&#39;S CHAT IT UP</p>
         </div>
@@ -532,7 +532,7 @@
 
       <div class="flex items-center gap-2 shrink-0">
         <!-- Tutorial Button (Left of Scores) -->
-        <button onclick="toggleTutorialModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="How to Play & Party Guide">
+        <button id="header-tutorial-btn" onclick="toggleTutorialModal(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white transition-all active:scale-95 text-xs font-bold shadow-sm cursor-pointer" title="How to Play & Party Guide">
           <i class="fa-solid fa-graduation-cap text-sm text-cyan-200"></i>
           <span class="hidden sm:inline">Tutorial</span>
         </button>
@@ -602,6 +602,24 @@
             <span id="active-categories-badge" class="px-1.5 py-0.5 rounded-full bg-pink-600 text-white text-[10px] font-black leading-none">10/10</span>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- One-Time Tutorial Finder Note (Shown when user skips initial tutorial) -->
+    <div id="tutorial-finder-note" class="hidden shrink-0 mb-1.5 px-3.5 py-2 rounded-xl bg-indigo-500/15 dark:bg-indigo-500/20 border border-indigo-400/40 text-slate-800 dark:text-slate-100 text-xs flex items-center justify-between gap-3 shadow-sm">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-circle-info text-indigo-500 dark:text-cyan-300 shrink-0"></i>
+        <span>
+          Need the guide later? Click the <strong class="text-indigo-700 dark:text-cyan-300">Tutorial</strong> button in the top bar anytime.
+        </span>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button onclick="openTutorialFromNote()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[11px] cursor-pointer transition-colors">
+          Open Tutorial
+        </button>
+        <button onclick="dismissTutorialNote()" class="p-1 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer" title="Dismiss note">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
       </div>
     </div>
 
@@ -725,6 +743,39 @@
   <footer class="relative z-30 w-full py-1.5 border-t border-slate-200/50 dark:border-slate-800/50 text-center text-[10px] text-slate-400 dark:text-slate-500 shrink-0">
     <p>&copy; Nellie B Chatomizer &bull; <button onclick="togglePrivacyModal(true)" class="underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer">Privacy Policy</button></p>
   </footer>
+
+  <!-- Initial Welcome Modal Asking If User Wants the Tutorial -->
+  <div id="welcome-tutorial-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="declineInitialTutorial()" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md cursor-pointer"></div>
+    <div class="relative w-full max-w-md bg-white dark:bg-slate-900 border-2 border-indigo-500/50 rounded-3xl p-6 shadow-2xl z-10 text-center space-y-4">
+      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 p-0.5 shadow-lg">
+        <div class="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
+          <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie Host" class="w-full h-full object-cover anim-grow-shrink">
+        </div>
+      </div>
+
+      <div class="space-y-1.5">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/15 border border-indigo-400/40 text-indigo-600 dark:text-indigo-300 text-[10px] font-black uppercase tracking-widest">
+          <i class="fa-solid fa-sparkles"></i> Welcome to Chatomizer
+        </span>
+        <h2 class="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+          Would you like to check out the Tutorial?
+        </h2>
+        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+          We can walk you through topic decks, the alarm timer, leaderboard scoring, and saved queues - or take you straight to the cards.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center gap-2.5 pt-1">
+        <button onclick="declineInitialTutorial()" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition-colors cursor-pointer">
+          No, Go to Page
+        </button>
+        <button onclick="acceptInitialTutorial()" class="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-extrabold text-xs shadow-lg transition-all cursor-pointer">
+          Yes, Open Tutorial
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Presets Selection Modal -->
   <div id="presets-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -988,6 +1039,48 @@
       { name: "Nellie", points: 999 },
       { name: "Roberto", points: 998 }
     ]));
+
+    // --- INITIAL WELCOME PROMPT & ONE-TIME TUTORIAL FINDER NOTE ---
+    function toggleWelcomeTutorialModal(open) {
+      var modal = document.getElementById("welcome-tutorial-modal");
+      if (!modal) return;
+      if (open) {
+        modal.classList.remove("hidden");
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function acceptInitialTutorial() {
+      localStorage.setItem("nellieb_tutorial_seen", "1");
+      toggleWelcomeTutorialModal(false);
+      toggleTutorialModal(true);
+    }
+
+    function declineInitialTutorial() {
+      localStorage.setItem("nellieb_tutorial_seen", "1");
+      toggleWelcomeTutorialModal(false);
+      showTutorialFinderNote();
+    }
+
+    function showTutorialFinderNote() {
+      var noteEl = document.getElementById("tutorial-finder-note");
+      if (noteEl) {
+        noteEl.classList.remove("hidden");
+      }
+    }
+
+    function dismissTutorialNote() {
+      var noteEl = document.getElementById("tutorial-finder-note");
+      if (noteEl) {
+        noteEl.classList.add("hidden");
+      }
+    }
+
+    function openTutorialFromNote() {
+      dismissTutorialNote();
+      toggleTutorialModal(true);
+    }
 
     // --- PRESETS & CATEGORIES MODALS ---
     function togglePresetsModal(open) {
@@ -1490,7 +1583,6 @@
 
       if (textToType.length === 0) return;
 
-      // 50% slower typing cadence (1 character every 33ms vs previous 2 chars every 22ms)
       cardTypingTimers[index] = setInterval(function() {
         cardTypingProgress[index] += 1;
         if (cardTypingProgress[index] >= textToType.length) {
@@ -1752,7 +1844,6 @@
 
       if (cardCountView === 4) {
         if (!cardRevealedStates[index]) {
-          // Flip face-down deck card and type wording live
           cardRevealedStates[index] = true;
           triggerCardFlip([index], function() {
             renderTopicCards();
@@ -1762,7 +1853,6 @@
             }
           }, true);
         } else {
-          // Already revealed: flip back to deck back and queue next sequential question in same category
           clearCardTypingTimer(index);
           var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
           cardRevealedStates[index] = false;
@@ -2239,7 +2329,7 @@
 
       if (!localStorage.getItem("nellieb_tutorial_seen")) {
         setTimeout(function() {
-          toggleTutorialModal(true);
+          toggleWelcomeTutorialModal(true);
         }, 450);
       }
     }
