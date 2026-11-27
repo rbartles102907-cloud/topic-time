@@ -681,6 +681,22 @@
           </button>
         </div>
       </div>
+
+      <!-- Compact 4-Card Game Mode Round Bar -->
+      <div id="four-card-round-bar" class="hidden mt-2 px-3.5 py-2 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-indigo-400/40 dark:border-pink-500/40 shadow-md flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span id="four-card-round-status" class="px-2.5 py-1 rounded-lg bg-indigo-600/15 dark:bg-indigo-500/20 text-indigo-700 dark:text-cyan-300 font-black text-[11px] uppercase tracking-wider">
+            Round 1/5 &bull; Flipped 0/4
+          </span>
+          <span id="four-card-bounty-chip" class="bounty-badge-pop px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[10px] uppercase tracking-wider">
+            +100 PTS
+          </span>
+        </div>
+        <button id="four-card-end-round-btn" onclick="completeCurrentRound()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-white font-black text-[11px] uppercase tracking-wider shadow cursor-pointer flex items-center gap-1.5 transition-all active:scale-95">
+          <i class="fa-solid fa-flag-checkered"></i>
+          <span id="four-card-end-round-label">End Round</span>
+        </button>
+      </div>
     </div>
 
     <div id="tutorial-finder-note" class="hidden shrink-0 mb-2 px-3.5 py-2 rounded-xl bg-indigo-500/15 dark:bg-indigo-500/20 border border-indigo-400/40 text-slate-800 dark:text-slate-100 text-xs flex items-center justify-between gap-3 shadow-sm">
@@ -830,7 +846,7 @@
           Would you like to check out the Tutorial?
         </h2>
         <p id="welcome-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          We can walk you through topic decks, the alarm timer, leaderboard scoring, and saved queues - or take you straight to the cards.
+          Quick visual tour of 4-card &amp; 1-card rounds, winners, and Party Mode - or jump right in.
         </p>
       </div>
 
@@ -885,25 +901,24 @@
     </div>
   </div>
 
-  <!-- Fun & Interactive Tutorial Modal -->
+  <!-- Visual Show-and-Tell Tutorial Modal -->
   <div id="tutorial-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5">
     <div onclick="toggleTutorialModal(false)" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md cursor-pointer"></div>
     <div class="relative w-full max-w-2xl bg-white dark:bg-slate-900 border-2 border-indigo-500/50 rounded-3xl shadow-2xl z-10 overflow-hidden flex flex-col max-h-[90vh]">
-      <div class="relative bg-gradient-to-r from-indigo-950 via-purple-950 to-slate-950 p-5 sm:p-6 border-b border-indigo-500/30 flex items-center justify-between gap-4 overflow-hidden">
-        <div class="flex items-center gap-3.5 relative z-10">
-          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 p-0.5 shadow-lg shrink-0">
+      <div class="relative bg-gradient-to-r from-indigo-950 via-purple-950 to-slate-950 p-4 sm:p-5 border-b border-indigo-500/30 flex items-center justify-between gap-4 overflow-hidden">
+        <div class="flex items-center gap-3 relative z-10">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 p-0.5 shadow-lg shrink-0">
             <div class="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">
               <img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie Host" class="w-full h-full object-cover anim-grow-shrink">
             </div>
           </div>
           <div>
             <div id="tut-hero-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-[10px] font-black uppercase tracking-widest mb-1">
-              <i class="fa-solid fa-sparkles"></i> Party Host Guide
+              <i class="fa-solid fa-eye"></i> Visual Show &amp; Tell
             </div>
-            <h2 id="tut-hero-title" class="text-lg sm:text-2xl font-black text-white tracking-tight leading-tight">
-              Welcome to <span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer!</span>
+            <h2 id="tut-hero-title" class="text-lg sm:text-xl font-black text-white tracking-tight leading-tight">
+              Quick Guide to <span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer</span>
             </h2>
-            <p id="tut-hero-sub" class="text-xs text-slate-300 mt-0.5">Everything you need to host lively chats, debates &amp; party rounds.</p>
           </div>
         </div>
 
@@ -912,28 +927,28 @@
         </button>
       </div>
 
-      <div class="grid grid-cols-4 gap-1.5 bg-slate-100 dark:bg-slate-950/90 p-2.5 border-b border-slate-200 dark:border-slate-800 shrink-0">
-        <button id="tut-tab-0" onclick="setTutorialStep(0)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-layer-group text-indigo-400"></i>
-          <span id="tut-tab-label-0">1. Decks</span>
+      <div class="grid grid-cols-4 gap-1.5 bg-slate-100 dark:bg-slate-950/90 p-2 border-b border-slate-200 dark:border-slate-800 shrink-0">
+        <button id="tut-tab-0" onclick="setTutorialStep(0)" class="py-2 px-2 rounded-xl text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-border-all text-indigo-400"></i>
+          <span id="tut-tab-label-0">1. 4-Card Flow</span>
         </button>
-        <button id="tut-tab-1" onclick="setTutorialStep(1)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-bell text-rose-400"></i>
-          <span id="tut-tab-label-1">2. Timer</span>
-        </button>
-        <button id="tut-tab-2" onclick="setTutorialStep(2)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
+        <button id="tut-tab-1" onclick="setTutorialStep(1)" class="py-2 px-2 rounded-xl text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-trophy text-amber-400"></i>
-          <span id="tut-tab-label-2">3. Podium</span>
+          <span id="tut-tab-label-1">2. Round End</span>
         </button>
-        <button id="tut-tab-3" onclick="setTutorialStep(3)" class="py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-wand-magic-sparkles text-cyan-400"></i>
-          <span id="tut-tab-label-3">4. Pro Tips</span>
+        <button id="tut-tab-2" onclick="setTutorialStep(2)" class="py-2 px-2 rounded-xl text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-crown text-pink-400"></i>
+          <span id="tut-tab-label-2">3. Final Win</span>
+        </button>
+        <button id="tut-tab-3" onclick="setTutorialStep(3)" class="py-2 px-2 rounded-xl text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-champagne-glasses text-cyan-400"></i>
+          <span id="tut-tab-label-3">4. Party Mode</span>
         </button>
       </div>
 
-      <div id="tutorial-step-body" class="p-5 sm:p-6 overflow-y-auto custom-scroll flex-grow space-y-4"></div>
+      <div id="tutorial-step-body" class="p-4 sm:p-5 overflow-y-auto custom-scroll flex-grow space-y-3.5"></div>
 
-      <div class="p-4 bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
+      <div class="p-3.5 bg-slate-50 dark:bg-slate-950/90 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
         <div id="tutorial-dots" class="flex items-center gap-1.5"></div>
         <div class="flex items-center gap-2">
           <button id="tut-prev-btn" onclick="stepTutorial(-1)" class="px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold transition-colors cursor-pointer">
@@ -953,7 +968,7 @@
     <div class="relative w-full max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
       <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
         <h3 id="scores-modal-title" class="font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-trophy text-amber-500"></i> Manage Session Leaderboard Scores
+          <i class="fa-solid fa-trophy text-amber-500"></i> Game Mode &amp; Session Leaderboard
         </h3>
         <button onclick="toggleScoresModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -990,7 +1005,7 @@
             <label for="game-qpr-input" class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
               Questions / Round
             </label>
-            <input id="game-qpr-input" type="number" min="1" max="50" value="1" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500">
+            <input id="game-qpr-input" type="number" min="1" max="50" value="4" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500">
           </div>
           <div>
             <label for="game-ppr-input" class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
@@ -1002,7 +1017,7 @@
       </div>
 
       <p id="scores-modal-desc" class="text-xs text-slate-500 dark:text-slate-400">
-        Enter up to 10 players and their session points below. Every player scrolls live in rank order!
+        Up to 10 players. Live ranked ticker.
       </p>
 
       <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden max-h-[42vh] overflow-y-auto custom-scroll">
@@ -1046,7 +1061,7 @@
         <div>
           <span id="winner-modal-round-tag" class="text-[10px] font-black uppercase tracking-widest text-amber-500">Round Complete</span>
           <h3 id="winner-modal-title" class="font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
-            <i class="fa-solid fa-crown text-amber-400"></i> Pick the Round Winner!
+            <i class="fa-solid fa-crown text-amber-400"></i> Pick Round Winner
           </h3>
         </div>
         <button onclick="closeRoundWinnerModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
@@ -1055,7 +1070,7 @@
       </div>
 
       <div class="p-3 rounded-2xl bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-cyan-500/20 border border-amber-400/40 text-center">
-        <div class="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-300">Round Prize Pool</div>
+        <div class="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-300">Round Prize</div>
         <div id="winner-modal-prize" class="text-2xl font-black pts-gold mt-0.5">+100 PTS</div>
       </div>
 
@@ -1063,16 +1078,16 @@
 
       <div class="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
         <button onclick="openScoresModal(true)" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold cursor-pointer">
-          <i class="fa-solid fa-user-plus mr-1"></i> Manage Players
+          <i class="fa-solid fa-user-plus mr-1"></i> Players
         </button>
         <button onclick="closeRoundWinnerModal()" class="px-4 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
-          Skip Points
+          Skip
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Single-Card Winner Celebration Popup Modal (Standard & Wide Final-Round Fanfare Mode) -->
+  <!-- Winner Celebration Popup Modal (Standard & Wide Final-Round Fanfare Mode) -->
   <div id="winner-celebration-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div onclick="closeWinnerCelebrationModal()" class="absolute inset-0 bg-slate-950/85 backdrop-blur-md cursor-pointer"></div>
     <div id="winner-celebration-card" class="relative w-full max-w-md bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:p-6 shadow-2xl z-10 text-center text-white space-y-4 overflow-hidden transition-all duration-300">
@@ -1085,9 +1100,7 @@
         </button>
       </div>
 
-      <!-- Layout Container: Compact vertical for standard rounds, wide horizontal fanfare on final round -->
       <div id="celebration-main-layout" class="flex flex-col items-center justify-center gap-4">
-        <!-- Spinning 3D Trophy -->
         <div id="celebration-trophy-wrap" class="flex items-center justify-center shrink-0">
           <div class="trophy-3d-spinning w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center">
             <div class="w-full h-full rounded-[20px] bg-gradient-to-br from-amber-300 via-yellow-500 to-amber-700 flex items-center justify-center shadow-inner">
@@ -1096,7 +1109,6 @@
           </div>
         </div>
 
-        <!-- Winner Fun Avatar + Name -->
         <div id="celebration-identity-wrap" class="flex flex-col items-center gap-1.5 min-w-0">
           <div class="flex items-center justify-center gap-3">
             <div id="celebration-avatar-ring" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-cyan-400 to-yellow-300 shadow-lg anim-grow-shrink shrink-0">
@@ -1110,14 +1122,13 @@
             </div>
           </div>
           <div id="celebration-points-earned" class="mt-1 px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs sm:text-sm">
-            +100 PTS • Total: 1,100 PTS
+            +100 PTS &bull; Total: 1,100 PTS
           </div>
         </div>
 
-        <!-- Action Buttons (Single continue button on normal rounds; End Game + New Round on final round) -->
         <div id="celebration-actions-wrap" class="w-full flex flex-col gap-2 shrink-0">
           <button id="celebration-continue-btn" onclick="closeWinnerCelebrationModal()" class="w-full py-2.5 px-5 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 hover:from-amber-300 hover:via-pink-400 hover:to-indigo-500 text-slate-950 font-black text-sm shadow-lg transition-all cursor-pointer">
-            Continue to Next Round <i class="fa-solid fa-arrow-right ml-1"></i>
+            Next Round <i class="fa-solid fa-arrow-right ml-1"></i>
           </button>
 
           <div id="celebration-final-round-actions" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
@@ -1268,17 +1279,18 @@
     var gameState = JSON.parse(localStorage.getItem("nellieb_game_mode") || JSON.stringify({
       enabled: false,
       totalRounds: 5,
-      questionsPerRound: 1,
+      questionsPerRound: 4,
       pointsPerRound: 100,
       currentRound: 1,
       currentQuestionInRound: 1,
       roundStarted: false
     }));
     gameState.totalRounds = Math.max(1, parseInt(gameState.totalRounds) || 5);
-    gameState.questionsPerRound = Math.max(1, parseInt(gameState.questionsPerRound) || 1);
+    gameState.questionsPerRound = Math.max(1, parseInt(gameState.questionsPerRound) || 4);
     gameState.pointsPerRound = Math.max(1, parseInt(gameState.pointsPerRound) || 100);
     gameState.currentRound = Math.max(1, parseInt(gameState.currentRound) || 1);
     gameState.currentQuestionInRound = Math.max(1, parseInt(gameState.currentQuestionInRound) || 1);
+    gameState.roundStarted = Boolean(gameState.roundStarted);
 
     function saveGameState() {
       localStorage.setItem("nellieb_game_mode", JSON.stringify(gameState));
@@ -1350,7 +1362,7 @@
         privacyLink: "Privacy Policy",
         welcomeBadge: "Welcome to Chatomizer",
         welcomeTitle: "Would you like to check out the Tutorial?",
-        welcomeDesc: "We can walk you through topic decks, the alarm timer, leaderboard scoring, and saved queues - or take you straight to the cards.",
+        welcomeDesc: "Quick visual tour of 4-card & 1-card rounds, winners, and Party Mode - or jump right in.",
         welcomeNo: "No, Go to Page",
         welcomeYes: "Yes, Open Tutorial",
         presetsTitle: "Choose a Preset Mix",
@@ -1360,15 +1372,14 @@
         unselectAll: "Unselect All",
         selectedSummary: "{count} of {total} selected",
         doneBtn: "Done",
-        tutHeroBadge: "Party Host Guide",
-        tutHeroTitlePrefix: "Welcome to ",
-        tutHeroSub: "Everything you need to host lively chats, debates & party rounds.",
-        tutTabs: ["1. Decks", "2. Timer", "3. Podium", "4. Pro Tips"],
+        tutHeroBadge: "Visual Show & Tell",
+        tutHeroTitlePrefix: "Quick Guide to ",
+        tutTabs: ["1. 4-Card Flow", "2. Round End", "3. Final Win", "4. Party Mode"],
         tutBack: "Back",
         tutNext: "Next",
         tutFinish: "Let's Play!",
         scoresTitle: "Game Mode & Session Leaderboard",
-        scoresDesc: "Enter up to 10 players and their session points below. Every player scrolls live in rank order!",
+        scoresDesc: "Up to 10 players. Live ranked ticker.",
         thUser: "Username",
         thPoints: "Session Points",
         thAction: "Action",
@@ -1384,9 +1395,9 @@
         tapToFlip: "Tap to Flip",
         topicLabel: "Topic",
         flipBadge: "FLIP",
-        clickToReveal: "Touch the card to reveal",
-        flipBackHint: "Click or Tap to Flip Back",
-        changeCardHint: "Click or Tap to Change",
+        clickToReveal: "Touch card to flip",
+        flipBackHint: "Tap to Flip Back",
+        changeCardHint: "Tap to Change",
         refreshTitle: "Refresh this question",
         bookmarkTitle: "Bookmark Topic",
         copyTitle: "Copy Prompt",
@@ -1428,7 +1439,7 @@
         privacyLink: "Política de Privacidad",
         welcomeBadge: "Bienvenido a Chatomizer",
         welcomeTitle: "¿Te gustaría ver el Tutorial?",
-        welcomeDesc: "Te guiamos por los mazos, el reloj temporizador, los puntos del podio y tus temas guardados, o vamos directo a las cartas.",
+        welcomeDesc: "Guía visual rápida de rondas de 4 cartas y 1 carta, ganadores y Modo Fiesta.",
         welcomeNo: "No, Ir a la Página",
         welcomeYes: "Sí, Abrir Tutorial",
         presetsTitle: "Elige un Modo Predefinido",
@@ -1438,15 +1449,14 @@
         unselectAll: "Deseleccionar Todo",
         selectedSummary: "{count} de {total} seleccionadas",
         doneBtn: "Listo",
-        tutHeroBadge: "Guía del Anfitrión",
-        tutHeroTitlePrefix: "¡Bienvenido a ",
-        tutHeroSub: "Todo lo que necesitas para animar charlas, debates y rondas.",
-        tutTabs: ["1. Mazos", "2. Reloj", "3. Podio", "4. Consejos"],
+        tutHeroBadge: "Guía Visual",
+        tutHeroTitlePrefix: "Guía Rápida de ",
+        tutTabs: ["1. 4 Cartas", "2. Fin Ronda", "3. Ganador", "4. Fiesta"],
         tutBack: "Atrás",
         tutNext: "Siguiente",
         tutFinish: "¡A Jugar!",
         scoresTitle: "Modo Juego y Marcador de Sesión",
-        scoresDesc: "Agrega hasta 10 jugadores y sus puntos. ¡Todos los jugadores giran en orden de ranking!",
+        scoresDesc: "Hasta 10 jugadores. Marcador en vivo.",
         thUser: "Usuario",
         thPoints: "Puntos",
         thAction: "Acción",
@@ -1462,9 +1472,9 @@
         tapToFlip: "Toca para Girar",
         topicLabel: "Tema",
         flipBadge: "GIRAR",
-        clickToReveal: "Toca la carta para revelar",
-        flipBackHint: "Toca o haz clic para voltear",
-        changeCardHint: "Toca o haz clic para cambiar",
+        clickToReveal: "Toca para girar",
+        flipBackHint: "Toca para voltear",
+        changeCardHint: "Toca para cambiar",
         refreshTitle: "Cambiar esta pregunta",
         bookmarkTitle: "Guardar tema",
         copyTitle: "Copiar pregunta",
@@ -1473,318 +1483,6 @@
         noSavedEmpty: "No hay temas guardados aún.",
         noSavedSub: "¡Toca el ícono de chincheta en cualquier carta para guardarlo!",
         clickToLoad: "Toca para cargar el tema"
-      },
-      fr: {
-        tagline: "ON DISCUTE ?",
-        followMe: "Suis-moi",
-        quickToggleLabel: "ES",
-        quickToggleTitle: "Passer en espagnol",
-        tutorial: "Tutoriel",
-        scores: "Scores",
-        gameMode: "Mode Jeu",
-        partyMode: "Mode Soirée",
-        endRound: "Fin Manche",
-        tiktokDesktop: "Mon TikTok",
-        tiktokMobile: "TikTok",
-        podiumFull: "TOUS LES JOUEURS",
-        podiumShort: "JOUEURS",
-        oneCard: "1 Carte",
-        fourCards: "4 Cartes",
-        presetsPrefix: "Modes :",
-        categoriesBtn: "Catégories",
-        tutorialNotePrefix: "Besoin du guide plus tard ? Cliquez sur ",
-        tutorialNoteSuffix: " en haut à tout moment.",
-        openTutorial: "Ouvrir le Tutoriel",
-        boomBanner: "BOUM ! TEMPS ÉCOULÉ",
-        startBtn: "Démarrer",
-        pauseBtn: "Pause",
-        changeOneCard: "Changer la carte",
-        dealFourCards: "Tirer 4 Cartes",
-        shortcutHintPrefix: "Touchez une carte, appuyez sur ",
-        shortcutHintMid: " ou utilisez ",
-        shortcutHintSuffix: " pour changer.",
-        privacyLink: "Confidentialité",
-        welcomeBadge: "Bienvenue sur Chatomizer",
-        welcomeTitle: "Voulez-vous voir le Tutoriel ?",
-        welcomeDesc: "Découvrez les decks, le minuteur, le podium des scores et vos favoris, ou passez directement aux cartes.",
-        welcomeNo: "Non, Aller à la Page",
-        welcomeYes: "Oui, Ouvrir le Tutoriel",
-        presetsTitle: "Choisir un Mix Prédéfini",
-        presetsSubtitle: "Choisissez une ambiance pour activer les catégories associées :",
-        categoriesTitle: "Sélectionner les Catégories",
-        selectAll: "Tout Sélectionner",
-        unselectAll: "Tout Désélectionner",
-        selectedSummary: "{count} sur {total} sélectionnées",
-        doneBtn: "OK",
-        tutHeroBadge: "Guide de Soirée",
-        tutHeroTitlePrefix: "Bienvenue sur ",
-        tutHeroSub: "Tout pour animer vos discussions, débats et jeux.",
-        tutTabs: ["1. Decks", "2. Minuteur", "3. Podium", "4. Astuces"],
-        tutBack: "Retour",
-        tutNext: "Suivant",
-        tutFinish: "C'est Parti !",
-        scoresTitle: "Mode Jeu & Scores de la Session",
-        scoresDesc: "Ajoutez jusqu'à 10 joueurs. Tous les joueurs défilent par classement !",
-        thUser: "Pseudo",
-        thPoints: "Points",
-        thAction: "Action",
-        addUser: "Ajouter",
-        clearAll: "Tout Effacer",
-        saveApply: "Enregistrer",
-        privacyTitle: "Politique de Confidentialité",
-        privacyBody: "<strong>Votre vie privée compte :</strong> Outil interactif de questions sans inscription ni collecte de données personnelles.",
-        closeBtn: "Fermer",
-        savedTitle: "Sujets Enregistrés",
-        savedSub: "Cliquez pour charger la question",
-        clearSaved: "Effacer",
-        tapToFlip: "Toucher pour Retourner",
-        topicLabel: "Thème",
-        flipBadge: "RETOURNER",
-        clickToReveal: "Touchez la carte pour révéler",
-        flipBackHint: "Cliquez pour retourner",
-        changeCardHint: "Cliquez pour changer",
-        refreshTitle: "Actualiser cette question",
-        bookmarkTitle: "Enregistrer",
-        copyTitle: "Copier",
-        ptsSuffix: "PTS",
-        emptyPodium: "Aucun joueur pour l'instant. Cliquez sur \"Mode Jeu\" !",
-        noSavedEmpty: "Aucun sujet enregistré.",
-        noSavedSub: "Épinglez une carte pour la sauvegarder !",
-        clickToLoad: "Cliquer pour charger"
-      },
-      de: {
-        tagline: "LASS UNS QUATSCHEN",
-        followMe: "Folge Mir",
-        quickToggleLabel: "ES",
-        quickToggleTitle: "Auf Spanisch wechseln",
-        tutorial: "Tutorial",
-        scores: "Punkte",
-        gameMode: "Spielmodus",
-        partyMode: "Party-Modus",
-        endRound: "Runde Ende",
-        tiktokDesktop: "Zu meinem TikTok",
-        tiktokMobile: "TikTok",
-        podiumFull: "ALLE SPIELER",
-        podiumShort: "SPIELER",
-        oneCard: "1 Karte",
-        fourCards: "4 Karten",
-        presetsPrefix: "Mix:",
-        categoriesBtn: "Kategorien",
-        tutorialNotePrefix: "Anleitung später nötig? Klicke oben jederzeit auf ",
-        tutorialNoteSuffix: ".",
-        openTutorial: "Tutorial öffnen",
-        boomBanner: "BOOM! ZEIT ABGELAUFEN",
-        startBtn: "Start",
-        pauseBtn: "Pause",
-        changeOneCard: "Karte wechseln",
-        dealFourCards: "4 Karten ziehen",
-        shortcutHintPrefix: "Karte antippen, ",
-        shortcutHintMid: " drücken oder ",
-        shortcutHintSuffix: " nutzen.",
-        privacyLink: "Datenschutz",
-        welcomeBadge: "Willkommen bei Chatomizer",
-        welcomeTitle: "Möchtest du das Tutorial ansehen?",
-        welcomeDesc: "Entdecke Kartendecks, Wecker-Timer, Bestenliste und Favoriten – oder starte direkt mit den Karten.",
-        welcomeNo: "Nein, Zur Seite",
-        welcomeYes: "Ja, Tutorial öffnen",
-        presetsTitle: "Preset-Mix wählen",
-        presetsSubtitle: "Wähle eine Stimmung für passende Kategorien:",
-        categoriesTitle: "Fragekategorien wählen",
-        selectAll: "Alle wählen",
-        unselectAll: "Alle abwählen",
-        selectedSummary: "{count} von {total} ausgewählt",
-        doneBtn: "Fertig",
-        tutHeroBadge: "Party-Guide",
-        tutHeroTitlePrefix: "Willkommen bei ",
-        tutHeroSub: "Alles für lockere Runden, Debatten und Party-Fragen.",
-        tutTabs: ["1. Decks", "2. Timer", "3. Podium", "4. Tipps"],
-        tutBack: "Zurück",
-        tutNext: "Weiter",
-        tutFinish: "Los geht's!",
-        scoresTitle: "Spielmodus & Session-Punkte",
-        scoresDesc: "Bis zu 10 Spieler eingeben. Alle Spieler laufen in Rangfolge!",
-        thUser: "Name",
-        thPoints: "Punkte",
-        thAction: "Aktion",
-        addUser: "Nutzer hinzufügen",
-        clearAll: "Alle löschen",
-        saveApply: "Speichern",
-        privacyTitle: "Datenschutzrichtlinie",
-        privacyBody: "<strong>Deine Privatsphäre zählt:</strong> Interaktives Fragetool ohne Registrierung oder Erfassung personenbezogener Daten.",
-        closeBtn: "Schließen",
-        savedTitle: "Gespeicherte Themen",
-        savedSub: "Zum Laden antippen",
-        clearSaved: "Löschen",
-        tapToFlip: "Tippen zum Umdrehen",
-        topicLabel: "Thema",
-        flipBadge: "DREHEN",
-        clickToReveal: "Karte antippen zum Aufdecken",
-        flipBackHint: "Klicken zum Zurückdrehen",
-        changeCardHint: "Klicken zum Wechseln",
-        refreshTitle: "Frage neu laden",
-        bookmarkTitle: "Merken",
-        copyTitle: "Kopieren",
-        ptsSuffix: "PKT",
-        emptyPodium: "Noch keine Spieler. Klicke auf „Spielmodus“!",
-        noSavedEmpty: "Noch keine Themen gespeichert.",
-        noSavedSub: "Tippe auf das Pin-Symbol einer Karte zum Merken!",
-        clickToLoad: "Zum Laden klicken"
-      },
-      pt: {
-        tagline: "BORA BATER PAPO",
-        followMe: "Siga-me",
-        quickToggleLabel: "ES",
-        quickToggleTitle: "Mudar para espanhol",
-        tutorial: "Tutorial",
-        scores: "Placar",
-        gameMode: "Modo Jogo",
-        partyMode: "Modo Festa",
-        endRound: "Fim Rodada",
-        tiktokDesktop: "Ir ao TikTok",
-        tiktokMobile: "TikTok",
-        podiumFull: "TODOS OS JOGADORES",
-        podiumShort: "JOGADORES",
-        oneCard: "1 Carta",
-        fourCards: "4 Cartas",
-        presetsPrefix: "Modos:",
-        categoriesBtn: "Categorias",
-        tutorialNotePrefix: "Precisa do guia depois? Clique em ",
-        tutorialNoteSuffix: " na barra superior quando quiser.",
-        openTutorial: "Abrir Tutorial",
-        boomBanner: "BOOM! TEMPO ESGOTADO",
-        startBtn: "Iniciar",
-        pauseBtn: "Pausar",
-        changeOneCard: "Trocar Carta",
-        dealFourCards: "Sortear 4 Cartas",
-        shortcutHintPrefix: "Toque em qualquer carta, aperte ",
-        shortcutHintMid: " ou use ",
-        shortcutHintSuffix: " para girar.",
-        privacyLink: "Privacidade",
-        welcomeBadge: "Bem-vindo ao Chatomizer",
-        welcomeTitle: "Quer conferir o Tutorial?",
-        welcomeDesc: "Veja como funcionam os baralhos, o alarme, o placar e os favoritos, ou vá direto para as cartas.",
-        welcomeNo: "Não, Ir para a Página",
-        welcomeYes: "Sim, Abrir Tutorial",
-        presetsTitle: "Escolha um Modo",
-        presetsSubtitle: "Selecione um estilo para ativar os baralhos correspondentes:",
-        categoriesTitle: "Selecionar Categorias",
-        selectAll: "Selecionar Tudo",
-        unselectAll: "Desmarcar Tudo",
-        selectedSummary: "{count} de {total} selecionadas",
-        doneBtn: "Pronto",
-        tutHeroBadge: "Guia do Host",
-        tutHeroTitlePrefix: "Bem-vindo ao ",
-        tutHeroSub: "Tudo para animar conversas, debates e rodadas.",
-        tutTabs: ["1. Baralhos", "2. Timer", "3. Pódio", "4. Dicas"],
-        tutBack: "Voltar",
-        tutNext: "Próximo",
-        tutFinish: "Vamos Jogar!",
-        scoresTitle: "Modo Jogo & Pontos da Sessão",
-        scoresDesc: "Adicione até 10 jogadores. Todos rolam em ordem de classificação!",
-        thUser: "Usuário",
-        thPoints: "Pontos",
-        thAction: "Ação",
-        addUser: "Adicionar Usuário",
-        clearAll: "Limpar Tudo",
-        saveApply: "Salvar e Aplicar",
-        privacyTitle: "Política de Privacidade",
-        privacyBody: "<strong>Sua privacidade importa:</strong> Ferramenta interativa sem necessidade de cadastro ou dados pessoais.",
-        closeBtn: "Fechar",
-        savedTitle: "Tópicos Salvos",
-        savedSub: "Clique para carregar",
-        clearSaved: "Limpar Salvos",
-        tapToFlip: "Toque para Virar",
-        topicLabel: "Tema",
-        flipBadge: "VIRAR",
-        clickToReveal: "Toque na carta para revelar",
-        flipBackHint: "Clique para virar de volta",
-        changeCardHint: "Clique para trocar",
-        refreshTitle: "Trocar pergunta",
-        bookmarkTitle: "Salvar tema",
-        copyTitle: "Copiar",
-        ptsSuffix: "PTS",
-        emptyPodium: "Ainda sem jogadores. Clique em \"Modo Jogo\"!",
-        noSavedEmpty: "Nenhum tópico salvo ainda.",
-        noSavedSub: "Toque no alfinete de uma carta para salvar!",
-        clickToLoad: "Clique para carregar"
-      },
-      it: {
-        tagline: "FACCIAMOCI DUE CHIACCHIERE",
-        followMe: "Seguimi",
-        quickToggleLabel: "ES",
-        quickToggleTitle: "Passa allo spagnolo",
-        tutorial: "Tutorial",
-        scores: "Punteggi",
-        gameMode: "Modalità Gioco",
-        partyMode: "Modalità Party",
-        endRound: "Fine Round",
-        tiktokDesktop: "Vai su TikTok",
-        tiktokMobile: "TikTok",
-        podiumFull: "TUTTI I GIOCATORI",
-        podiumShort: "GIOCATORI",
-        oneCard: "1 Carta",
-        fourCards: "4 Carte",
-        presetsPrefix: "Mix:",
-        categoriesBtn: "Categorie",
-        tutorialNotePrefix: "Ti serve la guida dopo? Clicca su ",
-        tutorialNoteSuffix: " in alto quando vuoi.",
-        openTutorial: "Apri Tutorial",
-        boomBanner: "BOOM! TEMPO SCADUTO",
-        startBtn: "Avvia",
-        pauseBtn: "Pausa",
-        changeOneCard: "Cambia Carta",
-        dealFourCards: "Pesca 4 Carte",
-        shortcutHintPrefix: "Tocca una carta, premi ",
-        shortcutHintMid: " o usa ",
-        shortcutHintSuffix: " per girare.",
-        privacyLink: "Privacy",
-        welcomeBadge: "Benvenuto su Chatomizer",
-        welcomeTitle: "Vuoi dare un'occhiata al Tutorial?",
-        welcomeDesc: "Scopri mazzi, timer a sveglia, classifica e preferiti, oppure vai subito alle carte.",
-        welcomeNo: "No, Vai alla Pagina",
-        welcomeYes: "Sì, Apri Tutorial",
-        presetsTitle: "Scegli un Mix Predefinito",
-        presetsSubtitle: "Seleziona un'atmosfera per attivare le categorie:",
-        categoriesTitle: "Seleziona Categorie",
-        selectAll: "Seleziona Tutto",
-        unselectAll: "Deseleziona Tutto",
-        selectedSummary: "{count} su {total} selezionate",
-        doneBtn: "Fatto",
-        tutHeroBadge: "Guida Host",
-        tutHeroTitlePrefix: "Benvenuto su ",
-        tutHeroSub: "Tutto per animare chiacchiere, dibattiti e sfide.",
-        tutTabs: ["1. Mazzi", "2. Timer", "3. Podio", "4. Consigli"],
-        tutBack: "Indietro",
-        tutNext: "Avanti",
-        tutFinish: "Giochiamo!",
-        scoresTitle: "Modalità Gioco & Punti Sessione",
-        scoresDesc: "Inserisci fino a 10 giocatori. Tutti scorrono in ordine di classifica!",
-        thUser: "Utente",
-        thPoints: "Punti",
-        thAction: "Azione",
-        addUser: "Aggiungi Utente",
-        clearAll: "Cancella Tutto",
-        saveApply: "Salva e Applica",
-        privacyTitle: "Informativa sulla Privacy",
-        privacyBody: "<strong>La tua privacy conta:</strong> Strumento interattivo senza registrazione né raccolta di dati personali.",
-        closeBtn: "Chiudi",
-        savedTitle: "Argomenti Salvati",
-        savedSub: "Tocca per caricare",
-        clearSaved: "Cancella Salvati",
-        tapToFlip: "Tocca per Girare",
-        topicLabel: "Tema",
-        flipBadge: "GIRA",
-        clickToReveal: "Tocca la carta per rivelare",
-        flipBackHint: "Clicca per girare",
-        changeCardHint: "Clicca per cambiare",
-        refreshTitle: "Cambia domanda",
-        bookmarkTitle: "Salva tema",
-        copyTitle: "Copia",
-        ptsSuffix: "PT",
-        emptyPodium: "Nessun giocatore. Clicca su \"Modalità Gioco\"!",
-        noSavedEmpty: "Nessun argomento salvato.",
-        noSavedSub: "Tocca la puntina su una carta per salvarla!",
-        clickToLoad: "Clicca per caricare"
       }
     };
 
@@ -1812,54 +1510,6 @@
         "Science & Tech": "Ciencia y Tecnología",
         "Did You Know?": "¿Sabías Que...?",
         "Music Fun Facts": "Datos Curiosos de Música"
-      },
-      fr: {
-        "Philosophy": "Philosophie",
-        "Deep Questions": "Questions Profondes",
-        "Humor/Fun": "Humour et Fun",
-        "Current Events": "Actualités",
-        "Would You Rather": "Tu Préfères ?",
-        "Pop Culture": "Culture Pop",
-        "Personal Stories": "Histoires Persos",
-        "Science & Tech": "Sciences et Tech",
-        "Did You Know?": "Le Saviez-Vous ?",
-        "Music Fun Facts": "Anecdotes Musicales"
-      },
-      de: {
-        "Philosophy": "Philosophie",
-        "Deep Questions": "Tiefe Fragen",
-        "Humor/Fun": "Humor & Spaß",
-        "Current Events": "Aktuelles",
-        "Would You Rather": "Was Würdest Du Eher?",
-        "Pop Culture": "Popkultur",
-        "Personal Stories": "Persönliches",
-        "Science & Tech": "Wissenschaft & Tech",
-        "Did You Know?": "Wusstest Du Schon?",
-        "Music Fun Facts": "Musik-Fakten"
-      },
-      pt: {
-        "Philosophy": "Filosofia",
-        "Deep Questions": "Perguntas Profundas",
-        "Humor/Fun": "Humor e Diversão",
-        "Current Events": "Atualidades",
-        "Would You Rather": "O Que Você Preferiria?",
-        "Pop Culture": "Cultura Pop",
-        "Personal Stories": "Histórias Pessoais",
-        "Science & Tech": "Ciência e Tech",
-        "Did You Know?": "Você Sabia?",
-        "Music Fun Facts": "Curiosidades Musicais"
-      },
-      it: {
-        "Philosophy": "Filosofia",
-        "Deep Questions": "Domande Profonde",
-        "Humor/Fun": "Umorismo e Svago",
-        "Current Events": "Attualità",
-        "Would You Rather": "Cosa Preferiresti?",
-        "Pop Culture": "Cultura Pop",
-        "Personal Stories": "Storie Personali",
-        "Science & Tech": "Scienza e Tech",
-        "Did You Know?": "Lo Sapevi?",
-        "Music Fun Facts": "Curiosità Musicali"
       }
     };
 
@@ -1877,34 +1527,6 @@
         deep: { name: "Charlas Profundas", desc: "Filosofía, Preguntas Profundas y Ciencia y Tecnología" },
         latenight: { name: "Debates Nocturnos", desc: "Filosofía, ¿Sabías Que...?, Actualidad, Tech y Música" },
         funny: { name: "Divertido y Loco", desc: "Humor, ¿Qué Preferirías?, ¿Sabías Que...? y Música" }
-      },
-      fr: {
-        all: { name: "Mix Équilibré", desc: "Les 10 catégories en rotation" },
-        icebreaker: { name: "Brise-Glace", desc: "Humour, Tu Préfères, Pop, Histoires et Musique" },
-        deep: { name: "Discussions Profondes", desc: "Philosophie, Questions Profondes et Sciences & Tech" },
-        latenight: { name: "Débats Nocturnes", desc: "Philosophie, Le Saviez-Vous, Actus, Tech et Musique" },
-        funny: { name: "Drôle et Décalé", desc: "Humour, Tu Préfères, Le Saviez-Vous et Musique" }
-      },
-      de: {
-        all: { name: "Ausgewogener Mix", desc: "Alle 10 Kategorien im Wechsel" },
-        icebreaker: { name: "Lockerer Einstieg", desc: "Humor, Was Würdest Du, Pop, Stories & Musik" },
-        deep: { name: "Tiefe Gespräche", desc: "Philosophie, Tiefe Fragen & Wissenschaft & Tech" },
-        latenight: { name: "Späte Debatten", desc: "Philosophie, Wusstest Du, Aktuelles, Tech & Musik" },
-        funny: { name: "Lustig & Verrückt", desc: "Humor, Was Würdest Du, Wusstest Du & Musik" }
-      },
-      pt: {
-        all: { name: "Mix Equilibrado", desc: "Todas as 10 categorias em rotação" },
-        icebreaker: { name: "Quebra-Gelo", desc: "Humor, O Que Preferiria, Pop, Histórias e Música" },
-        deep: { name: "Conversas Profundas", desc: "Filosofia, Perguntas Profundas e Ciência e Tech" },
-        latenight: { name: "Debates da Madrugada", desc: "Filosofia, Você Sabia, Atualidades, Tech e Música" },
-        funny: { name: "Engraçado e Maluco", desc: "Humor, O Que Preferiria, Você Sabia e Música" }
-      },
-      it: {
-        all: { name: "Mix Bilanciato", desc: "Tutte le 10 categorie in rotazione" },
-        icebreaker: { name: "Rompighiaccio", desc: "Umorismo, Cosa Preferiresti, Pop, Storie e Musica" },
-        deep: { name: "Discussioni Profonde", desc: "Filosofia, Domande Profonde e Scienza e Tech" },
-        latenight: { name: "Dibattiti Serali", desc: "Filosofia, Lo Sapevi, Attualità, Tech e Musica" },
-        funny: { name: "Buffo e Leggero", desc: "Umorismo, Cosa Preferiresti, Lo Sapevi e Musica" }
       }
     };
 
@@ -2151,6 +1773,7 @@
       setText("game-mode-btn-label", t("gameMode"));
       setText("party-mode-btn-label", t("partyMode"));
       setText("end-round-label", t("endRound"));
+      setText("four-card-end-round-label", t("endRound"));
       setText("header-tiktok-desktop", t("tiktokDesktop"));
       setText("header-tiktok-mobile", t("tiktokMobile"));
       setText("ticker-podium-label", t("podiumFull"));
@@ -2187,12 +1810,11 @@
       setHtml("categories-modal-title", '<i class="fa-solid fa-layer-group text-pink-500"></i> ' + t("categoriesTitle"));
       setText("categories-done-btn", t("doneBtn"));
 
-      setHtml("tut-hero-badge", '<i class="fa-solid fa-sparkles"></i> ' + t("tutHeroBadge"));
+      setHtml("tut-hero-badge", '<i class="fa-solid fa-eye"></i> ' + t("tutHeroBadge"));
       setHtml(
         "tut-hero-title",
-        t("tutHeroTitlePrefix") + '<span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer!</span>'
+        t("tutHeroTitlePrefix") + '<span class="bg-gradient-to-r from-cyan-300 via-yellow-200 to-pink-400 bg-clip-text text-transparent">Chatomizer</span>'
       );
-      setText("tut-hero-sub", t("tutHeroSub"));
       var tabs = t("tutTabs");
       if (Array.isArray(tabs)) {
         for (var i = 0; i < tabs.length; i++) {
@@ -2254,6 +1876,17 @@
 
     var pendingWinnerCelebrationData = null;
 
+    function getFlippedCardCountIn4CardView() {
+      if (cardCountView !== 4) return 0;
+      return cardRevealedStates.filter(Boolean).length;
+    }
+
+    function isLastFlipOfRoundIn4CardView() {
+      if (!gameState.enabled || cardCountView !== 4) return false;
+      var flippedCount = getFlippedCardCountIn4CardView();
+      return flippedCount >= gameState.questionsPerRound || flippedCount === 4;
+    }
+
     function activateGameModeAndOpenScores() {
       gameState.enabled = true;
       if (!gameState.currentRound || gameState.currentRound > gameState.totalRounds) {
@@ -2262,6 +1895,7 @@
       }
       saveGameState();
       updateGameModeUI();
+      renderTopicCards();
       openScoresModal(true);
     }
 
@@ -2282,7 +1916,7 @@
 
       updateGameModeUI();
       renderTopicCards();
-      showToast("Switched to Party Mode (No Rounds)", "info");
+      showToast("Party Mode active (No Rounds)", "info");
     }
 
     function endGameAndReturnToPartyMode() {
@@ -2318,6 +1952,7 @@
       }
       saveGameState();
       updateGameModeUI();
+      renderTopicCards();
     }
 
     function updatePlayerCountBadge() {
@@ -2334,6 +1969,13 @@
       var statusPill = document.getElementById("game-mode-status-pill");
       var roundBadge = document.getElementById("game-round-tracker-badge");
       var endRoundBtn = document.getElementById("end-round-btn");
+      var fourCardBar = document.getElementById("four-card-round-bar");
+      var fourCardStatus = document.getElementById("four-card-round-status");
+      var fourCardBounty = document.getElementById("four-card-bounty-chip");
+      var fourCardEndBtn = document.getElementById("four-card-end-round-btn");
+
+      var flipped4 = getFlippedCardCountIn4CardView();
+      var readyToEnd4 = isLastFlipOfRoundIn4CardView();
 
       if (gameState.enabled) {
         if (btn) {
@@ -2353,6 +1995,27 @@
         if (endRoundBtn) {
           endRoundBtn.classList.remove("hidden");
         }
+        if (fourCardBar) {
+          if (cardCountView === 4) {
+            fourCardBar.classList.remove("hidden");
+          } else {
+            fourCardBar.classList.add("hidden");
+          }
+        }
+        if (fourCardStatus) {
+          var phaseTag = gameState.roundStarted ? "LIVE" : "READY";
+          fourCardStatus.innerText = phaseTag + " • Round " + gameState.currentRound + "/" + gameState.totalRounds + " • Flipped " + flipped4 + "/4";
+        }
+        if (fourCardBounty) {
+          fourCardBounty.innerText = "+" + Number(gameState.pointsPerRound).toLocaleString() + " " + t("ptsSuffix");
+        }
+        if (fourCardEndBtn) {
+          if (readyToEnd4) {
+            fourCardEndBtn.className = "px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-rose-600 hover:from-amber-300 hover:via-pink-400 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider shadow-lg ring-2 ring-amber-300 cursor-pointer flex items-center gap-1.5 transition-all animate-bounce";
+          } else {
+            fourCardEndBtn.className = "px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-gradient-to-r hover:from-amber-500 hover:to-pink-600 text-slate-700 dark:text-slate-200 hover:text-white font-black text-[11px] uppercase tracking-wider cursor-pointer flex items-center gap-1.5 transition-all";
+          }
+        }
       } else {
         if (btn) {
           btn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-md shadow-emerald-500/25 cursor-pointer border border-emerald-300/40";
@@ -2369,6 +2032,29 @@
         if (endRoundBtn) {
           endRoundBtn.classList.add("hidden");
         }
+        if (fourCardBar) {
+          fourCardBar.classList.add("hidden");
+        }
+      }
+    }
+
+    function onCardFlippedInGameMode(index) {
+      if (!gameState.enabled) return;
+
+      if (!gameState.roundStarted) {
+        gameState.roundStarted = true;
+        gameState.currentQuestionInRound = 1;
+        saveGameState();
+        updateGameModeUI();
+        showToast("Round " + gameState.currentRound + " started!", "success");
+        return;
+      }
+
+      if (cardCountView === 4) {
+        var flippedCount = getFlippedCardCountIn4CardView();
+        gameState.currentQuestionInRound = Math.min(gameState.questionsPerRound, Math.max(1, flippedCount));
+        saveGameState();
+        updateGameModeUI();
       }
     }
 
@@ -2455,20 +2141,16 @@
       renderLeaderboardTicker();
       advanceRoundCounterAfterWinner();
 
-      if (cardCountView === 1) {
-        pendingWinnerCelebrationData = {
-          name: player.name,
-          pointsEarned: ptsAwarded,
-          totalPoints: player.points,
-          roundNumber: completedRoundNum,
-          totalRounds: gameState.totalRounds,
-          isFinalRound: wasFinalRound,
-          avatar: getFunWinnerAvatar(player.name, newRank >= 0 ? newRank : 0)
-        };
-        openWinnerCelebrationModal(pendingWinnerCelebrationData);
-      } else {
-        showToast(player.name + " wins +" + ptsAwarded + " " + t("ptsSuffix") + "!", "success");
-      }
+      pendingWinnerCelebrationData = {
+        name: player.name,
+        pointsEarned: ptsAwarded,
+        totalPoints: player.points,
+        roundNumber: completedRoundNum,
+        totalRounds: gameState.totalRounds,
+        isFinalRound: wasFinalRound,
+        avatar: getFunWinnerAvatar(player.name, newRank >= 0 ? newRank : 0)
+      };
+      openWinnerCelebrationModal(pendingWinnerCelebrationData);
     }
 
     function openWinnerCelebrationModal(data) {
@@ -2638,148 +2320,138 @@
     var currentTutorialStep = 0;
     var TUTORIAL_STEPS = [
       {
-        title: "Pick Your Vibe & Filter Decks",
-        badge: "Step 1 of 4 - Topic Cards",
-        visual: '<div class="relative bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border border-indigo-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 overflow-hidden">' +
-          '<div class="space-y-2 text-left">' +
-            '<div class="flex flex-wrap gap-1.5">' +
-              '<span class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white text-[10px] font-black uppercase tracking-wider"><i class="fa-solid fa-sliders mr-1"></i>Presets</span>' +
-              '<span class="px-2.5 py-1 rounded-lg bg-pink-600 text-white text-[10px] font-black uppercase tracking-wider"><i class="fa-solid fa-layer-group mr-1"></i>Categories</span>' +
+        title: "Flip Card 1 → Round Starts",
+        badge: "Step 1 • 4-Card Start",
+        visual: '<div class="bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border border-indigo-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">' +
+          '<div class="flex items-center gap-2.5">' +
+            '<div class="w-16 h-20 rounded-xl bg-slate-900 border-2 border-pink-400 flex flex-col items-center justify-center text-center p-1 shadow-lg">' +
+              '<span class="text-lg">🃏</span>' +
+              '<span class="text-[9px] font-black uppercase text-amber-300 mt-1">Tap #1</span>' +
             '</div>' +
-            '<p class="text-xs text-slate-300 leading-relaxed">Tap <strong>Presets</strong> for instant party mixes, or open <strong>Categories</strong> to hit <span class="text-emerald-400 font-bold">Select All</span> / <span class="text-rose-400 font-bold">Unselect All</span> and customize your decks!</p>' +
+            '<i class="fa-solid fa-arrow-right text-cyan-400 text-lg"></i>' +
+            '<div class="px-3 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-200 font-black text-xs">' +
+              'LIVE • R1/5' +
+            '</div>' +
           '</div>' +
-          '<svg viewBox="0 0 130 95" class="w-32 h-24 shrink-0" fill="none">' +
-            '<rect x="10" y="14" width="76" height="54" rx="10" transform="rotate(-8 10 14)" fill="#1E1B4B" stroke="#38BDF8" stroke-width="2.5"/>' +
-            '<rect x="34" y="22" width="82" height="58" rx="10" transform="rotate(6 34 22)" fill="#0F172A" stroke="#FF2A85" stroke-width="3"/>' +
-            '<circle cx="75" cy="51" r="14" fill="#FACC15" fill-opacity="0.2" stroke="#FACC15" stroke-width="2"/>' +
-            '<path d="M70 51L74 55L82 46" stroke="#FACC15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
-          '</svg>' +
+          '<div class="flex flex-wrap gap-1.5 justify-center sm:justify-end text-[10px] font-black uppercase">' +
+            '<span class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white">1. Tap Card</span>' +
+            '<span class="px-2.5 py-1 rounded-lg bg-pink-600 text-white">2. Round Live</span>' +
+          '</div>' +
         '</div>',
-        bullets: [
-          { icon: "fa-border-all text-indigo-400", title: "Face-Down Deck in 4 Cards", text: "4-Card mode starts face-down showing Nellie and the topic badge - tap any card to flip it and watch the wording type out live!" },
-          { icon: "fa-sliders text-pink-400", title: "Select All & Unselect All", text: "Open Categories to toggle every deck at once or isolate a single category in two clicks." },
-          { icon: "fa-rotate text-cyan-400", title: "Sequential Deck Memory", text: "Every category steps cleanly through its questions without immediate repeats." }
+        chips: [
+          { icon: "fa-hand-pointer text-pink-400", label: "Tap 1st Card → Live" },
+          { icon: "fa-hashtag text-cyan-400", label: "Tracks Flipped 1/4" },
+          { icon: "fa-fire text-amber-400", label: "Bounty Shows on Deck" }
         ]
       },
       {
-        title: "1-Card Spotlight & Exploding Clock",
-        badge: "Step 2 of 4 - Hot-Seat Timer",
-        visual: '<div class="relative bg-gradient-to-br from-rose-950/80 via-slate-900 to-amber-950/70 border border-rose-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">' +
-          '<div class="space-y-1.5 text-left">' +
-            '<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-rose-600 text-white font-black text-[10px] uppercase tracking-wider">BOOM! TIME\'S UP</div>' +
-            '<p class="text-xs text-slate-200 leading-relaxed">In <strong>1 Card</strong> mode, a stand-alone twin-bell alarm clock sits right next to the card. Set <strong>15s, 30s, or 60s</strong> and hit <strong>Start</strong>!</p>' +
-            '<p class="text-[11px] text-amber-300 font-semibold"><i class="fa-solid fa-bolt mr-1"></i>Ticks build anticipation every second and rattle fast in the final 10 seconds before exploding!</p>' +
+        title: "Last Flip → End Round",
+        badge: "Step 2 • Round Finish",
+        visual: '<div class="bg-gradient-to-br from-rose-950/80 via-slate-900 to-amber-950/70 border border-amber-400/50 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">' +
+          '<div class="flex items-center gap-2.5">' +
+            '<div class="px-3 py-1.5 rounded-xl bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs">' +
+              'Last Flip Ready' +
+            '</div>' +
+            '<i class="fa-solid fa-arrow-right text-amber-300 text-lg"></i>' +
+            '<span class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-pink-600 text-white font-black text-xs uppercase shadow-lg">' +
+              '<i class="fa-solid fa-flag-checkered mr-1"></i> End Round' +
+            '</span>' +
           '</div>' +
-          '<svg viewBox="0 0 120 120" class="w-24 h-24 shrink-0 clock-shaking" fill="none">' +
-            '<path d="M22 40C15 49 15 63 22 72" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>' +
-            '<path d="M98 40C105 49 105 63 98 72" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>' +
-            '<path d="M30 40C26 30 33 21 43 24C47 26 49 29 50 32" stroke="#F472B6" stroke-width="3.5" stroke-linecap="round"/>' +
-            '<path d="M90 40C94 30 87 21 77 24C73 26 71 29 70 32" stroke="#F472B6" stroke-width="3.5" stroke-linecap="round"/>' +
-            '<circle cx="60" cy="64" r="32" fill="#0F172A" stroke="#F8FAFC" stroke-width="4"/>' +
-            '<line x1="60" y1="64" x2="60" y2="44" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>' +
-            '<line x1="60" y1="64" x2="76" y2="55" stroke="#FF2A85" stroke-width="3" stroke-linecap="round"/>' +
-            '<circle cx="60" cy="64" r="3.5" fill="#FFFFFF"/>' +
-          '</svg>' +
+          '<div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-extrabold text-amber-300">' +
+            '👑 Pick Winner' +
+          '</div>' +
         '</div>',
-        bullets: [
-          { icon: "fa-stopwatch text-emerald-400", title: "Flexible Round Lengths", text: "Tap 15s for rapid-fire lightning rounds, 30s for standard answers, or 60s for story prompts." },
-          { icon: "fa-volume-high text-amber-400", title: "Anticipation Tick & Explosion", text: "A crisp clock tick plays during countdown and speeds up in the last 10 seconds before the blast." },
-          { icon: "fa-rotate-left text-sky-400", title: "Auto-Reset on Flip", text: "Flipping to the next card or clicking Nellie resets the clock back to your chosen duration." }
+        chips: [
+          { icon: "fa-flag-checkered text-pink-400", label: "End Round on Last Card" },
+          { icon: "fa-crown text-amber-300", label: "Same Winner Picker" },
+          { icon: "fa-plus text-emerald-400", label: "Adds Round Points" }
         ]
       },
       {
-        title: "Game Mode vs. Party Mode",
-        badge: "Step 3 of 4 - Rounds & Party Mode",
-        visual: '<div class="relative bg-gradient-to-br from-amber-950/70 via-slate-900 to-slate-950 border border-amber-500/40 rounded-2xl p-4 flex flex-col items-center gap-3">' +
-          '<div class="flex flex-wrap items-center justify-center gap-2.5">' +
-            '<div class="flex items-center gap-2 card-gold-glow px-3 py-1.5 rounded-xl">' +
-              '<span class="rank-3d-badge rank-3d-1 h-7 px-2 text-xs">1<sup>ST</sup></span>' +
-              '<span class="podium-name-1 text-sm">Rick</span>' +
-              '<span class="pts-gold text-xs">1,000 PTS</span>' +
+        title: "Final Round → Wide Fanfare",
+        badge: "Step 3 • Champion Screen",
+        visual: '<div class="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-2 border-amber-300 rounded-2xl p-4 flex flex-col gap-3">' +
+          '<div class="h-1.5 w-full rounded-full fanfare-glow-bar"></div>' +
+          '<div class="flex flex-wrap items-center justify-between gap-3">' +
+            '<div class="flex items-center gap-2.5">' +
+              '<span class="text-2xl">🏆👑</span>' +
+              '<span class="podium-name-1 text-lg">Final Winner!</span>' +
             '</div>' +
-            '<div class="flex items-center gap-2 card-silver-glow px-3 py-1.5 rounded-xl">' +
-              '<span class="rank-3d-badge rank-3d-2 h-7 px-2 text-xs">2<sup>ND</sup></span>' +
-              '<span class="podium-name-2 text-sm">Nellie</span>' +
-              '<span class="pts-silver text-xs">999 PTS</span>' +
-            '</div>' +
-            '<div class="flex items-center gap-2 card-bronze-glow px-3 py-1.5 rounded-xl">' +
-              '<span class="rank-3d-badge rank-3d-3 h-7 px-2 text-xs">3<sup>RD</sup></span>' +
-              '<span class="podium-name-3 text-sm">Roberto</span>' +
-              '<span class="pts-bronze text-xs">998 PTS</span>' +
+            '<div class="flex items-center gap-2">' +
+              '<span class="px-3 py-1.5 rounded-lg bg-rose-600 text-white font-black text-[11px]">End Game</span>' +
+              '<span class="px-3 py-1.5 rounded-lg bg-emerald-400 text-slate-950 font-black text-[11px]">New Round</span>' +
             '</div>' +
           '</div>' +
-          '<p class="text-xs text-slate-300 text-center">Play structured rounds in <strong>Game Mode</strong> or switch back to <strong>Party Mode</strong> anytime for round-free fun!</p>' +
         '</div>',
-        bullets: [
-          { icon: "fa-gamepad text-emerald-400", title: "Rounds & Bounty Points", text: "Configure rounds, questions per round, points per round, and up to 10 players." },
-          { icon: "fa-champagne-glasses text-pink-400", title: "Party Mode & End Game", text: "Click Party Mode or End Game anytime to drop round tracking and keep chatting freely." },
-          { icon: "fa-trophy text-yellow-300", title: "Final-Round Grand Fanfare", text: "Completing the final round opens a wide fanfare modal with End Game and New Round options." }
+        chips: [
+          { icon: "fa-expand text-amber-300", label: "Wide Final Banner" },
+          { icon: "fa-door-open text-rose-400", label: "End Game Button" },
+          { icon: "fa-rotate-right text-emerald-400", label: "New Round Button" }
         ]
       },
       {
-        title: "Host Shortcuts & Hidden Gems",
-        badge: "Step 4 of 4 - Power Moves",
-        visual: '<div class="relative bg-gradient-to-br from-cyan-950/70 via-slate-900 to-indigo-950 border border-cyan-500/40 rounded-2xl p-4 grid grid-cols-3 gap-2.5 text-center">' +
-          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
-            '<kbd class="px-2 py-1 rounded-lg bg-indigo-600 text-white font-mono text-xs font-black shadow">SPACE</kbd>' +
-            '<p class="text-[11px] font-bold text-slate-200 mt-2">Deal New Cards</p>' +
-          '</div>' +
-          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
-            '<div class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-pink-600 text-white"><i class="fa-solid fa-thumbtack text-xs rotate-45"></i></div>' +
-            '<p class="text-[11px] font-bold text-slate-200 mt-2">Pin Favorites</p>' +
-          '</div>' +
-          '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80">' +
-            '<div class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-600 text-white"><i class="fa-regular fa-copy text-xs"></i></div>' +
-            '<p class="text-[11px] font-bold text-slate-200 mt-2">1-Click Copy</p>' +
-          '</div>' +
+        title: "Party Mode = Zero Rounds",
+        badge: "Step 4 • Free Play",
+        visual: '<div class="bg-gradient-to-br from-cyan-950/70 via-slate-900 to-indigo-950 border border-cyan-500/40 rounded-2xl p-4 flex flex-wrap items-center justify-center gap-3">' +
+          '<span class="px-3.5 py-2 rounded-xl bg-slate-800 border border-pink-400/50 text-white font-black text-xs">' +
+            '<i class="fa-solid fa-champagne-glasses text-pink-400 mr-1.5"></i> Party Mode' +
+          '</span>' +
+          '<span class="text-slate-400 font-black text-xs">OR</span>' +
+          '<span class="px-3.5 py-2 rounded-xl bg-rose-600/20 border border-rose-400/50 text-rose-200 font-black text-xs">' +
+            'End Game' +
+          '</span>' +
+          '<i class="fa-solid fa-arrow-right text-cyan-300"></i>' +
+          '<span class="px-3.5 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 font-black text-xs">' +
+            '∞ Cards • No Rounds' +
+          '</span>' +
         '</div>',
-        bullets: [
-          { icon: "fa-hand-pointer text-pink-400", title: "Tap Face-Down Cards to Reveal", text: "In 4-Card mode, each card starts face-down with Nellie and its topic - tap to flip and type it out live." },
-          { icon: "fa-bookmark text-indigo-400", title: "Build a Show Queue", text: "Pin great questions ahead of time, then open the Bookmark drawer to load them on demand." },
-          { icon: "fa-circle-half-stroke text-amber-400", title: "Day & Night Modes", text: "Use the sun/moon toggle in the top right to match your room or stream lighting." }
+        chips: [
+          { icon: "fa-champagne-glasses text-pink-400", label: "No-Rounds Party Mode" },
+          { icon: "fa-gamepad text-emerald-400", label: "Toggle Back Anytime" },
+          { icon: "fa-bookmark text-cyan-300", label: "Save & Copy Cards" }
         ]
       }
     ];
 
     var TUTORIAL_STEPS_ES = [
       {
-        title: "Elige tu Ambiente y Filtra Mazos",
-        badge: "Paso 1 de 4 - Cartas de Tema",
+        title: "Gira Carta 1 → Inicia Ronda",
+        badge: "Paso 1 • Inicio en 4 Cartas",
         visual: TUTORIAL_STEPS[0].visual,
-        bullets: [
-          { icon: "fa-border-all text-indigo-400", title: "Mazo Boca Abajo en 4 Cartas", text: "En 4 Cartas inician boca abajo con Nellie y la categoría; toca cualquiera para girarla y ver el texto escribirse en vivo." },
-          { icon: "fa-sliders text-pink-400", title: "Seleccionar Todo y Deseleccionar Todo", text: "Abre Categorías para activar todo el mazo o aislar una sola categoría en dos toques." },
-          { icon: "fa-rotate text-cyan-400", title: "Memoria Secuencial", text: "Cada categoría avanza en orden por sus preguntas sin repetir al instante." }
+        chips: [
+          { icon: "fa-hand-pointer text-pink-400", label: "Toca 1.ª Carta → En Vivo" },
+          { icon: "fa-hashtag text-cyan-400", label: "Cuenta Giradas 1/4" },
+          { icon: "fa-fire text-amber-400", label: "Puntos en la Carta" }
         ]
       },
       {
-        title: "1 Carta Destacada y Reloj Explosivo",
-        badge: "Paso 2 de 4 - Temporizador",
+        title: "Última Carta → Fin de Ronda",
+        badge: "Paso 2 • Cierre de Ronda",
         visual: TUTORIAL_STEPS[1].visual,
-        bullets: [
-          { icon: "fa-stopwatch text-emerald-400", title: "Duraciones Flexibles", text: "Elige 15s para rondas rápidas, 30s para respuestas normales o 60s para historias." },
-          { icon: "fa-volume-high text-amber-400", title: "Tic de Anticipación y Explosión", text: "El reloj hace tic cada segundo y se acelera en los últimos 10 segundos antes de explotar." },
-          { icon: "fa-rotate-left text-sky-400", title: "Reinicio Automático", text: "Al cambiar carta o tocar a Nellie, el reloj vuelve a tu tiempo elegido." }
+        chips: [
+          { icon: "fa-flag-checkered text-pink-400", label: "Fin Ronda al Final" },
+          { icon: "fa-crown text-amber-300", label: "Elige al Ganador" },
+          { icon: "fa-plus text-emerald-400", label: "Suma Puntos" }
         ]
       },
       {
-        title: "Modo Juego vs. Modo Fiesta",
-        badge: "Paso 3 de 4 - Rondas y Fiesta",
+        title: "Ronda Final → Gran Fanfarria",
+        badge: "Paso 3 • Pantalla Final",
         visual: TUTORIAL_STEPS[2].visual,
-        bullets: [
-          { icon: "fa-gamepad text-emerald-400", title: "Configura Rondas y Puntos", text: "Ajusta rondas, preguntas por ronda, puntos por ronda y hasta 10 jugadores." },
-          { icon: "fa-champagne-glasses text-pink-400", title: "Modo Fiesta y Terminar Juego", text: "Usa Modo Fiesta o Terminar Juego en cualquier momento para jugar sin rondas." },
-          { icon: "fa-trophy text-yellow-300", title: "Gran Final con Fanfarria", text: "Al terminar la última ronda se abre un cartel ancho con opciones de Terminar Juego o Nueva Ronda." }
+        chips: [
+          { icon: "fa-expand text-amber-300", label: "Cartel Ancho Final" },
+          { icon: "fa-door-open text-rose-400", label: "Botón Terminar Juego" },
+          { icon: "fa-rotate-right text-emerald-400", label: "Botón Nueva Ronda" }
         ]
       },
       {
-        title: "Atajos del Anfitrión y Trucos",
-        badge: "Paso 4 de 4 - Movimientos Pro",
+        title: "Modo Fiesta = Sin Rondas",
+        badge: "Paso 4 • Juego Libre",
         visual: TUTORIAL_STEPS[3].visual,
-        bullets: [
-          { icon: "fa-hand-pointer text-pink-400", title: "Toca para Revelar", text: "En 4 Cartas, cada tarjeta comienza boca abajo mostrando a Nellie y su categoría." },
-          { icon: "fa-bookmark text-indigo-400", title: "Crea Tu Lista", text: "Fija preguntas con la chincheta y ábrelas desde el panel de guardados." },
-          { icon: "fa-circle-half-stroke text-amber-400", title: "Modo Claro y Oscuro", text: "Cambia el tema con el botón de sol o luna arriba a la derecha." }
+        chips: [
+          { icon: "fa-champagne-glasses text-pink-400", label: "Modo Fiesta Sin Rondas" },
+          { icon: "fa-gamepad text-emerald-400", label: "Vuelve Cuando Quieras" },
+          { icon: "fa-bookmark text-cyan-300", label: "Guarda y Copia" }
         ]
       }
     ];
@@ -2828,31 +2500,28 @@
         var tab = document.getElementById("tut-tab-" + i);
         if (!tab) continue;
         if (i === currentTutorialStep) {
-          tab.className = "py-2 px-2 rounded-xl text-[11px] sm:text-xs font-extrabold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer bg-indigo-600 text-white shadow";
+          tab.className = "py-2 px-2 rounded-xl text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-indigo-600 text-white shadow";
         } else {
-          tab.className = "py-2 px-2 rounded-xl text-[11px] sm:text-xs font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 cursor-pointer text-slate-600 dark:text-slate-400 hover:bg-slate-200/70 dark:hover:bg-slate-800/70";
+          tab.className = "py-2 px-2 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer text-slate-600 dark:text-slate-400 hover:bg-slate-200/70 dark:hover:bg-slate-800/70";
         }
       }
 
       if (bodyEl && step) {
-        var bulletsHtml = step.bullets.map(function(b) {
-          return '<div class="flex items-start gap-3 p-3 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60">' +
-            '<div class="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center shrink-0 mt-0.5 shadow-sm">' +
-              '<i class="fa-solid ' + b.icon + ' text-sm"></i>' +
-            '</div>' +
-            '<div>' +
-              '<h4 class="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">' + b.title + '</h4>' +
-              '<p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">' + b.text + '</p>' +
-            '</div>' +
+        var chipsHtml = step.chips.map(function(c) {
+          return '<div class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">' +
+            '<i class="fa-solid ' + c.icon + ' text-sm shrink-0"></i>' +
+            '<span class="text-xs font-extrabold text-slate-800 dark:text-slate-100">' + c.label + '</span>' +
           '</div>';
         }).join("");
 
-        bodyEl.innerHTML = '<div>' +
-            '<span class="text-[10px] font-black uppercase tracking-widest text-indigo-500 dark:text-indigo-400">' + step.badge + '</span>' +
-            '<h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white mt-0.5">' + step.title + '</h3>' +
+        bodyEl.innerHTML = '<div class="flex items-center justify-between">' +
+            '<div>' +
+              '<span class="text-[10px] font-black uppercase tracking-widest text-indigo-500 dark:text-indigo-400">' + step.badge + '</span>' +
+              '<h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">' + step.title + '</h3>' +
+            '</div>' +
           '</div>' +
           step.visual +
-          '<div class="space-y-2.5">' + bulletsHtml + '</div>';
+          '<div class="grid grid-cols-1 sm:grid-cols-3 gap-2">' + chipsHtml + '</div>';
       }
 
       if (dotsEl) {
@@ -3387,7 +3056,7 @@
       var ptsText = "+" + Number(gameState.pointsPerRound).toLocaleString() + " " + t("ptsSuffix");
       if (compact) {
         return '<span class="bounty-badge-pop inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[10px] uppercase tracking-wider shadow">' +
-          '<i class="fa-solid fa-bolt"></i> ' + escapeHtml(ptsText) + ' BOUNTY' +
+          '<i class="fa-solid fa-bolt"></i> ' + escapeHtml(ptsText) +
         '</span>';
       }
       return '<div class="bounty-badge-pop inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[11px] sm:text-xs uppercase tracking-wider shadow-md border border-white/70">' +
@@ -3419,7 +3088,7 @@
           '</div>' +
         '</div>' +
         '<div class="text-[11px] font-bold text-slate-300/90 flex items-center gap-1.5">' +
-          '<i class="fa-solid fa-keyboard text-cyan-400"></i> ' + escapeHtml(t("clickToReveal")) +
+          '<i class="fa-solid fa-hand-pointer text-cyan-400"></i> ' + escapeHtml(t("clickToReveal")) +
         '</div>' +
       '</div>';
     }
@@ -3656,6 +3325,7 @@
           }
         }
         currentTopics = nextTopics;
+        updateGameModeUI();
         renderTopicCards();
         if (cardCountView === 1 && currentTopics[0]) {
           translateThenTypeCard(0, currentTopics[0], false);
@@ -3673,6 +3343,7 @@
       if (cardCountView === 4) {
         if (!cardRevealedStates[index]) {
           cardRevealedStates[index] = true;
+          onCardFlippedInGameMode(index);
           triggerCardFlip([index], function() {
             renderTopicCards();
             var topic = currentTopics[index];
@@ -3685,6 +3356,7 @@
           var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
           cardRevealedStates[index] = false;
           cardTypingProgress[index] = 0;
+          updateGameModeUI();
           triggerCardFlip([index], function() {
             currentTopics[index] = generateSequentialTopic(prevCategory);
             cardResolvedTexts[index] = getImmediateTranslatedString(currentTopics[index].text, currentLanguage);
@@ -3767,6 +3439,7 @@
       }
 
       var rightCornerGroup = getNellieAndChatomizerMarkup(cardCountView);
+      var showLastFlipEndRound = isLastFlipOfRoundIn4CardView();
 
       var cardsHtml = currentTopics.map(function(topic, index) {
         if (!topic) return "";
@@ -3797,7 +3470,9 @@
 
         var middleBountySlot = (cardCountView === 1 && gameState.enabled)
           ? '<div class="flex-1 flex items-center justify-center px-1">' + getBountyBadgeMarkup(false) + '</div>'
-          : '';
+          : (cardCountView === 4 && showLastFlipEndRound && index === 3)
+            ? '<button type="button" onclick="completeCurrentRound()" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-400 to-pink-600 text-white font-black text-[10px] uppercase tracking-wider shadow cursor-pointer flex items-center gap-1"><i class="fa-solid fa-flag-checkered"></i> ' + escapeHtml(t("endRound")) + '</button>'
+            : '';
 
         return '<div class="card-container h-full w-full min-h-[185px]">' +
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
@@ -3949,7 +3624,7 @@
 
       gameState.enabled = cb ? Boolean(cb.checked) : gameState.enabled;
       gameState.totalRounds = Math.max(1, parseInt(roundsInput && roundsInput.value) || 5);
-      gameState.questionsPerRound = Math.max(1, parseInt(qprInput && qprInput.value) || 1);
+      gameState.questionsPerRound = Math.max(1, parseInt(qprInput && qprInput.value) || 4);
       gameState.pointsPerRound = Math.max(1, parseInt(pprInput && pprInput.value) || 100);
       if (gameState.currentRound > gameState.totalRounds) {
         gameState.currentRound = 1;
@@ -4296,8 +3971,8 @@
       }
       currentTopics = initialTopics;
       renderTopicCards();
-      if (normalizeLangCode(currentLanguage) !== "en") {
-        refreshVisibleCardTranslations();
+      if (cardCountView === 1 && currentTopics[0]) {
+        translateThenTypeCard(0, currentTopics[0], false);
       }
 
       if (!localStorage.getItem("nellieb_tutorial_seen")) {
