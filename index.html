@@ -237,7 +237,7 @@
       animation: float-subtle 4s ease-in-out infinite;
     }
 
-    /* Prominent Round-Start Banner that Floats Up & Away */
+    /* Prominent Round-Start Banner that Floats Up & Away (slowed by ~26% from 2.1s to 2.65s) */
     @keyframes round-start-float-up {
       0% {
         opacity: 0;
@@ -266,7 +266,7 @@
       left: 50%;
       z-index: 60;
       pointer-events: none;
-      animation: round-start-float-up 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: round-start-float-up 2.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     @keyframes metallic-shimmer {
@@ -623,9 +623,9 @@
           <select id="language-select" onchange="setLanguage(this.value)" class="bg-transparent text-slate-900 dark:text-white text-[11px] sm:text-xs font-extrabold pr-1.5 py-1 focus:outline-none cursor-pointer">
             <option value="en">English</option>
             <option value="es">Español</option>
+            <option value="pt">Português</option>
             <option value="fr">Français</option>
             <option value="de">Deutsch</option>
-            <option value="pt">Português</option>
             <option value="it">Italiano</option>
           </select>
           <button id="quick-es-toggle-btn" onclick="toggleSpanishEnglish()" class="px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-black uppercase tracking-wider transition-colors cursor-pointer" title="Toggle between Spanish and English">
@@ -722,7 +722,7 @@
             Round 1/5 &bull; Flipped 0/4
           </span>
           <span id="four-card-bounty-chip" class="bounty-badge-pop px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[10px] uppercase tracking-wider">
-            +100 PTS
+            VAR 100-10,000 PTS
           </span>
         </div>
         <button id="four-card-end-round-btn" onclick="completeCurrentRound()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-white font-black text-[11px] uppercase tracking-wider shadow cursor-pointer flex items-center gap-1.5 transition-all active:scale-95">
@@ -962,12 +962,12 @@
 
       <div class="grid grid-cols-4 gap-1.5 bg-slate-100 dark:bg-slate-950/90 p-2 border-b border-slate-200 dark:border-slate-800 shrink-0">
         <button id="tut-tab-0" onclick="setTutorialStep(0)" class="py-2 px-2 rounded-xl text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-border-all text-indigo-400"></i>
-          <span id="tut-tab-label-0">1. 4-Card Flow</span>
+          <i class="fa-solid fa-list-ol text-indigo-400"></i>
+          <span id="tut-tab-label-0">1. 1-2-3 Start</span>
         </button>
         <button id="tut-tab-1" onclick="setTutorialStep(1)" class="py-2 px-2 rounded-xl text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-trophy text-amber-400"></i>
-          <span id="tut-tab-label-1">2. Round End</span>
+          <i class="fa-solid fa-bolt text-amber-400"></i>
+          <span id="tut-tab-label-1">2. Variable PTS</span>
         </button>
         <button id="tut-tab-2" onclick="setTutorialStep(2)" class="py-2 px-2 rounded-xl text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-crown text-pink-400"></i>
@@ -1042,11 +1042,14 @@
           </div>
           <div>
             <label for="game-ppr-input" class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-              Points / Round
+              Base / Fallback PTS
             </label>
-            <input id="game-ppr-input" type="number" min="1" max="100000" step="5" value="100" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500">
+            <input id="game-ppr-input" type="number" min="100" max="10000" step="100" value="1000" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-extrabold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500">
           </div>
         </div>
+        <p class="text-[11px] text-slate-600 dark:text-slate-300">
+          Cards use variable round bounties from <strong class="text-amber-500">100</strong> to <strong class="text-amber-400">10,000</strong> round points (always ending in 0s) to encourage exploring different cards.
+        </p>
       </div>
 
       <p id="scores-modal-desc" class="text-xs text-slate-500 dark:text-slate-400">
@@ -1104,7 +1107,7 @@
 
       <div class="p-3 rounded-2xl bg-gradient-to-r from-amber-500/20 via-pink-500/20 to-cyan-500/20 border border-amber-400/40 text-center">
         <div class="text-[10px] font-black uppercase tracking-widest text-amber-600 dark:text-amber-300">Round Prize</div>
-        <div id="winner-modal-prize" class="text-2xl font-black pts-gold mt-0.5">+100 PTS</div>
+        <div id="winner-modal-prize" class="text-2xl font-black pts-gold mt-0.5">+1,000 PTS</div>
       </div>
 
       <div id="winner-candidates-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[45vh] overflow-y-auto custom-scroll pr-1"></div>
@@ -1155,7 +1158,7 @@
             </div>
           </div>
           <div id="celebration-points-earned" class="mt-1 px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs sm:text-sm max-w-full">
-            +100 PTS &bull; Total: 1,100 PTS
+            +1,000 PTS &bull; Total: 2,000 PTS
           </div>
         </div>
 
@@ -1232,6 +1235,28 @@
   <script>
     var MAX_GAME_PLAYERS = 10;
 
+    // Variable point tiers: 100 to 10,000, always round numbers ending in 0s
+    var VARIABLE_POINT_TIERS = [
+      100, 250, 500, 750, 1000, 1500, 2000, 2500, 5000, 7500, 10000
+    ];
+
+    function normalizeRoundPoints(val) {
+      var num = parseInt(val, 10);
+      if (!isFinite(num) || num <= 0) return 1000;
+      num = Math.max(100, Math.min(10000, num));
+      var rounded = Math.round(num / 10) * 10;
+      return Math.max(100, Math.min(10000, rounded));
+    }
+
+    function pickVariableCardPoints(slotIndex, excludePointsSet) {
+      var pool = VARIABLE_POINT_TIERS.filter(function(p) {
+        return !excludePointsSet || !excludePointsSet.has(p);
+      });
+      if (pool.length === 0) pool = VARIABLE_POINT_TIERS.slice();
+      var chosen = pool[Math.floor(Math.random() * pool.length)];
+      return normalizeRoundPoints(chosen);
+    }
+
     var CATEGORY_FILES = {
       "Philosophy": "data/questions-philosophy.json",
       "Deep Questions": "data/questions-deep-questions.json",
@@ -1299,6 +1324,8 @@
     var activePreset = "all";
     var selectedCategories = new Set(Object.keys(CATEGORY_FILES));
     var currentTopics = [];
+    var cardPointBounties = [1000, 2500, 500, 5000];
+    var activeRoundPrize = 1000;
     var cardRevealedStates = [false, false, false, false];
     var cardTypingTimers = [null, null, null, null];
     var cardTypingProgress = [0, 0, 0, 0];
@@ -1313,20 +1340,24 @@
       enabled: false,
       totalRounds: 5,
       questionsPerRound: 4,
-      pointsPerRound: 100,
+      pointsPerRound: 1000,
       currentRound: 1,
       currentQuestionInRound: 1,
       roundStarted: false
     }));
     gameState.totalRounds = Math.max(1, parseInt(gameState.totalRounds) || 5);
     gameState.questionsPerRound = Math.max(1, parseInt(gameState.questionsPerRound) || 4);
-    gameState.pointsPerRound = Math.max(1, parseInt(gameState.pointsPerRound) || 100);
+    gameState.pointsPerRound = normalizeRoundPoints(gameState.pointsPerRound);
     gameState.currentRound = Math.max(1, parseInt(gameState.currentRound) || 1);
     gameState.currentQuestionInRound = Math.max(1, parseInt(gameState.currentQuestionInRound) || 1);
     gameState.roundStarted = Boolean(gameState.roundStarted);
 
     function saveGameState() {
       localStorage.setItem("nellieb_game_mode", JSON.stringify(gameState));
+    }
+
+    function getCurrentRoundPointsValue() {
+      return normalizeRoundPoints(activeRoundPrize || gameState.pointsPerRound);
     }
 
     var CATEGORY_STYLES = {
@@ -1350,7 +1381,7 @@
       { id: "funny", name: "Funny & Silly", desc: "Humor/Fun, Would You Rather, Did You Know? & Music", categories: ["Humor/Fun", "Would You Rather", "Did You Know?", "Music Fun Facts"] }
     ];
 
-    var SUPPORTED_LANGS = ["en", "es", "fr", "de", "pt", "it"];
+    var SUPPORTED_LANGS = ["en", "es", "pt", "fr", "de", "it"];
     var currentLanguage = normalizeLangCode(localStorage.getItem("nellieb_lang") || "en");
     var translationCache = JSON.parse(localStorage.getItem("nellieb_tx_cache") || "{}");
 
@@ -1395,7 +1426,7 @@
         privacyLink: "Privacy Policy",
         welcomeBadge: "Welcome to Chatomizer",
         welcomeTitle: "Would you like to check out the Tutorial?",
-        welcomeDesc: "Quick visual tour of 4-card & 1-card rounds, winners, and Party Mode - or jump right in.",
+        welcomeDesc: "Quick visual tour of 1-2-3 setup, variable 100-10,000 PTS cards, and Party Mode - or jump right in.",
         welcomeNo: "No, Go to Page",
         welcomeYes: "Yes, Open Tutorial",
         presetsTitle: "Choose a Preset Mix",
@@ -1407,7 +1438,7 @@
         doneBtn: "Done",
         tutHeroBadge: "Visual Show & Tell",
         tutHeroTitlePrefix: "Interactive Guide to ",
-        tutTabs: ["1. 4-Card Flow", "2. Round End", "3. Final Win", "4. Party Mode"],
+        tutTabs: ["1. 1-2-3 Start", "2. Variable PTS", "3. Final Win", "4. Party Mode"],
         tutBack: "Back",
         tutNext: "Next",
         tutFinish: "Let's Play!",
@@ -1472,7 +1503,7 @@
         privacyLink: "Política de Privacidad",
         welcomeBadge: "Bienvenido a Chatomizer",
         welcomeTitle: "¿Te gustaría ver el Tutorial?",
-        welcomeDesc: "Guía visual rápida de rondas de 4 cartas y 1 carta, ganadores y Modo Fiesta.",
+        welcomeDesc: "Guía visual rápida de 1-2-3, puntos variables de 100 a 10,000 y Modo Fiesta.",
         welcomeNo: "No, Ir a la Página",
         welcomeYes: "Sí, Abrir Tutorial",
         presetsTitle: "Elige un Modo Predefinido",
@@ -1484,7 +1515,7 @@
         doneBtn: "Listo",
         tutHeroBadge: "Guía Visual",
         tutHeroTitlePrefix: "Guía Interactiva de ",
-        tutTabs: ["1. 4 Cartas", "2. Fin Ronda", "3. Ganador", "4. Fiesta"],
+        tutTabs: ["1. Inicio 1-2-3", "2. Puntos Var.", "3. Ganador", "4. Fiesta"],
         tutBack: "Atrás",
         tutNext: "Siguiente",
         tutFinish: "¡A Jugar!",
@@ -1505,7 +1536,7 @@
         tapToFlip: "Toca para Girar",
         topicLabel: "Tema",
         flipBadge: "GIRAR",
-        clickToReveal: "Toca para girar",
+        clickToReveal: "Toca la carta para girar",
         flipBackHint: "Toca para voltear",
         changeCardHint: "Toca para cambiar",
         refreshTitle: "Cambiar esta pregunta",
@@ -1516,6 +1547,314 @@
         noSavedEmpty: "No hay temas guardados aún.",
         noSavedSub: "¡Toca el ícono de chincheta en cualquier carta para guardarlo!",
         clickToLoad: "Toca para cargar el tema"
+      },
+      pt: {
+        tagline: "VAMOS BATER PAPO",
+        followMe: "Siga-me",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Alternar entre espanhol e inglês",
+        tutorial: "Tutorial",
+        scores: "Placar",
+        gameMode: "Modo Jogo",
+        partyMode: "Modo Festa",
+        endRound: "Fim da Rodada",
+        tiktokDesktop: "Ir para o meu TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TODOS OS JOGADORES",
+        podiumShort: "JOGADORES",
+        oneCard: "1 Carta",
+        fourCards: "4 Cartas",
+        presetsPrefix: "Modos:",
+        categoriesBtn: "Categorias",
+        tutorialNotePrefix: "Precisa do guia depois? Clique no botão ",
+        tutorialNoteSuffix: " na barra superior quando quiser.",
+        openTutorial: "Abrir Tutorial",
+        boomBanner: "BUM! ACABOU O TEMPO",
+        startBtn: "Iniciar",
+        pauseBtn: "Pausar",
+        changeOneCard: "Toque para trocar carta",
+        dealFourCards: "Distribuir 4 Cartas",
+        shortcutHintPrefix: "Toque em qualquer carta, pressione ",
+        shortcutHintMid: " ou use ",
+        shortcutHintSuffix: " para virar os tópicos.",
+        privacyLink: "Política de Privacidade",
+        welcomeBadge: "Bem-vindo ao Chatomizer",
+        welcomeTitle: "Quer conferir o Tutorial?",
+        welcomeDesc: "Tour visual rápido de 1-2-3, pontos variados de 100 a 10.000 e Modo Festa.",
+        welcomeNo: "Não, Ir para a Página",
+        welcomeYes: "Sim, Abrir Tutorial",
+        presetsTitle: "Escolha um Mix Predefinido",
+        presetsSubtitle: "Escolha um estilo para ativar os baralhos correspondentes:",
+        categoriesTitle: "Selecione Categorias de Perguntas",
+        selectAll: "Selecionar Tudo",
+        unselectAll: "Desmarcar Tudo",
+        selectedSummary: "{count} de {total} selecionadas",
+        doneBtn: "Pronto",
+        tutHeroBadge: "Guia Visual",
+        tutHeroTitlePrefix: "Guia Interativo do ",
+        tutTabs: ["1. Início 1-2-3", "2. Pontos Var.", "3. Vitória Final", "4. Modo Festa"],
+        tutBack: "Voltar",
+        tutNext: "Próximo",
+        tutFinish: "Vamos Jogar!",
+        scoresTitle: "Modo Jogo e Placar da Sessão",
+        scoresDesc: "Até 10 jogadores. Placar ao vivo.",
+        thUser: "Usuário",
+        thPoints: "Pontos",
+        thAction: "Ação",
+        addUser: "Adicionar Usuário",
+        clearAll: "Limpar Tudo",
+        saveApply: "Salvar e Aplicar",
+        privacyTitle: "Política de Privacidade",
+        privacyBody: "<strong>Sua privacidade importa:</strong> Este site é uma ferramenta interativa de temas. Não exigimos cadastro nem coletamos dados pessoais.",
+        closeBtn: "Fechar",
+        savedTitle: "Tópicos Salvos",
+        savedSub: "Clique em qualquer pergunta para carregar",
+        clearSaved: "Limpar Salvos",
+        tapToFlip: "Toque para Virar",
+        topicLabel: "Tópico",
+        flipBadge: "VIRAR",
+        clickToReveal: "Toque na carta para virar",
+        flipBackHint: "Toque para Desvirar",
+        changeCardHint: "Toque para Trocar",
+        refreshTitle: "Trocar esta pergunta",
+        bookmarkTitle: "Salvar tópico",
+        copyTitle: "Copiar pergunta",
+        ptsSuffix: "PTS",
+        emptyPodium: "Nenhum jogador ainda. Clique em \"Modo Jogo\" ou \"Placar\" para adicionar até 10!",
+        noSavedEmpty: "Nenhum tópico salvo ainda.",
+        noSavedSub: "Toque no ícone de alfinete em qualquer carta para salvar!",
+        clickToLoad: "Clique para carregar o tópico"
+      },
+      fr: {
+        tagline: "ON DISCUTE ENSEMBLE",
+        followMe: "Suis-moi",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Basculer vers l'espagnol",
+        tutorial: "Tutoriel",
+        scores: "Scores",
+        gameMode: "Mode Jeu",
+        partyMode: "Mode Soirée",
+        endRound: "Fin du Tour",
+        tiktokDesktop: "Aller sur mon TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TOUS LES JOUEURS",
+        podiumShort: "JOUEURS",
+        oneCard: "1 Carte",
+        fourCards: "4 Cartes",
+        presetsPrefix: "Modes :",
+        categoriesBtn: "Catégories",
+        tutorialNotePrefix: "Besoin du guide plus tard ? Cliquez sur ",
+        tutorialNoteSuffix: " dans la barre du haut à tout moment.",
+        openTutorial: "Ouvrir le Tutoriel",
+        boomBanner: "BOUM ! TEMPS ÉCOULÉ",
+        startBtn: "Démarrer",
+        pauseBtn: "Pause",
+        changeOneCard: "Toucher pour changer de carte",
+        dealFourCards: "Distribuer 4 Cartes",
+        shortcutHintPrefix: "Touchez une carte, appuyez sur ",
+        shortcutHintMid: " ou utilisez ",
+        shortcutHintSuffix: " pour retourner les cartes.",
+        privacyLink: "Politique de Confidentialité",
+        welcomeBadge: "Bienvenue sur Chatomizer",
+        welcomeTitle: "Voulez-vous voir le Tutoriel ?",
+        welcomeDesc: "Aperçu visuel rapide de 1-2-3, points variables de 100 à 10 000 et Mode Soirée.",
+        welcomeNo: "Non, Aller à la Page",
+        welcomeYes: "Oui, Ouvrir le Tutoriel",
+        presetsTitle: "Choisir un Mix Prédéfini",
+        presetsSubtitle: "Choisissez une ambiance pour activer les paquets correspondants :",
+        categoriesTitle: "Sélectionner les Catégories",
+        selectAll: "Tout Sélectionner",
+        unselectAll: "Tout Désélectionner",
+        selectedSummary: "{count} sur {total} sélectionnées",
+        doneBtn: "OK",
+        tutHeroBadge: "Guide Visuel",
+        tutHeroTitlePrefix: "Guide Interactif de ",
+        tutTabs: ["1. Départ 1-2-3", "2. Points Var.", "3. Victoire", "4. Soirée"],
+        tutBack: "Retour",
+        tutNext: "Suivant",
+        tutFinish: "C'est Parti !",
+        scoresTitle: "Mode Jeu et Classement",
+        scoresDesc: "Jusqu'à 10 joueurs. Classement en direct.",
+        thUser: "Pseudo",
+        thPoints: "Points",
+        thAction: "Action",
+        addUser: "Ajouter Joueur",
+        clearAll: "Tout Effacer",
+        saveApply: "Enregistrer",
+        privacyTitle: "Politique de Confidentialité",
+        privacyBody: "<strong>Votre vie privée compte :</strong> Ce site est un outil interactif de sujets sans inscription ni collecte de données personnelles.",
+        closeBtn: "Fermer",
+        savedTitle: "Sujets Enregistrés",
+        savedSub: "Cliquez sur une question pour la charger",
+        clearSaved: "Effacer",
+        tapToFlip: "Toucher pour Retourner",
+        topicLabel: "Sujet",
+        flipBadge: "RETOURNER",
+        clickToReveal: "Touchez la carte pour retourner",
+        flipBackHint: "Toucher pour Retourner",
+        changeCardHint: "Toucher pour Changer",
+        refreshTitle: "Changer cette question",
+        bookmarkTitle: "Enregistrer le sujet",
+        copyTitle: "Copier la question",
+        ptsSuffix: "PTS",
+        emptyPodium: "Aucun joueur. Cliquez sur \"Mode Jeu\" ou \"Scores\" pour ajouter jusqu'à 10 joueurs !",
+        noSavedEmpty: "Aucun sujet enregistré.",
+        noSavedSub: "Appuyez sur l'épingle d'une carte pour l'enregistrer !",
+        clickToLoad: "Cliquez pour charger le sujet"
+      },
+      de: {
+        tagline: "LASS UNS QUATSCHEN",
+        followMe: "Folge mir",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Zu Spanisch wechseln",
+        tutorial: "Tutorial",
+        scores: "Punkte",
+        gameMode: "Spielmodus",
+        partyMode: "Partymodus",
+        endRound: "Runde Beenden",
+        tiktokDesktop: "Zu meinem TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "ALLE SPIELER",
+        podiumShort: "SPIELER",
+        oneCard: "1 Karte",
+        fourCards: "4 Karten",
+        presetsPrefix: "Mix:",
+        categoriesBtn: "Kategorien",
+        tutorialNotePrefix: "Anleitung später nötig? Klicke oben jederzeit auf ",
+        tutorialNoteSuffix: ".",
+        openTutorial: "Tutorial Öffnen",
+        boomBanner: "BUMM! ZEIT ABGELAUFEN",
+        startBtn: "Start",
+        pauseBtn: "Pause",
+        changeOneCard: "Tippen für neue Karte",
+        dealFourCards: "4 Neue Karten",
+        shortcutHintPrefix: "Tippe auf eine Karte, drücke ",
+        shortcutHintMid: " oder nutze ",
+        shortcutHintSuffix: " zum Umdrehen.",
+        privacyLink: "Datenschutz",
+        welcomeBadge: "Willkommen bei Chatomizer",
+        welcomeTitle: "Möchtest du das Tutorial ansehen?",
+        welcomeDesc: "Schnelle Übersicht für 1-2-3, variable Punkte von 100 bis 10.000 und Partymodus.",
+        welcomeNo: "Nein, Zur Seite",
+        welcomeYes: "Ja, Tutorial Öffnen",
+        presetsTitle: "Preset-Mix Wählen",
+        presetsSubtitle: "Wähle eine Stimmung für passende Kartenstapel:",
+        categoriesTitle: "Kategorien Auswählen",
+        selectAll: "Alle Wählen",
+        unselectAll: "Alle Abwählen",
+        selectedSummary: "{count} von {total} gewählt",
+        doneBtn: "Fertig",
+        tutHeroBadge: "Visuelle Tour",
+        tutHeroTitlePrefix: "Interaktiver Guide für ",
+        tutTabs: ["1. Start 1-2-3", "2. Var. Punkte", "3. Finalsieg", "4. Party"],
+        tutBack: "Zurück",
+        tutNext: "Weiter",
+        tutFinish: "Los Geht's!",
+        scoresTitle: "Spielmodus & Bestenliste",
+        scoresDesc: "Bis zu 10 Spieler. Live-Bestenliste.",
+        thUser: "Spielername",
+        thPoints: "Punkte",
+        thAction: "Aktion",
+        addUser: "Spieler Hinzufügen",
+        clearAll: "Alle Löschen",
+        saveApply: "Speichern",
+        privacyTitle: "Datenschutz",
+        privacyBody: "<strong>Deine Privatsphäre zählt:</strong> Dieses Tool benötigt keine Registrierung und erfasst keine persönlichen Daten.",
+        closeBtn: "Schließen",
+        savedTitle: "Gespeicherte Themen",
+        savedSub: "Zum Laden antippen",
+        clearSaved: "Leeren",
+        tapToFlip: "Tippen zum Drehen",
+        topicLabel: "Thema",
+        flipBadge: "DREHEN",
+        clickToReveal: "Karte antippen zum Drehen",
+        flipBackHint: "Tippen zum Zurückdrehen",
+        changeCardHint: "Tippen zum Wechseln",
+        refreshTitle: "Frage neu ziehen",
+        bookmarkTitle: "Thema merken",
+        copyTitle: "Frage kopieren",
+        ptsSuffix: "PTS",
+        emptyPodium: "Noch keine Spieler. Klicke auf \"Spielmodus\" oder \"Punkte\" für bis zu 10 Spieler!",
+        noSavedEmpty: "Noch keine Themen gespeichert.",
+        noSavedSub: "Tippe auf das Pin-Symbol einer Karte zum Merken!",
+        clickToLoad: "Zum Laden antippen"
+      },
+      it: {
+        tagline: "CHIACCHIERIAMO UN PO'",
+        followMe: "Seguimi",
+        quickToggleLabel: "ES",
+        quickToggleTitle: "Passa allo spagnolo",
+        tutorial: "Tutorial",
+        scores: "Punteggi",
+        gameMode: "Modalità Gioco",
+        partyMode: "Modalità Party",
+        endRound: "Fine Round",
+        tiktokDesktop: "Vai al mio TikTok",
+        tiktokMobile: "TikTok",
+        podiumFull: "TUTTI I GIOCATORI",
+        podiumShort: "GIOCATORI",
+        oneCard: "1 Carta",
+        fourCards: "4 Carte",
+        presetsPrefix: "Mix:",
+        categoriesBtn: "Categorie",
+        tutorialNotePrefix: "Ti serve la guida dopo? Clicca su ",
+        tutorialNoteSuffix: " in alto quando vuoi.",
+        openTutorial: "Apri Tutorial",
+        boomBanner: "BOOM! TEMPO SCADUTO",
+        startBtn: "Avvia",
+        pauseBtn: "Pausa",
+        changeOneCard: "Tocca per cambiare carta",
+        dealFourCards: "Distribuisci 4 Carte",
+        shortcutHintPrefix: "Tocca una carta, premi ",
+        shortcutHintMid: " o usa ",
+        shortcutHintSuffix: " per girare gli argomenti.",
+        privacyLink: "Informativa sulla Privacy",
+        welcomeBadge: "Benvenuto su Chatomizer",
+        welcomeTitle: "Vuoi vedere il Tutorial?",
+        welcomeDesc: "Tour visivo rapido di 1-2-3, punti variabili da 100 a 10.000 e Modalità Party.",
+        welcomeNo: "No, Vai alla Pagina",
+        welcomeYes: "Sì, Apri Tutorial",
+        presetsTitle: "Scegli un Mix Predefinito",
+        presetsSubtitle: "Scegli un'atmosfera per attivare i mazzi corrispondenti:",
+        categoriesTitle: "Seleziona Categorie Domande",
+        selectAll: "Seleziona Tutto",
+        unselectAll: "Deseleziona Tutto",
+        selectedSummary: "{count} di {total} selezionate",
+        doneBtn: "Fatto",
+        tutHeroBadge: "Guida Visiva",
+        tutHeroTitlePrefix: "Guida Interattiva a ",
+        tutTabs: ["1. Avvio 1-2-3", "2. Punti Var.", "3. Vittoria", "4. Party"],
+        tutBack: "Indietro",
+        tutNext: "Avanti",
+        tutFinish: "Iniziamo!",
+        scoresTitle: "Modalità Gioco e Classifica",
+        scoresDesc: "Fino a 10 giocatori. Classifica live.",
+        thUser: "Username",
+        thPoints: "Punti",
+        thAction: "Azione",
+        addUser: "Aggiungi Giocatore",
+        clearAll: "Cancella Tutto",
+        saveApply: "Salva e Applica",
+        privacyTitle: "Informativa sulla Privacy",
+        privacyBody: "<strong>La tua privacy conta:</strong> Questo sito è uno strumento interattivo senza registrazione né raccolta di dati personali.",
+        closeBtn: "Chiudi",
+        savedTitle: "Argomenti Salvati",
+        savedSub: "Clicca su una domanda per caricarla",
+        clearSaved: "Svuota",
+        tapToFlip: "Tocca per Girare",
+        topicLabel: "Argomento",
+        flipBadge: "GIRA",
+        clickToReveal: "Tocca la carta per girare",
+        flipBackHint: "Tocca per Rigirare",
+        changeCardHint: "Tocca per Cambiare",
+        refreshTitle: "Cambia domanda",
+        bookmarkTitle: "Salva argomento",
+        copyTitle: "Copia domanda",
+        ptsSuffix: "PTS",
+        emptyPodium: "Nessun giocatore. Clicca su \"Modalità Gioco\" o \"Punteggi\" per aggiungere fino a 10 giocatori!",
+        noSavedEmpty: "Nessun argomento salvato.",
+        noSavedSub: "Tocca l'icona spillo su una carta per salvarla!",
+        clickToLoad: "Clicca per caricare l'argomento"
       }
     };
 
@@ -1543,6 +1882,54 @@
         "Science & Tech": "Ciencia y Tecnología",
         "Did You Know?": "¿Sabías Que...?",
         "Music Fun Facts": "Datos Curiosos de Música"
+      },
+      pt: {
+        "Philosophy": "Filosofia",
+        "Deep Questions": "Perguntas Profundas",
+        "Humor/Fun": "Humor e Diversão",
+        "Current Events": "Atualidades",
+        "Would You Rather": "O Que Você Preferiria?",
+        "Pop Culture": "Cultura Pop",
+        "Personal Stories": "Histórias Pessoais",
+        "Science & Tech": "Ciência e Tecnologia",
+        "Did You Know?": "Você Sabia?",
+        "Music Fun Facts": "Curiosidades Musicais"
+      },
+      fr: {
+        "Philosophy": "Philosophie",
+        "Deep Questions": "Questions Profondes",
+        "Humor/Fun": "Humour et Fun",
+        "Current Events": "Actualités",
+        "Would You Rather": "Tu Préfères ?",
+        "Pop Culture": "Culture Pop",
+        "Personal Stories": "Histoires Persos",
+        "Science & Tech": "Science et Tech",
+        "Did You Know?": "Le Saviez-Vous ?",
+        "Music Fun Facts": "Anecdotes Musicales"
+      },
+      de: {
+        "Philosophy": "Philosophie",
+        "Deep Questions": "Tiefe Fragen",
+        "Humor/Fun": "Humor & Spaß",
+        "Current Events": "Aktuelles",
+        "Would You Rather": "Was Würdest Du Eher?",
+        "Pop Culture": "Popkultur",
+        "Personal Stories": "Persönliches",
+        "Science & Tech": "Wissenschaft & Tech",
+        "Did You Know?": "Wusstest Du Schon?",
+        "Music Fun Facts": "Musik-Fakten"
+      },
+      it: {
+        "Philosophy": "Filosofia",
+        "Deep Questions": "Domande Profonde",
+        "Humor/Fun": "Umorismo e Svago",
+        "Current Events": "Attualità",
+        "Would You Rather": "Cosa Preferiresti?",
+        "Pop Culture": "Cultura Pop",
+        "Personal Stories": "Storie Personali",
+        "Science & Tech": "Scienza e Tech",
+        "Did You Know?": "Lo Sapevi?",
+        "Music Fun Facts": "Curiosità Musicali"
       }
     };
 
@@ -1560,6 +1947,34 @@
         deep: { name: "Charlas Profundas", desc: "Filosofía, Preguntas Profundas y Ciencia y Tecnología" },
         latenight: { name: "Debates Nocturnos", desc: "Filosofía, ¿Sabías Que...?, Actualidad, Tech y Música" },
         funny: { name: "Divertido y Loco", desc: "Humor, ¿Qué Preferirías?, ¿Sabías Que...? y Música" }
+      },
+      pt: {
+        all: { name: "Mix Equilibrado", desc: "Todas as 10 categorias em rotação" },
+        icebreaker: { name: "Quebra-Gelo Leve", desc: "Humor, O Que Você Preferiria?, Cultura Pop, Histórias e Música" },
+        deep: { name: "Conversas Profundas", desc: "Filosofia, Perguntas Profundas e Ciência e Tecnologia" },
+        latenight: { name: "Debates da Madrugada", desc: "Filosofia, Você Sabia?, Atualidades, Tech e Música" },
+        funny: { name: "Engraçado e Divertido", desc: "Humor, O Que Você Preferiria?, Você Sabia? e Música" }
+      },
+      fr: {
+        all: { name: "Mix Équilibré", desc: "Les 10 catégories en rotation" },
+        icebreaker: { name: "Brise-Glace Cool", desc: "Humour, Tu Préfères ?, Pop Culture, Histoires et Musique" },
+        deep: { name: "Discussions Profondes", desc: "Philosophie, Questions Profondes et Science et Tech" },
+        latenight: { name: "Débats Nocturnes", desc: "Philosophie, Le Saviez-Vous ?, Actualités, Tech et Musique" },
+        funny: { name: "Drôle et Décalé", desc: "Humour, Tu Préfères ?, Le Saviez-Vous ? et Musique" }
+      },
+      de: {
+        all: { name: "Ausgewogener Mix", desc: "Alle 10 Kategorien im Wechsel" },
+        icebreaker: { name: "Lockerer Einstieg", desc: "Humor, Was Würdest Du Eher?, Popkultur, Stories & Musik" },
+        deep: { name: "Tiefe Gespräche", desc: "Philosophie, Tiefe Fragen & Wissenschaft & Tech" },
+        latenight: { name: "Late-Night-Debatten", desc: "Philosophie, Wusstest Du Schon?, Aktuelles, Tech & Musik" },
+        funny: { name: "Lustig & Verrückt", desc: "Humor, Was Würdest Du Eher?, Wusstest Du Schon? & Musik" }
+      },
+      it: {
+        all: { name: "Mix Bilanciato", desc: "Tutte le 10 categorie a rotazione" },
+        icebreaker: { name: "Rompighiaccio Leggero", desc: "Umorismo, Cosa Preferiresti?, Cultura Pop, Storie e Musica" },
+        deep: { name: "Discussioni Profonde", desc: "Filosofia, Domande Profonde e Scienza e Tech" },
+        latenight: { name: "Dibattiti Notturni", desc: "Filosofia, Lo Sapevi?, Attualità, Tech e Musica" },
+        funny: { name: "Buffo e Divertente", desc: "Umorismo, Cosa Preferiresti?, Lo Sapevi? e Musica" }
       }
     };
 
@@ -1586,6 +2001,29 @@
       "What album can you listen to from start to finish without skipping a track?": "¿Qué álbum puedes escuchar de principio a fin sin saltar ni una canción?"
     };
 
+    var PHRASE_TRANSLATIONS_PT = {
+      "What is one belief you held strongly five years ago that you no longer hold today?": "Qual é uma crença que você defendia com força há cinco anos e que hoje não defende mais?",
+      "If you could know the absolute truth to one mystery of the universe, which one would you pick?": "Se você pudesse saber a verdade absoluta de um mistério do universo, qual escolheria?",
+      "What everyday habit do you think most people do backward?": "Qual hábito do dia a dia você acha que a maioria das pessoas faz ao contrário?",
+      "What is something most people don't know about you until they've known you for years?": "O que a maioria das pessoas não sabe sobre você até te conhecer há anos?",
+      "What is a weird food combination you secretly love?": "Qual combinação estranha de comida você ama em segredo?",
+      "If your life had a theme song that played every time you walked into a room, what would it be?": "Se a sua vida tivesse uma música tema toda vez que você entrasse em uma sala, qual seria?",
+      "What technology trend are you most excited or cautious about right now?": "Qual tendência tecnológica mais te anima ou deixa cauteloso agora?",
+      "What news or cultural shift has changed how you spend your free time?": "Qual notícia ou mudança cultural mudou como você passa seu tempo livre?",
+      "Would you rather always have to tell the complete truth or never speak unless asked a direct question?": "Você preferiria sempre dizer a verdade completa ou nunca falar a menos que receba uma pergunta direta?",
+      "Would you rather travel back 100 years or jump 100 years into the future?": "Você preferiria voltar 100 anos no passado ou avançar 100 anos no futuro?",
+      "What movie or show have you rewatched more times than you can count?": "Qual filme ou série você já reassitiu mais vezes do que consegue contar?",
+      "Which fictional universe would you actually want to live in for a week?": "Em qual universo fictício você realmente gostaria de morar por uma semana?",
+      "If time could pause for one hour every day just for you, how would you spend it?": "Se o tempo pudesse pausar por uma hora todo dia só para você, como você usaria?",
+      "What is a spontaneous decision that turned out surprisingly well for you?": "Qual foi uma decisão espontânea que deu surpreendentemente certo para você?",
+      "If you could invent one gadget to solve an everyday annoyance, what would it do?": "Se você pudesse inventar um aparelho para resolver um incômodo diário, o que ele faria?",
+      "What scientific discovery still blows your mind when you stop to think about it?": "Qual descoberta científica ainda te impressiona quando você para para pensar?",
+      "Did you know honey never spoils and has been found in ancient tombs?": "Você sabia que o mel nunca estraga e já foi encontrado em tumbas antigas?",
+      "Did you know octopuses have three hearts and blue blood?": "Você sabia que os polvos têm três corações e sangue azul?",
+      "What song instantly puts you in a great mood regardless of how your day went?": "Qual música te coloca de bom humor na hora, não importa como tenha sido o seu dia?",
+      "What album can you listen to from start to finish without skipping a track?": "Qual álbum você consegue ouvir do começo ao fim sem pular nenhuma faixa?"
+    };
+
     function t(key) {
       var lang = normalizeLangCode(currentLanguage);
       var dict = UI_TRANSLATIONS[lang] || UI_TRANSLATIONS.en;
@@ -1593,8 +2031,8 @@
       return UI_TRANSLATIONS.en[key] !== undefined ? UI_TRANSLATIONS.en[key] : key;
     }
 
-    function translateCategoryLabel(cat) {
-      var lang = normalizeLangCode(currentLanguage);
+    function translateCategoryLabel(cat, langOverride) {
+      var lang = normalizeLangCode(langOverride || currentLanguage);
       var map = CATEGORY_NAMES_I18N[lang] || CATEGORY_NAMES_I18N.en;
       return map[cat] || cat;
     }
@@ -1617,6 +2055,9 @@
       if (lang === "es" && PHRASE_TRANSLATIONS_ES[body]) {
         return prefix + PHRASE_TRANSLATIONS_ES[body];
       }
+      if (lang === "pt" && PHRASE_TRANSLATIONS_PT[body]) {
+        return prefix + PHRASE_TRANSLATIONS_PT[body];
+      }
 
       if (lang === "es") {
         var esBody = body
@@ -1635,6 +2076,20 @@
           esBody = "¿" + esBody;
         }
         return prefix + esBody;
+      }
+
+      if (lang === "pt") {
+        var ptBody = body
+          .replace(/^Would you rather\b/i, "Você preferiria")
+          .replace(/^If you could\b/i, "Se você pudesse")
+          .replace(/^What is your\b/i, "Qual é o seu")
+          .replace(/^What is one\b/i, "Qual é uma")
+          .replace(/^What is the\b/i, "Qual é o/a")
+          .replace(/\bwith\b/gi, "com")
+          .replace(/\bwithout\b/gi, "sem")
+          .replace(/\bnever\b/gi, "nunca")
+          .replace(/\balways\b/gi, "sempre");
+        return prefix + ptBody;
       }
 
       return text;
@@ -1726,11 +2181,25 @@
         }
       }
 
+      // Immediately render card backs & categories in the target language
       renderTopicCards();
 
       if (targetLang === "en") {
         return;
       }
+
+      // Translate category names remotely too so back-of-card category labels match any language
+      var uniqueCats = Array.from(new Set(currentTopics.map(function(tp) { return tp && tp.category; }).filter(Boolean)));
+      await Promise.all(uniqueCats.map(function(cat) {
+        var catCacheKey = targetLang + "::cat::" + cat;
+        if (translationCache[catCacheKey]) return Promise.resolve(translationCache[catCacheKey]);
+        return fetchRemoteTranslation(cat, targetLang).then(function(txCat) {
+          if (txCat && txCat.trim()) {
+            translationCache[catCacheKey] = txCat.trim();
+            localStorage.setItem("nellieb_tx_cache", JSON.stringify(translationCache));
+          }
+        });
+      }));
 
       await Promise.all(currentTopics.map(function(tp, idx) {
         if (!tp || !tp.text) return Promise.resolve("");
@@ -1746,6 +2215,9 @@
         return;
       }
 
+      // Re-render card backs with freshly translated category labels
+      renderTopicCards();
+
       for (var idx = 0; idx < currentTopics.length; idx++) {
         var item = currentTopics[idx];
         if (!item) continue;
@@ -1759,6 +2231,16 @@
           }
         }
       }
+    }
+
+    function getLocalizedCategoryName(cat) {
+      var lang = normalizeLangCode(currentLanguage);
+      if (lang === "en") return cat;
+      var dictMap = CATEGORY_NAMES_I18N[lang];
+      if (dictMap && dictMap[cat]) return dictMap[cat];
+      var catCacheKey = lang + "::cat::" + cat;
+      if (translationCache[catCacheKey]) return translationCache[catCacheKey];
+      return cat;
     }
 
     function toggleSpanishEnglish() {
@@ -1925,6 +2407,7 @@
       if (!layer) return;
       layer.innerHTML = "";
 
+      var displayPts = normalizeRoundPoints(ptsPerRound);
       var banner = document.createElement("div");
       banner.className = "round-start-float-banner px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 text-slate-950 border-2 border-white shadow-[0_0_35px_rgba(236,72,153,0.85),0_0_55px_rgba(56,189,248,0.65)] flex items-center gap-3 whitespace-nowrap";
       banner.innerHTML =
@@ -1933,12 +2416,12 @@
           '<span class="text-[10px] font-black uppercase tracking-widest text-slate-950/80">GAME ON</span>' +
           '<span class="text-base sm:text-xl font-black tracking-tight text-slate-950">ROUND ' + roundNum + ' OF ' + totalRounds + ' STARTED!</span>' +
         '</div>' +
-        '<span class="px-2.5 py-1 rounded-full bg-slate-950 text-amber-300 font-black text-xs">+' + Number(ptsPerRound).toLocaleString() + ' ' + escapeHtml(t("ptsSuffix")) + '</span>';
+        '<span class="px-2.5 py-1 rounded-full bg-slate-950 text-amber-300 font-black text-xs">+' + Number(displayPts).toLocaleString() + ' ' + escapeHtml(t("ptsSuffix")) + '</span>';
 
       layer.appendChild(banner);
       setTimeout(function() {
         if (banner.parentNode) banner.parentNode.removeChild(banner);
-      }, 2200);
+      }, 2700);
     }
 
     function activateGameModeAndOpenScores() {
@@ -1988,7 +2471,7 @@
       if (cb) cb.checked = Boolean(gameState.enabled);
       if (roundsInput) roundsInput.value = gameState.totalRounds;
       if (qprInput) qprInput.value = gameState.questionsPerRound;
-      if (pprInput) pprInput.value = gameState.pointsPerRound;
+      if (pprInput) pprInput.value = normalizeRoundPoints(gameState.pointsPerRound);
 
       populateScoresTable();
       updatePlayerCountBadge();
@@ -2030,6 +2513,7 @@
 
       var flipped4 = getFlippedCardCountIn4CardView();
       var readyToEnd4 = isLastFlipOfRoundIn4CardView();
+      var currentPts = getCurrentRoundPointsValue();
 
       if (gameState.enabled) {
         if (btn) {
@@ -2040,11 +2524,11 @@
         }
         if (statusPill) {
           statusPill.classList.remove("hidden");
-          statusPill.innerText = "R" + gameState.currentRound + "/" + gameState.totalRounds + " • +" + gameState.pointsPerRound;
+          statusPill.innerText = "R" + gameState.currentRound + "/" + gameState.totalRounds + " • +" + currentPts.toLocaleString();
         }
         if (roundBadge) {
           roundBadge.classList.remove("hidden");
-          roundBadge.innerText = "Round " + gameState.currentRound + "/" + gameState.totalRounds + " • Q " + gameState.currentQuestionInRound + "/" + gameState.questionsPerRound + " • +" + gameState.pointsPerRound + " PTS";
+          roundBadge.innerText = "Round " + gameState.currentRound + "/" + gameState.totalRounds + " • Q " + gameState.currentQuestionInRound + "/" + gameState.questionsPerRound + " • +" + currentPts.toLocaleString() + " PTS";
         }
         if (endRoundBtn) {
           endRoundBtn.classList.remove("hidden");
@@ -2061,7 +2545,7 @@
           fourCardStatus.innerText = phaseTag + " • Round " + gameState.currentRound + "/" + gameState.totalRounds + " • Flipped " + flipped4 + "/4";
         }
         if (fourCardBounty) {
-          fourCardBounty.innerText = "+" + Number(gameState.pointsPerRound).toLocaleString() + " " + t("ptsSuffix");
+          fourCardBounty.innerText = "ROUND +" + currentPts.toLocaleString() + " " + t("ptsSuffix");
         }
         if (fourCardEndBtn) {
           if (readyToEnd4) {
@@ -2095,16 +2579,15 @@
     function onCardFlippedInGameMode(index) {
       if (!gameState.enabled) return;
 
+      var pickedCardPts = normalizeRoundPoints(cardPointBounties[index] || gameState.pointsPerRound);
+      activeRoundPrize = pickedCardPts;
+
       if (!gameState.roundStarted) {
         gameState.roundStarted = true;
         gameState.currentQuestionInRound = 1;
         saveGameState();
         updateGameModeUI();
-        if (cardCountView === 4) {
-          showProminentFloatingRoundStart(gameState.currentRound, gameState.totalRounds, gameState.pointsPerRound);
-        } else {
-          showToast("Round " + gameState.currentRound + " started!", "success");
-        }
+        showProminentFloatingRoundStart(gameState.currentRound, gameState.totalRounds, pickedCardPts);
         return;
       }
 
@@ -2113,6 +2596,7 @@
         gameState.currentQuestionInRound = Math.min(gameState.questionsPerRound, Math.max(1, flippedCount));
         saveGameState();
         updateGameModeUI();
+        showToast("Locked +" + pickedCardPts.toLocaleString() + " " + t("ptsSuffix") + " card bounty!", "info");
       }
     }
 
@@ -2146,12 +2630,13 @@
       var listEl = document.getElementById("winner-candidates-list");
       if (!modal || !listEl) return;
 
+      var prizeAmount = getCurrentRoundPointsValue();
       var isFinalRound = gameState.currentRound >= gameState.totalRounds;
       if (tagEl) {
         tagEl.innerText = (isFinalRound ? "FINAL ROUND • " : "") + "ROUND " + gameState.currentRound + " OF " + gameState.totalRounds + " • " + subtitleText.toUpperCase();
       }
       if (prizeEl) {
-        prizeEl.innerText = "+" + Number(gameState.pointsPerRound).toLocaleString() + " " + t("ptsSuffix");
+        prizeEl.innerText = "+" + Number(prizeAmount).toLocaleString() + " " + t("ptsSuffix");
       }
 
       if (sessionScores.length === 0) {
@@ -2164,7 +2649,7 @@
               '<span class="w-7 h-7 rounded-xl bg-amber-500/20 text-base flex items-center justify-center shrink-0">' + avatarEmoji + '</span>' +
               '<span class="font-extrabold text-sm text-slate-900 dark:text-white truncate group-hover:text-amber-500 transition-colors">' + escapeHtml(player.name) + '</span>' +
             '</div>' +
-            '<span class="text-xs font-black text-emerald-500 shrink-0">+' + gameState.pointsPerRound + '</span>' +
+            '<span class="text-xs font-black text-emerald-500 shrink-0">+' + prizeAmount.toLocaleString() + '</span>' +
           '</button>';
         }).join("");
       }
@@ -2182,7 +2667,7 @@
       var player = sessionScores[playerIdx];
       if (!player) return;
 
-      var ptsAwarded = Number(gameState.pointsPerRound) || 0;
+      var ptsAwarded = getCurrentRoundPointsValue();
       player.points = (parseInt(player.points) || 0) + ptsAwarded;
       sessionScores.sort(function(a, b) { return b.points - a.points; });
       localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
@@ -2396,59 +2881,70 @@
     var currentTutorialStep = 0;
     var TUTORIAL_STEPS = [
       {
-        title: "4-Card Game Mode: Flip Card 1 to Go Live",
-        badge: "Step 1 • 4-Card Flow & Round Start",
-        description: "In 4-Card mode with Game Mode active, cards start face-down showing their category and round point value. Flipping the first card marks the round LIVE, triggers the prominent floating round-start banner that rises and fades away, and tracks how many cards you have flipped (e.g. Flipped 1/4). Flipping a revealed card again flips it back to a fresh card in that same category.",
-        visual: '<div class="bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border border-indigo-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">' +
-          '<div class="flex items-center gap-2.5">' +
-            '<div class="w-16 h-20 rounded-xl bg-slate-900 border-2 border-pink-400 flex flex-col items-center justify-center text-center p-1 shadow-lg">' +
-              '<span class="text-lg">🃏</span>' +
-              '<span class="text-[9px] font-black uppercase text-amber-300 mt-1">Tap #1</span>' +
+        title: "Easy as 1 - 2 - 3: Game Mode, Leaderboard & Play",
+        badge: "Step 1 - 1-2-3 Quick Start",
+        description: "Getting started takes three simple steps: 1) Click Game Mode to turn on rounds (works in both 1-Card and 4-Card views). 2) Update Leaderboard in the Game Mode & Session Leaderboard modal with players and round settings. 3) Play - flip your first card to trigger the floating round-start banner and begin the round.",
+        visual: '<div class="bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border border-indigo-500/40 rounded-2xl p-3.5 space-y-3">' +
+          '<div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-stretch">' +
+            '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-emerald-400/50 flex flex-col justify-between gap-1.5">' +
+              '<div class="flex items-center justify-between">' +
+                '<span class="px-2 py-0.5 rounded-md bg-emerald-500 text-slate-950 font-black text-[10px]">STEP 1</span>' +
+                '<i class="fa-solid fa-gamepad text-emerald-400 text-xs"></i>' +
+              '</div>' +
+              '<div class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-[11px] text-center shadow">Game Mode</div>' +
+              '<p class="text-[10px] text-slate-300 leading-snug">Click <strong class="text-white">Game Mode</strong> in 1-Card or 4-Card view.</p>' +
             '</div>' +
-            '<i class="fa-solid fa-arrow-up text-amber-300 text-lg animate-bounce"></i>' +
-            '<div class="px-3 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-200 font-black text-xs">' +
-              'LIVE • ROUND STARTED ↑' +
+            '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-amber-400/50 flex flex-col justify-between gap-1.5">' +
+              '<div class="flex items-center justify-between">' +
+                '<span class="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black text-[10px]">STEP 2</span>' +
+                '<i class="fa-solid fa-trophy text-amber-400 text-xs"></i>' +
+              '</div>' +
+              '<div class="px-2 py-1.5 rounded-lg bg-slate-800 border border-amber-400/40 text-amber-200 font-extrabold text-[10px] text-center">Game Mode &amp; Leaderboard</div>' +
+              '<p class="text-[10px] text-slate-300 leading-snug">Update players, rounds &amp; apply scores.</p>' +
+            '</div>' +
+            '<div class="p-2.5 rounded-xl bg-slate-900/90 border border-pink-400/50 flex flex-col justify-between gap-1.5">' +
+              '<div class="flex items-center justify-between">' +
+                '<span class="px-2 py-0.5 rounded-md bg-pink-500 text-white font-black text-[10px]">STEP 3</span>' +
+                '<i class="fa-solid fa-arrow-up text-cyan-300 text-xs animate-bounce"></i>' +
+              '</div>' +
+              '<div class="px-2 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 text-slate-950 font-black text-[10px] text-center shadow">PLAY - ROUND STARTED ↑</div>' +
+              '<p class="text-[10px] text-slate-300 leading-snug">Flip a card to float up the round banner!</p>' +
             '</div>' +
           '</div>' +
-          '<div class="flex flex-wrap gap-1.5 justify-center sm:justify-end text-[10px] font-black uppercase">' +
-            '<span class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white">1. Flip Card</span>' +
-            '<span class="px-2.5 py-1 rounded-lg bg-pink-600 text-white">2. Banner Floats Up</span>' +
+          '<div class="text-center text-[11px] font-black tracking-wider uppercase text-cyan-300">' +
+            '1. Game Mode &nbsp;-&nbsp; 2. Update Leaderboard &nbsp;-&nbsp; 3. Play' +
           '</div>' +
         '</div>',
         chips: [
-          { icon: "fa-arrow-up text-amber-300", label: "Floating Round Start Banner" },
-          { icon: "fa-hashtag text-cyan-400", label: "Tracks Flipped Cards (0/4 → 4/4)" },
-          { icon: "fa-fire text-pink-400", label: "Shows Round Points & Presets/Decks" }
+          { icon: "fa-gamepad text-emerald-400", label: "1. Click Game Mode (1 or 4 Cards)" },
+          { icon: "fa-trophy text-amber-300", label: "2. Update Leaderboard & Rounds" },
+          { icon: "fa-play text-pink-400", label: "3. Play & Floating Round Banner" }
         ]
       },
       {
-        title: "End Round & Pick the Round Winner",
-        badge: "Step 2 • Round Finish & Scoring",
-        description: "When you reach the last flip of a round in 4-Card mode—or whenever you finish a prompt in 1-Card mode with the countdown clock—click End Round (or the highlighted End Round prompt on the 4th card) to open the Pick Round Winner modal. Select a player from the up-to-10-player roster to award the configured round points and update the live scrolling leaderboard.",
-        visual: '<div class="bg-gradient-to-br from-rose-950/80 via-slate-900 to-amber-950/70 border border-amber-400/50 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">' +
-          '<div class="flex items-center gap-2.5">' +
-            '<div class="px-3 py-1.5 rounded-xl bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs">' +
-              'Last Flip Ready' +
-            '</div>' +
-            '<i class="fa-solid fa-arrow-right text-amber-300 text-lg"></i>' +
-            '<span class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-pink-600 text-white font-black text-xs uppercase shadow-lg">' +
-              '<i class="fa-solid fa-flag-checkered mr-1"></i> End Round' +
-            '</span>' +
+        title: "Variable Card Points (100 to 10,000 PTS) & Round End",
+        badge: "Step 2 - Variable Bounties & Scoring",
+        description: "Each card carries a variable round bounty from 100 up to 10,000 points (always round numbers ending in 0s) so players are tempted to explore other cards on screen. At the end of a round, tap End Round to pick the round winner and award that card's point value.",
+        visual: '<div class="bg-gradient-to-br from-rose-950/80 via-slate-900 to-amber-950/70 border border-amber-400/50 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">' +
+          '<div class="flex flex-wrap items-center gap-2">' +
+            '<span class="px-2.5 py-1 rounded-full bg-amber-400 text-slate-950 font-black text-[11px]">+250 PTS</span>' +
+            '<span class="px-2.5 py-1 rounded-full bg-pink-500 text-white font-black text-[11px]">+2,500 PTS</span>' +
+            '<span class="px-2.5 py-1 rounded-full bg-cyan-400 text-slate-950 font-black text-[11px]">+10,000 PTS</span>' +
           '</div>' +
-          '<div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-extrabold text-amber-300">' +
-            '👑 Pick Winner (+PTS)' +
-          '</div>' +
+          '<span class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-pink-600 text-white font-black text-xs uppercase shadow-lg shrink-0">' +
+            '<i class="fa-solid fa-flag-checkered mr-1"></i> End Round' +
+          '</span>' +
         '</div>',
         chips: [
-          { icon: "fa-flag-checkered text-pink-400", label: "End Round on Last Flip or Clock" },
-          { icon: "fa-crown text-amber-300", label: "Award Round Points to Winner" },
-          { icon: "fa-chart-line text-emerald-400", label: "Live Leaderboard Updates Instantly" }
+          { icon: "fa-coins text-amber-300", label: "100 to 10,000 Round PTS (0s)" },
+          { icon: "fa-shuffle text-cyan-300", label: "Encourages Trying Other Cards" },
+          { icon: "fa-crown text-pink-400", label: "Winner Gets Card Bounty PTS" }
         ]
       },
       {
         title: "Final Round Fanfare, End Game & New Round",
-        badge: "Step 3 • Championship Celebration",
-        description: "After every round winner is chosen, a celebration popup announces the winner and updated total points. On the final round, it expands into a wide auto-fitting fanfare banner with a shimmering glow strip, spinning trophy, and quick End Game and New Round buttons so you can either wrap up the session or launch a fresh round right away.",
+        badge: "Step 3 - Championship Celebration",
+        description: "After selecting a round winner, a celebration modal shows the winner and updated score. On the final round, a wide fanfare banner appears with a spinning trophy and quick End Game and New Round buttons to finish the session or start a fresh round right away.",
         visual: '<div class="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-2 border-amber-300 rounded-2xl p-4 flex flex-col gap-3">' +
           '<div class="h-1.5 w-full rounded-full fanfare-glow-bar"></div>' +
           '<div class="flex flex-wrap items-center justify-between gap-3">' +
@@ -2463,75 +2959,75 @@
           '</div>' +
         '</div>',
         chips: [
-          { icon: "fa-expand text-amber-300", label: "Auto-Fitting Wide Final Banner" },
+          { icon: "fa-expand text-amber-300", label: "Wide Final Round Fanfare" },
           { icon: "fa-door-open text-rose-400", label: "End Game Exits Rounds" },
-          { icon: "fa-rotate-right text-emerald-400", label: "New Round Restarts cleanly" }
+          { icon: "fa-rotate-right text-emerald-400", label: "New Round Restarts Cycle" }
         ]
       },
       {
-        title: "Party Mode, Presets, Categories & Saved Cards",
-        badge: "Step 4 • Free Play & Tools",
-        description: "Click Party Mode (or End Game) anytime to turn off rounds and play freely with unlimited cards, custom Presets, category toggles, language switching, bookmarking/copying prompts, and 1-Card clock mode (15s/30s/60s with twin-bell shake and explosion). Click Game Mode or Scores whenever you want structured rounds again.",
+        title: "Party Mode, Presets, Categories & Languages",
+        badge: "Step 4 - Free Play & Tools",
+        description: "Click Party Mode (or End Game) anytime to turn off rounds and chat freely with unlimited cards, custom Presets, category toggles, language switching across card fronts and backs, saved/copied prompts, and the 1-Card clock timer (15s/30s/60s).",
         visual: '<div class="bg-gradient-to-br from-cyan-950/70 via-slate-900 to-indigo-950 border border-cyan-500/40 rounded-2xl p-4 flex flex-wrap items-center justify-center gap-3">' +
           '<span class="px-3.5 py-2 rounded-xl bg-slate-800 border border-pink-400/50 text-white font-black text-xs">' +
             '<i class="fa-solid fa-champagne-glasses text-pink-400 mr-1.5"></i> Party Mode' +
           '</span>' +
           '<i class="fa-solid fa-arrow-right text-cyan-300"></i>' +
           '<span class="px-3.5 py-2 rounded-xl bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 font-black text-xs">' +
-            '∞ Cards • Presets • Bookmarks • Clock' +
+            'Unlimited Cards - Presets - Languages - Clock' +
           '</span>' +
         '</div>',
         chips: [
           { icon: "fa-champagne-glasses text-pink-400", label: "Party Mode = Zero Rounds" },
-          { icon: "fa-sliders text-indigo-400", label: "Mix Presets & 10 Categories" },
-          { icon: "fa-bookmark text-cyan-300", label: "Save Prompts & Switch Languages" }
+          { icon: "fa-globe text-indigo-400", label: "Card Fronts & Backs Translate" },
+          { icon: "fa-clock text-cyan-300", label: "1-Card Twin-Bell Timer" }
         ]
       }
     ];
 
     var TUTORIAL_STEPS_ES = [
       {
-        title: "Modo 4 Cartas: Gira la 1.ª Carta para Iniciar",
-        badge: "Paso 1 • Inicio en 4 Cartas",
-        description: "En el modo de 4 cartas con Modo Juego activo, las cartas empiezan boca abajo mostrando su categoría y puntos. Al girar la primera carta la ronda pasa a EN VIVO, muestra un cartel flotante que sube y se desvanece, y cuenta las cartas giradas (ej. Giradas 1/4). Si tocas una carta ya girada, vuelve a voltearse con una nueva pregunta de su categoría.",
+        title: "Tan Fácil Como 1 - 2 - 3: Modo Juego, Marcador y Jugar",
+        badge: "Paso 1 - Inicio Rápido 1-2-3",
+        description: "Empezar toma tres pasos: 1) Haz clic en Modo Juego para activar rondas (en 1 Carta o 4 Cartas). 2) Actualiza el Marcador en la ventana de Modo Juego y Marcador con jugadores y rondas. 3) Juega - gira tu primera carta para que suba el cartel de inicio de ronda.",
         visual: TUTORIAL_STEPS[0].visual,
         chips: [
-          { icon: "fa-arrow-up text-amber-300", label: "Cartel de Inicio que Sube" },
-          { icon: "fa-hashtag text-cyan-400", label: "Cuenta Giradas (0/4 → 4/4)" },
-          { icon: "fa-fire text-pink-400", label: "Puntos, Modos y Categorías" }
+          { icon: "fa-gamepad text-emerald-400", label: "1. Clic en Modo Juego" },
+          { icon: "fa-trophy text-amber-300", label: "2. Actualiza Marcador y Rondas" },
+          { icon: "fa-play text-pink-400", label: "3. Juega y Cartel de Ronda" }
         ]
       },
       {
-        title: "Fin de Ronda y Selección del Ganador",
-        badge: "Paso 2 • Cierre de Ronda",
-        description: "Al llegar al último giro de una ronda en 4 cartas—o al terminar una pregunta en 1 carta con el reloj—pulsa Fin Ronda para abrir el selector de ganador. Elige a un jugador (hasta 10) para sumarle los puntos de la ronda y actualizar el marcador en vivo.",
+        title: "Puntos Variables (100 a 10,000 PTS) y Fin de Ronda",
+        badge: "Paso 2 - Puntos Variables",
+        description: "Cada carta muestra un premio variable de 100 hasta 10,000 puntos (siempre números redondos terminados en 0) para animar a elegir otras cartas. Al terminar la ronda, pulsa Fin Ronda y elige al ganador para sumar los puntos de esa carta.",
         visual: TUTORIAL_STEPS[1].visual,
         chips: [
-          { icon: "fa-flag-checkered text-pink-400", label: "Fin Ronda al Final o Reloj" },
-          { icon: "fa-crown text-amber-300", label: "Asigna Puntos al Ganador" },
-          { icon: "fa-chart-line text-emerald-400", label: "Marcador en Vivo Actualizado" }
+          { icon: "fa-coins text-amber-300", label: "100 a 10,000 PTS (Terminados en 0)" },
+          { icon: "fa-shuffle text-cyan-300", label: "Anima a Probar Otras Cartas" },
+          { icon: "fa-crown text-pink-400", label: "Premio Según la Carta Elegida" }
         ]
       },
       {
         title: "Fanfarria Final, Terminar Juego y Nueva Ronda",
-        badge: "Paso 3 • Pantalla de Campeonato",
-        description: "Tras elegir al ganador de cada ronda aparece la celebración con sus puntos. En la ronda final se muestra un cartel ancho adaptable con barra luminosa, trofeo giratorio y botones de Terminar Juego y Nueva Ronda para cerrar o empezar otra ronda al instante.",
+        badge: "Paso 3 - Celebración Final",
+        description: "Al elegir ganador aparece la celebración con su puntaje. En la ronda final se muestra un cartel ancho con trofeo giratorio y botones de Terminar Juego y Nueva Ronda para cerrar o iniciar otra ronda al instante.",
         visual: TUTORIAL_STEPS[2].visual,
         chips: [
-          { icon: "fa-expand text-amber-300", label: "Cartel Final Ancho Adaptable" },
+          { icon: "fa-expand text-amber-300", label: "Cartel Final Ancho" },
           { icon: "fa-door-open text-rose-400", label: "Terminar Juego Cierra Rondas" },
-          { icon: "fa-rotate-right text-emerald-400", label: "Nueva Ronda Reinicia el Ciclo" }
+          { icon: "fa-rotate-right text-emerald-400", label: "Nueva Ronda Reinicia" }
         ]
       },
       {
-        title: "Modo Fiesta, Modos, Categorías y Guardados",
-        badge: "Paso 4 • Juego Libre y Herramientas",
-        description: "Pulsa Modo Fiesta (o Terminar Juego) en cualquier momento para jugar sin rondas con cartas ilimitadas, modos predefinidos, categorías activables, cambio de idioma, temas guardados/copiados y reloj de 1 carta (15s/30s/60s). Activa Modo Juego o Marcador cuando quieras volver a competir.",
+        title: "Modo Fiesta, Modos, Categorías e Idiomas",
+        badge: "Paso 4 - Juego Libre y Herramientas",
+        description: "Pulsa Modo Fiesta (o Terminar Juego) cuando quieras jugar sin rondas con cartas ilimitadas, modos predefinidos, categorías, traducción en frente y reverso de cartas, guardados y reloj de 1 carta (15s/30s/60s).",
         visual: TUTORIAL_STEPS[3].visual,
         chips: [
           { icon: "fa-champagne-glasses text-pink-400", label: "Modo Fiesta Sin Rondas" },
-          { icon: "fa-sliders text-indigo-400", label: "Modos y 10 Categorías" },
-          { icon: "fa-bookmark text-cyan-300", label: "Guardar, Copiar e Idiomas" }
+          { icon: "fa-globe text-indigo-400", label: "Frente y Reverso Traducidos" },
+          { icon: "fa-clock text-cyan-300", label: "Reloj de 1 Carta" }
         ]
       }
     ];
@@ -2938,8 +3434,12 @@
       }
 
       if (gameState.enabled && cardCountView === 1) {
+        var wasNotStarted = !gameState.roundStarted;
         gameState.roundStarted = true;
         saveGameState();
+        if (wasNotStarted) {
+          showProminentFloatingRoundStart(gameState.currentRound, gameState.totalRounds, getCurrentRoundPointsValue());
+        }
       }
 
       bombRunning = true;
@@ -3132,9 +3632,10 @@
       startLiveTyping(index, finalText, playSound, activeLang);
     }
 
-    function getBountyBadgeMarkup(compact) {
+    function getCardBountyBadgeMarkup(index, compact) {
       if (!gameState.enabled) return "";
-      var ptsText = "+" + Number(gameState.pointsPerRound).toLocaleString() + " " + t("ptsSuffix");
+      var cardPts = normalizeRoundPoints(cardPointBounties[index] || gameState.pointsPerRound);
+      var ptsText = "+" + Number(cardPts).toLocaleString() + " " + t("ptsSuffix");
       if (compact) {
         return '<span class="bounty-badge-pop inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[10px] uppercase tracking-wider shadow">' +
           '<i class="fa-solid fa-bolt"></i> ' + escapeHtml(ptsText) +
@@ -3148,10 +3649,10 @@
     }
 
     function getDeckBackMarkup(topic, index, catStyle) {
-      var categoryLabel = translateCategoryLabel(topic && topic.category ? topic.category : "");
+      var categoryLabel = getLocalizedCategoryName(topic && topic.category ? topic.category : "");
       return '<div class="deck-back-surface rounded-[14px] h-full w-full p-4 sm:p-5 flex flex-col items-center justify-between text-center relative overflow-hidden border border-white/10">' +
         '<div class="flex items-center justify-between w-full gap-2 text-[10px] font-black uppercase tracking-widest text-amber-300">' +
-          getBountyBadgeMarkup(true) +
+          getCardBountyBadgeMarkup(index, true) +
           '<span class="ml-auto">' + escapeHtml(t("tapToFlip")) + '</span>' +
         '</div>' +
         '<div class="my-1 flex flex-col items-center justify-center gap-2.5">' +
@@ -3275,320 +3776,336 @@
           '">' +
           '<div>' +
             '<div class="font-extrabold text-xs sm:text-sm">' + escapeHtml(disp.name) + '</div>' +
-            '<div class="text-[11px] ' + (isActive ? "text-indigo-100" : "text-slate-500 dark:text-slate-400") + ' mt-0.5">' + escapeHtml(disp.desc) + '</div>' +
+            '<div class="text-[11px] ' + (isActive ? "text-indigo-100" : "text-slate-500 dark:text-slate-400") + '">' + escapeHtml(disp.desc) + '</div>' +
           '</div>' +
-          (isActive ? '<i class="fa-solid fa-circle-check text-base shrink-0"></i>' : '<i class="fa-regular fa-circle text-sm opacity-40 shrink-0"></i>') +
-        "</button>";
+          '<i class="fa-solid ' + (isActive ? "fa-circle-check text-white text-base" : "fa-chevron-right text-slate-400 text-xs") + '"></i>' +
+        '</button>';
       }).join("");
     }
 
-    function selectPreset(modeId) {
-      activePreset = modeId;
-      var preset = PRESET_MODES.find(function(m) { return m.id === modeId; });
-      if (preset) {
-        selectedCategories = new Set(preset.categories);
+    function renderCategoryPills() {
+      var container = document.getElementById("category-pills");
+      var bulkEl = document.getElementById("category-bulk-actions");
+      var summaryEl = document.getElementById("modal-selected-summary");
+      var allCats = Object.keys(CATEGORY_STYLES);
+
+      if (bulkEl) {
+        bulkEl.innerHTML =
+          '<button onclick="selectAllCategories()" class="px-3 py-1.5 rounded-lg bg-indigo-600/15 hover:bg-indigo-600/25 text-indigo-700 dark:text-indigo-300 font-bold text-xs cursor-pointer transition-colors">' +
+            '<i class="fa-solid fa-check-double mr-1"></i> ' + escapeHtml(t("selectAll")) +
+          '</button>' +
+          '<button onclick="unselectAllCategories()" class="px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer transition-colors">' +
+            '<i class="fa-solid fa-xmark mr-1"></i> ' + escapeHtml(t("unselectAll")) +
+          '</button>';
       }
+
+      if (summaryEl) {
+        summaryEl.innerText = t("selectedSummary")
+          .replace("{count}", String(selectedCategories.size))
+          .replace("{total}", String(allCats.length));
+      }
+
+      if (!container) return;
+      container.innerHTML = allCats.map(function(cat) {
+        var isSel = selectedCategories.has(cat);
+        var style = CATEGORY_STYLES[cat];
+        var label = translateCategoryLabel(cat);
+        return '<button onclick="toggleCategory(\'' + cat.replace(/'/g, "\\'") + '\')" class="px-3 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between gap-2 border text-left ' +
+          (isSel
+            ? style.bg + " " + style.text + " " + style.border + " shadow-sm ring-1 ring-inset ring-white/20"
+            : "bg-slate-100/70 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/70 opacity-75 hover:opacity-100") +
+          '">' +
+          '<span class="truncate">' + escapeHtml(label) + '</span>' +
+          '<i class="fa-solid ' + (isSel ? "fa-square-check text-emerald-500" : "fa-square text-slate-400") + ' text-sm shrink-0"></i>' +
+        '</button>';
+      }).join("");
+
       updateFilterButtonsUI();
+    }
+
+    function selectPreset(modeId) {
+      var mode = PRESET_MODES.find(function(m) { return m.id === modeId; });
+      if (!mode) return;
+      activePreset = mode.id;
+      selectedCategories = new Set(mode.categories);
       renderModePills();
       renderCategoryPills();
       togglePresetsModal(false);
       generateTopics();
     }
 
-    function selectAllCategories() {
-      activePreset = "all";
-      selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
-      updateFilterButtonsUI();
-      renderModePills();
-      renderCategoryPills();
-      generateTopics();
-      showToast(t("selectAll"), "success");
-    }
-
-    function unselectAllCategories() {
-      activePreset = "custom";
-      selectedCategories.clear();
-      updateFilterButtonsUI();
-      renderModePills();
-      renderCategoryPills();
-      showToast(t("unselectAll"), "info");
-    }
-
-    function renderCategoryPills() {
-      var container = document.getElementById("category-pills");
-      var bulkContainer = document.getElementById("category-bulk-actions");
-      var summaryEl = document.getElementById("modal-selected-summary");
-
-      var allCategories = Object.keys(CATEGORY_STYLES);
-      var allSelected = selectedCategories.size === allCategories.length;
-      var hasAnySelected = selectedCategories.size > 0;
-
-      if (bulkContainer) {
-        bulkContainer.innerHTML =
-          '<button onclick="selectAllCategories()" class="flex-1 py-2 px-3 rounded-xl border font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ' +
-            (!allSelected
-              ? "bg-emerald-600 hover:bg-emerald-500 text-white border-emerald-500 shadow-sm"
-              : "bg-slate-200/50 dark:bg-slate-800/50 text-slate-400 border-slate-300/60 dark:border-slate-700/60 opacity-60") +
-            '"><i class="fa-solid fa-check-double text-[11px]"></i><span>' + escapeHtml(t("selectAll")) + '</span></button>' +
-          '<button onclick="unselectAllCategories()" class="flex-1 py-2 px-3 rounded-xl border font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ' +
-            (hasAnySelected
-              ? "bg-rose-600 hover:bg-rose-500 text-white border-rose-500 shadow-sm"
-              : "bg-slate-200/50 dark:bg-slate-800/50 text-slate-400 border-slate-300/60 dark:border-slate-700/60 opacity-60") +
-            '"><i class="fa-solid fa-xmark text-[11px]"></i><span>' + escapeHtml(t("unselectAll")) + '</span></button>';
-      }
-
-      if (summaryEl) {
-        summaryEl.innerText = t("selectedSummary")
-          .replace("{count}", String(selectedCategories.size))
-          .replace("{total}", String(allCategories.length));
-      }
-
-      if (!container) return;
-
-      container.innerHTML = allCategories.map(function(cat) {
-        var isSelected = selectedCategories.has(cat);
-        var style = CATEGORY_STYLES[cat];
-        return '<button onclick="toggleCategory(\'' + cat + '\')" class="px-3.5 py-2.5 rounded-xl border font-bold text-xs transition-all flex items-center justify-between gap-2 cursor-pointer ' +
-          (isSelected
-            ? (style.bg + " " + style.text + " " + style.border + " shadow-sm")
-            : "bg-slate-100/70 dark:bg-slate-800/40 text-slate-400 border-slate-200/60 dark:border-slate-800 opacity-65 hover:opacity-100") +
-          '"><span>' + escapeHtml(translateCategoryLabel(cat)) + "</span>" + (isSelected ? '<i class="fa-solid fa-circle-check text-sm"></i>' : '<i class="fa-regular fa-circle text-sm opacity-40"></i>') + "</button>";
-      }).join("");
-    }
-
     function toggleCategory(cat) {
       activePreset = "custom";
       if (selectedCategories.has(cat)) {
         if (selectedCategories.size === 1) {
-          showToast(t("selectedSummary").replace("{count}", "1").replace("{total}", String(Object.keys(CATEGORY_STYLES).length)), "warning");
+          showToast("Keep at least one category selected", "warning");
           return;
         }
         selectedCategories.delete(cat);
       } else {
         selectedCategories.add(cat);
       }
-      updateFilterButtonsUI();
       renderModePills();
       renderCategoryPills();
       generateTopics();
     }
 
-    function generateTopics() {
-      if (selectedCategories.size === 0) {
-        showToast(t("unselectAll"), "warning");
-        toggleCategoriesModal(true);
-        return;
-      }
-      clearAllCardTypingTimers();
-
-      var genIcon = document.getElementById("generate-icon");
-      if (genIcon) {
-        genIcon.classList.add("animate-spin-once");
-        setTimeout(function() { genIcon.classList.remove("animate-spin-once"); }, 400);
-      }
-
-      var indicesToFlip = [];
-      for (var i = 0; i < cardCountView; i++) {
-        indicesToFlip.push(i);
-      }
-
-      triggerCardFlip(indicesToFlip, function() {
-        var nextTopics = [];
-        for (var i = 0; i < cardCountView; i++) {
-          nextTopics[i] = generateSequentialTopic();
-          cardResolvedTexts[i] = getImmediateTranslatedString(nextTopics[i].text, currentLanguage);
-          if (cardCountView === 4) {
-            cardRevealedStates[i] = false;
-            cardTypingProgress[i] = 0;
-          } else {
-            cardRevealedStates[i] = true;
-            cardTypingProgress[i] = 0;
-          }
-        }
-        currentTopics = nextTopics;
-        updateGameModeUI();
-        renderTopicCards();
-        if (cardCountView === 1 && currentTopics[0]) {
-          translateThenTypeCard(0, currentTopics[0], false);
-        }
-      }, true);
-
-      if (cardCountView === 1) {
-        resetBombTimer(false);
-      }
+    function selectAllCategories() {
+      activePreset = "all";
+      selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
     }
 
-    function handleCardTap(e, index) {
-      if (e.target.closest("button") || e.target.closest("a")) return;
+    function unselectAllCategories() {
+      var firstCat = Object.keys(CATEGORY_STYLES)[0];
+      activePreset = "custom";
+      selectedCategories = new Set([firstCat]);
+      renderModePills();
+      renderCategoryPills();
+      showToast("Kept " + translateCategoryLabel(firstCat) + " active", "info");
+      generateTopics();
+    }
+
+    function generateTopics() {
+      var icon = document.getElementById("generate-icon");
+      if (icon) {
+        icon.classList.remove("animate-spin-once");
+        void icon.offsetWidth;
+        icon.classList.add("animate-spin-once");
+      }
+
+      clearAllCardTypingTimers();
+      var newTopics = [];
+      var usedInBatch = new Set();
+      var avail = getPopulatedCategories();
+      if (avail.length === 0) avail = Object.keys(FALLBACK_QUESTIONS);
+
+      var newBounties = [];
+      var usedPointsSet = new Set();
+
+      for (var i = 0; i < cardCountView; i++) {
+        var chosenCat = null;
+        if (cardCountView === 4) {
+          var unusedCats = avail.filter(function(c) { return !usedInBatch.has(c); });
+          var pool = unusedCats.length > 0 ? unusedCats : avail;
+          chosenCat = pool[Math.floor(Math.random() * pool.length)];
+          usedInBatch.add(chosenCat);
+        }
+        newTopics.push(generateSequentialTopic(chosenCat));
+        var cardPts = pickVariableCardPoints(i, usedPointsSet);
+        usedPointsSet.add(cardPts);
+        newBounties.push(cardPts);
+      }
+
+      currentTopics = newTopics;
+      cardPointBounties = newBounties;
+      activeRoundPrize = normalizeRoundPoints(newBounties[0] || gameState.pointsPerRound);
+
+      for (var tIdx = 0; tIdx < 4; tIdx++) {
+        if (currentTopics[tIdx]) {
+          cardResolvedTexts[tIdx] = getImmediateTranslatedString(currentTopics[tIdx].text, currentLanguage);
+        } else {
+          cardResolvedTexts[tIdx] = "";
+        }
+      }
 
       if (cardCountView === 4) {
-        if (!cardRevealedStates[index]) {
-          cardRevealedStates[index] = true;
-          onCardFlippedInGameMode(index);
-          triggerCardFlip([index], function() {
-            renderTopicCards();
-            var topic = currentTopics[index];
-            if (topic) {
-              translateThenTypeCard(index, topic, true);
-            }
-          }, true);
-        } else {
-          clearCardTypingTimer(index);
-          var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
-          cardRevealedStates[index] = false;
-          cardTypingProgress[index] = 0;
-          updateGameModeUI();
-          triggerCardFlip([index], function() {
-            currentTopics[index] = generateSequentialTopic(prevCategory);
-            cardResolvedTexts[index] = getImmediateTranslatedString(currentTopics[index].text, currentLanguage);
-            renderTopicCards();
-          }, true);
-        }
-        return;
+        cardRevealedStates = [false, false, false, false];
+        cardTypingProgress = [0, 0, 0, 0];
+      } else {
+        cardRevealedStates = [true, false, false, false];
+        cardTypingProgress = [0, 0, 0, 0];
       }
 
-      refreshCardAtIndex(index);
-    }
-
-    function refreshCardAtIndex(index) {
-      if (selectedCategories.size === 0) {
-        showToast(t("unselectAll"), "warning");
-        toggleCategoriesModal(true);
-        return;
-      }
-      clearCardTypingTimer(index);
-
-      var prevCategory = currentTopics[index] ? currentTopics[index].category : null;
-      var shouldTypeLive = true;
-      var playTypingAudio = (cardCountView === 4);
-      cardRevealedStates[index] = true;
-      cardTypingProgress[index] = 0;
-
-      triggerCardFlip([index], function() {
-        currentTopics[index] = generateSequentialTopic(prevCategory);
-        cardResolvedTexts[index] = getImmediateTranslatedString(currentTopics[index].text, currentLanguage);
-        renderTopicCards();
-        if (shouldTypeLive && currentTopics[index]) {
-          translateThenTypeCard(index, currentTopics[index], playTypingAudio);
-        }
-      }, true);
+      updateGameModeUI();
+      renderTopicCards();
 
       if (cardCountView === 1) {
+        var singleTopic = currentTopics[0];
+        var singleFull = cardResolvedTexts[0] || (singleTopic ? singleTopic.text : "");
+        startLiveTyping(0, singleFull, false, currentLanguage);
+        if (normalizeLangCode(currentLanguage) !== "en" && singleTopic) {
+          translateThenTypeCard(0, singleTopic, false);
+        }
         resetBombTimer(false);
+      } else {
+        var activeLang = normalizeLangCode(currentLanguage);
+        if (activeLang !== "en") {
+          Promise.all(currentTopics.map(function(tp, idx) {
+            if (!tp) return Promise.resolve();
+            return resolveTranslatedTopicText(tp, activeLang).then(function(resText) {
+              if (normalizeLangCode(currentLanguage) === activeLang) {
+                cardResolvedTexts[idx] = resText || tp.text;
+              }
+            });
+          }));
+        }
       }
     }
 
-    function triggerCardFlip(indices, dataUpdateFn, skipAutoRender) {
+    function flipFourCard(index) {
+      if (cardCountView !== 4 || !currentTopics[index]) return;
       playCardFlipSound();
 
-      var cardEls = indices.map(function(idx) {
-        return document.getElementById("card-inner-" + idx);
-      }).filter(Boolean);
+      var isCurrentlyFaceDown = !cardRevealedStates[index];
 
-      if (cardEls.length === 0) {
-        dataUpdateFn();
-        if (!skipAutoRender) renderTopicCards();
-        return;
+      if (isCurrentlyFaceDown) {
+        cardRevealedStates[index] = true;
+        var cardEl = document.getElementById("topic-card-" + index);
+        if (cardEl) {
+          cardEl.classList.remove("card-flipping");
+          void cardEl.offsetWidth;
+          cardEl.classList.add("card-flipping");
+          setTimeout(function() {
+            if (cardEl) cardEl.classList.remove("card-flipping");
+          }, 520);
+        }
+        renderTopicCards();
+        var topicObj = currentTopics[index];
+        var instantText = getImmediateTranslatedString(topicObj.text, currentLanguage);
+        cardResolvedTexts[index] = instantText;
+        startLiveTyping(index, instantText, true, currentLanguage);
+        if (normalizeLangCode(currentLanguage) !== "en") {
+          translateThenTypeCard(index, topicObj, false);
+        }
+        onCardFlippedInGameMode(index);
+      } else {
+        clearCardTypingTimer(index);
+        cardPointBounties[index] = pickVariableCardPoints(index, new Set(cardPointBounties));
+        var freshTopic = generateSequentialTopic(currentTopics[index].category);
+        currentTopics[index] = freshTopic;
+        cardResolvedTexts[index] = getImmediateTranslatedString(freshTopic.text, currentLanguage);
+        cardRevealedStates[index] = false;
+
+        var cardElBack = document.getElementById("topic-card-" + index);
+        if (cardElBack) {
+          cardElBack.classList.remove("card-flipping");
+          void cardElBack.offsetWidth;
+          cardElBack.classList.add("card-flipping");
+          setTimeout(function() {
+            if (cardElBack) cardElBack.classList.remove("card-flipping");
+          }, 520);
+        }
+        renderTopicCards();
+        updateGameModeUI();
       }
+    }
 
-      cardEls.forEach(function(el) {
-        el.classList.remove("card-flipping");
-        void el.offsetWidth;
-        el.classList.add("card-flipping");
-      });
+    function refreshSingleCard(index, event) {
+      if (event) event.stopPropagation();
+      playCardFlipSound();
+      clearCardTypingTimer(index);
+      var prevCat = currentTopics[index] ? currentTopics[index].category : null;
+      var updated = generateSequentialTopic(prevCat);
+      currentTopics[index] = updated;
+      cardPointBounties[index] = pickVariableCardPoints(index, new Set(cardPointBounties));
+      var instantText = getImmediateTranslatedString(updated.text, currentLanguage);
+      cardResolvedTexts[index] = instantText;
 
-      setTimeout(function() {
-        dataUpdateFn();
-        if (!skipAutoRender) renderTopicCards();
-        var updatedEls = indices.map(function(idx) {
-          return document.getElementById("card-inner-" + idx);
-        }).filter(Boolean);
-        updatedEls.forEach(function(el) {
-          el.classList.remove("card-flipping");
-        });
-      }, 250);
+      if (cardCountView === 4) {
+        cardRevealedStates[index] = true;
+        var cardEl = document.getElementById("topic-card-" + index);
+        if (cardEl) {
+          cardEl.classList.remove("card-flipping");
+          void cardEl.offsetWidth;
+          cardEl.classList.add("card-flipping");
+          setTimeout(function() {
+            if (cardEl) cardEl.classList.remove("card-flipping");
+          }, 520);
+        }
+        renderTopicCards();
+        startLiveTyping(index, instantText, true, currentLanguage);
+        if (normalizeLangCode(currentLanguage) !== "en") {
+          translateThenTypeCard(index, updated, false);
+        }
+      } else {
+        cardRevealedStates[0] = true;
+        renderTopicCards();
+        startLiveTyping(0, instantText, true, currentLanguage);
+        if (normalizeLangCode(currentLanguage) !== "en") {
+          translateThenTypeCard(0, updated, false);
+        }
+        resetBombTimer(false);
+      }
     }
 
     function renderTopicCards() {
       var grid = document.getElementById("topics-grid");
       if (!grid) return;
 
-      if (cardCountView === 1) {
-        grid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
-      } else {
-        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
-      }
-
-      var rightCornerGroup = getNellieAndChatomizerMarkup(cardCountView);
-      var showLastFlipEndRound = isLastFlipOfRoundIn4CardView();
-
-      var cardsHtml = currentTopics.map(function(topic, index) {
-        if (!topic) return "";
-
+      grid.innerHTML = currentTopics.map(function(topic, index) {
         var isFav = favoritedTopicIds.has(topic.id);
-        var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
+        var catStyle = CATEGORY_STYLES[topic.category] || { bg: "bg-slate-100", text: "text-slate-700", border: "border-slate-300" };
+        var localizedCat = getLocalizedCategoryName(topic.category);
         var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
-        var displayCat = translateCategoryLabel(topic.category);
-        var displayText = (cardResolvedTexts[index] && cardResolvedTexts[index].trim())
-          ? cardResolvedTexts[index]
-          : getTranslatedTopicText(topic, currentLanguage);
 
         if (isFaceDown) {
-          return '<div class="card-container h-full w-full min-h-[185px]">' +
-            '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-1.5 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
-              getDeckBackMarkup(topic, index, catStyle) +
-            '</div>' +
+          return '<div id="topic-card-' + index + '" onclick="flipFourCard(' + index + ')" role="button" tabindex="0" aria-label="Flip card ' + (index + 1) + '" class="glass-card p-1 flex flex-col justify-between cursor-pointer select-none min-h-[205px] sm:min-h-[225px]">' +
+            getDeckBackMarkup(topic, index, catStyle) +
           '</div>';
         }
 
-        var pillMarkup = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
-          "<span>" + escapeHtml(displayCat) + "</span>" +
-        '</span>';
+        var textSizeClass = cardCountView === 1
+          ? "text-lg sm:text-2xl leading-snug"
+          : "text-sm sm:text-base leading-snug";
 
-        var questionBodyHtml = (cardCountView === 4)
-          ? '<p id="typed-question-' + index + '" class="tiktok-card-text text-base sm:text-lg leading-snug font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>'
-          : '<p id="typed-question-' + index + '" class="tiktok-card-text text-lg sm:text-2xl text-center leading-relaxed font-extrabold tracking-tight">&quot;' + escapeHtml(displayText) + '&quot;</p>';
+        var minHeightClass = cardCountView === 1
+          ? "min-h-[240px] sm:min-h-[270px]"
+          : "min-h-[205px] sm:min-h-[225px]";
 
-        var middleBountySlot = (cardCountView === 1 && gameState.enabled)
-          ? '<div class="flex-1 flex items-center justify-center px-1">' + getBountyBadgeMarkup(false) + '</div>'
-          : (cardCountView === 4 && showLastFlipEndRound && index === 3)
-            ? '<button type="button" onclick="completeCurrentRound()" class="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-400 to-pink-600 text-white font-black text-[10px] uppercase tracking-wider shadow cursor-pointer flex items-center gap-1"><i class="fa-solid fa-flag-checkered"></i> ' + escapeHtml(t("endRound")) + '</button>'
-            : '';
+        var displayedText = cardResolvedTexts[index] || getTranslatedTopicText(topic, currentLanguage);
 
-        return '<div class="card-container h-full w-full min-h-[185px]">' +
-          '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
-            '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
-              '<div class="text-xs font-extrabold tracking-tight opacity-70 shrink-0">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</div>' +
-              middleBountySlot +
-              '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
-                '<button onclick="refreshCardAtIndex(' + index + ')" title="' + escapeQuotes(t("refreshTitle")) + '" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-solid fa-rotate text-sm"></i></button>' +
-                '<button onclick="toggleFavorite(\'' + topic.id + "', " + index + ')" title="' + escapeQuotes(t("bookmarkTitle")) + '" class="p-2 rounded-xl transition-all ' + (isFav ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 shadow-sm" : "text-slate-400 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800") + '"><i class="fa-solid fa-thumbtack text-sm ' + (isFav ? "rotate-45" : "") + '"></i></button>' +
-                '<button onclick="copyTopicText(\'' + escapeQuotes(displayText) + '\')" title="' + escapeQuotes(t("copyTitle")) + '" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><i class="fa-regular fa-copy text-sm"></i></button>' +
-              '</div>' +
+        var flipHintMarkup = cardCountView === 4
+          ? '<span onclick="flipFourCard(' + index + ')" class="text-[10px] font-bold text-slate-500 hover:text-indigo-500 dark:text-slate-400 dark:hover:text-cyan-300 cursor-pointer flex items-center gap-1" title="' + escapeHtml(t("flipBackHint")) + '">' +
+              '<i class="fa-solid fa-rotate-left text-[9px]"></i> ' + escapeHtml(t("changeCardHint")) +
+            '</span>'
+          : '';
+
+        return '<div id="topic-card-' + index + '" class="glass-card p-4 sm:p-5 flex flex-col justify-between ' + minHeightClass + '">' +
+          '<div class="flex items-center justify-between gap-2 mb-2 z-10">' +
+            '<div class="flex items-center gap-1.5 flex-wrap">' +
+              '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
+                escapeHtml(localizedCat) +
+              '</span>' +
+              getCardBountyBadgeMarkup(index, true) +
             '</div>' +
-            '<div class="my-2 flex-grow flex items-center justify-center">' +
-              questionBodyHtml +
+
+            '<div class="flex items-center gap-1">' +
+              '<button onclick="refreshSingleCard(' + index + ', event)" title="' + escapeHtml(t("refreshTitle")) + '" class="p-1.5 rounded-lg text-slate-500 hover:text-indigo-500 dark:text-slate-400 dark:hover:text-indigo-400 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 transition-colors cursor-pointer">' +
+                '<i class="fa-solid fa-rotate text-xs"></i>' +
+              '</button>' +
+              '<button onclick="toggleFavorite(\'' + topic.id + '\', event)" title="' + escapeHtml(t("bookmarkTitle")) + '" class="p-1.5 rounded-lg transition-colors cursor-pointer ' +
+                (isFav ? "text-pink-500 bg-pink-500/10" : "text-slate-500 hover:text-pink-500 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800/60") + '">' +
+                '<i class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-bookmark text-xs"></i>' +
+              '</button>' +
+              '<button onclick="copyTopic(\'' + topic.id + '\', event)" title="' + escapeHtml(t("copyTitle")) + '" class="p-1.5 rounded-lg text-slate-500 hover:text-emerald-500 dark:text-slate-400 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 transition-colors cursor-pointer">' +
+                '<i class="fa-regular fa-copy text-xs"></i>' +
+              '</button>' +
             '</div>' +
-            '<div class="mt-2 flex items-end justify-between gap-2 relative pt-2">' +
-              '<div class="flex flex-col items-start gap-1.5 pointer-events-none z-10">' +
-                followModelLeftHelper(cardCountView) +
-                pillMarkup +
-              '</div>' +
-              rightCornerGroup +
+          '</div>' +
+
+          '<div class="flex-grow flex items-center justify-center text-center my-1 px-2 py-2.5 rounded-xl bg-white/95 shadow-inner border border-slate-200/80">' +
+            '<p id="typed-question-' + index + '" class="tiktok-card-text ' + textSizeClass + ' font-bold tracking-tight max-w-2xl">' +
+              '&quot;' + escapeHtml(displayedText) + '&quot;' +
+            '</p>' +
+          '</div>' +
+
+          '<div class="flex items-end justify-between mt-1 pt-1 relative min-h-[48px]">' +
+            '<div class="flex flex-col gap-1 z-10">' +
+              '<span class="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-semibold">' + escapeHtml(topic.id.replace("topic-", "#")) + '</span>' +
+              flipHintMarkup +
             '</div>' +
+            getNellieAndChatomizerMarkup(cardCountView) +
           '</div>' +
         '</div>';
       }).join("");
-
-      grid.innerHTML = cardsHtml;
     }
 
-    function followModelLeftHelper(viewCount) {
-      if (viewCount !== 1) return '';
-      return '<div class="flex items-center gap-1.5">' +
-        '<span class="flashing-follow-slow font-black text-xs sm:text-sm tracking-wider uppercase drop-shadow">' + escapeHtml(t("followMe")) + '</span>' +
-        '<span class="pointing-arrow-slow text-sm sm:text-base text-red-500 select-none">👉</span>' +
-      '</div>';
+    function openTutorialFromScores() {
+      toggleScoresModal(false);
+      toggleTutorialModal(true);
     }
 
     function toggleScoresModal(open) {
@@ -3604,47 +4121,40 @@
     function populateScoresTable() {
       var tbody = document.getElementById("scores-table-body");
       if (!tbody) return;
-
-      var cappedScores = sessionScores.slice(0, MAX_GAME_PLAYERS);
-      if (cappedScores.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">' + escapeHtml(t("emptyPodium")) + '</td></tr>';
+      if (sessionScores.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-400">No players yet. Click &quot;Add User&quot; or &quot;Fill 10 Slots&quot; to add players.</td></tr>';
         updatePlayerCountBadge();
         return;
       }
-
-      var sortedScores = cappedScores.slice().sort(function(a, b) {
-        return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
-      });
-
-      tbody.innerHTML = sortedScores.map(function(item) {
+      tbody.innerHTML = sessionScores.slice(0, MAX_GAME_PLAYERS).map(function(entry, idx) {
         return '<tr class="score-row">' +
-          '<td class="p-2"><input type="text" value="' + escapeQuotes(item.name) + '" placeholder="' + escapeQuotes(t("thUser")) + '" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-          '<td class="p-2"><input type="number" value="' + item.points + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-          '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>' +
+          '<td class="p-2"><input type="text" value="' + escapeHtml(entry.name) + '" placeholder="Player ' + (idx + 1) + '" class="score-name-input w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2"><input type="number" value="' + entry.points + '" class="score-pts-input w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono font-bold focus:outline-none focus:border-indigo-500"></td>' +
+          '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="text-slate-400 hover:text-red-500 p-1 cursor-pointer" title="Remove row"><i class="fa-solid fa-trash-can"></i></button></td>' +
         '</tr>';
       }).join("");
       updatePlayerCountBadge();
     }
 
     function addScoreRow(name, points) {
+      if (name === undefined) name = "";
+      if (points === undefined) points = 0;
       var tbody = document.getElementById("scores-table-body");
       if (!tbody) return;
-
-      if (tbody.querySelector("tr td[colspan]")) {
-        tbody.innerHTML = "";
-      }
-
-      var currentRows = tbody.querySelectorAll(".score-row").length;
-      if (currentRows >= MAX_GAME_PLAYERS) {
-        showToast("Maximum " + MAX_GAME_PLAYERS + " players allowed in Game Mode.", "warning");
+      var currentCount = tbody.querySelectorAll(".score-row").length;
+      if (currentCount >= MAX_GAME_PLAYERS) {
+        showToast("Maximum of " + MAX_GAME_PLAYERS + " players allowed", "warning");
         return;
       }
-
+      if (tbody.querySelectorAll(".score-row").length === 0) {
+        tbody.innerHTML = "";
+      }
       var tr = document.createElement("tr");
       tr.className = "score-row";
-      tr.innerHTML = '<td class="p-2"><input type="text" value="' + escapeQuotes(name || "") + '" placeholder="' + escapeQuotes(t("thUser")) + '" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-        '<td class="p-2"><input type="number" value="' + (points || 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-        '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>';
+      tr.innerHTML =
+        '<td class="p-2"><input type="text" value="' + escapeHtml(name) + '" placeholder="Player ' + (currentCount + 1) + '" class="score-name-input w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2"><input type="number" value="' + points + '" class="score-pts-input w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono font-bold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="text-slate-400 hover:text-red-500 p-1 cursor-pointer" title="Remove row"><i class="fa-solid fa-trash-can"></i></button></td>';
       tbody.appendChild(tr);
       updatePlayerCountBadge();
     }
@@ -3652,14 +4162,15 @@
     function expandRowsToMaxPlayers() {
       var tbody = document.getElementById("scores-table-body");
       if (!tbody) return;
-      if (tbody.querySelector("tr td[colspan]")) {
+      if (tbody.querySelectorAll(".score-row").length === 0) {
         tbody.innerHTML = "";
       }
-      var existing = tbody.querySelectorAll(".score-row").length;
-      for (var i = existing + 1; i <= MAX_GAME_PLAYERS; i++) {
-        addScoreRow("Player " + i, 0);
+      var existingCount = tbody.querySelectorAll(".score-row").length;
+      for (var i = existingCount; i < MAX_GAME_PLAYERS; i++) {
+        addScoreRow("Player " + (i + 1), 0);
       }
       updatePlayerCountBadge();
+      showToast("Expanded to " + MAX_GAME_PLAYERS + " player slots", "info");
     }
 
     function removeScoreRow(btn) {
@@ -3667,7 +4178,7 @@
       if (tr) tr.remove();
       var tbody = document.getElementById("scores-table-body");
       if (tbody && tbody.querySelectorAll(".score-row").length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">' + escapeHtml(t("emptyPodium")) + '</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-400">No players yet. Click &quot;Add User&quot; or &quot;Fill 10 Slots&quot;.</td></tr>';
       }
       updatePlayerCountBadge();
     }
@@ -3675,43 +4186,43 @@
     function clearAllScores() {
       var tbody = document.getElementById("scores-table-body");
       if (tbody) {
-        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">' + escapeHtml(t("emptyPodium")) + '</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-slate-400">No players yet. Click &quot;Add User&quot; or &quot;Fill 10 Slots&quot;.</td></tr>';
       }
       updatePlayerCountBadge();
     }
 
     function saveAndApplyScores() {
-      var rows = document.querySelectorAll("#scores-table-body .score-row");
-      var newScores = [];
-      rows.forEach(function(row) {
-        if (newScores.length >= MAX_GAME_PLAYERS) return;
-        var nameInput = row.querySelector(".score-name");
-        var ptsInput = row.querySelector(".score-pts");
-        var name = nameInput ? nameInput.value.trim() : "";
-        var pts = ptsInput ? parseInt(ptsInput.value) || 0 : 0;
-        if (name) {
-          newScores.push({ name: name, points: pts });
-        }
-      });
-
-      newScores.sort(function(a, b) { return b.points - a.points; });
-      sessionScores = newScores.slice(0, MAX_GAME_PLAYERS);
-      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
-
       var cb = document.getElementById("game-mode-enabled-checkbox");
       var roundsInput = document.getElementById("game-rounds-input");
       var qprInput = document.getElementById("game-qpr-input");
       var pprInput = document.getElementById("game-ppr-input");
 
       gameState.enabled = cb ? Boolean(cb.checked) : gameState.enabled;
-      gameState.totalRounds = Math.max(1, parseInt(roundsInput && roundsInput.value) || 5);
-      gameState.questionsPerRound = Math.max(1, parseInt(qprInput && qprInput.value) || 4);
-      gameState.pointsPerRound = Math.max(1, parseInt(pprInput && pprInput.value) || 100);
+      gameState.totalRounds = Math.max(1, Math.min(99, parseInt(roundsInput && roundsInput.value) || 5));
+      gameState.questionsPerRound = Math.max(1, Math.min(50, parseInt(qprInput && qprInput.value) || 4));
+      gameState.pointsPerRound = normalizeRoundPoints(pprInput && pprInput.value ? pprInput.value : 1000);
       if (gameState.currentRound > gameState.totalRounds) {
         gameState.currentRound = 1;
         gameState.currentQuestionInRound = 1;
       }
       saveGameState();
+
+      var rows = document.querySelectorAll("#scores-table-body .score-row");
+      var updated = [];
+      rows.forEach(function(row) {
+        var nameInput = row.querySelector(".score-name-input");
+        var ptsInput = row.querySelector(".score-pts-input");
+        var name = nameInput ? nameInput.value.trim() : "";
+        var pts = parseInt(ptsInput ? ptsInput.value : 0, 10);
+        if (isNaN(pts)) pts = 0;
+        if (name) {
+          updated.push({ name: name, points: pts });
+        }
+      });
+
+      updated.sort(function(a, b) { return b.points - a.points; });
+      sessionScores = updated.slice(0, MAX_GAME_PLAYERS);
+      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
 
       renderLeaderboardTicker();
       updateGameModeUI();
@@ -3720,331 +4231,300 @@
       showToast(gameState.enabled ? "Game Mode & Leaderboard updated!" : "Party Mode & Leaderboard updated!", "success");
     }
 
-    function getOrdinalSuffix(rank) {
-      if (rank === 1) return "ST";
-      if (rank === 2) return "ND";
-      if (rank === 3) return "RD";
-      return "TH";
+    function formatLeaderboardEntryHtml(entry, idx, isFloatingLarge) {
+      var ptsNum = Number(entry.points || 0).toLocaleString();
+      var ptsLabel = escapeHtml(t("ptsSuffix"));
+      var rankNum = idx + 1;
+
+      if (idx === 0) {
+        var size1 = isFloatingLarge ? "text-xl sm:text-2xl" : "text-sm sm:text-base";
+        var badge1 = isFloatingLarge ? "w-7 h-7 text-xs" : "w-6 h-6 text-[11px]";
+        return '<span class="card-gold-glow inline-flex items-center gap-2 px-3 py-1 rounded-xl shrink-0">' +
+          '<span class="rank-3d-badge rank-3d-1 ' + badge1 + '">1</span>' +
+          '<i class="fa-solid fa-crown text-amber-400 drop-shadow"></i>' +
+          '<span class="podium-name-1 ' + size1 + '">' + escapeHtml(entry.name) + '</span>' +
+          '<span class="pts-gold ' + size1 + '">' + ptsNum + ' ' + ptsLabel + '</span>' +
+        '</span>';
+      }
+      if (idx === 1) {
+        var size2 = isFloatingLarge ? "text-lg sm:text-xl" : "text-xs sm:text-sm";
+        var badge2 = isFloatingLarge ? "w-6 h-6 text-[11px]" : "w-5 h-5 text-[10px]";
+        return '<span class="card-silver-glow inline-flex items-center gap-2 px-2.5 py-1 rounded-xl shrink-0">' +
+          '<span class="rank-3d-badge rank-3d-2 ' + badge2 + '">2</span>' +
+          '<i class="fa-solid fa-medal text-sky-300"></i>' +
+          '<span class="podium-name-2 ' + size2 + '">' + escapeHtml(entry.name) + '</span>' +
+          '<span class="pts-silver ' + size2 + '">' + ptsNum + ' ' + ptsLabel + '</span>' +
+        '</span>';
+      }
+      if (idx === 2) {
+        var size3 = isFloatingLarge ? "text-lg sm:text-xl" : "text-xs sm:text-sm";
+        var badge3 = isFloatingLarge ? "w-6 h-6 text-[11px]" : "w-5 h-5 text-[10px]";
+        return '<span class="card-bronze-glow inline-flex items-center gap-2 px-2.5 py-1 rounded-xl shrink-0">' +
+          '<span class="rank-3d-badge rank-3d-3 ' + badge3 + '">3</span>' +
+          '<i class="fa-solid fa-award text-orange-400"></i>' +
+          '<span class="podium-name-3 ' + size3 + '">' + escapeHtml(entry.name) + '</span>' +
+          '<span class="pts-bronze ' + size3 + '">' + ptsNum + ' ' + ptsLabel + '</span>' +
+        '</span>';
+      }
+
+      var sizeOther = isFloatingLarge ? "text-base sm:text-lg" : "text-xs sm:text-sm";
+      return '<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/80 dark:border-slate-700/80 shrink-0">' +
+        '<span class="px-1.5 py-0.5 rounded-md bg-slate-700 text-slate-100 font-mono text-[10px] font-black">#' + rankNum + '</span>' +
+        '<span class="font-extrabold text-slate-900 dark:text-white ' + sizeOther + '">' + escapeHtml(entry.name) + '</span>' +
+        '<span class="font-mono font-extrabold text-indigo-600 dark:text-cyan-300 ' + sizeOther + '">' + ptsNum + ' ' + ptsLabel + '</span>' +
+      '</span>';
     }
 
     function renderLeaderboardTicker() {
-      var tickers = [
-        document.getElementById("leaderboard-ticker"),
-        document.getElementById("floating-leaderboard-ticker")
-      ].filter(Boolean);
+      var ticker = document.getElementById("leaderboard-ticker");
+      var floatingTicker = document.getElementById("floating-leaderboard-ticker");
 
-      if (tickers.length === 0) return;
-
-      var playersToShow = sessionScores.slice(0, MAX_GAME_PLAYERS);
-      var ptsLabel = t("ptsSuffix");
-
-      if (playersToShow.length === 0) {
-        var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic text-sm">' + escapeHtml(t("emptyPodium")) + '</span>';
-        tickers.forEach(function(el) { el.innerHTML = emptyHtml; });
+      if (!sessionScores || sessionScores.length === 0) {
+        var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic">' + escapeHtml(t("emptyPodium")) + '</span>';
+        if (ticker) ticker.innerHTML = emptyHtml;
+        if (floatingTicker) floatingTicker.innerHTML = '<span class="text-slate-500 dark:text-slate-400 italic text-sm">' + escapeHtml(t("emptyPodium")) + '</span>';
         return;
       }
 
-      var itemsHtml = playersToShow.map(function(player, index) {
-        var rank = index + 1;
-        var suffix = getOrdinalSuffix(rank);
-        var ptsFormatted = Number(player.points).toLocaleString();
+      var allPlayers = sessionScores.slice(0, MAX_GAME_PLAYERS);
 
-        var badgeClass = "rank-3d-badge bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-400 dark:border-slate-600 h-7 px-2 text-xs";
-        var nameClass = "font-extrabold text-slate-900 dark:text-white tracking-tight text-sm";
-        var ptsClass = "font-mono font-extrabold text-indigo-600 dark:text-cyan-300 text-sm";
-        var cardClass = "flex items-center gap-2.5 bg-slate-100/95 dark:bg-slate-900/95 border border-slate-300 dark:border-slate-700/80 px-3.5 py-1.5 rounded-2xl shrink-0 transition-all";
-        var extraTag = "";
+      var standardSetHtml = allPlayers.map(function(entry, idx) {
+        return formatLeaderboardEntryHtml(entry, idx, false);
+      }).join('<span class="text-slate-400 dark:text-slate-600 font-black">&bull;</span>');
 
-        if (rank === 1) {
-          badgeClass = "rank-3d-badge rank-3d-1 h-8 px-2.5 text-xs";
-          nameClass = "podium-name-1 text-base sm:text-lg";
-          ptsClass = "pts-gold text-base sm:text-lg";
-          cardClass = "flex items-center gap-2.5 card-gold-glow px-4 py-1.5 rounded-2xl shrink-0 transition-all";
-          extraTag = '<i class="fa-solid fa-crown text-amber-500 dark:text-yellow-300 text-sm"></i>';
-        } else if (rank === 2) {
-          badgeClass = "rank-3d-badge rank-3d-2 h-8 px-2.5 text-xs";
-          nameClass = "podium-name-2 text-sm sm:text-base";
-          ptsClass = "pts-silver text-sm sm:text-base";
-          cardClass = "flex items-center gap-2.5 card-silver-glow px-3.5 py-1.5 rounded-2xl shrink-0 transition-all";
-          extraTag = '<i class="fa-solid fa-medal text-sky-600 dark:text-sky-300 text-xs"></i>';
-        } else if (rank === 3) {
-          badgeClass = "rank-3d-badge rank-3d-3 h-8 px-2.5 text-xs";
-          nameClass = "podium-name-3 text-sm sm:text-base";
-          ptsClass = "pts-bronze text-sm sm:text-base";
-          cardClass = "flex items-center gap-2.5 card-bronze-glow px-3.5 py-1.5 rounded-2xl shrink-0 transition-all";
-          extraTag = '<i class="fa-solid fa-award text-orange-600 dark:text-orange-300 text-xs"></i>';
-        }
-
-        return '<div class="' + cardClass + '">' +
-          '<span class="' + badgeClass + '">' + rank + '<span class="text-[8px] ml-0.5">' + suffix + '</span></span>' +
-          '<span class="' + nameClass + '">' + escapeHtml(player.name) + '</span>' +
-          extraTag +
-          '<span class="' + ptsClass + '">' + ptsFormatted + ' ' + escapeHtml(ptsLabel) + '</span>' +
-        '</div>';
-      }).join("");
-
-      var separator = '<span class="text-indigo-500/50 dark:text-cyan-400/40 font-black select-none text-base">&bull;</span>';
-      var repeatedContent = '<div class="flex items-center gap-5 shrink-0">' + itemsHtml + separator + '</div>' +
-        '<div class="flex items-center gap-5 shrink-0">' + itemsHtml + separator + '</div>';
-
-      tickers.forEach(function(el) { el.innerHTML = repeatedContent; });
-    }
-
-    function toggleFavorite(topicId, index) {
-      var topic = currentTopics[index] || topicCache[topicId];
-      if (!topic) return;
-
-      if (favoritedTopicIds.has(topic.id)) {
-        favoritedTopicIds.delete(topic.id);
-        showToast(t("bookmarkTitle"), "info");
-      } else {
-        favoritedTopicIds.add(topic.id);
-        topicCache[topic.id] = topic;
-        localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
-        showToast(t("bookmarkTitle"), "success");
+      if (ticker) {
+        ticker.innerHTML = '<div class="flex items-center gap-5 shrink-0">' + standardSetHtml + '</div>' +
+          '<div class="flex items-center gap-5 shrink-0" aria-hidden="true">' + standardSetHtml + '</div>';
       }
 
-      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
-      updateFavoritesUI();
-      renderTopicCards();
-    }
+      var floatingSetHtml = allPlayers.map(function(entry, idx) {
+        return formatLeaderboardEntryHtml(entry, idx, true);
+      }).join('<span class="text-slate-400 dark:text-slate-600 font-black">&bull;</span>');
 
-    function updateFavoritesUI() {
-      var badge = document.getElementById("favorites-badge");
-      var list = document.getElementById("saved-topics-list");
-
-      if (badge) {
-        if (favoritedTopicIds.size > 0) {
-          badge.innerText = favoritedTopicIds.size;
-          badge.classList.remove("hidden");
-        } else {
-          badge.classList.add("hidden");
-        }
-      }
-
-      if (!list) return;
-
-      if (favoritedTopicIds.size === 0) {
-        list.innerHTML = '<div class="text-center py-8 text-slate-400"><i class="fa-solid fa-thumbtack text-3xl mb-2 opacity-30"></i><p class="text-xs font-medium">' + escapeHtml(t("noSavedEmpty")) + '</p><p class="text-[11px] mt-0.5">' + escapeHtml(t("noSavedSub")) + '</p></div>';
-        return;
-      }
-
-      var items = [];
-      favoritedTopicIds.forEach(function(id) {
-        var tp = topicCache[id];
-        if (tp) {
-          var catStyle = CATEGORY_STYLES[tp.category] || CATEGORY_STYLES["Philosophy"];
-          var translatedSaved = getTranslatedTopicText(tp, currentLanguage);
-          items.push('<div class="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group relative"><div class="flex items-center justify-between gap-2 mb-1.5"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' + escapeHtml(translateCategoryLabel(tp.category)) + '</span><button onclick="removeFavorite(\'' + tp.id + '\')" class="text-slate-400 hover:text-red-500 p-1 rounded transition-colors" title="' + escapeQuotes(t("clearSaved")) + '"><i class="fa-solid fa-xmark text-xs"></i></button></div><p onclick="loadFavoriteIntoActive(\'' + tp.id + '\')" class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">&quot;' + escapeHtml(translatedSaved) + '&quot;</p><div class="mt-2 flex items-center justify-between text-[10px] text-slate-400"><span>' + escapeHtml(t("clickToLoad")) + '</span><button onclick="copyTopicText(\'' + escapeQuotes(translatedSaved) + '\')" class="hover:text-slate-600 dark:hover:text-slate-200"><i class="fa-regular fa-copy"></i></button></div></div>');
-        }
-      });
-
-      list.innerHTML = items.join("");
-    }
-
-    function removeFavorite(topicId) {
-      favoritedTopicIds.delete(topicId);
-      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
-      updateFavoritesUI();
-      renderTopicCards();
-    }
-
-    function clearAllFavorites() {
-      favoritedTopicIds.clear();
-      localStorage.setItem("nellieb_favs", JSON.stringify([]));
-      updateFavoritesUI();
-      renderTopicCards();
-      showToast(t("clearSaved"), "info");
-    }
-
-    function loadFavoriteIntoActive(topicId) {
-      var tp = topicCache[topicId];
-      if (!tp) return;
-      clearCardTypingTimer(0);
-      currentTopics[0] = tp;
-      cardRevealedStates[0] = true;
-      cardTypingProgress[0] = 0;
-      cardResolvedTexts[0] = getImmediateTranslatedString(tp.text, currentLanguage);
-      renderTopicCards();
-      translateThenTypeCard(0, tp, true);
-      if (cardCountView === 1) {
-        resetBombTimer(false);
-      }
-      toggleFavoritesDrawer(false);
-      showToast(t("clickToLoad"), "success");
-    }
-
-    function copyTopicText(text) {
-      var unescaped = text.replace(/&quot;/g, '"');
-      navigator.clipboard.writeText(unescaped).then(function() {
-        showToast(t("copyTitle"), "success");
-      }).catch(function() {
-        showToast(t("copyTitle"), "info");
-      });
-    }
-
-    function showToast(message, type) {
-      type = type || "info";
-      var container = document.getElementById("toast-container");
-      if (!container) return;
-
-      var toast = document.createElement("div");
-      var colors = {
-        success: "bg-emerald-600 text-white",
-        warning: "bg-amber-500 text-slate-900",
-        info: "bg-slate-800 text-white dark:bg-slate-700"
-      };
-
-      toast.className = "px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-x-10 opacity-0 " + (colors[type] || colors.info);
-      toast.innerHTML = '<i class="fa-solid ' + (type === "success" ? "fa-circle-check" : type === "warning" ? "fa-triangle-exclamation" : "fa-circle-info") + '"></i><span>' + escapeHtml(message) + '</span>';
-
-      container.appendChild(toast);
-
-      requestAnimationFrame(function() {
-        toast.classList.remove("translate-x-10", "opacity-0");
-      });
-
-      setTimeout(function() {
-        toast.classList.add("translate-x-10", "opacity-0");
-        setTimeout(function() {
-          if (toast.parentNode) toast.parentNode.removeChild(toast);
-        }, 300);
-      }, 2600);
-    }
-
-    function toggleDarkMode() {
-      var html = document.documentElement;
-      html.classList.toggle("dark");
-      localStorage.setItem("nellieb_theme", html.classList.contains("dark") ? "dark" : "light");
-    }
-
-    function toggleFavoritesDrawer(open) {
-      var drawer = document.getElementById("favorites-drawer");
-      var content = document.getElementById("drawer-content");
-      if (!drawer || !content) return;
-
-      if (open) {
-        drawer.classList.remove("pointer-events-none", "opacity-0");
-        drawer.classList.add("pointer-events-auto", "opacity-100");
-        requestAnimationFrame(function() {
-          content.classList.remove("translate-x-full");
-        });
-      } else {
-        content.classList.add("translate-x-full");
-        drawer.classList.remove("pointer-events-auto", "opacity-100");
-        drawer.classList.add("pointer-events-none", "opacity-0");
+      if (floatingTicker) {
+        floatingTicker.innerHTML = '<div class="flex items-center gap-5 shrink-0">' + floatingSetHtml + '</div>' +
+          '<div class="flex items-center gap-5 shrink-0" aria-hidden="true">' + floatingSetHtml + '</div>';
       }
     }
 
     function togglePrivacyModal(open) {
       var modal = document.getElementById("privacy-modal");
       if (!modal) return;
-      if (open) {
-        modal.classList.remove("hidden");
+      if (open) modal.classList.remove("hidden");
+      else modal.classList.add("hidden");
+    }
+
+    function toggleFavorite(id, event) {
+      if (event) event.stopPropagation();
+      if (favoritedTopicIds.has(id)) {
+        favoritedTopicIds.delete(id);
+        showToast("Removed from saved", "info");
       } else {
-        modal.classList.add("hidden");
+        favoritedTopicIds.add(id);
+        showToast("Saved topic!", "success");
+      }
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderTopicCards();
+    }
+
+    function copyTopic(id, event) {
+      if (event) event.stopPropagation();
+      var item = currentTopics.find(function(x) { return x.id === id; }) || topicCache[id];
+      if (!item) return;
+      var textToCopy = getTranslatedTopicText(item, currentLanguage);
+      navigator.clipboard.writeText('"' + textToCopy + '" (' + translateCategoryLabel(item.category) + ')').then(function() {
+        showToast("Copied to clipboard!", "success");
+      });
+    }
+
+    function toggleFavoritesDrawer(open) {
+      var drawer = document.getElementById("favorites-drawer");
+      var content = document.getElementById("drawer-content");
+      if (!drawer || !content) return;
+      if (open) {
+        renderFavoritesList();
+        drawer.classList.remove("pointer-events-none", "opacity-0");
+        content.classList.remove("translate-x-full");
+      } else {
+        drawer.classList.add("pointer-events-none", "opacity-0");
+        content.classList.add("translate-x-full");
       }
     }
 
-    function resetToInitial() {
+    function renderFavoritesList() {
+      var list = document.getElementById("saved-topics-list");
+      if (!list) return;
+      var ids = Array.from(favoritedTopicIds);
+      if (ids.length === 0) {
+        list.innerHTML = '<div class="text-center py-10 text-slate-400">' +
+          '<i class="fa-regular fa-bookmark text-3xl mb-2 opacity-40"></i>' +
+          '<p class="text-xs font-medium">' + escapeHtml(t("noSavedEmpty")) + '</p>' +
+          '<p class="text-[10px] mt-1">' + escapeHtml(t("noSavedSub")) + '</p>' +
+        '</div>';
+        return;
+      }
+      list.innerHTML = ids.map(function(id) {
+        var item = topicCache[id] || { id: id, category: "Philosophy", text: "Saved prompt" };
+        var style = CATEGORY_STYLES[item.category] || { bg: "bg-slate-100", text: "text-slate-700", border: "border-slate-300" };
+        var localizedText = getTranslatedTopicText(item, currentLanguage);
+        return '<div onclick="loadFavoriteTopic(\'' + id + '\')" class="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 hover:border-indigo-400 cursor-pointer transition-all group">' +
+          '<div class="flex items-center justify-between gap-2 mb-1.5">' +
+            '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold ' + style.bg + " " + style.text + '">' + escapeHtml(translateCategoryLabel(item.category)) + '</span>' +
+            '<button onclick="removeFavoriteFromDrawer(\'' + id + '\', event)" class="text-slate-400 hover:text-red-500 p-0.5"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+          '</div>' +
+          '<p class="text-xs font-semibold text-slate-800 dark:text-slate-200 line-clamp-2">&quot;' + escapeHtml(localizedText) + '&quot;</p>' +
+          '<span class="text-[9px] text-indigo-500 dark:text-indigo-400 font-medium mt-1 block opacity-0 group-hover:opacity-100 transition-opacity">' + escapeHtml(t("clickToLoad")) + ' &rarr;</span>' +
+        '</div>';
+      }).join("");
+    }
+
+    function loadFavoriteTopic(id) {
+      var item = topicCache[id];
+      if (!item) return;
       clearAllCardTypingTimers();
+      currentTopics = [item];
+      cardPointBounties = [pickVariableCardPoints(0, null)];
+      activeRoundPrize = cardPointBounties[0];
+      cardResolvedTexts[0] = getImmediateTranslatedString(item.text, currentLanguage);
+      cardCountView = 1;
+      cardRevealedStates = [true, false, false, false];
+      updateToggleUI();
+      renderTopicCards();
+      var finalText = cardResolvedTexts[0] || item.text;
+      startLiveTyping(0, finalText, true, currentLanguage);
+      if (normalizeLangCode(currentLanguage) !== "en") {
+        translateThenTypeCard(0, item, false);
+      }
+      resetBombTimer(false);
+      toggleFavoritesDrawer(false);
+      showToast("Loaded saved topic", "info");
+    }
+
+    function removeFavoriteFromDrawer(id, event) {
+      if (event) event.stopPropagation();
+      favoritedTopicIds.delete(id);
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderFavoritesList();
+      renderTopicCards();
+    }
+
+    function clearAllFavorites() {
+      favoritedTopicIds.clear();
+      localStorage.setItem("nellieb_favs", "[]");
+      updateFavoritesUI();
+      renderFavoritesList();
+      renderTopicCards();
+      showToast("Cleared saved topics", "info");
+    }
+
+    function updateFavoritesUI() {
+      var badge = document.getElementById("favorites-badge");
+      if (!badge) return;
+      if (favoritedTopicIds.size > 0) {
+        badge.innerText = favoritedTopicIds.size;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+    }
+
+    function toggleDarkMode() {
+      var html = document.documentElement;
+      html.classList.toggle("dark");
+      localStorage.setItem("nellieb_theme", html.classList.contains("dark") ? "dark" : "light");
+      renderLeaderboardTicker();
+    }
+
+    function initTheme() {
+      var saved = localStorage.getItem("nellieb_theme");
+      if (saved === "light") document.documentElement.classList.remove("dark");
+      else document.documentElement.classList.add("dark");
+    }
+
+    function resetToInitial() {
       activePreset = "all";
       selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
-      cardCountView = 4;
-      updateFilterButtonsUI();
-      updateToggleUI();
       renderModePills();
       renderCategoryPills();
       generateTopics();
+      showToast("Reset to all categories", "info");
+    }
+
+    function showToast(message, type) {
+      if (type === undefined) type = "info";
+      var container = document.getElementById("toast-container");
+      if (!container) return;
+      var toast = document.createElement("div");
+      var colors = {
+        success: "bg-emerald-600 text-white",
+        warning: "bg-amber-500 text-slate-950 font-bold",
+        info: "bg-slate-800 text-white border border-slate-700"
+      };
+      var icons = {
+        success: "fa-check-circle",
+        warning: "fa-exclamation-triangle",
+        info: "fa-info-circle"
+      };
+      toast.className = "px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-x-0 " + (colors[type] || colors.info);
+      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i><span>' + escapeHtml(message) + '</span>';
+      container.appendChild(toast);
+      setTimeout(function() {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(100%)";
+        setTimeout(function() { toast.remove(); }, 300);
+      }, 2400);
     }
 
     function escapeHtml(str) {
-      if (!str) return "";
       return String(str)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
+        .replace(/"/g, "&quot;");
     }
 
-    function escapeQuotes(str) {
-      if (!str) return "";
-      return String(str).replace(/'/g, "\\'").replace(/"/g, "&quot;");
-    }
-
-    document.addEventListener("DOMContentLoaded", async function() {
-      var savedTheme = localStorage.getItem("nellieb_theme");
-      if (savedTheme === "light") {
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.add("dark");
-      }
-
-      var selectEl = document.getElementById("language-select");
-      if (selectEl) {
-        selectEl.value = currentLanguage;
-      }
-
-      await loadAllQuestionBanks();
-
-      updateFilterButtonsUI();
-      updateToggleUI();
-      renderModePills();
-      renderCategoryPills();
-      renderLeaderboardTicker();
-      updateFavoritesUI();
-      updateGameModeUI();
-      resetBombTimer(false);
-      applyLanguageTranslations();
-
-      var initialTopics = [];
-      for (var i = 0; i < cardCountView; i++) {
-        initialTopics[i] = generateSequentialTopic();
-        cardResolvedTexts[i] = getImmediateTranslatedString(initialTopics[i].text, currentLanguage);
-        cardRevealedStates[i] = (cardCountView === 1);
-        cardTypingProgress[i] = 0;
-      }
-      currentTopics = initialTopics;
-      renderTopicCards();
-      if (normalizeLangCode(currentLanguage) !== "en") {
-        refreshVisibleCardTranslations();
-      }
-
-      if (!localStorage.getItem("nellieb_tutorial_seen")) {
-        toggleWelcomeTutorialModal(true);
-      } else {
-        showTutorialFinderNote();
-      }
-
-      document.addEventListener("keydown", function(e) {
-        if (e.code === "Space" &&
-            !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) &&
-            document.getElementById("privacy-modal").classList.contains("hidden") &&
-            document.getElementById("scores-modal").classList.contains("hidden") &&
-            document.getElementById("tutorial-modal").classList.contains("hidden") &&
-            document.getElementById("welcome-tutorial-modal").classList.contains("hidden") &&
-            document.getElementById("presets-modal").classList.contains("hidden") &&
-            document.getElementById("categories-modal").classList.contains("hidden") &&
-            document.getElementById("round-winner-modal").classList.contains("hidden") &&
-            document.getElementById("winner-celebration-modal").classList.contains("hidden")) {
+    document.addEventListener("keydown", function(e) {
+      if (e.code === "Space" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName)) {
+        var anyModalOpen = !document.getElementById("scores-modal").classList.contains("hidden") ||
+          !document.getElementById("privacy-modal").classList.contains("hidden") ||
+          !document.getElementById("tutorial-modal").classList.contains("hidden") ||
+          !document.getElementById("welcome-tutorial-modal").classList.contains("hidden") ||
+          !document.getElementById("presets-modal").classList.contains("hidden") ||
+          !document.getElementById("categories-modal").classList.contains("hidden") ||
+          !document.getElementById("round-winner-modal").classList.contains("hidden") ||
+          !document.getElementById("winner-celebration-modal").classList.contains("hidden");
+        if (!anyModalOpen) {
           e.preventDefault();
           generateTopics();
         }
-        if (e.key === "Escape") {
-          toggleFavoritesDrawer(false);
-          togglePrivacyModal(false);
-          toggleScoresModal(false);
-          toggleTutorialModal(false);
-          togglePresetsModal(false);
-          toggleCategoriesModal(false);
-          closeRoundWinnerModal();
-          closeWinnerCelebrationModal();
-          if (!document.getElementById("welcome-tutorial-modal").classList.contains("hidden")) {
-            declineInitialTutorial();
-          }
-        }
-      });
+      }
+      if (e.key === "Escape") {
+        toggleScoresModal(false);
+        togglePrivacyModal(false);
+        toggleTutorialModal(false);
+        toggleWelcomeTutorialModal(false);
+        togglePresetsModal(false);
+        toggleCategoriesModal(false);
+        var rwModal = document.getElementById("round-winner-modal");
+        if (rwModal) rwModal.classList.add("hidden");
+        closeWinnerCelebrationModal();
+        toggleFavoritesDrawer(false);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      initTheme();
+      currentLanguage = normalizeLangCode(localStorage.getItem("nellieb_lang") || "en");
+      var selectEl = document.getElementById("language-select");
+      if (selectEl) selectEl.value = currentLanguage;
+      applyLanguageTranslations();
+      await loadAllQuestionBanks();
+      generateTopics();
+      if (!localStorage.getItem("nellieb_tutorial_seen")) {
+        toggleWelcomeTutorialModal(true);
+      }
     });
   </script>
 </body>
