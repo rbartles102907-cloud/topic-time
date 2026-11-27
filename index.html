@@ -57,7 +57,7 @@
       font-weight: 700;
     }
 
-    .card-container { perspective: 1000px; overflow: visible !important; }
+    .card-container { perspective: 1200px; overflow: visible !important; }
 
     @keyframes rgb-chase {
       0% { background-position: 0% 50%; }
@@ -80,7 +80,7 @@
     }
 
     .glass-card:hover {
-      transform: scale(1.02);
+      transform: scale(1.015);
     }
 
     .glass-card::before {
@@ -157,12 +157,40 @@
       animation: typing-cursor-blink 0.75s infinite;
     }
 
-    @keyframes flip-right-to-left {
-      0% { transform: rotateY(0deg) scale(1); }
-      50% { transform: rotateY(-90deg) scale(0.92); }
-      100% { transform: rotateY(-180deg) scale(1); }
+    /* Full 360-degree 3D card flip animation that lands upright in both 1-Card & 4-Card modes */
+    @keyframes flip-card-3d {
+      0% { transform: perspective(1200px) rotateY(0deg) scale(1); }
+      45% { transform: perspective(1200px) rotateY(90deg) scale(0.93); }
+      55% { transform: perspective(1200px) rotateY(270deg) scale(0.93); }
+      100% { transform: perspective(1200px) rotateY(360deg) scale(1); }
     }
-    .card-flipping { animation: flip-right-to-left 0.5s ease-in-out forwards; }
+    .card-flipping { animation: flip-card-3d 0.52s cubic-bezier(0.34, 1.35, 0.64, 1) forwards; }
+
+    /* Classic Upper-Right Card Action Buttons (Pin, Heart, Copy) */
+    .card-action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 0.6rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.14);
+      transition: transform 0.16s ease, background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+      cursor: pointer;
+    }
+    .dark .card-action-btn {
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    }
+    .card-action-btn:hover {
+      transform: translateY(-1px) scale(1.08);
+    }
+    .card-action-btn:active {
+      transform: scale(0.94);
+    }
 
     @keyframes char-grow-shrink {
       0%, 100% { transform: scale(1) translate(0, 0); }
@@ -525,6 +553,104 @@
       background: linear-gradient(90deg, #ff007f, #facc15, #00f2fe, #8a2be2, #ff007f);
       background-size: 300% 100%;
       animation: rgb-chase 3s linear infinite, fanfare-beam-pulse 1.8s ease-in-out infinite;
+    }
+
+    /* Stylized 3D Caricature Game Show Host Walking Across Winner Modal */
+    @keyframes hostWalkAcrossModal {
+      0% {
+        transform: translateX(-115px) perspective(600px) rotateY(14deg);
+      }
+      48% {
+        transform: translateX(calc(50% - 44px)) perspective(600px) rotateY(0deg);
+      }
+      52% {
+        transform: translateX(calc(50% - 44px)) perspective(600px) rotateY(-4deg);
+      }
+      100% {
+        transform: translateX(calc(100% + 115px)) perspective(600px) rotateY(-14deg);
+      }
+    }
+    @keyframes hostStrideBob {
+      0%, 100% {
+        transform: translateY(0px) rotate(-3.5deg) scaleY(1);
+      }
+      25% {
+        transform: translateY(-7px) rotate(1.5deg) scaleY(1.03);
+      }
+      50% {
+        transform: translateY(0px) rotate(3.5deg) scaleY(0.98);
+      }
+      75% {
+        transform: translateY(-7px) rotate(-1.5deg) scaleY(1.03);
+      }
+    }
+    @keyframes hostLegLeft {
+      0%, 100% { transform: rotate(-24deg); }
+      50% { transform: rotate(24deg); }
+    }
+    @keyframes hostLegRight {
+      0%, 100% { transform: rotate(24deg); }
+      50% { transform: rotate(-24deg); }
+    }
+    @keyframes hostArmWave {
+      0%, 100% { transform: rotate(-16deg); }
+      50% { transform: rotate(18deg); }
+    }
+    @keyframes hostMicPulse {
+      0%, 100% { transform: rotate(-10deg) scale(1); }
+      50% { transform: rotate(8deg) scale(1.08); }
+    }
+    @keyframes hostSignFloat {
+      0%, 100% { transform: translateY(0px) rotate(-2deg); }
+      50% { transform: translateY(-3px) rotate(2deg); }
+    }
+
+    .winner-host-stage {
+      position: relative;
+      width: 100%;
+      height: 92px;
+      margin-top: 4px;
+      border-radius: 1rem;
+      overflow: hidden;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(250, 204, 21, 0.14) 78%, rgba(236, 72, 153, 0.28) 100%);
+      border-top: 1px solid rgba(250, 204, 21, 0.25);
+      border-bottom: 2px solid rgba(250, 204, 21, 0.55);
+      box-shadow: inset 0 -10px 22px rgba(245, 158, 11, 0.2);
+    }
+    .winner-host-walker {
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 88px;
+      height: 88px;
+      pointer-events: none;
+      will-change: transform;
+      animation: hostWalkAcrossModal 8.5s linear infinite;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 12px rgba(250, 204, 21, 0.45));
+    }
+    .host-body-bob {
+      transform-origin: 45px 62px;
+      animation: hostStrideBob 0.62s ease-in-out infinite;
+    }
+    .host-leg-l {
+      transform-origin: 38px 66px;
+      animation: hostLegLeft 0.62s ease-in-out infinite;
+    }
+    .host-leg-r {
+      transform-origin: 50px 66px;
+      animation: hostLegRight 0.62s ease-in-out infinite;
+    }
+    .host-arm-wave {
+      transform-origin: 28px 47px;
+      animation: hostArmWave 0.62s ease-in-out infinite;
+    }
+    .host-mic-arm {
+      transform-origin: 58px 46px;
+      animation: hostMicPulse 0.75s ease-in-out infinite;
+    }
+    .host-speech-pill {
+      animation: hostSignFloat 1.2s ease-in-out infinite;
     }
 
     @keyframes clock-shake-ring {
@@ -1130,7 +1256,7 @@
   <!-- Winner Celebration Popup Modal (Standard & Auto-Fitting Wide Final-Round Fanfare Mode) -->
   <div id="winner-celebration-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
     <div onclick="closeWinnerCelebrationModal()" class="absolute inset-0 bg-slate-950/85 backdrop-blur-md cursor-pointer"></div>
-    <div id="winner-celebration-card" class="relative w-full max-w-md max-h-[90dvh] overflow-y-auto bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:p-6 shadow-2xl z-10 text-center text-white space-y-4 transition-all duration-300">
+    <div id="winner-celebration-card" class="relative w-full max-w-md max-h-[92dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:px-6 sm:pt-6 sm:pb-3 shadow-2xl z-10 text-center text-white space-y-3.5 transition-all duration-300">
       <div id="celebration-fanfare-strip" class="hidden fanfare-glow-bar h-1.5 w-full rounded-full"></div>
 
       <div class="flex items-center justify-between gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-amber-300 min-w-0">
@@ -1181,6 +1307,131 @@
               <span>New Round</span>
             </button>
           </div>
+        </div>
+      </div>
+
+      <!-- Animated 3D Stylized Game Show Host Caricature Walking Across Bottom of Winner Modal -->
+      <div class="winner-host-stage select-none" aria-hidden="true">
+        <div class="absolute inset-x-0 bottom-0 h-3 bg-gradient-to-r from-amber-500/30 via-yellow-300/60 to-amber-500/30 blur-[1px]"></div>
+        <div class="winner-host-walker">
+          <svg viewBox="0 0 110 112" class="w-full h-full overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="hostSkin3D" cx="38%" cy="32%" r="68%">
+                <stop offset="0%" stop-color="#FFE4C4"/>
+                <stop offset="55%" stop-color="#F6B889"/>
+                <stop offset="100%" stop-color="#C87A4B"/>
+              </radialGradient>
+              <linearGradient id="hostHair3D" x1="20" y1="6" x2="72" y2="34" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#E2E8F0"/>
+                <stop offset="45%" stop-color="#94A3B8"/>
+                <stop offset="100%" stop-color="#334155"/>
+              </linearGradient>
+              <linearGradient id="hostJacket3D" x1="22" y1="42" x2="66" y2="82" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FDE047"/>
+                <stop offset="35%" stop-color="#F59E0B"/>
+                <stop offset="75%" stop-color="#EC4899"/>
+                <stop offset="100%" stop-color="#7E22CE"/>
+              </linearGradient>
+              <linearGradient id="hostLapel3D" x1="30" y1="44" x2="54" y2="74" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#38BDF8"/>
+                <stop offset="100%" stop-color="#1D4ED8"/>
+              </linearGradient>
+              <radialGradient id="micHead3D" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#FFFFFF"/>
+                <stop offset="45%" stop-color="#FACC15"/>
+                <stop offset="100%" stop-color="#B45309"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Floor Spotlight Shadow -->
+            <ellipse cx="46" cy="107" rx="26" ry="4.5" fill="rgba(0,0,0,0.65)"/>
+            <ellipse cx="46" cy="107" rx="18" ry="2.5" fill="rgba(250,204,21,0.45)"/>
+
+            <!-- Back Waving Arm -->
+            <g class="host-arm-wave">
+              <path d="M29 48 C16 42, 11 32, 15 24" stroke="url(#hostJacket3D)" stroke-width="8.5" stroke-linecap="round"/>
+              <circle cx="15" cy="22" r="5.5" fill="url(#hostSkin3D)" stroke="#7C2D12" stroke-width="1"/>
+              <!-- Sparkle fingers -->
+              <path d="M9 16 L12 19 M15 13 L15 17 M21 16 L18 19" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
+            </g>
+
+            <!-- Walking Legs (3D shaded slacks + glossy dress shoes) -->
+            <g class="host-leg-l">
+              <rect x="33" y="72" width="10" height="24" rx="5" fill="#1E1B4B" stroke="#38BDF8" stroke-width="1"/>
+              <path d="M31 94 H48 C51 94 53 97 53 100 H30 Z" fill="#0F172A" stroke="#FACC15" stroke-width="1.2"/>
+              <ellipse cx="46" cy="96.5" rx="3" ry="1.2" fill="#FFFFFF" opacity="0.65"/>
+            </g>
+            <g class="host-leg-r">
+              <rect x="46" y="72" width="10" height="24" rx="5" fill="#311042" stroke="#F472B6" stroke-width="1"/>
+              <path d="M44 94 H61 C64 94 66 97 66 100 H43 Z" fill="#0F172A" stroke="#FACC15" stroke-width="1.2"/>
+              <ellipse cx="59" cy="96.5" rx="3" ry="1.2" fill="#FFFFFF" opacity="0.65"/>
+            </g>
+
+            <!-- Bouncing Caricature Torso + Big Bobble Head -->
+            <g class="host-body-bob">
+              <!-- Sequined Tuxedo Jacket -->
+              <path d="M26 45 C26 41 62 41 62 45 L65 75 C65 78 23 78 23 75 Z" fill="url(#hostJacket3D)" stroke="#FFFBEB" stroke-width="1.4"/>
+              <!-- Crisp White Dress Shirt V -->
+              <polygon points="36,43 52,43 44,67" fill="#FFFFFF"/>
+              <!-- 3D Satin Lapels -->
+              <polygon points="31,43 37,43 44,67 33,57" fill="url(#hostLapel3D)"/>
+              <polygon points="57,43 51,43 44,67 55,57" fill="url(#hostLapel3D)"/>
+              <!-- Oversized Neon Bowtie -->
+              <polygon points="37,44 44,47 37,50" fill="#FF007F" stroke="#FFFFFF" stroke-width="0.8"/>
+              <polygon points="51,44 44,47 51,50" fill="#FF007F" stroke="#FFFFFF" stroke-width="0.8"/>
+              <circle cx="44" cy="47" r="2.3" fill="#FACC15"/>
+              <!-- Jacket Buttons -->
+              <circle cx="44" cy="70" r="1.6" fill="#FEF08A"/>
+              <circle cx="44" cy="74.5" r="1.6" fill="#FEF08A"/>
+
+              <!-- Oversized Caricature 3D Head -->
+              <g>
+                <!-- Ears -->
+                <circle cx="24" cy="26" r="4.5" fill="url(#hostSkin3D)"/>
+                <circle cx="66" cy="26" r="4.5" fill="url(#hostSkin3D)"/>
+                <!-- Face Sphere -->
+                <rect x="26" y="7" width="38" height="36" rx="17" fill="url(#hostSkin3D)" stroke="#9A3412" stroke-width="1.2"/>
+                <!-- Pompadour Showbiz Hair -->
+                <path d="M24 19 C22 7 35 1 53 3 C66 4 71 12 65 19 C60 13 48 11 35 13 C29 14 26 16 24 19 Z" fill="url(#hostHair3D)" stroke="#F8FAFC" stroke-width="1"/>
+                <!-- Hair Shine Highlight -->
+                <path d="M33 6 C41 4 51 5 57 8" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+                <!-- Expressive Eyebrows -->
+                <path d="M33 17 Q37 14 41 16.5" stroke="#1E293B" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M51 16.5 Q55 14 59 17" stroke="#1E293B" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- Cartoon Eyes -->
+                <ellipse cx="37.5" cy="21.5" rx="3.2" ry="3.8" fill="#FFFFFF"/>
+                <circle cx="38.5" cy="21.5" r="2" fill="#0F172A"/>
+                <circle cx="39.2" cy="20.6" r="0.8" fill="#FFFFFF"/>
+                <ellipse cx="54.5" cy="21.5" rx="3.2" ry="3.8" fill="#FFFFFF"/>
+                <circle cx="55.5" cy="21.5" r="2" fill="#0F172A"/>
+                <circle cx="56.2" cy="20.6" r="0.8" fill="#FFFFFF"/>
+                <!-- Big Caricature Nose -->
+                <path d="M46 21 C49 24 50 27 45.5 28.5" stroke="#B45309" stroke-width="2" stroke-linecap="round"/>
+                <!-- Dazzling Game Show Host Megawatt Smile -->
+                <path d="M34 31 Q46 41 58 31 Z" fill="#FFFFFF" stroke="#7F1D1D" stroke-width="1.4" stroke-linejoin="round"/>
+                <line x1="37" y1="34" x2="55" y2="34" stroke="#CBD5E1" stroke-width="1"/>
+                <!-- Tooth Sparkle -->
+                <path d="M58 29 L59.5 31.5 L62 33 L59.5 34.5 L58 37 L56.5 34.5 L54 33 L56.5 31.5 Z" fill="#FEF08A"/>
+              </g>
+
+              <!-- Front Arm Holding Golden Retro Game Show Microphone -->
+              <g class="host-mic-arm">
+                <path d="M59 48 C68 53, 75 49, 79 41" stroke="url(#hostJacket3D)" stroke-width="8.5" stroke-linecap="round"/>
+                <circle cx="79" cy="40" r="5" fill="url(#hostSkin3D)"/>
+                <!-- Mic Handle -->
+                <rect x="78" y="29" width="4.5" height="13" rx="2" transform="rotate(18 78 29)" fill="#1E293B" stroke="#94A3B8" stroke-width="0.9"/>
+                <!-- Golden Globe Mic Head -->
+                <circle cx="83" cy="26" r="6.5" fill="url(#micHead3D)" stroke="#FFFBEB" stroke-width="1.2"/>
+                <path d="M77.5 26 H88.5 M83 20.5 V31.5" stroke="#92400E" stroke-width="1" opacity="0.7"/>
+              </g>
+            </g>
+
+            <!-- Floating Mini Speech Callout Above Host -->
+            <g class="host-speech-pill" transform="translate(64, 2)">
+              <rect x="0" y="0" width="44" height="16" rx="8" fill="#FACC15" stroke="#FFFFFF" stroke-width="1.2"/>
+              <text x="22" y="11" text-anchor="middle" font-family="'Fredoka', sans-serif" font-weight="900" font-size="8.5" fill="#0F172A">WINNER!</text>
+            </g>
+          </svg>
         </div>
       </div>
     </div>
@@ -1338,6 +1589,7 @@
     var languageSwitchSeq = 0;
     var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
     var favoritedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
+    var likedTopicIds = new Set(JSON.parse(localStorage.getItem("nellieb_likes") || "[]"));
 
     // Game Mode State
     var gameState = JSON.parse(localStorage.getItem("nellieb_game_mode") || JSON.stringify({
@@ -1465,9 +1717,10 @@
         flipBadge: "FLIP",
         clickToReveal: "Touch card to flip",
         flipBackHint: "Tap to Flip Back",
-        changeCardHint: "Tap to Change",
-        refreshTitle: "Refresh this question",
-        bookmarkTitle: "Bookmark Topic",
+        changeCardHint: "Tap to Flip & Change",
+        refreshTitle: "Flip & load next topic",
+        bookmarkTitle: "Pin / Save Topic",
+        likeTitle: "Like Topic",
         copyTitle: "Copy Prompt",
         ptsSuffix: "PTS",
         emptyPodium: "No players yet. Click \"Game Mode\" or \"Scores\" to add up to 10 contenders!",
@@ -1542,9 +1795,10 @@
         flipBadge: "GIRAR",
         clickToReveal: "Toca la carta para girar",
         flipBackHint: "Toca para voltear",
-        changeCardHint: "Toca para cambiar",
-        refreshTitle: "Cambiar esta pregunta",
-        bookmarkTitle: "Guardar tema",
+        changeCardHint: "Toca para girar y cambiar",
+        refreshTitle: "Girar y cambiar pregunta",
+        bookmarkTitle: "Fijar / Guardar tema",
+        likeTitle: "Me gusta este tema",
         copyTitle: "Copiar pregunta",
         ptsSuffix: "PTS",
         emptyPodium: "Aún no hay jugadores. ¡Haz clic en \"Modo Juego\" o \"Marcador\" para agregar hasta 10!",
@@ -1619,9 +1873,10 @@
         flipBadge: "VIRAR",
         clickToReveal: "Toque na carta para virar",
         flipBackHint: "Toque para Desvirar",
-        changeCardHint: "Toque para Trocar",
-        refreshTitle: "Trocar esta pergunta",
-        bookmarkTitle: "Salvar tópico",
+        changeCardHint: "Toque para Virar e Trocar",
+        refreshTitle: "Virar e trocar esta pergunta",
+        bookmarkTitle: "Fixar / Salvar tópico",
+        likeTitle: "Curtir tópico",
         copyTitle: "Copiar pergunta",
         ptsSuffix: "PTS",
         emptyPodium: "Nenhum jogador ainda. Clique em \"Modo Jogo\" ou \"Placar\" para adicionar até 10!",
@@ -1696,9 +1951,10 @@
         flipBadge: "RETOURNER",
         clickToReveal: "Touchez la carte pour retourner",
         flipBackHint: "Toucher pour Retourner",
-        changeCardHint: "Toucher pour Changer",
-        refreshTitle: "Changer cette question",
-        bookmarkTitle: "Enregistrer le sujet",
+        changeCardHint: "Toucher pour Retourner et Changer",
+        refreshTitle: "Retourner et changer",
+        bookmarkTitle: "Épingler / Enregistrer",
+        likeTitle: "Aimer ce sujet",
         copyTitle: "Copier la question",
         ptsSuffix: "PTS",
         emptyPodium: "Aucun joueur. Cliquez sur \"Mode Jeu\" ou \"Scores\" pour ajouter jusqu'à 10 joueurs !",
@@ -1773,9 +2029,10 @@
         flipBadge: "DREHEN",
         clickToReveal: "Karte antippen zum Drehen",
         flipBackHint: "Tippen zum Zurückdrehen",
-        changeCardHint: "Tippen zum Wechseln",
-        refreshTitle: "Frage neu ziehen",
-        bookmarkTitle: "Thema merken",
+        changeCardHint: "Tippen zum Drehen & Wechseln",
+        refreshTitle: "Drehen & neue Frage",
+        bookmarkTitle: "Thema anpinnen",
+        likeTitle: "Thema liken",
         copyTitle: "Frage kopieren",
         ptsSuffix: "PTS",
         emptyPodium: "Noch keine Spieler. Klicke auf \"Spielmodus\" oder \"Punkte\" für bis zu 10 Spieler!",
@@ -1850,9 +2107,10 @@
         flipBadge: "GIRA",
         clickToReveal: "Tocca la carta per girare",
         flipBackHint: "Tocca per Rigirare",
-        changeCardHint: "Tocca per Cambiare",
-        refreshTitle: "Cambia domanda",
-        bookmarkTitle: "Salva argomento",
+        changeCardHint: "Tocca per Girare e Cambiare",
+        refreshTitle: "Gira e cambia domanda",
+        bookmarkTitle: "Fissa / Salva argomento",
+        likeTitle: "Mi piace",
         copyTitle: "Copia domanda",
         ptsSuffix: "PTS",
         emptyPodium: "Nessun giocatore. Clicca su \"Modalità Gioco\" o \"Punteggi\" per aggiungere fino a 10 giocatori!",
@@ -2719,7 +2977,7 @@
       var isFinal = Boolean(data.isFinalRound);
 
       if (isFinal) {
-        cardEl.className = "relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-2 border-amber-300 rounded-3xl p-4 sm:px-6 sm:py-5 shadow-2xl z-10 text-white space-y-3 transition-all duration-300";
+        cardEl.className = "relative w-full max-w-4xl max-h-[92dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-2 border-amber-300 rounded-3xl p-4 sm:px-6 sm:pt-5 sm:pb-3 shadow-2xl z-10 text-white space-y-3 transition-all duration-300";
         if (fanfareStrip) fanfareStrip.classList.remove("hidden");
         if (mainLayout) mainLayout.className = "flex flex-col lg:flex-row items-center justify-between gap-4 min-w-0 w-full";
         if (trophyBox) trophyBox.className = "trophy-3d-spinning w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center";
@@ -2735,7 +2993,7 @@
         if (finalActions) finalActions.classList.remove("hidden");
         playFinalFanfare();
       } else {
-        cardEl.className = "relative w-full max-w-md max-h-[90dvh] overflow-y-auto bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:p-6 shadow-2xl z-10 text-center text-white space-y-4 transition-all duration-300";
+        cardEl.className = "relative w-full max-w-md max-h-[92dvh] overflow-y-auto overflow-x-hidden bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:px-6 sm:pt-6 sm:pb-3 shadow-2xl z-10 text-center text-white space-y-3.5 transition-all duration-300";
         if (fanfareStrip) fanfareStrip.classList.add("hidden");
         if (mainLayout) mainLayout.className = "flex flex-col items-center justify-center gap-4 min-w-0 w-full";
         if (trophyBox) trophyBox.className = "trophy-3d-spinning w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center";
@@ -2908,7 +3166,7 @@
                 '<span class="px-2 py-0.5 rounded-md bg-pink-500 text-white font-black text-[10px]">STEP 3</span>' +
                 '<i class="fa-solid fa-arrow-up text-cyan-300 text-xs animate-bounce"></i>' +
               '</div>' +
-              '<div class="px-2 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 text-slate-950 font-black text-[10px] text-center shadow">Flip the first card to start the round!</div>' +
+              '<div class="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 text-slate-950 font-black text-[10px] text-center shadow">Flip the first card to start the round!</div>' +
               '<p class="text-[10px] text-slate-300 leading-snug">Flip the first card to start the round!</p>' +
             '</div>' +
           '</div>' +
@@ -3506,840 +3764,203 @@
       var logoSizeClass = viewCount === 1 ? "w-40 h-14 sm:w-48 sm:h-16" : "w-32 h-11 sm:w-36 sm:h-12";
       var headSizeClass = viewCount === 1 ? "w-14 h-14 sm:w-16 sm:h-16" : "w-11 h-11 sm:w-12 sm:h-12";
 
-      return '<div class="flex items-end gap-0.5 pointer-events-none select-none z-20 ml-auto -mb-2 -mr-1">' +
-        '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="card-character-avatar anim-grow-shrink ' + headSizeClass + ' shrink-0">' +
-        '<div class="chatomizer-logo-badge -ml-1.5" title="Chatomizer Party Edition">' +
-          '<svg class="' + logoSizeClass + '" viewBox="0 0 230 70" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-            '<defs>' +
-              '<linearGradient id="chatBg" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
-                '<stop offset="0%" stop-color="#1E1B4B"/>' +
-                '<stop offset="50%" stop-color="#311042"/>' +
-                '<stop offset="100%" stop-color="#0F172A"/>' +
-              '</linearGradient>' +
-              '<linearGradient id="chatBorder" x1="0" y1="0" x2="220" y2="60" gradientUnits="userSpaceOnUse">' +
-                '<stop offset="0%" stop-color="#00F2FE"/>' +
-                '<stop offset="50%" stop-color="#FF007F"/>' +
-                '<stop offset="100%" stop-color="#FACC15"/>' +
-              '</linearGradient>' +
-              '<linearGradient id="chatTextGrad" x1="48" y1="16" x2="215" y2="48" gradientUnits="userSpaceOnUse">' +
-                '<stop offset="0%" stop-color="#FFFFFF"/>' +
-                '<stop offset="55%" stop-color="#FEF08A"/>' +
-                '<stop offset="100%" stop-color="#38BDF8"/>' +
-              '</linearGradient>' +
-            '</defs>' +
-            '<path d="M18 10H210C217.7 10 224 16.3 224 24V42C224 49.7 217.7 56 210 56H34L10 68L22 56H18C10.3 56 4 49.7 4 42V24C4 16.3 10.3 10 18 10Z" fill="url(#chatBg)" stroke="url(#chatBorder)" stroke-width="3.2"/>' +
-            '<g transform="translate(14, 18) rotate(-10)">' +
-              '<rect x="2" y="2" width="24" height="24" rx="6" fill="#FF007F" stroke="#FFFFFF" stroke-width="1.8"/>' +
-              '<circle cx="9" cy="9" r="2.2" fill="#FFFFFF"/>' +
-              '<circle cx="19" cy="9" r="2.2" fill="#FFFFFF"/>' +
-              '<circle cx="14" cy="14" r="2.4" fill="#FACC15"/>' +
-              '<circle cx="9" cy="19" r="2.2" fill="#FFFFFF"/>' +
-              '<circle cx="19" cy="19" r="2.2" fill="#FFFFFF"/>' +
-            '</g>' +
-            '<path d="M210 16L211.5 19.5L215 21L211.5 22.5L210 26L208.5 22.5L205 21L208.5 19.5L210 16Z" fill="#FACC15"/>' +
-            '<circle cx="48" cy="17" r="1.6" fill="#00F2FE"/>' +
-            '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="#090D16" stroke="#090D16" stroke-width="3.5" stroke-linejoin="round">CHATOMIZER</text>' +
-            '<text x="48" y="40" font-family="\'Fredoka\', \'Orbitron\', sans-serif" font-weight="900" font-size="21.5" letter-spacing="0.8" fill="url(#chatTextGrad)">CHATOMIZER</text>' +
-            '<text x="50" y="50.5" font-family="\'Orbitron\', sans-serif" font-weight="800" font-size="6.8" letter-spacing="2.2" fill="#F472B6">PARTY EDITION</text>' +
-          '</svg>' +
-        '</div>' +
+      return '<div class="flex items-end gap-0.5 pointer-events-none select-none">' +
+        '<svg viewBox="0 0 215 62" class="' + logoSizeClass + ' chatomizer-logo-badge shrink-0" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+          '<defs>' +
+            '<linearGradient id="chatomizerNeonGrad" x1="0" y1="0" x2="215" y2="62" gradientUnits="userSpaceOnUse">' +
+              '<stop offset="0%" stop-color="#FF2A85"/>' +
+              '<stop offset="48%" stop-color="#7928CA"/>' +
+              '<stop offset="100%" stop-color="#00DFD8"/>' +
+            '</linearGradient>' +
+            '<linearGradient id="chatomizerTextGrad" x1="20" y1="15" x2="195" y2="48" gradientUnits="userSpaceOnUse">' +
+              '<stop offset="0%" stop-color="#FFFFFF"/>' +
+              '<stop offset="55%" stop-color="#FEF08A"/>' +
+              '<stop offset="100%" stop-color="#BAE6FD"/>' +
+            '</linearGradient>' +
+          '</defs>' +
+          '<path d="M18 8 H192 C201 8 207 14 207 23 V35 C207 44 201 50 192 50 H177 L193 60 L156 50 H18 C9 50 3 44 3 35 V23 C3 14 9 8 18 8 Z" fill="#0F172A" stroke="url(#chatomizerNeonGrad)" stroke-width="3.5" stroke-linejoin="round"/>' +
+          '<path d="M19 11 H191 C198 11 203 16 203 23 V34 C203 41 198 46 191 46 H173 L184 53 L154 46 H19 C12 46 7 41 7 34 V23 C7 16 12 11 19 11 Z" fill="url(#chatomizerNeonGrad)" fill-opacity="0.22"/>' +
+          '<circle cx="19" cy="21" r="2.2" fill="#FACC15"/>' +
+          '<circle cx="191" cy="18" r="2" fill="#38BDF8"/>' +
+          '<text x="105" y="36" text-anchor="middle" font-family="\'Fredoka\', \'Plus Jakarta Sans\', sans-serif" font-weight="900" font-size="22.5" letter-spacing="1.2" fill="#090D16" dx="1.5" dy="1.8">CHATOMIZER</text>' +
+          '<text x="105" y="36" text-anchor="middle" font-family="\'Fredoka\', \'Plus Jakarta Sans\', sans-serif" font-weight="900" font-size="22.5" letter-spacing="1.2" fill="url(#chatomizerTextGrad)">CHATOMIZER</text>' +
+        '</svg>' +
+        '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="' + headSizeClass + ' card-character-avatar anim-grow-shrink shrink-0">' +
       '</div>';
     }
 
-    function clearCardTypingTimer(index) {
+    function stopCardTypewriter(index) {
       if (cardTypingTimers[index]) {
         clearInterval(cardTypingTimers[index]);
         cardTypingTimers[index] = null;
       }
-    }
-
-    function clearAllCardTypingTimers() {
-      for (var i = 0; i < cardTypingTimers.length; i++) {
-        clearCardTypingTimer(i);
-      }
-    }
-
-    function startLiveTyping(index, fullText, playSound, langAtStartOverride) {
-      clearCardTypingTimer(index);
-      var langAtStart = normalizeLangCode(langAtStartOverride || currentLanguage || "en");
-      var textToType = String(fullText || "");
-      cardResolvedTexts[index] = textToType;
-      var shouldPlaySound = Boolean(playSound);
       cardTypingProgress[index] = 0;
+    }
 
-      var renderTypingFrame = function(isComplete) {
-        var textEl = document.getElementById("typed-question-" + index);
-        if (!textEl) return;
-        var lockedFinal = cardResolvedTexts[index] !== undefined ? cardResolvedTexts[index] : textToType;
-        if (isComplete || normalizeLangCode(currentLanguage) !== langAtStart) {
-          cardTypingProgress[index] = lockedFinal.length;
-          textEl.innerHTML = '&quot;' + escapeHtml(lockedFinal) + '&quot;';
-          return;
-        }
-        var currentLen = cardTypingProgress[index];
-        var shown = lockedFinal.slice(0, currentLen);
-        var isDone = currentLen >= lockedFinal.length;
-        textEl.innerHTML = '&quot;' + escapeHtml(shown) + (isDone ? '&quot;' : '<span class="typing-caret"></span>');
-      };
-
-      renderTypingFrame(false);
-
-      if (textToType.length === 0) {
-        renderTypingFrame(true);
-        return;
+    function stopAllCardTypewriters() {
+      for (var i = 0; i < 4; i++) {
+        stopCardTypewriter(i);
       }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function startCardTypewriter(index, fullText) {
+      stopCardTypewriter(index);
+      var targetEl = document.getElementById("typed-question-" + index);
+      if (!targetEl) return;
+
+      var textToType = String(fullText || "");
+      cardTypingProgress[index] = 0;
+      targetEl.innerHTML = '&quot;<span class="typing-caret"></span>&quot;';
+
+      var totalLen = textToType.length;
+      var stepSize = totalLen > 140 ? 2 : 1;
+      var intervalMs = totalLen > 140 ? 18 : 24;
+      var soundCounter = 0;
 
       cardTypingTimers[index] = setInterval(function() {
-        var lockedFinal = cardResolvedTexts[index] !== undefined ? cardResolvedTexts[index] : textToType;
-        if (normalizeLangCode(currentLanguage) !== langAtStart) {
-          clearCardTypingTimer(index);
-          renderTypingFrame(true);
+        var el = document.getElementById("typed-question-" + index);
+        if (!el) {
+          stopCardTypewriter(index);
           return;
         }
 
-        var nextChar = lockedFinal.charAt(cardTypingProgress[index]);
-        cardTypingProgress[index] += 1;
-        if (shouldPlaySound) {
-          playTypewriterKeySound(nextChar);
-        }
+        cardTypingProgress[index] = Math.min(totalLen, cardTypingProgress[index] + stepSize);
+        var currentSlice = textToType.slice(0, cardTypingProgress[index]);
+        var lastChar = currentSlice.charAt(currentSlice.length - 1);
 
-        if (cardTypingProgress[index] >= lockedFinal.length) {
-          clearCardTypingTimer(index);
-          renderTypingFrame(true);
+        if (soundCounter % 2 === 0 || /[.!?,]/.test(lastChar)) {
+          playTypewriterKeySound(lastChar);
+        }
+        soundCounter += 1;
+
+        if (cardTypingProgress[index] >= totalLen) {
+          el.innerHTML = '&quot;' + escapeHtml(textToType) + '&quot;';
+          stopCardTypewriter(index);
         } else {
-          renderTypingFrame(false);
+          el.innerHTML = '&quot;' + escapeHtml(currentSlice) + '<span class="typing-caret"></span>&quot;';
         }
-      }, 33);
+      }, intervalMs);
     }
 
-    async function translateThenTypeCard(index, topic, playSound) {
+    function refreshAllCardBounties() {
+      var used = new Set();
+      for (var i = 0; i < 4; i++) {
+        var pts = pickVariableCardPoints(i, used);
+        used.add(pts);
+        cardPointBounties[i] = pts;
+      }
+      if (currentTopics.length > 0) {
+        activeRoundPrize = normalizeRoundPoints(cardPointBounties[0]);
+      }
+    }
+
+    async function revealAndTypeCard(index) {
+      var topic = currentTopics[index];
       if (!topic) return;
-      var token = (cardRevealToken[index] || 0) + 1;
-      cardRevealToken[index] = token;
-      var activeLang = normalizeLangCode(currentLanguage || "en");
 
-      clearCardTypingTimer(index);
+      var token = ++cardRevealToken[index];
+      var targetLang = normalizeLangCode(currentLanguage || "en");
 
-      var textEl = document.getElementById("typed-question-" + index);
-      if (textEl) {
-        textEl.innerHTML = '&quot;<span class="typing-caret"></span>';
+      if (targetLang === "en") {
+        cardResolvedTexts[index] = topic.text;
+        startCardTypewriter(index, topic.text);
+        return;
       }
 
-      var resolvedText = await resolveTranslatedTopicText(topic, activeLang);
-      if (cardRevealToken[index] !== token || normalizeLangCode(currentLanguage) !== activeLang) return;
+      var immediateText = getImmediateTranslatedString(topic.text, targetLang);
+      cardResolvedTexts[index] = immediateText;
 
-      var finalText = (resolvedText && resolvedText.trim()) ? resolvedText : topic.text;
-      cardResolvedTexts[index] = finalText;
-      startLiveTyping(index, finalText, playSound, activeLang);
+      var cachedKey = targetLang + "::" + topic.text;
+      if (translationCache[cachedKey]) {
+        cardResolvedTexts[index] = translationCache[cachedKey];
+        startCardTypewriter(index, translationCache[cachedKey]);
+        return;
+      }
+
+      var resolvedText = await resolveTranslatedTopicText(topic, targetLang);
+      if (token !== cardRevealToken[index] || normalizeLangCode(currentLanguage) !== targetLang) {
+        return;
+      }
+      if (cardCountView === 4 && !cardRevealedStates[index]) {
+        return;
+      }
+      cardResolvedTexts[index] = resolvedText || immediateText || topic.text;
+      startCardTypewriter(index, cardResolvedTexts[index]);
     }
 
-    function getCardBountyBadgeMarkup(index, compact) {
-      if (!gameState.enabled) return "";
-      var cardPts = normalizeRoundPoints(cardPointBounties[index] || gameState.pointsPerRound);
-      var ptsText = "+" + Number(cardPts).toLocaleString() + " " + t("ptsSuffix");
-      if (compact) {
-        return '<span class="bounty-badge-pop inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[10px] uppercase tracking-wider shadow">' +
-          '<i class="fa-solid fa-bolt"></i> ' + escapeHtml(ptsText) +
-        '</span>';
-      }
-      return '<div class="bounty-badge-pop inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-cyan-400 text-slate-950 font-black text-[11px] sm:text-xs uppercase tracking-wider shadow-md border border-white/70">' +
-        '<i class="fa-solid fa-fire-flame-curved text-rose-900"></i>' +
-        '<span>' + escapeHtml(ptsText) + '</span>' +
-        '<span class="px-1.5 py-0.2 rounded bg-slate-950/20 text-[9px]">R' + gameState.currentRound + '/' + gameState.totalRounds + '</span>' +
-      '</div>';
-    }
-
-    function getDeckBackMarkup(topic, index, catStyle) {
-      var categoryLabel = getLocalizedCategoryName(topic && topic.category ? topic.category : "");
-      return '<div class="deck-back-surface rounded-[14px] h-full w-full p-4 sm:p-5 flex flex-col items-center justify-between text-center relative overflow-hidden border border-white/10">' +
-        '<div class="flex items-center justify-between w-full gap-2 text-[10px] font-black uppercase tracking-widest text-amber-300">' +
-          getCardBountyBadgeMarkup(index, true) +
-          '<span class="ml-auto">' + escapeHtml(t("tapToFlip")) + '</span>' +
-        '</div>' +
-        '<div class="my-1 flex flex-col items-center justify-center gap-2.5">' +
-          '<div class="relative">' +
-            '<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-amber-300 to-cyan-400 shadow-lg anim-grow-shrink">' +
-              '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-contain rounded-full bg-slate-950/90">' +
-            '</div>' +
-            '<span class="-bottom-1 -right-2 absolute px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider shadow">' + escapeHtml(t("flipBadge")) + '</span>' +
-          '</div>' +
-          '<div class="flex flex-col items-center gap-1">' +
-            '<span class="text-[10px] font-bold uppercase tracking-widest text-slate-300/80">' + escapeHtml(t("topicLabel")) + '</span>' +
-            '<span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + ' shadow-md">' +
-              escapeHtml(categoryLabel) +
-            '</span>' +
-          '</div>' +
-        '</div>' +
-        '<div class="text-[11px] font-bold text-slate-300/90 flex items-center gap-1.5">' +
-          '<i class="fa-solid fa-hand-pointer text-cyan-400"></i> ' + escapeHtml(t("clickToReveal")) +
-        '</div>' +
-      '</div>';
-    }
-
-    function setLayoutView(count) {
-      clearAllCardTypingTimers();
-      cardCountView = count;
-      updateToggleUI();
-      generateTopics();
-    }
-
-    function updateToggleUI() {
-      var btn1 = document.getElementById("view-btn-1");
-      var btn4 = document.getElementById("view-btn-4");
-      var badge = document.getElementById("generate-btn-badge");
-      var btnText = document.getElementById("generate-btn-text");
-      var mainArea = document.getElementById("main-content-area");
-      var globalTicker = document.getElementById("global-ticker-container");
-      var floatingTicker = document.getElementById("single-card-floating-ticker");
-      var bombTimerBox = document.getElementById("single-card-bomb-timer");
-      var topicsGrid = document.getElementById("topics-grid");
-
-      if (cardCountView === 1) {
-        if (btn1) btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
-        if (btn4) btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
-        if (badge) badge.innerText = t("oneCard");
-        if (btnText) btnText.innerText = t("changeOneCard");
-        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between";
-        if (globalTicker) globalTicker.classList.add("hidden");
-        if (bombTimerBox) bombTimerBox.classList.remove("hidden");
-        if (floatingTicker) floatingTicker.classList.remove("hidden");
-        if (topicsGrid) topicsGrid.className = "w-full max-w-xl py-1 flex-grow flex items-center";
-      } else {
-        if (btn4) btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-sm cursor-pointer";
-        if (btn1) btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer";
-        if (badge) badge.innerText = t("fourCards");
-        if (btnText) btnText.innerText = t("dealFourCards");
-        if (mainArea) mainArea.className = "relative z-10 max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3 flex-grow w-full flex flex-col justify-between";
-        if (globalTicker) globalTicker.classList.remove("hidden");
-        if (bombTimerBox) bombTimerBox.classList.add("hidden");
-        if (floatingTicker) floatingTicker.classList.add("hidden");
-        if (topicsGrid) topicsGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
-      }
-      updateGameModeUI();
-    }
-
-    function generateSequentialTopic(categoryOverride) {
-      var availCategories = getPopulatedCategories();
-      if (availCategories.length === 0) {
-        availCategories = Object.keys(FALLBACK_QUESTIONS);
-      }
-
-      var category = (categoryOverride && QUESTION_BANKS[categoryOverride] && QUESTION_BANKS[categoryOverride].length > 0)
-        ? categoryOverride
-        : availCategories[Math.floor(Math.random() * availCategories.length)];
-
-      var questionsList = QUESTION_BANKS[category];
-      var pointer = categoryPointers[category] || 0;
-      var text = questionsList[pointer % questionsList.length];
-
-      categoryPointers[category] = (pointer + 1) % questionsList.length;
-
-      var numMatch = text.match(/^(\d+)\./);
-      var qNum = numMatch ? numMatch[1] : (pointer + 1);
-
-      var topic = {
-        id: "topic-" + category.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase() + "-" + qNum,
-        category: category,
-        text: text
-      };
-
-      topicCache[topic.id] = topic;
-      localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
-      if (normalizeLangCode(currentLanguage) !== "en") {
-        var langAtGeneration = normalizeLangCode(currentLanguage);
-        fetchRemoteTranslation(text, langAtGeneration).then(function(resolved) {
-          if (normalizeLangCode(currentLanguage) === langAtGeneration) {
-            for (var idx = 0; idx < currentTopics.length; idx++) {
-              if (currentTopics[idx] && currentTopics[idx].id === topic.id && !cardTypingTimers[idx]) {
-                cardResolvedTexts[idx] = resolved || text;
-                var el = document.getElementById("typed-question-" + idx);
-                if (el) {
-                  el.innerHTML = '&quot;' + escapeHtml(cardResolvedTexts[idx]) + '&quot;';
-                }
-              }
-            }
-          }
-        });
-      }
-      return topic;
-    }
-
-    function renderModePills() {
-      var container = document.getElementById("mode-pills");
-      if (!container) return;
-      container.innerHTML = PRESET_MODES.map(function(mode) {
-        var isActive = activePreset === mode.id;
-        var disp = getPresetDisplay(mode.id);
-        return '<button onclick="selectPreset(\'' + mode.id + '\')" class="w-full p-3 rounded-xl border text-left transition-all flex items-center justify-between gap-3 cursor-pointer ' +
-          (isActive
-            ? "bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-500/20"
-            : "bg-slate-100/80 dark:bg-slate-800/70 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-indigo-400") + '">' +
-          '<div>' +
-            '<div class="font-extrabold text-sm flex items-center gap-2">' +
-              '<span>' + escapeHtml(disp.name) + '</span>' +
-              (isActive ? '<i class="fa-solid fa-check text-xs text-cyan-200"></i>' : '') +
-            '</div>' +
-            '<div class="text-[11px] ' + (isActive ? "text-indigo-100" : "text-slate-500 dark:text-slate-400") + ' mt-0.5">' + escapeHtml(disp.desc) + '</div>' +
-          '</div>' +
-          '<span class="text-[10px] font-black px-2 py-1 rounded-lg shrink-0 ' + (isActive ? "bg-white/20 text-white" : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300") + '">' +
-            mode.categories.length +
-          '</span>' +
-        '</button>';
-      }).join("");
-    }
-
-    function selectPreset(modeId) {
-      var mode = PRESET_MODES.find(function(m) { return m.id === modeId; });
-      if (!mode) return;
-      activePreset = mode.id;
-      selectedCategories = new Set(mode.categories);
-      updateFilterButtonsUI();
-      renderModePills();
-      renderCategoryPills();
-      togglePresetsModal(false);
-      generateTopics();
-    }
-
-    function renderCategoryPills() {
-      var bulkEl = document.getElementById("category-bulk-actions");
-      var container = document.getElementById("category-pills");
-      var summaryEl = document.getElementById("modal-selected-summary");
-      var allCats = Object.keys(CATEGORY_STYLES);
-
-      if (bulkEl) {
-        bulkEl.innerHTML = '<button onclick="setAllCategories(true)" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white text-xs font-bold transition-colors cursor-pointer">' +
-          '<i class="fa-solid fa-check-double mr-1"></i> ' + escapeHtml(t("selectAll")) +
-        '</button>' +
-        '<button onclick="setAllCategories(false)" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-pink-600 hover:text-white text-xs font-bold transition-colors cursor-pointer">' +
-          '<i class="fa-solid fa-xmark mr-1"></i> ' + escapeHtml(t("unselectAll")) +
-        '</button>';
-      }
-
-      if (container) {
-        container.innerHTML = allCats.map(function(cat) {
-          var isSelected = selectedCategories.has(cat);
-          var label = getLocalizedCategoryName(cat);
-          return '<button onclick="toggleCategory(\'' + cat.replace(/'/g, "\\'") + '\')" class="px-3 py-2.5 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-between gap-2 ' +
-            (isSelected
-              ? "bg-indigo-600 text-white border-indigo-500 shadow-sm"
-              : "bg-slate-100/80 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800") + '">' +
-            '<span class="truncate">' + escapeHtml(label) + '</span>' +
-            '<i class="fa-solid ' + (isSelected ? "fa-check-circle text-cyan-200" : "fa-circle text-slate-400/50") + ' shrink-0"></i>' +
-          '</button>';
-        }).join("");
-      }
-
-      if (summaryEl) {
-        summaryEl.innerText = t("selectedSummary")
-          .replace("{count}", String(selectedCategories.size))
-          .replace("{total}", String(allCats.length));
-      }
-    }
-
-    function setAllCategories(selectAll) {
-      if (selectAll) {
-        selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
-        activePreset = "all";
-      } else {
-        selectedCategories.clear();
-        activePreset = "custom";
-      }
-      updateFilterButtonsUI();
-      renderCategoryPills();
-      generateTopics();
-    }
-
-    function toggleCategory(cat) {
-      if (selectedCategories.has(cat)) {
-        selectedCategories.delete(cat);
-      } else {
-        selectedCategories.add(cat);
-      }
-      activePreset = "custom";
-      updateFilterButtonsUI();
-      renderCategoryPills();
-      generateTopics();
-    }
-
-    function generateTopics() {
-      var icon = document.getElementById("generate-icon");
-      if (icon) {
-        icon.classList.remove("animate-spin-once");
-        void icon.offsetWidth;
-        icon.classList.add("animate-spin-once");
-      }
-
-      clearAllCardTypingTimers();
-      cardTypingProgress = [0, 0, 0, 0];
-      cardRevealToken = [0, 0, 0, 0];
-      cardResolvedTexts = ["", "", "", ""];
-
-      var availCategories = getPopulatedCategories();
-      if (availCategories.length === 0) {
-        availCategories = Object.keys(FALLBACK_QUESTIONS);
-      }
-
-      var newTopics = [];
-      var usedPointsSet = new Set();
-      var newBounties = [];
-      for (var i = 0; i < cardCountView; i++) {
-        var cat = availCategories[i % availCategories.length];
-        if (cardCountView === 1 || availCategories.length > cardCountView) {
-          cat = availCategories[Math.floor(Math.random() * availCategories.length)];
-        }
-        newTopics.push(generateSequentialTopic(cat));
-
-        var bounty = pickVariableCardPoints(i, usedPointsSet);
-        usedPointsSet.add(bounty);
-        newBounties.push(bounty);
-      }
-
-      currentTopics = newTopics;
-      cardPointBounties = newBounties;
-      activeRoundPrize = normalizeRoundPoints(newBounties[0] || gameState.pointsPerRound);
-      if (cardCountView === 4) {
-        cardRevealedStates = [false, false, false, false];
-      } else {
-        cardRevealedStates = [true, false, false, false];
-        if (currentTopics[0]) {
-          translateThenTypeCard(0, currentTopics[0], false);
-        }
-      }
-
-      updateGameModeUI();
-      renderTopicCards();
-      if (cardCountView === 1) {
-        resetBombTimer(false);
-      }
-    }
-
-    function flipSingleCard(index, forceReveal) {
-      if (!currentTopics[index]) return;
-      var willReveal = forceReveal ? true : !cardRevealedStates[index];
+    function flipFourModeCard(index) {
+      var topic = currentTopics[index];
+      if (!topic) return;
 
       var cardEl = document.getElementById("topic-card-" + index);
+
+      // In 1-Card view: animate full 360° 3D flip and draw the next fresh card at mid-flip
+      if (cardCountView === 1) {
+        playCardFlipSound();
+        if (cardEl) {
+          cardEl.classList.remove("card-flipping");
+          void cardEl.offsetWidth;
+          cardEl.classList.add("card-flipping");
+        }
+        setTimeout(function() {
+          refreshSingleCard(index);
+        }, 230);
+        return;
+      }
+
+      // In 4-Card view: animate 3D flip and toggle face-down <-> face-up
+      playCardFlipSound();
       if (cardEl) {
         cardEl.classList.remove("card-flipping");
         void cardEl.offsetWidth;
         cardEl.classList.add("card-flipping");
       }
 
-      playCardFlipSound();
+      var willReveal = !cardRevealedStates[index];
       cardRevealedStates[index] = willReveal;
-      renderTopicCards();
 
-      if (willReveal) {
-        if (gameState.enabled && cardCountView === 4) {
+      if (!willReveal) {
+        cardRevealToken[index] += 1;
+        stopCardTypewriter(index);
+      }
+
+      setTimeout(function() {
+        renderTopicCards();
+        updateGameModeUI();
+        if (willReveal) {
           onCardFlippedInGameMode(index);
+          revealAndTypeCard(index);
         }
-        translateThenTypeCard(index, currentTopics[index], true);
-      } else {
-        clearCardTypingTimer(index);
-      }
+      }, 230);
     }
 
-    function refreshSingleCard(event, index) {
-      if (event) event.stopPropagation();
-      var currentTopic = currentTopics[index];
-      var cat = currentTopic ? currentTopic.category : null;
-      var newTopic = generateSequentialTopic(cat);
-      currentTopics[index] = newTopic;
-
-      if (gameState.enabled && cardCountView === 4) {
-        var otherPts = new Set(cardPointBounties.filter(function(_, idx) { return idx !== index; }));
-        var refreshedPts = pickVariableCardPoints(index, otherPts);
-        cardPointBounties[index] = refreshedPts;
-        if (cardRevealedStates[index]) {
-          activeRoundPrize = refreshedPts;
-          updateGameModeUI();
-        }
+    document.addEventListener("DOMContentLoaded", async function() {
+      var langSelect = document.getElementById("language-select");
+      if (langSelect) {
+        langSelect.value = normalizeLangCode(currentLanguage);
       }
 
-      var cardEl = document.getElementById("topic-card-" + index);
-      if (cardEl) {
-        cardEl.classList.remove("card-flipping");
-        void cardEl.offsetWidth;
-        cardEl.classList.add("card-flipping");
-      }
-
-      playCardFlipSound();
-      var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
-      renderTopicCards();
-      if (!isFaceDown) {
-        translateThenTypeCard(index, newTopic, true);
-      }
-      showToast("New topic loaded!", "info");
-    }
-
-    function renderTopicCards() {
-      var grid = document.getElementById("topics-grid");
-      if (!grid) return;
-
-      grid.innerHTML = currentTopics.map(function(topic, index) {
-        var isFav = favoritedTopicIds.has(topic.id);
-        var catStyle = CATEGORY_STYLES[topic.category] || {
-          bg: "bg-slate-100 dark:bg-slate-800",
-          text: "text-slate-700 dark:text-slate-300",
-          border: "border-slate-300 dark:border-slate-700"
-        };
-        var localizedCategory = getLocalizedCategoryName(topic.category);
-        var textClass = cardCountView === 1 ? "text-xl sm:text-3xl leading-snug" : "text-base sm:text-xl leading-relaxed";
-        var cardHeightClass = cardCountView === 1 ? "min-h-[290px] sm:min-h-[340px] w-full" : "min-h-[205px] sm:min-h-[225px]";
-        var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
-        var deckBackHtml = getDeckBackMarkup(topic, index, catStyle);
-
-        var immediateDisplay = cardResolvedTexts[index] || getTranslatedTopicText(topic, currentLanguage);
-        var initialQuestionHtml = '&quot;' + escapeHtml(immediateDisplay) + '&quot;';
-        if (cardTypingTimers[index]) {
-          var len = cardTypingProgress[index] || 0;
-          var partial = immediateDisplay.slice(0, len);
-          initialQuestionHtml = '&quot;' + escapeHtml(partial) + (len < immediateDisplay.length ? '<span class="typing-caret"></span>' : '&quot;');
-        }
-
-        var frontBodyHtml = '<div class="card-wave-surface rounded-[14px] h-full w-full p-3.5 sm:p-4 flex flex-col justify-between relative">' +
-          '<div class="flex items-center justify-between gap-2 z-10">' +
-            '<div class="flex items-center gap-2 flex-wrap">' +
-              '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' +
-                escapeHtml(localizedCategory) +
-              '</span>' +
-              getCardBountyBadgeMarkup(index, true) +
-            '</div>' +
-            '<div class="flex items-center gap-1">' +
-              '<button onclick="refreshSingleCard(event, ' + index + ')" class="p-1.5 rounded-lg bg-white/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:text-indigo-500 transition-colors cursor-pointer" title="' + escapeHtml(t("refreshTitle")) + '">' +
-                '<i class="fa-solid fa-rotate text-xs"></i>' +
-              '</button>' +
-              '<button onclick="toggleFavorite(event, \'' + topic.id + '\')" class="p-1.5 rounded-lg transition-colors cursor-pointer ' + (isFav ? "text-amber-500 bg-amber-500/15" : "bg-white/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 hover:text-amber-500") + '" title="' + escapeHtml(t("bookmarkTitle")) + '">' +
-                '<i class="fa-' + (isFav ? "solid" : "regular") + ' fa-thumbtack text-xs"></i>' +
-              '</button>' +
-              '<button onclick="copyTopicText(event, \'' + topic.id + '\', ' + index + ')" class="p-1.5 rounded-lg bg-white/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 hover:text-indigo-500 transition-colors cursor-pointer" title="' + escapeHtml(t("copyTitle")) + '">' +
-                '<i class="fa-regular fa-copy text-xs"></i>' +
-              '</button>' +
-            '</div>' +
-          '</div>' +
-          '<div class="my-auto py-3 px-2 sm:px-3 flex items-center justify-center text-center">' +
-            '<p id="typed-question-' + index + '" class="card-prompt-text font-extrabold ' + textClass + ' tracking-tight">' +
-              initialQuestionHtml +
-            '</p>' +
-          '</div>' +
-          '<div class="flex items-end justify-between text-[11px] text-slate-600 dark:text-slate-300 font-bold z-10">' +
-            '<span>' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</span>' +
-            getNellieAndChatomizerMarkup(cardCountView) +
-          '</div>' +
-        '</div>';
-
-        return '<div class="card-container ' + cardHeightClass + '">' +
-          '<div id="topic-card-' + index + '" onclick="handleCardClick(' + index + ')" class="glass-card h-full w-full flex flex-col justify-between cursor-pointer select-none">' +
-            (isFaceDown ? deckBackHtml : frontBodyHtml) +
-          '</div>' +
-        '</div>';
-      }).join("");
-    }
-
-    function handleCardClick(index) {
-      if (cardCountView === 4) {
-        flipSingleCard(index);
-      } else {
-        generateTopics();
-      }
-    }
-
-    function getRankBadgeMarkup(rankIndex) {
-      var rankNum = rankIndex + 1;
-      if (rankIndex === 0) {
-        return '<span class="rank-3d-badge rank-3d-1 w-8 h-8 sm:w-9 sm:h-9 text-sm sm:text-base shrink-0" title="1st Place">#' + rankNum + '</span>';
-      }
-      if (rankIndex === 1) {
-        return '<span class="rank-3d-badge rank-3d-2 w-7 h-7 sm:w-8 sm:h-8 text-xs sm:text-sm shrink-0" title="2nd Place">#' + rankNum + '</span>';
-      }
-      if (rankIndex === 2) {
-        return '<span class="rank-3d-badge rank-3d-3 w-7 h-7 sm:w-8 sm:h-8 text-xs sm:text-sm shrink-0" title="3rd Place">#' + rankNum + '</span>';
-      }
-      return '<span class="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-black text-slate-700 dark:text-slate-300 shrink-0">#' + rankNum + '</span>';
-    }
-
-    function getMedalMarkup(rankIndex) {
-      if (rankIndex === 0) return '<span class="text-xl sm:text-2xl inline-block drop-shadow" title="1st Place">🥇</span>';
-      if (rankIndex === 1) return '<span class="text-lg sm:text-xl inline-block drop-shadow" title="2nd Place">🥈</span>';
-      if (rankIndex === 2) return '<span class="text-lg sm:text-xl inline-block drop-shadow" title="3rd Place">🥉</span>';
-      return '<span class="text-xs font-black px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">#' + (rankIndex + 1) + '</span>';
-    }
-
-    function getNameStyleClass(rankIndex) {
-      if (rankIndex === 0) return "podium-name-1";
-      if (rankIndex === 1) return "podium-name-2";
-      if (rankIndex === 2) return "podium-name-3";
-      return "font-extrabold text-slate-800 dark:text-slate-100";
-    }
-
-    function getPointsStyleClass(rankIndex) {
-      if (rankIndex === 0) return "pts-gold";
-      if (rankIndex === 1) return "pts-silver";
-      if (rankIndex === 2) return "pts-bronze";
-      return "font-black text-indigo-600 dark:text-cyan-300";
-    }
-
-    function getCardGlowClass(rankIndex) {
-      if (rankIndex === 0) return "card-gold-glow";
-      if (rankIndex === 1) return "card-silver-glow";
-      if (rankIndex === 2) return "card-bronze-glow";
-      return "bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700/80";
-    }
-
-    function renderLeaderboardTicker() {
-      var ticker = document.getElementById("leaderboard-ticker");
-      var floatingTicker = document.getElementById("floating-leaderboard-ticker");
-      var visiblePlayers = sessionScores.slice(0, MAX_GAME_PLAYERS);
-      var emptyMsg = '<span class="text-slate-500 dark:text-slate-400 italic">' + escapeHtml(t("emptyPodium")) + '</span>';
-
-      if (!visiblePlayers || visiblePlayers.length === 0) {
-        if (ticker) ticker.innerHTML = emptyMsg;
-        if (floatingTicker) floatingTicker.innerHTML = emptyMsg;
-        return;
-      }
-
-      var itemsHtml = visiblePlayers.map(function(entry, idx) {
-        var nameClass = getNameStyleClass(idx);
-        var ptsClass = getPointsStyleClass(idx);
-        var cardClass = getCardGlowClass(idx);
-        return '<div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl transition-all ' + cardClass + '">' +
-          getRankBadgeMarkup(idx) +
-          getMedalMarkup(idx) +
-          '<span class="' + nameClass + ' text-sm sm:text-base">' + escapeHtml(entry.name) + '</span>' +
-          '<span class="' + ptsClass + ' text-sm sm:text-base">' + Number(entry.points).toLocaleString() + ' ' + escapeHtml(t("ptsSuffix")) + '</span>' +
-        '</div>';
-      }).join('<span class="text-slate-400 dark:text-slate-600 mx-1.5 text-lg">&bull;</span>');
-
-      if (ticker) ticker.innerHTML = itemsHtml + '<span class="mx-4"></span>' + itemsHtml;
-      if (floatingTicker) floatingTicker.innerHTML = itemsHtml + '<span class="mx-4"></span>' + itemsHtml;
-    }
-
-    function toggleScoresModal(open) {
-      var modal = document.getElementById("scores-modal");
-      if (!modal) return;
-      if (open) {
-        openScoresModal(false);
-      } else {
-        modal.classList.add("hidden");
-      }
-    }
-
-    function populateScoresTable() {
-      var tbody = document.getElementById("scores-table-body");
-      if (!tbody) return;
-      tbody.innerHTML = "";
-      sessionScores.slice(0, MAX_GAME_PLAYERS).forEach(function(entry) {
-        addScoreRow(entry.name, entry.points, true);
-      });
-      updatePlayerCountBadge();
-    }
-
-    function addScoreRow(name, points, skipBadgeUpdate) {
-      var tbody = document.getElementById("scores-table-body");
-      if (!tbody) return;
-      var currentCount = tbody.querySelectorAll(".score-row").length;
-      if (currentCount >= MAX_GAME_PLAYERS) {
-        showToast("Maximum of " + MAX_GAME_PLAYERS + " players reached.", "warning");
-        return;
-      }
-      var tr = document.createElement("tr");
-      tr.className = "score-row bg-white dark:bg-slate-900/60";
-      tr.innerHTML = '<td class="p-2">' +
-          '<input type="text" value="' + escapeHtml(name || "") + '" placeholder="Player name..." class="score-name-input w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500">' +
-        '</td>' +
-        '<td class="p-2">' +
-          '<input type="number" value="' + (points !== undefined ? points : 0) + '" class="score-pts-input w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500">' +
-        '</td>' +
-        '<td class="p-2 text-center">' +
-          '<button onclick="this.closest(\'tr\').remove(); updatePlayerCountBadge();" class="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors cursor-pointer" title="Remove row">' +
-            '<i class="fa-solid fa-trash-can text-xs"></i>' +
-          '</button>' +
-        '</td>';
-      tbody.appendChild(tr);
-      if (!skipBadgeUpdate) updatePlayerCountBadge();
-    }
-
-    function expandRowsToMaxPlayers() {
-      var tbody = document.getElementById("scores-table-body");
-      if (!tbody) return;
-      var currentRows = tbody.querySelectorAll(".score-row").length;
-      for (var i = currentRows; i < MAX_GAME_PLAYERS; i++) {
-        addScoreRow("Player " + (i + 1), 0, true);
-      }
-      updatePlayerCountBadge();
-    }
-
-    function clearAllScores() {
-      var tbody = document.getElementById("scores-table-body");
-      if (tbody) tbody.innerHTML = "";
-      updatePlayerCountBadge();
-    }
-
-    function saveAndApplyScores() {
-      var rows = document.querySelectorAll("#scores-table-body .score-row");
-      var updated = [];
-      rows.forEach(function(row) {
-        var nameInput = row.querySelector(".score-name-input");
-        var ptsInput = row.querySelector(".score-pts-input");
-        var name = nameInput ? nameInput.value.trim() : "";
-        var pts = ptsInput ? parseInt(ptsInput.value, 10) : 0;
-        if (name) {
-          updated.push({ name: name, points: isNaN(pts) ? 0 : pts });
-        }
-      });
-
-      updated = updated.slice(0, MAX_GAME_PLAYERS);
-      updated.sort(function(a, b) { return b.points - a.points; });
-      sessionScores = updated;
-      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
-
-      var cb = document.getElementById("game-mode-enabled-checkbox");
-      var roundsInput = document.getElementById("game-rounds-input");
-      var qprInput = document.getElementById("game-qpr-input");
-      var pprInput = document.getElementById("game-ppr-input");
-
-      gameState.enabled = cb ? Boolean(cb.checked) : gameState.enabled;
-      gameState.totalRounds = Math.max(1, Math.min(99, parseInt(roundsInput && roundsInput.value, 10) || 5));
-      gameState.questionsPerRound = Math.max(1, Math.min(50, parseInt(qprInput && qprInput.value, 10) || 4));
-      gameState.pointsPerRound = normalizeRoundPoints(pprInput && pprInput.value);
-      if (gameState.currentRound > gameState.totalRounds) {
-        gameState.currentRound = 1;
-        gameState.currentQuestionInRound = 1;
-        gameState.roundStarted = false;
-      }
-      saveGameState();
-
-      renderLeaderboardTicker();
-      updateGameModeUI();
-      renderTopicCards();
-      var scoresModal = document.getElementById("scores-modal");
-      if (scoresModal) scoresModal.classList.add("hidden");
-      showToast(
-        gameState.enabled
-          ? "Game Mode saved (" + gameState.totalRounds + " rounds • " + sessionScores.length + " players)"
-          : "Party Mode saved (" + sessionScores.length + " players)",
-        "success"
-      );
-    }
-
-    function toggleFavorite(event, topicId) {
-      if (event) event.stopPropagation();
-      if (favoritedTopicIds.has(topicId)) {
-        favoritedTopicIds.delete(topicId);
-        showToast("Removed from saved topics", "info");
-      } else {
-        favoritedTopicIds.add(topicId);
-        showToast("Saved topic!", "success");
-      }
-      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      await loadAllQuestionBanks();
+      applyLanguageTranslations();
       updateFavoritesUI();
-      renderTopicCards();
-    }
+      generateTopics();
 
-    function updateFavoritesUI() {
-      var badge = document.getElementById("favorites-badge");
-      var list = document.getElementById("saved-topics-list");
-      var count = favoritedTopicIds.size;
-
-      if (badge) {
-        if (count > 0) {
-          badge.innerText = count;
-          badge.classList.remove("hidden");
-        } else {
-          badge.classList.add("hidden");
-        }
+      if (!localStorage.getItem("nellieb_tutorial_seen")) {
+        toggleWelcomeTutorialModal(true);
       }
-
-      if (!list) return;
-      if (count === 0) {
-        list.innerHTML = '<div class="text-center py-10 text-slate-400 dark:text-slate-500 text-xs">' +
-          '<i class="fa-regular fa-bookmark text-2xl mb-2 block opacity-40"></i>' +
-          '<p>' + escapeHtml(t("noSavedEmpty")) + '</p>' +
-          '<p class="text-[11px] mt-1">' + escapeHtml(t("noSavedSub")) + '</p>' +
-        '</div>';
-        return;
-      }
-
-      list.innerHTML = Array.from(favoritedTopicIds).map(function(id) {
-        var topic = topicCache[id];
-        if (!topic) return "";
-        var catStyle = CATEGORY_STYLES[topic.category] || { bg: "bg-slate-100 dark:bg-slate-800", text: "text-slate-700 dark:text-slate-300" };
-        var txText = getTranslatedTopicText(topic, currentLanguage);
-        var txCat = getLocalizedCategoryName(topic.category);
-        return '<div onclick="loadSavedTopic(\'' + topic.id + '\')" class="p-3 rounded-xl bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700/70 hover:border-indigo-400 cursor-pointer transition-all group">' +
-          '<div class="flex items-center justify-between gap-2 mb-1.5">' +
-            '<span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ' + catStyle.bg + " " + catStyle.text + '">' + escapeHtml(txCat) + '</span>' +
-            '<button onclick="event.stopPropagation(); toggleFavorite(event, \'' + topic.id + '\')" class="text-slate-400 hover:text-red-500 text-xs p-1" title="Remove">' +
-              '<i class="fa-solid fa-trash-can"></i>' +
-            '</button>' +
-          '</div>' +
-          '<p class="text-xs font-semibold text-slate-800 dark:text-slate-200 line-clamp-2">&quot;' + escapeHtml(txText) + '&quot;</p>' +
-          '<div class="mt-1.5 text-[10px] text-indigo-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity">' + escapeHtml(t("clickToLoad")) + ' &rarr;</div>' +
-        '</div>';
-      }).join("");
-    }
-
-    function loadSavedTopic(topicId) {
-      var topic = topicCache[topicId];
-      if (!topic) return;
-      clearAllCardTypingTimers();
-      cardCountView = 1;
-      updateToggleUI();
-      currentTopics = [topic];
-      cardRevealedStates = [true, false, false, false];
-      renderTopicCards();
-      translateThenTypeCard(0, topic, true);
-      toggleFavoritesDrawer(false);
-    }
-
-    function clearAllFavorites() {
-      favoritedTopicIds.clear();
-      localStorage.setItem("nellieb_favs", "[]");
-      updateFavoritesUI();
-      renderTopicCards();
-      showToast("Cleared saved topics", "info");
-    }
-
-    function copyTopicText(event, topicId, cardIndex) {
-      if (event) event.stopPropagation();
-      var topic = topicCache[topicId] || (currentTopics && currentTopics[cardIndex]);
-      if (!topic) return;
-      var textToCopy = (typeof cardIndex === "number" && cardResolvedTexts[cardIndex])
-        ? cardResolvedTexts[cardIndex]
-        : getTranslatedTopicText(topic, currentLanguage);
-      navigator.clipboard.writeText(textToCopy).then(function() {
-        showToast("Copied to clipboard!", "success");
-      });
-    }
-
-    function toggleFavoritesDrawer(open) {
-      var drawer = document.getElementById("favorites-drawer");
-      var content = document.getElementById("drawer-content");
-      if (!drawer || !content) return;
-      if (open) {
-        drawer.classList.remove("pointer-events-none", "opacity-0");
-        content.classList.remove("translate-x-full");
-      } else {
-        drawer.classList.add("pointer-events-none", "opacity-0");
-        content.classList.add("translate-x-full");
-      }
-    }
-
-    function togglePrivacyModal(open) {
-      var modal = document.getElementById("privacy-modal");
-      if (!modal) return;
-      if (open) modal.classList.remove("hidden");
-      else modal.classList.add("hidden");
-    }
+    });
 
     function toggleDarkMode() {
-      var html = document.documentElement;
-      if (html.classList.contains("dark")) {
-        html.classList.remove("dark");
-        localStorage.setItem("nellieb_theme", "light");
-      } else {
-        html.classList.add("dark");
-        localStorage.setItem("nellieb_theme", "dark");
-      }
+      document.documentElement.classList.toggle("dark");
     }
 
     function resetToInitial() {
@@ -4351,92 +3972,734 @@
       generateTopics();
     }
 
-    function showToast(message, type) {
-      type = type || "info";
-      var container = document.getElementById("toast-container");
-      if (!container) return;
-      var toast = document.createElement("div");
-      var colors = {
-        success: "bg-emerald-600 text-white",
-        info: "bg-slate-800 text-white dark:bg-slate-700",
-        warning: "bg-amber-600 text-white"
-      };
-      var icons = {
-        success: "fa-circle-check",
-        info: "fa-circle-info",
-        warning: "fa-triangle-exclamation"
-      };
-      toast.className = "px-4 py-2.5 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 transition-all duration-300 transform translate-x-10 opacity-0 " + (colors[type] || colors.info);
-      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i><span>' + escapeHtml(message) + '</span>';
-      container.appendChild(toast);
+    function setLayoutView(count) {
+      if (cardCountView === count) return;
+      cardCountView = count;
+      stopAllCardTypewriters();
+      updateToggleUI();
+      updateGameModeUI();
+      generateTopics();
+    }
 
-      requestAnimationFrame(function() {
-        toast.classList.remove("translate-x-10", "opacity-0");
+    function updateToggleUI() {
+      var btn1 = document.getElementById("view-btn-1");
+      var btn4 = document.getElementById("view-btn-4");
+      var btnBadge = document.getElementById("generate-btn-badge");
+      var btnText = document.getElementById("generate-btn-text");
+      var floatingTicker = document.getElementById("single-card-floating-ticker");
+      var globalTicker = document.getElementById("global-ticker-container");
+      var bombTimerPanel = document.getElementById("single-card-bomb-timer");
+
+      if (cardCountView === 1) {
+        btn1.className = "px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-md shadow-indigo-500/30 cursor-pointer";
+        btn4.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer";
+        btnBadge.innerText = t("oneCard");
+        btnText.innerText = t("changeOneCard");
+        if (floatingTicker) floatingTicker.classList.remove("hidden");
+        if (globalTicker) globalTicker.classList.add("hidden");
+        if (bombTimerPanel) bombTimerPanel.classList.remove("hidden");
+        updateBombUI();
+      } else {
+        btn4.className = "px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all flex items-center gap-1.5 bg-indigo-600 text-white shadow-md shadow-indigo-500/30 cursor-pointer";
+        btn1.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer";
+        btnBadge.innerText = t("fourCards");
+        btnText.innerText = t("dealFourCards");
+        if (floatingTicker) floatingTicker.classList.add("hidden");
+        if (globalTicker) globalTicker.classList.remove("hidden");
+        if (bombTimerPanel) bombTimerPanel.classList.add("hidden");
+      }
+      updateGameModeUI();
+    }
+
+    function renderModePills() {
+      var container = document.getElementById("mode-pills");
+      if (!container) return;
+      container.innerHTML = PRESET_MODES.map(function(mode) {
+        var isSelected = activePreset === mode.id;
+        var disp = getPresetDisplay(mode.id);
+        return '<button onclick="selectPresetMode(\'' + mode.id + '\')" class="w-full text-left p-3 rounded-xl transition-all border flex items-center justify-between gap-3 cursor-pointer ' +
+          (isSelected
+            ? "bg-indigo-600 text-white border-indigo-500 shadow-md"
+            : "bg-slate-50 dark:bg-slate-800/70 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-indigo-400") + '">' +
+          '<div>' +
+            '<div class="font-extrabold text-sm">' + escapeHtml(disp.name) + '</div>' +
+            '<div class="text-[11px] ' + (isSelected ? "text-indigo-100" : "text-slate-500 dark:text-slate-400") + '">' + escapeHtml(disp.desc) + '</div>' +
+          '</div>' +
+          (isSelected ? '<i class="fa-solid fa-circle-check text-white text-base shrink-0"></i>' : '<i class="fa-regular fa-circle text-slate-400 text-base shrink-0"></i>') +
+        '</button>';
+      }).join("");
+    }
+
+    function selectPresetMode(modeId) {
+      var mode = PRESET_MODES.find(function(m) { return m.id === modeId; });
+      if (!mode) return;
+      activePreset = modeId;
+      selectedCategories = new Set(mode.categories);
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      togglePresetsModal(false);
+      generateTopics();
+    }
+
+    function selectAllCategories() {
+      selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
+      activePreset = "all";
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
+    }
+
+    function unselectAllCategories() {
+      selectedCategories.clear();
+      activePreset = "custom";
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      renderTopicCards();
+    }
+
+    function renderCategoryPills() {
+      var bulkEl = document.getElementById("category-bulk-actions");
+      var container = document.getElementById("category-pills");
+      var summaryEl = document.getElementById("modal-selected-summary");
+      if (!container) return;
+
+      var allCats = Object.keys(CATEGORY_STYLES);
+      var allSelected = selectedCategories.size === allCats.length;
+      var noneSelected = selectedCategories.size === 0;
+
+      if (bulkEl) {
+        bulkEl.innerHTML =
+          '<button onclick="selectAllCategories()" class="flex-1 py-2 px-3 rounded-xl text-xs font-extrabold transition-all border flex items-center justify-center gap-1.5 cursor-pointer ' +
+            (allSelected
+              ? "bg-emerald-600 text-white border-emerald-500 shadow"
+              : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-emerald-400") + '">' +
+            '<i class="fa-solid fa-check-double"></i> ' + escapeHtml(t("selectAll")) +
+          '</button>' +
+          '<button onclick="unselectAllCategories()" class="flex-1 py-2 px-3 rounded-xl text-xs font-extrabold transition-all border flex items-center justify-center gap-1.5 cursor-pointer ' +
+            (noneSelected
+              ? "bg-rose-600 text-white border-rose-500 shadow"
+              : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-rose-400") + '">' +
+            '<i class="fa-solid fa-ban"></i> ' + escapeHtml(t("unselectAll")) +
+          '</button>';
+      }
+
+      container.innerHTML = allCats.map(function(cat) {
+        var isSelected = selectedCategories.has(cat);
+        var count = (QUESTION_BANKS[cat] || []).length;
+        var localizedCat = translateCategoryLabel(cat);
+        return '<button onclick="toggleCategoryFilter(\'' + cat + '\')" class="p-2.5 rounded-xl text-left text-xs font-bold transition-all border flex items-center justify-between gap-2 cursor-pointer ' +
+          (isSelected
+            ? "bg-indigo-600 text-white border-indigo-500 shadow-sm"
+            : "bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-indigo-400") + '">' +
+          '<span class="truncate">' + escapeHtml(localizedCat) + '</span>' +
+          '<span class="flex items-center gap-1.5 shrink-0">' +
+            '<span class="text-[10px] opacity-80">(' + count + ')</span>' +
+            (isSelected ? '<i class="fa-solid fa-square-check text-white"></i>' : '<i class="fa-regular fa-square text-slate-400"></i>') +
+          '</span>' +
+        '</button>';
+      }).join("");
+
+      if (summaryEl) {
+        summaryEl.innerText = t("selectedSummary")
+          .replace("{count}", selectedCategories.size)
+          .replace("{total}", allCats.length);
+      }
+    }
+
+    function toggleCategoryFilter(cat) {
+      if (selectedCategories.has(cat)) {
+        selectedCategories.delete(cat);
+      } else {
+        selectedCategories.add(cat);
+      }
+      activePreset = selectedCategories.size === Object.keys(CATEGORY_STYLES).length ? "all" : "custom";
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+
+      if (selectedCategories.size > 0) {
+        generateTopics();
+      } else {
+        renderTopicCards();
+      }
+    }
+
+    function makeTopicId(category, text) {
+      var hash = 0;
+      var combined = category + "::" + text;
+      for (var i = 0; i < combined.length; i++) {
+        hash = ((hash << 5) - hash) + combined.charCodeAt(i);
+        hash |= 0;
+      }
+      return "tp_" + Math.abs(hash);
+    }
+
+    function getNextQuestionForCategory(category) {
+      var list = QUESTION_BANKS[category] || FALLBACK_QUESTIONS[category] || [];
+      if (list.length === 0) {
+        return {
+          id: "fallback_" + Date.now(),
+          category: category,
+          text: "What is something new you learned or appreciated recently?"
+        };
+      }
+      var idx = categoryPointers[category] || 0;
+      var text = list[idx % list.length];
+      categoryPointers[category] = (idx + 1) % list.length;
+
+      var id = makeTopicId(category, text);
+      var item = { id: id, category: category, text: text };
+      topicCache[id] = item;
+      localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+      return item;
+    }
+
+    function pickBalancedCategories(count) {
+      var available = getPopulatedCategories();
+      if (available.length === 0) return [];
+      var pool = available.slice().sort(function() { return Math.random() - 0.5; });
+      var chosen = [];
+      for (var i = 0; i < count; i++) {
+        chosen.push(pool[i % pool.length]);
+      }
+      return chosen;
+    }
+
+    function generateTopics() {
+      var available = getPopulatedCategories();
+      if (available.length === 0) {
+        renderTopicCards();
+        return;
+      }
+
+      var icon = document.getElementById("generate-icon");
+      if (icon) {
+        icon.classList.add("animate-spin-once");
+        setTimeout(function() { icon.classList.remove("animate-spin-once"); }, 400);
+      }
+
+      stopAllCardTypewriters();
+      for (var tIdx = 0; tIdx < 4; tIdx++) {
+        cardRevealToken[tIdx] += 1;
+      }
+
+      var cats = pickBalancedCategories(cardCountView);
+      currentTopics = cats.map(function(cat) { return getNextQuestionForCategory(cat); });
+      cardRevealedStates = [false, false, false, false];
+      cardResolvedTexts = currentTopics.map(function(tp) { return getTranslatedTopicText(tp, currentLanguage); });
+
+      refreshAllCardBounties();
+
+      if (cardCountView === 1) {
+        resetBombTimer(false);
+        activeRoundPrize = normalizeRoundPoints(cardPointBounties[0]);
+      } else {
+        activeRoundPrize = normalizeRoundPoints(cardPointBounties[0]);
+      }
+
+      updateGameModeUI();
+      renderTopicCards();
+
+      if (cardCountView === 1 && currentTopics.length > 0) {
+        revealAndTypeCard(0);
+      }
+    }
+
+    function refreshSingleCard(index) {
+      var available = getPopulatedCategories();
+      if (available.length === 0) return;
+
+      stopCardTypewriter(index);
+      cardRevealToken[index] += 1;
+
+      var randomCat = available[Math.floor(Math.random() * available.length)];
+      currentTopics[index] = getNextQuestionForCategory(randomCat);
+      cardRevealedStates[index] = true;
+      cardResolvedTexts[index] = getTranslatedTopicText(currentTopics[index], currentLanguage);
+
+      var existingSet = new Set(cardPointBounties.filter(function(_, idx) { return idx !== index; }));
+      cardPointBounties[index] = pickVariableCardPoints(index, existingSet);
+      activeRoundPrize = normalizeRoundPoints(cardPointBounties[index]);
+
+      if (cardCountView === 1) {
+        resetBombTimer(false);
+      }
+
+      updateGameModeUI();
+      renderTopicCards();
+      revealAndTypeCard(index);
+    }
+
+    function renderTopicCards() {
+      var grid = document.getElementById("topics-grid");
+      var stage = document.getElementById("single-card-stage");
+      if (!grid) return;
+
+      if (selectedCategories.size === 0) {
+        grid.className = "grid grid-cols-1 gap-3.5 w-full max-w-2xl mx-auto py-1";
+        grid.innerHTML = '<div class="glass-card p-6 rounded-2xl text-center space-y-3 border-2 border-dashed border-pink-400/50">' +
+          '<i class="fa-solid fa-layer-group text-3xl text-pink-500"></i>' +
+          '<h3 class="font-extrabold text-base text-slate-900 dark:text-white">No Categories Selected</h3>' +
+          '<p class="text-xs text-slate-500 dark:text-slate-400">Select at least one category or click Select All to deal cards.</p>' +
+          '<button onclick="selectAllCategories()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-pink-600 text-white font-bold text-xs shadow cursor-pointer">Select All Categories</button>' +
+        '</div>';
+        return;
+      }
+
+      if (cardCountView === 1) {
+        if (stage) {
+          stage.className = "w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center md:items-stretch justify-center gap-3.5 py-1";
+        }
+        grid.className = "grid grid-cols-1 gap-3.5 w-full flex-1 py-0";
+      } else {
+        if (stage) {
+          stage.className = "w-full flex flex-col items-center justify-center py-1";
+        }
+        grid.className = "grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 w-full py-1";
+      }
+
+      var textSizeClass = cardCountView === 1
+        ? "text-base sm:text-xl md:text-2xl leading-snug"
+        : "text-sm sm:text-base leading-snug";
+
+      var cardMinHeightClass = cardCountView === 1
+        ? "min-h-[250px] sm:min-h-[285px]"
+        : "min-h-[155px] sm:min-h-[175px]";
+
+      grid.innerHTML = currentTopics.map(function(topic, index) {
+        var style = CATEGORY_STYLES[topic.category] || { bg: "bg-slate-100", text: "text-slate-700", border: "border-slate-300" };
+        var isFav = favoritedTopicIds.has(topic.id);
+        var isLiked = likedTopicIds.has(topic.id);
+        var isFaceDown = (cardCountView === 4 && !cardRevealedStates[index]);
+        var localizedCatName = getLocalizedCategoryName(topic.category);
+        var displayTopicText = cardResolvedTexts[index] || getTranslatedTopicText(topic, currentLanguage);
+
+        var cardPts = normalizeRoundPoints(cardPointBounties[index] || gameState.pointsPerRound);
+        var bountyBadgeHtml = gameState.enabled
+          ? '<span class="bounty-badge-pop inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 text-slate-950 font-black text-[10px] tracking-wider uppercase shadow">' +
+              '<i class="fa-solid fa-coins text-[9px]"></i> +' + cardPts.toLocaleString() + ' ' + escapeHtml(t("ptsSuffix")) +
+            '</span>'
+          : '';
+
+        if (isFaceDown) {
+          return '<div class="card-container">' +
+            '<div id="topic-card-' + index + '" onclick="flipFourModeCard(' + index + ')" title="Click to reveal topic" ' +
+              'class="glass-card deck-back-surface p-3.5 sm:p-4 rounded-2xl flex flex-col justify-between ' + cardMinHeightClass + ' cursor-pointer select-none group border border-indigo-400/50 relative overflow-visible">' +
+              '<div class="flex items-center justify-between gap-2 z-10">' +
+                '<div class="flex items-center gap-1.5 flex-wrap">' +
+                  '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide uppercase bg-indigo-500/25 text-cyan-200 border border-cyan-400/40">' +
+                    '<i class="fa-solid fa-hand-pointer mr-1"></i> ' + escapeHtml(t("tapToFlip")) +
+                  '</span>' +
+                  bountyBadgeHtml +
+                '</div>' +
+                '<span class="text-[10px] font-bold text-pink-300 tracking-wider uppercase">' + escapeHtml(t("topicLabel")) + ' #' + (index + 1) + '</span>' +
+              '</div>' +
+              '<div class="my-auto py-3 flex flex-col items-center justify-center text-center z-10">' +
+                '<div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-cyan-400 p-0.5 shadow-lg group-hover:scale-110 transition-transform mb-2">' +
+                  '<div class="w-full h-full rounded-[14px] bg-slate-950 flex items-center justify-center overflow-hidden">' +
+                    '<img src="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" alt="Nellie" class="w-full h-full object-cover">' +
+                  '</div>' +
+                '</div>' +
+                '<div class="font-extrabold text-sm sm:text-base tracking-wide bg-gradient-to-r from-cyan-300 via-white to-pink-300 bg-clip-text text-transparent">' +
+                  'Nellie B - Chatomizer' +
+                '</div>' +
+                '<div class="mt-1.5 inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-cyan-300 bg-slate-900/80 px-2.5 py-0.5 rounded-full border border-cyan-400/40">' +
+                  '<i class="fa-solid fa-rotate text-pink-400"></i> ' + escapeHtml(t("clickToReveal")) +
+                '</div>' +
+              '</div>' +
+              '<div class="flex items-center justify-between pt-1.5 border-t border-white/10 z-10 text-[10px] text-slate-300">' +
+                '<span>' + escapeHtml(localizedCatName) + '</span>' +
+                '<span class="font-bold text-amber-300"><i class="fa-solid fa-sparkles mr-1"></i>' + escapeHtml(t("flipBadge")) + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }
+
+        var flipHintText = cardCountView === 4 ? t("flipBackHint") : t("changeCardHint");
+        var topPaddingClass = cardCountView === 1 ? "pt-6 sm:pt-7" : "pt-5 sm:pt-6";
+
+        return '<div class="card-container">' +
+          '<div id="topic-card-' + index + '" onclick="flipFourModeCard(' + index + ')" ' +
+            'class="glass-card card-wave-surface p-3.5 sm:p-4 ' + topPaddingClass + ' rounded-2xl flex flex-col justify-between ' + cardMinHeightClass + ' cursor-pointer select-none overflow-visible relative">' +
+            '<div class="flex items-center justify-between gap-2 mb-2 relative z-30">' +
+              '<div class="flex items-center gap-1.5 flex-wrap">' +
+                '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold tracking-wide uppercase border ' + style.bg + ' ' + style.text + ' ' + style.border + '">' +
+                  escapeHtml(localizedCatName) +
+                '</span>' +
+                bountyBadgeHtml +
+              '</div>' +
+              '<!-- Upper-Right Action Buttons: Pin, Heart, Copy -->' +
+              '<div onclick="event.stopPropagation()" class="flex items-center gap-1.5 shrink-0">' +
+                '<button onclick="toggleFavorite(\'' + topic.id + '\')" title="' + escapeHtml(t("bookmarkTitle")) + '" ' +
+                  'class="card-action-btn ' + (isFav ? "text-amber-500 border-amber-400/60" : "text-slate-500 dark:text-slate-300 hover:text-amber-500") + '">' +
+                  '<i class="fa-solid fa-thumbtack text-xs ' + (isFav ? "rotate-0" : "-rotate-45") + '"></i>' +
+                '</button>' +
+                '<button onclick="toggleLikeTopic(\'' + topic.id + '\')" title="' + escapeHtml(t("likeTitle")) + '" ' +
+                  'class="card-action-btn ' + (isLiked ? "text-pink-500 border-pink-400/60" : "text-slate-500 dark:text-slate-300 hover:text-pink-500") + '">' +
+                  '<i class="' + (isLiked ? "fa-solid" : "fa-regular") + ' fa-heart text-xs"></i>' +
+                '</button>' +
+                '<button onclick="copyPrompt(\'' + topic.id + '\')" title="' + escapeHtml(t("copyTitle")) + '" ' +
+                  'class="card-action-btn text-slate-500 dark:text-slate-300 hover:text-cyan-500">' +
+                  '<i class="fa-regular fa-copy text-xs"></i>' +
+                '</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="my-auto py-1 relative z-20">' +
+              '<p id="typed-question-' + index + '" class="card-prompt-text font-extrabold ' + textSizeClass + ' tracking-tight">' +
+                '&quot;' + escapeHtml(displayTopicText) + '&quot;' +
+              '</p>' +
+            '</div>' +
+            '<div class="flex items-end justify-between gap-2 pt-1.5 mt-1 border-t border-slate-200/70 dark:border-white/10 relative z-20">' +
+              '<button onclick="event.stopPropagation(); flipFourModeCard(' + index + ')" title="' + escapeHtml(t("refreshTitle")) + '" ' +
+                'class="text-[10px] font-bold text-indigo-600 dark:text-cyan-300 hover:underline flex items-center gap-1 cursor-pointer">' +
+                '<i class="fa-solid fa-rotate text-[10px]"></i> ' + escapeHtml(flipHintText) +
+              '</button>' +
+              getNellieAndChatomizerMarkup(cardCountView) +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    function toggleFavorite(topicId) {
+      if (favoritedTopicIds.has(topicId)) {
+        favoritedTopicIds.delete(topicId);
+        showToast("Removed from saved topics", "info");
+      } else {
+        favoritedTopicIds.add(topicId);
+        showToast("Pinned to saved topics!", "success");
+      }
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderTopicCards();
+      for (var i = 0; i < currentTopics.length; i++) {
+        if (currentTopics[i] && currentTopics[i].id === topicId && cardTypingTimers[i]) {
+          stopCardTypewriter(i);
+        }
+      }
+    }
+
+    function toggleLikeTopic(topicId) {
+      if (likedTopicIds.has(topicId)) {
+        likedTopicIds.delete(topicId);
+        showToast("Unliked topic", "info");
+      } else {
+        likedTopicIds.add(topicId);
+        showToast("Liked topic!", "success");
+      }
+      localStorage.setItem("nellieb_likes", JSON.stringify(Array.from(likedTopicIds)));
+      renderTopicCards();
+      for (var i = 0; i < currentTopics.length; i++) {
+        if (currentTopics[i] && currentTopics[i].id === topicId && cardTypingTimers[i]) {
+          stopCardTypewriter(i);
+        }
+      }
+    }
+
+    function updateFavoritesUI() {
+      var count = favoritedTopicIds.size;
+      var badge = document.getElementById("favorites-badge");
+      var listEl = document.getElementById("saved-topics-list");
+
+      if (count > 0) {
+        badge.innerText = count;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+
+      if (count === 0) {
+        listEl.innerHTML = '<div class="text-center py-8 space-y-2 text-slate-400 dark:text-slate-500">' +
+          '<i class="fa-solid fa-thumbtack text-2xl opacity-40"></i>' +
+          '<p class="text-xs font-medium">' + escapeHtml(t("noSavedEmpty")) + '</p>' +
+          '<p class="text-[11px]">' + escapeHtml(t("noSavedSub")) + '</p>' +
+        '</div>';
+        return;
+      }
+
+      listEl.innerHTML = Array.from(favoritedTopicIds).reverse().map(function(id) {
+        var tObj = topicCache[id];
+        if (!tObj) return "";
+        var style = CATEGORY_STYLES[tObj.category] || { bg: "bg-slate-100", text: "text-slate-700" };
+        var localizedCat = getLocalizedCategoryName(tObj.category);
+        var localizedPrompt = getTranslatedTopicText(tObj, currentLanguage);
+        return '<div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 space-y-1.5 group transition-all hover:border-indigo-400">' +
+          '<div class="flex items-center justify-between gap-2">' +
+            '<span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ' + style.bg + ' ' + style.text + '">' + escapeHtml(localizedCat) + '</span>' +
+            '<div class="flex items-center gap-1">' +
+              '<button onclick="copyPrompt(\'' + id + '\')" title="' + escapeHtml(t("copyTitle")) + '" class="p-1 text-slate-400 hover:text-indigo-500 transition-colors cursor-pointer"><i class="fa-regular fa-copy text-xs"></i></button>' +
+              '<button onclick="toggleFavorite(\'' + id + '\')" title="Remove" class="p-1 text-slate-400 hover:text-red-500 transition-colors cursor-pointer"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+            '</div>' +
+          '</div>' +
+          '<p onclick="loadSavedTopicToView(\'' + id + '\')" class="text-xs font-medium text-slate-800 dark:text-slate-200 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 leading-snug">' +
+            '&quot;' + escapeHtml(localizedPrompt) + '&quot;' +
+          '</p>' +
+          '<div class="text-[9px] text-slate-400 font-semibold flex items-center gap-1 pt-0.5">' +
+            '<i class="fa-solid fa-arrow-up-right-from-square"></i> ' + escapeHtml(t("clickToLoad")) +
+          '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    function loadSavedTopicToView(id) {
+      var tObj = topicCache[id];
+      if (!tObj) return;
+      stopAllCardTypewriters();
+      cardRevealToken[0] += 1;
+      currentTopics[0] = tObj;
+      cardRevealedStates[0] = true;
+      cardResolvedTexts[0] = getTranslatedTopicText(tObj, currentLanguage);
+      renderTopicCards();
+      revealAndTypeCard(0);
+      toggleFavoritesDrawer(false);
+    }
+
+    function clearAllFavorites() {
+      if (favoritedTopicIds.size === 0) return;
+      favoritedTopicIds.clear();
+      localStorage.setItem("nellieb_favs", "[]");
+      updateFavoritesUI();
+      renderTopicCards();
+      showToast("Cleared saved topics", "info");
+    }
+
+    function copyPrompt(id) {
+      var tObj = topicCache[id];
+      if (!tObj) return;
+      var textToCopy = getTranslatedTopicText(tObj, currentLanguage);
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        showToast("Copied prompt to clipboard!", "success");
+      }).catch(function() {
+        showToast("Unable to copy text", "warning");
+      });
+    }
+
+    function toggleFavoritesDrawer(open) {
+      var drawer = document.getElementById("favorites-drawer");
+      var content = document.getElementById("drawer-content");
+      if (open) {
+        drawer.classList.remove("pointer-events-none", "opacity-0");
+        drawer.classList.add("opacity-100");
+        content.classList.remove("translate-x-full");
+      } else {
+        drawer.classList.add("opacity-0");
+        drawer.classList.remove("opacity-100");
+        content.classList.add("translate-x-full");
+        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
+      }
+    }
+
+    function togglePrivacyModal(open) {
+      var modal = document.getElementById("privacy-modal");
+      if (open) modal.classList.remove("hidden");
+      else modal.classList.add("hidden");
+    }
+
+    function renderLeaderboardTicker() {
+      var tickerEl = document.getElementById("leaderboard-ticker");
+      var floatingTickerEl = document.getElementById("floating-leaderboard-ticker");
+
+      var sortedAll = sessionScores.slice(0, MAX_GAME_PLAYERS).sort(function(a, b) { return b.points - a.points; });
+
+      var buildTickerMarkup = function(isFloatingLarge) {
+        if (sortedAll.length === 0) {
+          return '<span class="text-slate-600 dark:text-slate-300 font-semibold italic px-4">' +
+            escapeHtml(t("emptyPodium")) +
+          '</span>';
+        }
+
+        var itemsHtml = sortedAll.map(function(entry, idx) {
+          var rankNum = idx + 1;
+          var ptsFormatted = Number(entry.points).toLocaleString();
+          var sizeRankClass = isFloatingLarge ? "w-9 h-9 text-base sm:text-lg" : "w-6 h-6 text-xs";
+          var nameSizeClass = isFloatingLarge ? "text-xl sm:text-2xl" : "text-sm sm:text-base";
+          var ptsSizeClass = isFloatingLarge ? "text-lg sm:text-xl" : "text-xs sm:text-sm";
+          var padClass = isFloatingLarge ? "px-4 py-1.5 gap-2.5" : "px-3 py-1 gap-2";
+
+          if (idx === 0) {
+            return '<span class="inline-flex items-center ' + padClass + ' rounded-xl card-gold-glow">' +
+              '<span class="rank-3d-badge rank-3d-1 ' + sizeRankClass + '" title="1st Place">1</span>' +
+              '<span class="podium-name-1 ' + nameSizeClass + '">' + escapeHtml(entry.name) + '</span>' +
+              '<span class="pts-gold ' + ptsSizeClass + '">' + ptsFormatted + ' ' + escapeHtml(t("ptsSuffix")) + '</span>' +
+            '</span>';
+          }
+          if (idx === 1) {
+            return '<span class="inline-flex items-center ' + padClass + ' rounded-xl card-silver-glow">' +
+              '<span class="rank-3d-badge rank-3d-2 ' + sizeRankClass + '" title="2nd Place">2</span>' +
+              '<span class="podium-name-2 ' + nameSizeClass + '">' + escapeHtml(entry.name) + '</span>' +
+              '<span class="pts-silver ' + ptsSizeClass + '">' + ptsFormatted + ' ' + escapeHtml(t("ptsSuffix")) + '</span>' +
+            '</span>';
+          }
+          if (idx === 2) {
+            return '<span class="inline-flex items-center ' + padClass + ' rounded-xl card-bronze-glow">' +
+              '<span class="rank-3d-badge rank-3d-3 ' + sizeRankClass + '" title="3rd Place">3</span>' +
+              '<span class="podium-name-3 ' + nameSizeClass + '">' + escapeHtml(entry.name) + '</span>' +
+              '<span class="pts-bronze ' + ptsSizeClass + '">' + ptsFormatted + ' ' + escapeHtml(t("ptsSuffix")) + '</span>' +
+            '</span>';
+          }
+
+          return '<span class="inline-flex items-center ' + padClass + ' rounded-xl bg-slate-100/90 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 shadow-sm">' +
+            '<span class="inline-flex items-center justify-center rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-cyan-300 font-black ' + sizeRankClass + '">' + rankNum + '</span>' +
+            '<span class="font-extrabold text-slate-900 dark:text-white ' + nameSizeClass + '">' + escapeHtml(entry.name) + '</span>' +
+            '<span class="font-black text-indigo-600 dark:text-amber-300 ' + ptsSizeClass + '">' + ptsFormatted + ' ' + escapeHtml(t("ptsSuffix")) + '</span>' +
+          '</span>';
+        }).join("");
+
+        return itemsHtml + itemsHtml;
+      };
+
+      if (tickerEl) tickerEl.innerHTML = buildTickerMarkup(false);
+      if (floatingTickerEl) floatingTickerEl.innerHTML = buildTickerMarkup(true);
+    }
+
+    function toggleScoresModal(open) {
+      var modal = document.getElementById("scores-modal");
+      if (open) {
+        openScoresModal(false);
+      } else {
+        modal.classList.add("hidden");
+      }
+    }
+
+    function populateScoresTable() {
+      var tbody = document.getElementById("scores-table-body");
+      tbody.innerHTML = "";
+      if (sessionScores.length === 0) {
+        addScoreRow("", 0);
+      } else {
+        sessionScores.slice(0, MAX_GAME_PLAYERS).forEach(function(item) { addScoreRow(item.name, item.points); });
+      }
+      updatePlayerCountBadge();
+    }
+
+    function addScoreRow(name, points) {
+      var tbody = document.getElementById("scores-table-body");
+      var currentRows = tbody.querySelectorAll(".score-row").length;
+      if (currentRows >= MAX_GAME_PLAYERS) {
+        showToast("Maximum of 10 players allowed!", "warning");
+        return;
+      }
+
+      var slotNum = currentRows + 1;
+      var tr = document.createElement("tr");
+      tr.className = "score-row bg-white dark:bg-slate-900/50";
+      tr.innerHTML =
+        '<td class="p-2">' +
+          '<div class="flex items-center gap-1.5">' +
+            '<span class="text-[10px] font-black text-slate-400 w-4 text-right">' + slotNum + '.</span>' +
+            '<input type="text" placeholder="Player ' + slotNum + '" value="' + escapeHtml(name || "") + '" oninput="updatePlayerCountBadge()" class="score-name-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500">' +
+          '</div>' +
+        '</td>' +
+        '<td class="p-2">' +
+          '<input type="number" step="10" value="' + (points || 0) + '" class="score-points-input w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500">' +
+        '</td>' +
+        '<td class="p-2 text-center">' +
+          '<button onclick="removeScoreRow(this)" class="p-1.5 text-slate-400 hover:text-red-500 transition-colors cursor-pointer" title="Delete User">' +
+            '<i class="fa-solid fa-trash-can"></i>' +
+          '</button>' +
+        '</td>';
+      tbody.appendChild(tr);
+      updatePlayerCountBadge();
+    }
+
+    function removeScoreRow(btn) {
+      var tr = btn.closest("tr");
+      if (tr) tr.remove();
+      var rows = document.querySelectorAll("#scores-table-body .score-row");
+      rows.forEach(function(row, idx) {
+        var numSpan = row.querySelector("span");
+        if (numSpan) numSpan.innerText = (idx + 1) + ".";
+      });
+      updatePlayerCountBadge();
+    }
+
+    function expandRowsToMaxPlayers() {
+      var tbody = document.getElementById("scores-table-body");
+      var currentCount = tbody.querySelectorAll(".score-row").length;
+      if (currentCount >= MAX_GAME_PLAYERS) {
+        showToast("Already at 10 player slots!", "info");
+        return;
+      }
+      for (var i = currentCount; i < MAX_GAME_PLAYERS; i++) {
+        addScoreRow("", 0);
+      }
+    }
+
+    function clearAllScores() {
+      var tbody = document.getElementById("scores-table-body");
+      tbody.innerHTML = "";
+      addScoreRow("", 0);
+    }
+
+    function saveAndApplyScores() {
+      var rows = document.querySelectorAll("#scores-table-body .score-row");
+      var updated = [];
+      rows.forEach(function(row) {
+        if (updated.length >= MAX_GAME_PLAYERS) return;
+        var nameInput = row.querySelector(".score-name-input");
+        var ptsInput = row.querySelector(".score-points-input");
+        var name = nameInput ? nameInput.value.trim() : "";
+        var points = ptsInput ? parseInt(ptsInput.value, 10) : 0;
+        if (name) {
+          updated.push({ name: name, points: isNaN(points) ? 0 : points });
+        }
       });
 
+      updated.sort(function(a, b) { return b.points - a.points; });
+      sessionScores = updated.slice(0, MAX_GAME_PLAYERS);
+      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+
+      var cb = document.getElementById("game-mode-enabled-checkbox");
+      var roundsInput = document.getElementById("game-rounds-input");
+      var qprInput = document.getElementById("game-qpr-input");
+      var pprInput = document.getElementById("game-ppr-input");
+
+      gameState.enabled = cb ? Boolean(cb.checked) : gameState.enabled;
+      gameState.totalRounds = Math.max(1, parseInt(roundsInput && roundsInput.value, 10) || 5);
+      gameState.questionsPerRound = Math.max(1, parseInt(qprInput && qprInput.value, 10) || 4);
+      gameState.pointsPerRound = normalizeRoundPoints(pprInput ? pprInput.value : gameState.pointsPerRound);
+      if (gameState.currentRound > gameState.totalRounds) {
+        gameState.currentRound = 1;
+        gameState.currentQuestionInRound = 1;
+      }
+      gameState.roundStarted = false;
+      saveGameState();
+
+      renderLeaderboardTicker();
+      updateGameModeUI();
+      renderTopicCards();
+      toggleScoresModal(false);
+
+      if (gameState.enabled) {
+        showToast("Game Mode Ready! Flip a card to start Round " + gameState.currentRound + "!", "success");
+      } else {
+        showToast("Leaderboard updated (" + sessionScores.length + " players)!", "success");
+      }
+    }
+
+    function showToast(msg, type) {
+      var container = document.getElementById("toast-container");
+      var toast = document.createElement("div");
+      var colors = type === "success" ? "bg-emerald-600 text-white" : type === "warning" ? "bg-amber-500 text-slate-950" : "bg-slate-800 text-white";
+      toast.className = colors + " px-4 py-2 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 transition-all duration-300 translate-x-10 opacity-0";
+      toast.innerHTML = '<span>' + msg + '</span>';
+      container.appendChild(toast);
+      requestAnimationFrame(function() { toast.classList.remove("translate-x-10", "opacity-0"); });
       setTimeout(function() {
         toast.classList.add("translate-x-10", "opacity-0");
         setTimeout(function() { toast.remove(); }, 300);
       }, 2400);
     }
 
-    function escapeHtml(text) {
-      return String(text || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
     document.addEventListener("keydown", function(e) {
       if (e.code === "Space" && e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "SELECT") {
         e.preventDefault();
         generateTopics();
-      } else if (e.key === "Escape") {
-        toggleFavoritesDrawer(false);
-        togglePrivacyModal(false);
-        toggleScoresModal(false);
-        toggleTutorialModal(false);
-        toggleWelcomeTutorialModal(false);
-        togglePresetsModal(false);
-        toggleCategoriesModal(false);
-        closeRoundWinnerModal();
-        closeWinnerCelebrationModal();
       }
     });
-
-    (async function initApp() {
-      var savedTheme = localStorage.getItem("nellieb_theme");
-      if (savedTheme === "light") {
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.add("dark");
-      }
-
-      var selectEl = document.getElementById("language-select");
-      if (selectEl) {
-        selectEl.value = currentLanguage;
-      }
-
-      updateFilterButtonsUI();
-      renderModePills();
-      renderCategoryPills();
-      renderLeaderboardTicker();
-      updateFavoritesUI();
-      updateToggleUI();
-      updateGameModeUI();
-      resetBombTimer(false);
-      await loadAllQuestionBanks();
-      generateTopics();
-      applyLanguageTranslations();
-
-      if (!localStorage.getItem("nellieb_tutorial_seen")) {
-        toggleWelcomeTutorialModal(true);
-      } else {
-        showTutorialFinderNote();
-      }
-    })();
   </script>
 </body>
 </html>
