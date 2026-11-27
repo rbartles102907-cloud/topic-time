@@ -237,6 +237,38 @@
       animation: float-subtle 4s ease-in-out infinite;
     }
 
+    /* Prominent Round-Start Banner that Floats Up & Away */
+    @keyframes round-start-float-up {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 14px) scale(0.84);
+      }
+      16% {
+        opacity: 1;
+        transform: translate(-50%, -4px) scale(1.05);
+      }
+      30% {
+        opacity: 1;
+        transform: translate(-50%, -10px) scale(1);
+      }
+      72% {
+        opacity: 1;
+        transform: translate(-50%, -46px) scale(1.01);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -92px) scale(0.92);
+      }
+    }
+    .round-start-float-banner {
+      position: fixed;
+      top: 24%;
+      left: 50%;
+      z-index: 60;
+      pointer-events: none;
+      animation: round-start-float-up 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
     @keyframes metallic-shimmer {
       0% { background-position: -200% center; }
       100% { background-position: 200% center; }
@@ -562,6 +594,7 @@
 <body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between overflow-x-hidden overflow-y-auto relative font-['Plus_Jakarta_Sans']">
 
   <div id="toast-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <div id="round-start-float-layer" class="pointer-events-none fixed inset-0 z-50 overflow-hidden"></div>
 
   <!-- Header -->
   <header class="relative z-40 w-full glass-panel border-b border-slate-200/60 dark:border-slate-800/60 shrink-0">
@@ -1087,24 +1120,24 @@
     </div>
   </div>
 
-  <!-- Winner Celebration Popup Modal (Standard & Wide Final-Round Fanfare Mode) -->
-  <div id="winner-celebration-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <!-- Winner Celebration Popup Modal (Standard & Auto-Fitting Wide Final-Round Fanfare Mode) -->
+  <div id="winner-celebration-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
     <div onclick="closeWinnerCelebrationModal()" class="absolute inset-0 bg-slate-950/85 backdrop-blur-md cursor-pointer"></div>
     <div id="winner-celebration-card" class="relative w-full max-w-md bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:p-6 shadow-2xl z-10 text-center text-white space-y-4 overflow-hidden transition-all duration-300">
       <div id="celebration-fanfare-strip" class="hidden fanfare-glow-bar h-1.5 w-full rounded-full"></div>
 
-      <div class="flex items-center justify-between text-[10px] sm:text-xs font-black uppercase tracking-widest text-amber-300">
-        <span id="celebration-round-badge">ROUND WINNER</span>
-        <button onclick="closeWinnerCelebrationModal()" class="p-1 rounded-lg text-slate-300 hover:text-white cursor-pointer">
+      <div class="flex items-center justify-between gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-amber-300">
+        <span id="celebration-round-badge" class="truncate">ROUND WINNER</span>
+        <button onclick="closeWinnerCelebrationModal()" class="p-1 rounded-lg text-slate-300 hover:text-white cursor-pointer shrink-0">
           <i class="fa-solid fa-xmark text-base"></i>
         </button>
       </div>
 
       <div id="celebration-main-layout" class="flex flex-col items-center justify-center gap-4">
         <div id="celebration-trophy-wrap" class="flex items-center justify-center shrink-0">
-          <div class="trophy-3d-spinning w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center">
+          <div id="celebration-trophy-box" class="trophy-3d-spinning w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center">
             <div class="w-full h-full rounded-[20px] bg-gradient-to-br from-amber-300 via-yellow-500 to-amber-700 flex items-center justify-center shadow-inner">
-              <i class="fa-solid fa-trophy text-5xl text-slate-950 drop-shadow-[0_2px_2px_rgba(255,255,255,0.75)]"></i>
+              <i id="celebration-trophy-icon" class="fa-solid fa-trophy text-5xl text-slate-950 drop-shadow-[0_2px_2px_rgba(255,255,255,0.75)]"></i>
             </div>
           </div>
         </div>
@@ -1116,7 +1149,7 @@
                 🏆
               </div>
             </div>
-            <div class="text-left">
+            <div id="celebration-name-block" class="text-left min-w-0">
               <p id="celebration-congrats-label" class="text-[11px] font-black uppercase tracking-widest text-cyan-300">Congratulations!</p>
               <h2 id="celebration-winner-name" class="text-2xl sm:text-4xl font-black podium-name-1 tracking-tight leading-tight">Champion</h2>
             </div>
@@ -1131,12 +1164,12 @@
             Next Round <i class="fa-solid fa-arrow-right ml-1"></i>
           </button>
 
-          <div id="celebration-final-round-actions" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
-            <button id="celebration-end-game-btn" onclick="handleFinalModalEndGame()" class="py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs sm:text-sm shadow-lg transition-all cursor-pointer flex items-center justify-center gap-1.5">
+          <div id="celebration-final-round-actions" class="hidden flex flex-wrap items-center justify-end gap-2 shrink-0">
+            <button id="celebration-end-game-btn" onclick="handleFinalModalEndGame()" class="py-2 px-3.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs shadow-lg transition-all cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
               <i class="fa-solid fa-door-open"></i>
               <span>End Game</span>
             </button>
-            <button id="celebration-new-round-btn" onclick="handleFinalModalNewRound()" class="py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:via-teal-300 hover:to-cyan-300 text-slate-950 font-black text-xs sm:text-sm shadow-lg transition-all cursor-pointer flex items-center justify-center gap-1.5">
+            <button id="celebration-new-round-btn" onclick="handleFinalModalNewRound()" class="py-2 px-3.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:via-teal-300 hover:to-cyan-300 text-slate-950 font-black text-xs shadow-lg transition-all cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0">
               <i class="fa-solid fa-rotate-right"></i>
               <span>New Round</span>
             </button>
@@ -1887,6 +1920,27 @@
       return flippedCount >= gameState.questionsPerRound || flippedCount === 4;
     }
 
+    function showProminentFloatingRoundStart(roundNum, totalRounds, ptsPerRound) {
+      var layer = document.getElementById("round-start-float-layer");
+      if (!layer) return;
+      layer.innerHTML = "";
+
+      var banner = document.createElement("div");
+      banner.className = "round-start-float-banner px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 text-slate-950 border-2 border-white shadow-[0_0_35px_rgba(236,72,153,0.85),0_0_55px_rgba(56,189,248,0.65)] flex items-center gap-3 whitespace-nowrap";
+      banner.innerHTML =
+        '<span class="w-9 h-9 rounded-xl bg-slate-950 text-amber-300 flex items-center justify-center text-lg shadow-inner"><i class="fa-solid fa-play"></i></span>' +
+        '<div class="flex flex-col leading-tight">' +
+          '<span class="text-[10px] font-black uppercase tracking-widest text-slate-950/80">GAME ON</span>' +
+          '<span class="text-base sm:text-xl font-black tracking-tight text-slate-950">ROUND ' + roundNum + ' OF ' + totalRounds + ' STARTED!</span>' +
+        '</div>' +
+        '<span class="px-2.5 py-1 rounded-full bg-slate-950 text-amber-300 font-black text-xs">+' + Number(ptsPerRound).toLocaleString() + ' ' + escapeHtml(t("ptsSuffix")) + '</span>';
+
+      layer.appendChild(banner);
+      setTimeout(function() {
+        if (banner.parentNode) banner.parentNode.removeChild(banner);
+      }, 2200);
+    }
+
     function activateGameModeAndOpenScores() {
       gameState.enabled = true;
       if (!gameState.currentRound || gameState.currentRound > gameState.totalRounds) {
@@ -2046,7 +2100,11 @@
         gameState.currentQuestionInRound = 1;
         saveGameState();
         updateGameModeUI();
-        showToast("Round " + gameState.currentRound + " started!", "success");
+        if (cardCountView === 4) {
+          showProminentFloatingRoundStart(gameState.currentRound, gameState.totalRounds, gameState.pointsPerRound);
+        } else {
+          showToast("Round " + gameState.currentRound + " started!", "success");
+        }
         return;
       }
 
@@ -2159,6 +2217,10 @@
       var cardEl = document.getElementById("winner-celebration-card");
       var fanfareStrip = document.getElementById("celebration-fanfare-strip");
       var mainLayout = document.getElementById("celebration-main-layout");
+      var trophyBox = document.getElementById("celebration-trophy-box");
+      var trophyIcon = document.getElementById("celebration-trophy-icon");
+      var identityWrap = document.getElementById("celebration-identity-wrap");
+      var avatarRing = document.getElementById("celebration-avatar-ring");
       var badgeEl = document.getElementById("celebration-round-badge");
       var avatarEl = document.getElementById("celebration-avatar-inner");
       var congratsEl = document.getElementById("celebration-congrats-label");
@@ -2171,11 +2233,18 @@
       var isFinal = Boolean(data.isFinalRound);
 
       if (isFinal) {
-        cardEl.className = "relative w-full max-w-4xl bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-2 border-amber-300 rounded-3xl p-5 sm:px-7 sm:py-5 shadow-2xl z-10 text-white space-y-3 overflow-hidden transition-all duration-300";
+        cardEl.className = "relative w-full max-w-4xl bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-2 border-amber-300 rounded-3xl p-4 sm:px-6 sm:py-5 shadow-2xl z-10 text-white space-y-3 overflow-hidden transition-all duration-300";
         if (fanfareStrip) fanfareStrip.classList.remove("hidden");
-        if (mainLayout) mainLayout.className = "flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-6";
+        if (mainLayout) mainLayout.className = "flex flex-col md:flex-row items-center justify-between gap-4";
+        if (trophyBox) trophyBox.className = "trophy-3d-spinning w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center";
+        if (trophyIcon) trophyIcon.className = "fa-solid fa-trophy text-2xl sm:text-3xl text-slate-950 drop-shadow-[0_2px_2px_rgba(255,255,255,0.75)]";
+        if (identityWrap) identityWrap.className = "flex flex-wrap sm:flex-nowrap items-center justify-center md:justify-start gap-3 min-w-0 flex-1";
+        if (avatarRing) avatarRing.className = "w-12 h-12 sm:w-14 sm:h-14 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-cyan-400 to-yellow-300 shadow-lg anim-grow-shrink shrink-0";
         if (badgeEl) badgeEl.innerText = "GRAND CHAMPION • FINAL ROUND " + data.roundNumber + " OF " + data.totalRounds;
-        if (congratsEl) congratsEl.innerText = "Final Round Fanfare Winner!";
+        if (congratsEl) congratsEl.className = "text-[10px] font-black uppercase tracking-widest text-cyan-300 whitespace-nowrap";
+        if (congratsEl) congratsEl.innerText = "Final Round Winner!";
+        if (nameEl) nameEl.className = "text-xl sm:text-2xl font-black podium-name-1 tracking-tight leading-tight whitespace-nowrap";
+        if (ptsEl) ptsEl.className = "px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-[11px] sm:text-xs whitespace-nowrap shrink-0";
         if (continueBtn) continueBtn.classList.add("hidden");
         if (finalActions) finalActions.classList.remove("hidden");
         playFinalFanfare();
@@ -2183,8 +2252,15 @@
         cardEl.className = "relative w-full max-w-md bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:p-6 shadow-2xl z-10 text-center text-white space-y-4 overflow-hidden transition-all duration-300";
         if (fanfareStrip) fanfareStrip.classList.add("hidden");
         if (mainLayout) mainLayout.className = "flex flex-col items-center justify-center gap-4";
+        if (trophyBox) trophyBox.className = "trophy-3d-spinning w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center";
+        if (trophyIcon) trophyIcon.className = "fa-solid fa-trophy text-5xl text-slate-950 drop-shadow-[0_2px_2px_rgba(255,255,255,0.75)]";
+        if (identityWrap) identityWrap.className = "flex flex-col items-center gap-1.5 min-w-0";
+        if (avatarRing) avatarRing.className = "w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-cyan-400 to-yellow-300 shadow-lg anim-grow-shrink shrink-0";
         if (badgeEl) badgeEl.innerText = "ROUND " + data.roundNumber + " WINNER";
+        if (congratsEl) congratsEl.className = "text-[11px] font-black uppercase tracking-widest text-cyan-300";
         if (congratsEl) congratsEl.innerText = "Congratulations!";
+        if (nameEl) nameEl.className = "text-2xl sm:text-4xl font-black podium-name-1 tracking-tight leading-tight";
+        if (ptsEl) ptsEl.className = "mt-1 px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs sm:text-sm";
         if (continueBtn) continueBtn.classList.remove("hidden");
         if (finalActions) finalActions.classList.add("hidden");
         playVictoryFanfare();
@@ -3789,58 +3865,38 @@
       updateFavoritesUI();
       renderFavoritesList();
       renderTopicCards();
-      showToast("Removed from saved topics", "info");
     }
 
     function clearAllFavorites() {
       favoritedTopicIds.clear();
-      localStorage.setItem("nellieb_favs", "[]");
+      localStorage.setItem("nellieb_favs", JSON.stringify([]));
       updateFavoritesUI();
       renderFavoritesList();
       renderTopicCards();
-      showToast("All saved topics cleared", "info");
+      showToast("Cleared saved topics", "info");
     }
 
     function loadSavedTopicToFirstCard(id) {
       var tp = topicCache[id];
       if (!tp) return;
       clearCardTypingTimer(0);
-      currentTopics[0] = tp;
-      cardResolvedTexts[0] = getImmediateTranslatedString(tp.text, currentLanguage);
-      cardRevealedStates[0] = true;
-      cardTypingProgress[0] = 0;
-      renderTopicCards();
-      translateThenTypeCard(0, tp, true);
-      if (cardCountView === 1) resetBombTimer(false);
+      var targetIndex = cardCountView === 4 ? 0 : 0;
+      currentTopics[targetIndex] = { id: tp.id, category: tp.category, text: tp.text };
+      cardResolvedTexts[targetIndex] = getImmediateTranslatedString(tp.text, currentLanguage);
+      cardRevealedStates[targetIndex] = true;
       toggleFavoritesDrawer(false);
+      renderTopicCards();
+      translateThenTypeCard(targetIndex, currentTopics[targetIndex], false);
+      if (cardCountView === 1) resetBombTimer(false);
       showToast("Loaded saved topic!", "success");
     }
 
     function copyTopicText(text) {
-      var cleanText = text.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(cleanText).then(function() {
-          showToast("Copied prompt to clipboard!", "success");
-        }).catch(function() {
-          fallbackCopy(cleanText);
-        });
-      } else {
-        fallbackCopy(cleanText);
-      }
-    }
-
-    function fallbackCopy(text) {
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand("copy");
+      navigator.clipboard.writeText(text).then(function() {
         showToast("Copied prompt to clipboard!", "success");
-      } catch (e) {
-        showToast("Could not copy text", "error");
-      }
-      document.body.removeChild(ta);
+      }).catch(function() {
+        showToast("Copied prompt!", "success");
+      });
     }
 
     function togglePrivacyModal(open) {
@@ -3850,69 +3906,35 @@
       else modal.classList.add("hidden");
     }
 
-    function toggleDarkMode() {
-      var html = document.documentElement;
-      if (html.classList.contains("dark")) {
-        html.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-      } else {
-        html.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-      }
-      renderLeaderboardTicker();
-    }
-
-    function resetToInitial() {
-      clearAllCardTypingTimers();
-      cardCountView = 4;
-      activePreset = "all";
-      selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
-      Object.keys(categoryPointers).forEach(function(cat) { categoryPointers[cat] = 0; });
-      updateFilterButtonsUI();
-      updateToggleUI();
-      renderModePills();
-      renderCategoryPills();
-      generateTopics();
-      showToast("Reset to default view!", "info");
-    }
-
-    function showToast(msg, type) {
-      if (type === void 0) type = "info";
+    function showToast(message, type) {
       var container = document.getElementById("toast-container");
       if (!container) return;
 
+      var colors = {
+        success: "bg-emerald-600 text-white",
+        info: "bg-slate-800 text-white dark:bg-slate-700",
+        warning: "bg-amber-500 text-slate-950 font-semibold"
+      };
+      var icons = {
+        success: "fa-circle-check",
+        info: "fa-circle-info",
+        warning: "fa-triangle-exclamation"
+      };
+
       var toast = document.createElement("div");
-      var bg = "bg-slate-800 text-white border-slate-700";
-      var icon = '<i class="fa-solid fa-circle-info text-sky-400"></i>';
-
-      if (type === "success") {
-        bg = "bg-emerald-950/90 text-emerald-100 border-emerald-700/60";
-        icon = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
-      } else if (type === "warning") {
-        bg = "bg-amber-950/90 text-amber-100 border-amber-700/60";
-        icon = '<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>';
-      } else if (type === "error") {
-        bg = "bg-red-950/90 text-red-100 border-red-700/60";
-        icon = '<i class="fa-solid fa-circle-xmark text-red-400"></i>';
-      }
-
-      toast.className = "pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-xl border shadow-xl text-xs font-semibold backdrop-blur-md transition-all duration-300 transform translate-x-2 opacity-0 " + bg;
-      toast.innerHTML = icon + "<span>" + escapeHtml(msg) + "</span>";
+      toast.className = "flex items-center gap-2 px-3.5 py-2 rounded-xl shadow-lg text-xs " + (colors[type] || colors.info);
+      toast.innerHTML = '<i class="fa-solid ' + (icons[type] || icons.info) + '"></i><span>' + escapeHtml(message) + '</span>';
 
       container.appendChild(toast);
-      requestAnimationFrame(function() {
-        toast.classList.remove("translate-x-2", "opacity-0");
-      });
-
       setTimeout(function() {
-        toast.classList.add("opacity-0", "translate-x-2");
-        setTimeout(function() { toast.remove(); }, 300);
-      }, 2800);
+        toast.style.opacity = "0";
+        toast.style.transition = "opacity 0.25s ease";
+        setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 250);
+      }, 2200);
     }
 
     function escapeHtml(unsafe) {
-      if (!unsafe) return "";
-      return String(unsafe)
+      return String(unsafe || "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -3921,59 +3943,66 @@
     }
 
     function escapeQuotes(str) {
-      if (!str) return "";
-      return String(str).replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      return String(str || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    }
+
+    function toggleDarkMode() {
+      var isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    }
+
+    function resetToInitial() {
+      clearAllCardTypingTimers();
+      activePreset = "all";
+      selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
+      Object.keys(categoryPointers).forEach(function(k) { categoryPointers[k] = 0; });
+      resetBombTimer(false);
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+      generateTopics();
     }
 
     document.addEventListener("keydown", function(e) {
-      if (e.code === "Space" && e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
+      if (e.code === "Space" && e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "SELECT") {
         e.preventDefault();
         generateTopics();
-      }
-      if (e.key === "Escape") {
-        togglePrivacyModal(false);
-        toggleFavoritesDrawer(false);
-        toggleScoresModal(false);
-        toggleTutorialModal(false);
-        toggleWelcomeTutorialModal(false);
-        togglePresetsModal(false);
-        toggleCategoriesModal(false);
-        closeRoundWinnerModal();
-        closeWinnerCelebrationModal();
       }
     });
 
     (async function initApp() {
       var savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "light") document.documentElement.classList.remove("dark");
-      else document.documentElement.classList.add("dark");
+      if (savedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else if (savedTheme === "light") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+      }
 
-      var langSelect = document.getElementById("language-select");
-      if (langSelect) langSelect.value = currentLanguage;
+      var selectEl = document.getElementById("language-select");
+      if (selectEl) {
+        selectEl.value = currentLanguage;
+      }
 
-      updateFilterButtonsUI();
-      updateToggleUI();
-      renderModePills();
-      renderCategoryPills();
+      applyLanguageTranslations();
+      await loadAllQuestionBanks();
+
+      currentTopics = [];
+      for (var i = 0; i < cardCountView; i++) {
+        currentTopics.push(generateSequentialTopic());
+        cardResolvedTexts[i] = getImmediateTranslatedString(currentTopics[i].text, currentLanguage);
+        cardRevealedStates[i] = (cardCountView !== 4);
+        cardTypingProgress[i] = 0;
+      }
+
+      renderTopicCards();
+      if (normalizeLangCode(currentLanguage) !== "en") {
+        refreshVisibleCardTranslations();
+      }
       renderLeaderboardTicker();
       updateFavoritesUI();
       updateBombUI();
-      applyLanguageTranslations();
-
-      await loadAllQuestionBanks();
-
-      var initialTopics = [];
-      for (var i = 0; i < cardCountView; i++) {
-        initialTopics[i] = generateSequentialTopic();
-        cardResolvedTexts[i] = getImmediateTranslatedString(initialTopics[i].text, currentLanguage);
-        cardRevealedStates[i] = (cardCountView === 1);
-        cardTypingProgress[i] = 0;
-      }
-      currentTopics = initialTopics;
-      renderTopicCards();
-      if (cardCountView === 1 && currentTopics[0]) {
-        translateThenTypeCard(0, currentTopics[0], false);
-      }
 
       if (!localStorage.getItem("nellieb_tutorial_seen")) {
         toggleWelcomeTutorialModal(true);
