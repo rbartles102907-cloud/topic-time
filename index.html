@@ -481,6 +481,16 @@
       filter: drop-shadow(0 12px 18px rgba(245, 158, 11, 0.65)) drop-shadow(0 0 28px rgba(250, 204, 21, 0.5));
     }
 
+    @keyframes fanfare-beam-pulse {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.04); }
+    }
+    .fanfare-glow-bar {
+      background: linear-gradient(90deg, #ff007f, #facc15, #00f2fe, #8a2be2, #ff007f);
+      background-size: 300% 100%;
+      animation: rgb-chase 3s linear infinite, fanfare-beam-pulse 1.8s ease-in-out infinite;
+    }
+
     @keyframes clock-shake-ring {
       0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
       15% { transform: translate(-3px, 1px) rotate(-5deg) scale(1.03); }
@@ -648,6 +658,11 @@
             <i class="fa-solid fa-gamepad text-yellow-200"></i>
             <span id="game-mode-btn-label">Game Mode</span>
             <span id="game-mode-status-pill" class="hidden px-1.5 py-0.5 rounded-md bg-black/30 text-[10px] font-black tracking-wide">R1/5</span>
+          </button>
+
+          <button id="party-mode-btn" onclick="switchToPartyMode()" class="hidden px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 text-slate-800 dark:text-slate-100 font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-sm cursor-pointer border border-slate-300 dark:border-slate-700" title="End Game Mode and return to Party Mode">
+            <i class="fa-solid fa-champagne-glasses text-pink-500 dark:text-pink-400"></i>
+            <span id="party-mode-btn-label">Party Mode</span>
           </button>
         </div>
 
@@ -945,7 +960,7 @@
         </button>
       </div>
 
-      <!-- Game Mode Settings Panel -->
+      <!-- Mode Switcher: Game Mode vs Party Mode -->
       <div id="game-mode-settings-panel" class="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-indigo-500/10 to-pink-500/10 border border-emerald-400/40 dark:border-emerald-500/40 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <label class="inline-flex items-center gap-2 cursor-pointer select-none">
@@ -954,9 +969,14 @@
               <i class="fa-solid fa-gamepad text-emerald-500"></i> Game Mode Active
             </span>
           </label>
-          <span id="game-mode-player-count-badge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-indigo-600/20 text-indigo-700 dark:text-cyan-300">
-            3 / 10 Players
-          </span>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="switchToPartyMode()" class="px-2.5 py-1 rounded-lg bg-pink-600 hover:bg-pink-500 text-white text-[10px] font-black uppercase tracking-wider cursor-pointer transition-colors">
+              <i class="fa-solid fa-champagne-glasses mr-1"></i> Party Mode
+            </button>
+            <span id="game-mode-player-count-badge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-indigo-600/20 text-indigo-700 dark:text-cyan-300">
+              3 / 10 Players
+            </span>
+          </div>
         </div>
 
         <div class="grid grid-cols-3 gap-2.5">
@@ -1008,6 +1028,9 @@
           </button>
         </div>
         <div class="flex items-center gap-2">
+          <button type="button" onclick="endGameAndReturnToPartyMode()" class="px-3 py-1.5 rounded-xl border border-pink-400/50 bg-pink-600/15 text-pink-600 dark:text-pink-300 hover:bg-pink-600 hover:text-white text-xs font-extrabold transition-colors cursor-pointer">
+            End Game
+          </button>
           <button id="scores-clear-btn" onclick="clearAllScores()" class="px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold transition-colors cursor-pointer">Clear All</button>
           <button id="scores-save-btn" onclick="saveAndApplyScores()" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer shadow">Save &amp; Apply</button>
         </div>
@@ -1049,43 +1072,66 @@
     </div>
   </div>
 
-  <!-- Single-Card Winner Celebration Popup Modal with Spinning 3D Trophy -->
+  <!-- Single-Card Winner Celebration Popup Modal (Standard & Wide Final-Round Fanfare Mode) -->
   <div id="winner-celebration-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div onclick="closeWinnerCelebrationModal()" class="absolute inset-0 bg-slate-950/85 backdrop-blur-md cursor-pointer"></div>
-    <div class="relative w-full max-w-md bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-6 shadow-2xl z-10 text-center text-white space-y-4 overflow-hidden">
-      <div class="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-amber-300">
+    <div id="winner-celebration-card" class="relative w-full max-w-md bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:p-6 shadow-2xl z-10 text-center text-white space-y-4 overflow-hidden transition-all duration-300">
+      <div id="celebration-fanfare-strip" class="hidden fanfare-glow-bar h-1.5 w-full rounded-full"></div>
+
+      <div class="flex items-center justify-between text-[10px] sm:text-xs font-black uppercase tracking-widest text-amber-300">
         <span id="celebration-round-badge">ROUND WINNER</span>
         <button onclick="closeWinnerCelebrationModal()" class="p-1 rounded-lg text-slate-300 hover:text-white cursor-pointer">
           <i class="fa-solid fa-xmark text-base"></i>
         </button>
       </div>
 
-      <!-- Spinning 3D Trophy -->
-      <div class="flex items-center justify-center py-2">
-        <div class="trophy-3d-spinning w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center">
-          <div class="w-full h-full rounded-[20px] bg-gradient-to-br from-amber-300 via-yellow-500 to-amber-700 flex items-center justify-center shadow-inner">
-            <i class="fa-solid fa-trophy text-5xl text-slate-950 drop-shadow-[0_2px_2px_rgba(255,255,255,0.75)]"></i>
+      <!-- Layout Container: Compact vertical for standard rounds, wide horizontal fanfare on final round -->
+      <div id="celebration-main-layout" class="flex flex-col items-center justify-center gap-4">
+        <!-- Spinning 3D Trophy -->
+        <div id="celebration-trophy-wrap" class="flex items-center justify-center shrink-0">
+          <div class="trophy-3d-spinning w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center">
+            <div class="w-full h-full rounded-[20px] bg-gradient-to-br from-amber-300 via-yellow-500 to-amber-700 flex items-center justify-center shadow-inner">
+              <i class="fa-solid fa-trophy text-5xl text-slate-950 drop-shadow-[0_2px_2px_rgba(255,255,255,0.75)]"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Winner Fun Avatar + Name -->
+        <div id="celebration-identity-wrap" class="flex flex-col items-center gap-1.5 min-w-0">
+          <div class="flex items-center justify-center gap-3">
+            <div id="celebration-avatar-ring" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-cyan-400 to-yellow-300 shadow-lg anim-grow-shrink shrink-0">
+              <div id="celebration-avatar-inner" class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-3xl select-none overflow-hidden">
+                🏆
+              </div>
+            </div>
+            <div class="text-left">
+              <p id="celebration-congrats-label" class="text-[11px] font-black uppercase tracking-widest text-cyan-300">Congratulations!</p>
+              <h2 id="celebration-winner-name" class="text-2xl sm:text-4xl font-black podium-name-1 tracking-tight leading-tight">Champion</h2>
+            </div>
+          </div>
+          <div id="celebration-points-earned" class="mt-1 px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs sm:text-sm">
+            +100 PTS • Total: 1,100 PTS
+          </div>
+        </div>
+
+        <!-- Action Buttons (Single continue button on normal rounds; End Game + New Round on final round) -->
+        <div id="celebration-actions-wrap" class="w-full flex flex-col gap-2 shrink-0">
+          <button id="celebration-continue-btn" onclick="closeWinnerCelebrationModal()" class="w-full py-2.5 px-5 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 hover:from-amber-300 hover:via-pink-400 hover:to-indigo-500 text-slate-950 font-black text-sm shadow-lg transition-all cursor-pointer">
+            Continue to Next Round <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+
+          <div id="celebration-final-round-actions" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
+            <button id="celebration-end-game-btn" onclick="handleFinalModalEndGame()" class="py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs sm:text-sm shadow-lg transition-all cursor-pointer flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-door-open"></i>
+              <span>End Game</span>
+            </button>
+            <button id="celebration-new-round-btn" onclick="handleFinalModalNewRound()" class="py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 hover:from-emerald-300 hover:via-teal-300 hover:to-cyan-300 text-slate-950 font-black text-xs sm:text-sm shadow-lg transition-all cursor-pointer flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>New Round</span>
+            </button>
           </div>
         </div>
       </div>
-
-      <!-- Winner Fun Avatar + Name -->
-      <div class="flex flex-col items-center gap-2">
-        <div id="celebration-avatar-ring" class="w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-cyan-400 to-yellow-300 shadow-lg anim-grow-shrink">
-          <div id="celebration-avatar-inner" class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-3xl select-none overflow-hidden">
-            🏆
-          </div>
-        </div>
-        <p class="text-xs font-black uppercase tracking-widest text-cyan-300">Congratulations!</p>
-        <h2 id="celebration-winner-name" class="text-3xl font-black podium-name-1 tracking-tight">Champion</h2>
-        <div id="celebration-points-earned" class="px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-sm">
-          +100 PTS • Total: 1,100 PTS
-        </div>
-      </div>
-
-      <button id="celebration-continue-btn" onclick="closeWinnerCelebrationModal()" class="w-full py-2.5 px-5 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 hover:from-amber-300 hover:via-pink-400 hover:to-indigo-500 text-slate-950 font-black text-sm shadow-lg transition-all cursor-pointer">
-        Continue to Next Round <i class="fa-solid fa-arrow-right ml-1"></i>
-      </button>
     </div>
   </div>
 
@@ -1280,6 +1326,7 @@
         tutorial: "Tutorial",
         scores: "Scores",
         gameMode: "Game Mode",
+        partyMode: "Party Mode",
         endRound: "End Round",
         tiktokDesktop: "Go to My TikTok",
         tiktokMobile: "TikTok",
@@ -1357,6 +1404,7 @@
         tutorial: "Tutorial",
         scores: "Marcador",
         gameMode: "Modo Juego",
+        partyMode: "Modo Fiesta",
         endRound: "Fin Ronda",
         tiktokDesktop: "Ir a mi TikTok",
         tiktokMobile: "TikTok",
@@ -1434,6 +1482,7 @@
         tutorial: "Tutoriel",
         scores: "Scores",
         gameMode: "Mode Jeu",
+        partyMode: "Mode Soirée",
         endRound: "Fin Manche",
         tiktokDesktop: "Mon TikTok",
         tiktokMobile: "TikTok",
@@ -1511,6 +1560,7 @@
         tutorial: "Tutorial",
         scores: "Punkte",
         gameMode: "Spielmodus",
+        partyMode: "Party-Modus",
         endRound: "Runde Ende",
         tiktokDesktop: "Zu meinem TikTok",
         tiktokMobile: "TikTok",
@@ -1588,6 +1638,7 @@
         tutorial: "Tutorial",
         scores: "Placar",
         gameMode: "Modo Jogo",
+        partyMode: "Modo Festa",
         endRound: "Fim Rodada",
         tiktokDesktop: "Ir ao TikTok",
         tiktokMobile: "TikTok",
@@ -1665,6 +1716,7 @@
         tutorial: "Tutorial",
         scores: "Punteggi",
         gameMode: "Modalità Gioco",
+        partyMode: "Modalità Party",
         endRound: "Fine Round",
         tiktokDesktop: "Vai su TikTok",
         tiktokMobile: "TikTok",
@@ -2097,6 +2149,7 @@
       setText("header-tutorial-label", t("tutorial"));
       setText("header-scores-label", t("scores"));
       setText("game-mode-btn-label", t("gameMode"));
+      setText("party-mode-btn-label", t("partyMode"));
       setText("end-round-label", t("endRound"));
       setText("header-tiktok-desktop", t("tiktokDesktop"));
       setText("header-tiktok-mobile", t("tiktokMobile"));
@@ -2212,6 +2265,30 @@
       openScoresModal(true);
     }
 
+    function switchToPartyMode() {
+      gameState.enabled = false;
+      gameState.currentRound = 1;
+      gameState.currentQuestionInRound = 1;
+      gameState.roundStarted = false;
+      saveGameState();
+
+      var scoresModal = document.getElementById("scores-modal");
+      if (scoresModal) scoresModal.classList.add("hidden");
+      var winnerModal = document.getElementById("round-winner-modal");
+      if (winnerModal) winnerModal.classList.add("hidden");
+      var celebModal = document.getElementById("winner-celebration-modal");
+      if (celebModal) celebModal.classList.add("hidden");
+      pendingWinnerCelebrationData = null;
+
+      updateGameModeUI();
+      renderTopicCards();
+      showToast("Switched to Party Mode (No Rounds)", "info");
+    }
+
+    function endGameAndReturnToPartyMode() {
+      switchToPartyMode();
+    }
+
     function openScoresModal(focusGameMode) {
       var modal = document.getElementById("scores-modal");
       if (!modal) return;
@@ -2253,6 +2330,7 @@
 
     function updateGameModeUI() {
       var btn = document.getElementById("game-mode-btn");
+      var partyBtn = document.getElementById("party-mode-btn");
       var statusPill = document.getElementById("game-mode-status-pill");
       var roundBadge = document.getElementById("game-round-tracker-badge");
       var endRoundBtn = document.getElementById("end-round-btn");
@@ -2260,6 +2338,9 @@
       if (gameState.enabled) {
         if (btn) {
           btn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-pink-600 to-purple-600 hover:from-amber-400 hover:via-pink-500 hover:to-purple-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-lg shadow-pink-500/30 cursor-pointer border border-amber-300/60";
+        }
+        if (partyBtn) {
+          partyBtn.classList.remove("hidden");
         }
         if (statusPill) {
           statusPill.classList.remove("hidden");
@@ -2275,6 +2356,9 @@
       } else {
         if (btn) {
           btn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-md shadow-emerald-500/25 cursor-pointer border border-emerald-300/40";
+        }
+        if (partyBtn) {
+          partyBtn.classList.add("hidden");
         }
         if (statusPill) {
           statusPill.classList.add("hidden");
@@ -2318,8 +2402,9 @@
       var listEl = document.getElementById("winner-candidates-list");
       if (!modal || !listEl) return;
 
+      var isFinalRound = gameState.currentRound >= gameState.totalRounds;
       if (tagEl) {
-        tagEl.innerText = "ROUND " + gameState.currentRound + " OF " + gameState.totalRounds + " • " + subtitleText.toUpperCase();
+        tagEl.innerText = (isFinalRound ? "FINAL ROUND • " : "") + "ROUND " + gameState.currentRound + " OF " + gameState.totalRounds + " • " + subtitleText.toUpperCase();
       }
       if (prizeEl) {
         prizeEl.innerText = "+" + Number(gameState.pointsPerRound).toLocaleString() + " " + t("ptsSuffix");
@@ -2362,6 +2447,7 @@
         return p.name === player.name && p.points === player.points;
       });
       var completedRoundNum = gameState.currentRound;
+      var wasFinalRound = completedRoundNum >= gameState.totalRounds;
 
       var modal = document.getElementById("round-winner-modal");
       if (modal) modal.classList.add("hidden");
@@ -2375,6 +2461,8 @@
           pointsEarned: ptsAwarded,
           totalPoints: player.points,
           roundNumber: completedRoundNum,
+          totalRounds: gameState.totalRounds,
+          isFinalRound: wasFinalRound,
           avatar: getFunWinnerAvatar(player.name, newRank >= 0 ? newRank : 0)
         };
         openWinnerCelebrationModal(pendingWinnerCelebrationData);
@@ -2386,15 +2474,40 @@
     function openWinnerCelebrationModal(data) {
       if (!data) return;
       var modal = document.getElementById("winner-celebration-modal");
+      var cardEl = document.getElementById("winner-celebration-card");
+      var fanfareStrip = document.getElementById("celebration-fanfare-strip");
+      var mainLayout = document.getElementById("celebration-main-layout");
       var badgeEl = document.getElementById("celebration-round-badge");
       var avatarEl = document.getElementById("celebration-avatar-inner");
+      var congratsEl = document.getElementById("celebration-congrats-label");
       var nameEl = document.getElementById("celebration-winner-name");
       var ptsEl = document.getElementById("celebration-points-earned");
-      if (!modal) return;
+      var continueBtn = document.getElementById("celebration-continue-btn");
+      var finalActions = document.getElementById("celebration-final-round-actions");
+      if (!modal || !cardEl) return;
 
-      if (badgeEl) {
-        badgeEl.innerText = "ROUND " + data.roundNumber + " CHAMPION";
+      var isFinal = Boolean(data.isFinalRound);
+
+      if (isFinal) {
+        cardEl.className = "relative w-full max-w-4xl bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 border-2 border-amber-300 rounded-3xl p-5 sm:px-7 sm:py-5 shadow-2xl z-10 text-white space-y-3 overflow-hidden transition-all duration-300";
+        if (fanfareStrip) fanfareStrip.classList.remove("hidden");
+        if (mainLayout) mainLayout.className = "flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-6";
+        if (badgeEl) badgeEl.innerText = "GRAND CHAMPION • FINAL ROUND " + data.roundNumber + " OF " + data.totalRounds;
+        if (congratsEl) congratsEl.innerText = "Final Round Fanfare Winner!";
+        if (continueBtn) continueBtn.classList.add("hidden");
+        if (finalActions) finalActions.classList.remove("hidden");
+        playFinalFanfare();
+      } else {
+        cardEl.className = "relative w-full max-w-md bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 border-2 border-amber-400/80 rounded-3xl p-5 sm:p-6 shadow-2xl z-10 text-center text-white space-y-4 overflow-hidden transition-all duration-300";
+        if (fanfareStrip) fanfareStrip.classList.add("hidden");
+        if (mainLayout) mainLayout.className = "flex flex-col items-center justify-center gap-4";
+        if (badgeEl) badgeEl.innerText = "ROUND " + data.roundNumber + " WINNER";
+        if (congratsEl) congratsEl.innerText = "Congratulations!";
+        if (continueBtn) continueBtn.classList.remove("hidden");
+        if (finalActions) finalActions.classList.add("hidden");
+        playVictoryFanfare();
       }
+
       if (avatarEl) {
         avatarEl.innerText = data.avatar || "👑";
       }
@@ -2405,7 +2518,6 @@
         ptsEl.innerText = "+" + Number(data.pointsEarned).toLocaleString() + " " + t("ptsSuffix") + " • Total: " + Number(data.totalPoints).toLocaleString() + " " + t("ptsSuffix");
       }
 
-      playVictoryFanfare();
       modal.classList.remove("hidden");
     }
 
@@ -2415,12 +2527,28 @@
       pendingWinnerCelebrationData = null;
     }
 
+    function handleFinalModalEndGame() {
+      closeWinnerCelebrationModal();
+      switchToPartyMode();
+    }
+
+    function handleFinalModalNewRound() {
+      gameState.enabled = true;
+      gameState.currentRound = 1;
+      gameState.currentQuestionInRound = 1;
+      gameState.roundStarted = false;
+      saveGameState();
+      updateGameModeUI();
+      closeWinnerCelebrationModal();
+      generateTopics();
+      showToast("New Round 1 started!", "success");
+    }
+
     function advanceRoundCounterAfterWinner() {
       if (gameState.currentRound < gameState.totalRounds) {
         gameState.currentRound += 1;
         gameState.currentQuestionInRound = 1;
       } else {
-        showToast("All " + gameState.totalRounds + " rounds completed! Starting Round 1.", "success");
         gameState.currentRound = 1;
         gameState.currentQuestionInRound = 1;
       }
@@ -2560,8 +2688,8 @@
         ]
       },
       {
-        title: "Game Mode & Live Player Ticker",
-        badge: "Step 3 of 4 - Rounds & Points",
+        title: "Game Mode vs. Party Mode",
+        badge: "Step 3 of 4 - Rounds & Party Mode",
         visual: '<div class="relative bg-gradient-to-br from-amber-950/70 via-slate-900 to-slate-950 border border-amber-500/40 rounded-2xl p-4 flex flex-col items-center gap-3">' +
           '<div class="flex flex-wrap items-center justify-center gap-2.5">' +
             '<div class="flex items-center gap-2 card-gold-glow px-3 py-1.5 rounded-xl">' +
@@ -2580,12 +2708,12 @@
               '<span class="pts-bronze text-xs">998 PTS</span>' +
             '</div>' +
           '</div>' +
-          '<p class="text-xs text-slate-300 text-center">Click <strong>Game Mode</strong> to set rounds, questions per round, points per round, and up to 10 players!</p>' +
+          '<p class="text-xs text-slate-300 text-center">Play structured rounds in <strong>Game Mode</strong> or switch back to <strong>Party Mode</strong> anytime for round-free fun!</p>' +
         '</div>',
         bullets: [
-          { icon: "fa-gamepad text-emerald-400", title: "Set Rounds & Bounty Points", text: "Default is 5 rounds, 1 question per round, and 100 points per round—with up to 10 players." },
-          { icon: "fa-crown text-yellow-300", title: "All Players Scroll in Order", text: "Every player scrolls live in rank order so everyone can chase the top spot." },
-          { icon: "fa-flag-checkered text-pink-400", title: "Spinning 3D Winner Popup", text: "In 1-Card mode, picking a winner pops up a spinning 3D trophy with their fun avatar and score!" }
+          { icon: "fa-gamepad text-emerald-400", title: "Rounds & Bounty Points", text: "Configure rounds, questions per round, points per round, and up to 10 players." },
+          { icon: "fa-champagne-glasses text-pink-400", title: "Party Mode & End Game", text: "Click Party Mode or End Game anytime to drop round tracking and keep chatting freely." },
+          { icon: "fa-trophy text-yellow-300", title: "Final-Round Grand Fanfare", text: "Completing the final round opens a wide fanfare modal with End Game and New Round options." }
         ]
       },
       {
@@ -2635,13 +2763,13 @@
         ]
       },
       {
-        title: "Modo Juego y Marcador en Vivo",
-        badge: "Paso 3 de 4 - Rondas y Puntos",
+        title: "Modo Juego vs. Modo Fiesta",
+        badge: "Paso 3 de 4 - Rondas y Fiesta",
         visual: TUTORIAL_STEPS[2].visual,
         bullets: [
-          { icon: "fa-gamepad text-emerald-400", title: "Configura Rondas y Puntos", text: "Por defecto son 5 rondas, 1 pregunta por ronda y 100 puntos por ronda, hasta 10 jugadores." },
-          { icon: "fa-crown text-yellow-300", title: "Todos Desfilan en Orden", text: "Todos los jugadores aparecen en la marquesina según su puesto." },
-          { icon: "fa-trophy text-pink-400", title: "Trofeo 3D Giratorio del Ganador", text: "En 1 Carta, al elegir ganador aparece un trofeo 3D giratorio con su avatar y puntos." }
+          { icon: "fa-gamepad text-emerald-400", title: "Configura Rondas y Puntos", text: "Ajusta rondas, preguntas por ronda, puntos por ronda y hasta 10 jugadores." },
+          { icon: "fa-champagne-glasses text-pink-400", title: "Modo Fiesta y Terminar Juego", text: "Usa Modo Fiesta o Terminar Juego en cualquier momento para jugar sin rondas." },
+          { icon: "fa-trophy text-yellow-300", title: "Gran Final con Fanfarria", text: "Al terminar la última ronda se abre un cartel ancho con opciones de Terminar Juego o Nueva Ronda." }
         ]
       },
       {
@@ -2810,6 +2938,28 @@
           gain.connect(ctx.destination);
           osc.start(start);
           osc.stop(start + 0.26);
+        });
+      } catch (e) {}
+    }
+
+    function playFinalFanfare() {
+      try {
+        var ctx = ensureAudioContext();
+        if (!ctx) return;
+        var notes = [523.25, 659.25, 783.99, 1046.5, 1318.5, 1567.98];
+        notes.forEach(function(freq, idx) {
+          var osc = ctx.createOscillator();
+          var gain = ctx.createGain();
+          var start = ctx.currentTime + idx * 0.075;
+          osc.type = idx % 2 === 0 ? "triangle" : "sawtooth";
+          osc.frequency.setValueAtTime(freq, start);
+          gain.gain.setValueAtTime(0.001, start);
+          gain.gain.linearRampToValueAtTime(0.13, start + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.001, start + 0.34);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(start);
+          osc.stop(start + 0.36);
         });
       } catch (e) {}
     }
@@ -3737,7 +3887,7 @@
       var tr = document.createElement("tr");
       tr.className = "score-row";
       tr.innerHTML = '<td class="p-2"><input type="text" value="' + escapeQuotes(name || "") + '" placeholder="' + escapeQuotes(t("thUser")) + '" class="score-name w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
-        '<td class="p-2"><input type="number" value="' + (points !== undefined ? points : 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
+        '<td class="p-2"><input type="number" value="' + (points || 0) + '" placeholder="0" class="score-pts w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-semibold focus:outline-none focus:border-indigo-500"></td>' +
         '<td class="p-2 text-center"><button onclick="removeScoreRow(this)" class="p-1 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors" title="' + escapeQuotes(t("thAction")) + '"><i class="fa-solid fa-trash-can text-xs"></i></button></td>';
       tbody.appendChild(tr);
       updatePlayerCountBadge();
@@ -3749,276 +3899,280 @@
       if (tbody.querySelector("tr td[colspan]")) {
         tbody.innerHTML = "";
       }
-      var currentCount = tbody.querySelectorAll(".score-row").length;
-      while (currentCount < MAX_GAME_PLAYERS) {
-        addScoreRow("", 0);
-        currentCount++;
+      var existing = tbody.querySelectorAll(".score-row").length;
+      for (var i = existing + 1; i <= MAX_GAME_PLAYERS; i++) {
+        addScoreRow("Player " + i, 0);
       }
       updatePlayerCountBadge();
-      showToast("Expanded to " + MAX_GAME_PLAYERS + " player slots!", "info");
     }
 
     function removeScoreRow(btn) {
-      var row = btn.closest("tr");
-      if (row) row.remove();
+      var tr = btn.closest("tr");
+      if (tr) tr.remove();
+      var tbody = document.getElementById("scores-table-body");
+      if (tbody && tbody.querySelectorAll(".score-row").length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">' + escapeHtml(t("emptyPodium")) + '</td></tr>';
+      }
       updatePlayerCountBadge();
     }
 
     function clearAllScores() {
-      sessionScores = [];
-      localStorage.removeItem("nellieb_scores");
-      populateScoresTable();
-      renderLeaderboardTicker();
-      showToast(t("clearAll"), "info");
+      var tbody = document.getElementById("scores-table-body");
+      if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-6 text-slate-400 text-xs">' + escapeHtml(t("emptyPodium")) + '</td></tr>';
+      }
+      updatePlayerCountBadge();
     }
 
     function saveAndApplyScores() {
+      var rows = document.querySelectorAll("#scores-table-body .score-row");
+      var newScores = [];
+      rows.forEach(function(row) {
+        if (newScores.length >= MAX_GAME_PLAYERS) return;
+        var nameInput = row.querySelector(".score-name");
+        var ptsInput = row.querySelector(".score-pts");
+        var name = nameInput ? nameInput.value.trim() : "";
+        var pts = ptsInput ? parseInt(ptsInput.value) || 0 : 0;
+        if (name) {
+          newScores.push({ name: name, points: pts });
+        }
+      });
+
+      newScores.sort(function(a, b) { return b.points - a.points; });
+      sessionScores = newScores.slice(0, MAX_GAME_PLAYERS);
+      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+
       var cb = document.getElementById("game-mode-enabled-checkbox");
       var roundsInput = document.getElementById("game-rounds-input");
       var qprInput = document.getElementById("game-qpr-input");
       var pprInput = document.getElementById("game-ppr-input");
 
-      if (cb) gameState.enabled = Boolean(cb.checked);
-      if (roundsInput) gameState.totalRounds = Math.max(1, Math.min(99, parseInt(roundsInput.value) || 5));
-      if (qprInput) gameState.questionsPerRound = Math.max(1, Math.min(50, parseInt(qprInput.value) || 1));
-      if (pprInput) gameState.pointsPerRound = Math.max(1, Math.min(100000, parseInt(pprInput.value) || 100));
-      gameState.currentRound = Math.max(1, Math.min(gameState.totalRounds, gameState.currentRound || 1));
-      gameState.currentQuestionInRound = Math.max(1, Math.min(gameState.questionsPerRound, gameState.currentQuestionInRound || 1));
+      gameState.enabled = cb ? Boolean(cb.checked) : gameState.enabled;
+      gameState.totalRounds = Math.max(1, parseInt(roundsInput && roundsInput.value) || 5);
+      gameState.questionsPerRound = Math.max(1, parseInt(qprInput && qprInput.value) || 1);
+      gameState.pointsPerRound = Math.max(1, parseInt(pprInput && pprInput.value) || 100);
+      if (gameState.currentRound > gameState.totalRounds) {
+        gameState.currentRound = 1;
+        gameState.currentQuestionInRound = 1;
+      }
       saveGameState();
 
-      var rows = document.querySelectorAll("#scores-table-body .score-row");
-      var updated = [];
-
-      rows.forEach(function(row) {
-        if (updated.length >= MAX_GAME_PLAYERS) return;
-        var nameInput = row.querySelector(".score-name");
-        var ptsInput = row.querySelector(".score-pts");
-        if (nameInput && ptsInput) {
-          var name = nameInput.value.trim();
-          var points = parseInt(ptsInput.value) || 0;
-          if (name !== "") {
-            updated.push({ name: name, points: points });
-          }
-        }
-      });
-
-      updated.sort(function(a, b) {
-        return b.points - a.points;
-      });
-
-      sessionScores = updated.slice(0, MAX_GAME_PLAYERS);
-      localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
+      renderLeaderboardTicker();
       updateGameModeUI();
       renderTopicCards();
-      renderLeaderboardTicker();
       toggleScoresModal(false);
-      showToast(t("saveApply"), "success");
+      showToast(gameState.enabled ? "Game Mode & Leaderboard updated!" : "Party Mode & Leaderboard updated!", "success");
     }
 
-    function getRankBadgeByIndex(idx, isFloating) {
-      var rankNum = idx + 1;
-      var suffix = rankNum === 1 ? "ST" : (rankNum === 2 ? "ND" : "RD");
-      if (idx < 3) {
-        var rankClass = idx === 0 ? "rank-3d-1" : (idx === 1 ? "rank-3d-2" : "rank-3d-3");
-        var delayStyle = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.35s;"' : ' style="animation-delay: 0.7s;"');
-        var sizeClass = isFloating ? "h-9 sm:h-10 px-2.5 text-base sm:text-xl" : "h-6 px-2 text-xs";
-        var supClass = isFloating ? "text-[9px] sm:text-[11px] ml-0.5 -mt-1.5" : "text-[7px] ml-0.5 -mt-1";
-        return '<span class="rank-3d-badge ' + rankClass + ' ' + sizeClass + ' shrink-0"' + delayStyle + ' title="' + rankNum + suffix.toLowerCase() + ' Place">' +
-          '<span>' + rankNum + '</span><sup class="' + supClass + '">' + suffix + '</sup>' +
-        '</span>';
-      }
-      var pillSize = isFloating ? "h-9 px-2.5 text-sm sm:text-base" : "h-6 px-2 text-[11px]";
-      return '<span class="inline-flex items-center justify-center rounded-xl bg-indigo-600/80 text-white font-black ' + pillSize + ' shrink-0 border border-cyan-300/40">' +
-        '#' + rankNum +
-      '</span>';
+    function getOrdinalSuffix(rank) {
+      if (rank === 1) return "ST";
+      if (rank === 2) return "ND";
+      if (rank === 3) return "RD";
+      return "TH";
     }
 
     function renderLeaderboardTicker() {
-      var ticker = document.getElementById("leaderboard-ticker");
-      var floatingTicker = document.getElementById("floating-leaderboard-ticker");
-      var ptsLabel = escapeHtml(t("ptsSuffix"));
+      var tickers = [
+        document.getElementById("leaderboard-ticker"),
+        document.getElementById("floating-leaderboard-ticker")
+      ].filter(Boolean);
 
-      var allRanked = sessionScores.slice(0, MAX_GAME_PLAYERS).sort(function(a, b) {
-        return (parseInt(b.points) || 0) - (parseInt(a.points) || 0);
-      });
+      if (tickers.length === 0) return;
 
-      if (allRanked.length === 0) {
-        var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic">' + escapeHtml(t("emptyPodium")) + '</span>';
-        if (ticker) ticker.innerHTML = emptyHtml;
-        if (floatingTicker) floatingTicker.innerHTML = emptyHtml;
+      var playersToShow = sessionScores.slice(0, MAX_GAME_PLAYERS);
+      var ptsLabel = t("ptsSuffix");
+
+      if (playersToShow.length === 0) {
+        var emptyHtml = '<span class="text-slate-500 dark:text-slate-400 italic text-sm">' + escapeHtml(t("emptyPodium")) + '</span>';
+        tickers.forEach(function(el) { el.innerHTML = emptyHtml; });
         return;
       }
 
-      var standardItemsHtml = allRanked.map(function(item, idx) {
-        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : (idx === 2 ? "pts-bronze" : "text-cyan-600 dark:text-cyan-300 font-black"));
-        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : (idx === 2 ? "podium-name-3" : "text-slate-900 dark:text-white font-extrabold"));
-        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : (idx === 2 ? ' style="animation-delay: 0.6s;"' : ''));
-        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : (idx === 2 ? "card-bronze-glow" : "bg-slate-200/80 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700"));
-        var rankBadge = getRankBadgeByIndex(idx, false);
+      var itemsHtml = playersToShow.map(function(player, index) {
+        var rank = index + 1;
+        var suffix = getOrdinalSuffix(rank);
+        var ptsFormatted = Number(player.points).toLocaleString();
 
-        return '<div class="flex items-center gap-2.5 ' + cardClass + ' px-3.5 py-1 rounded-xl shrink-0">' +
-          rankBadge +
-          '<span class="' + nameClass + ' text-sm tracking-wide"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
-          '<span class="' + ptsClass + ' text-sm">' + Number(item.points).toLocaleString() + ' ' + ptsLabel + '</span>' +
+        var badgeClass = "rank-3d-badge bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-400 dark:border-slate-600 h-7 px-2 text-xs";
+        var nameClass = "font-extrabold text-slate-900 dark:text-white tracking-tight text-sm";
+        var ptsClass = "font-mono font-extrabold text-indigo-600 dark:text-cyan-300 text-sm";
+        var cardClass = "flex items-center gap-2.5 bg-slate-100/95 dark:bg-slate-900/95 border border-slate-300 dark:border-slate-700/80 px-3.5 py-1.5 rounded-2xl shrink-0 transition-all";
+        var extraTag = "";
+
+        if (rank === 1) {
+          badgeClass = "rank-3d-badge rank-3d-1 h-8 px-2.5 text-xs";
+          nameClass = "podium-name-1 text-base sm:text-lg";
+          ptsClass = "pts-gold text-base sm:text-lg";
+          cardClass = "flex items-center gap-2.5 card-gold-glow px-4 py-1.5 rounded-2xl shrink-0 transition-all";
+          extraTag = '<i class="fa-solid fa-crown text-amber-500 dark:text-yellow-300 text-sm"></i>';
+        } else if (rank === 2) {
+          badgeClass = "rank-3d-badge rank-3d-2 h-8 px-2.5 text-xs";
+          nameClass = "podium-name-2 text-sm sm:text-base";
+          ptsClass = "pts-silver text-sm sm:text-base";
+          cardClass = "flex items-center gap-2.5 card-silver-glow px-3.5 py-1.5 rounded-2xl shrink-0 transition-all";
+          extraTag = '<i class="fa-solid fa-medal text-sky-600 dark:text-sky-300 text-xs"></i>';
+        } else if (rank === 3) {
+          badgeClass = "rank-3d-badge rank-3d-3 h-8 px-2.5 text-xs";
+          nameClass = "podium-name-3 text-sm sm:text-base";
+          ptsClass = "pts-bronze text-sm sm:text-base";
+          cardClass = "flex items-center gap-2.5 card-bronze-glow px-3.5 py-1.5 rounded-2xl shrink-0 transition-all";
+          extraTag = '<i class="fa-solid fa-award text-orange-600 dark:text-amber-300 text-xs"></i>';
+        }
+
+        return '<div class="' + cardClass + '">' +
+          '<span class="' + badgeClass + '">' + rank + '<sup class="text-[8px] ml-0.5">' + suffix + '</sup></span>' +
+          extraTag +
+          '<span class="' + nameClass + '">' + escapeHtml(player.name) + '</span>' +
+          '<span class="' + ptsClass + '">' + ptsFormatted + ' ' + escapeHtml(ptsLabel) + '</span>' +
         '</div>';
-      });
+      }).join("");
 
-      var floatingItemsHtml = allRanked.map(function(item, idx) {
-        var ptsClass = idx === 0 ? "pts-gold" : (idx === 1 ? "pts-silver" : (idx === 2 ? "pts-bronze" : "text-cyan-600 dark:text-cyan-300 font-black"));
-        var nameClass = idx === 0 ? "podium-name-1" : (idx === 1 ? "podium-name-2" : (idx === 2 ? "podium-name-3" : "text-slate-900 dark:text-white font-extrabold"));
-        var nameDelay = idx === 0 ? "" : (idx === 1 ? ' style="animation-delay: 0.3s;"' : (idx === 2 ? ' style="animation-delay: 0.6s;"' : ''));
-        var cardClass = idx === 0 ? "card-gold-glow" : (idx === 1 ? "card-silver-glow" : (idx === 2 ? "card-bronze-glow" : "bg-slate-200/80 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700"));
-        var rankBadge = getRankBadgeByIndex(idx, true);
-
-        return '<div class="flex items-center gap-3 ' + cardClass + ' px-4 py-1.5 rounded-2xl shrink-0">' +
-          rankBadge +
-          '<span class="' + nameClass + ' text-xl sm:text-2xl tracking-tight"' + nameDelay + '>' + escapeHtml(item.name) + '</span>' +
-          '<span class="' + ptsClass + ' text-lg sm:text-2xl">' + Number(item.points).toLocaleString() + ' ' + ptsLabel + '</span>' +
-        '</div>';
-      });
-
-      var repeats = allRanked.length >= 6 ? 2 : (allRanked.length >= 3 ? 3 : 4);
-      var standardRepeated = "";
-      var floatingRepeated = "";
-      for (var r = 0; r < repeats; r++) {
-        standardRepeated += standardItemsHtml.join("");
-        floatingRepeated += floatingItemsHtml.join("");
-      }
-
-      if (ticker) {
-        ticker.innerHTML = standardRepeated + standardRepeated;
-      }
-      if (floatingTicker) {
-        floatingTicker.innerHTML = floatingRepeated + floatingRepeated;
-      }
+      var loopHtml = itemsHtml + itemsHtml + itemsHtml;
+      tickers.forEach(function(el) { el.innerHTML = loopHtml; });
     }
 
     function toggleFavorite(topicId, index) {
-      var topic = topicCache[topicId] || currentTopics[index];
+      var topic = currentTopics[index];
       if (!topic) return;
       topicCache[topic.id] = topic;
       localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
 
       if (favoritedTopicIds.has(topic.id)) {
         favoritedTopicIds.delete(topic.id);
-        showToast("Removed from saved", "info");
+        showToast("Removed from saved topics", "info");
       } else {
         favoritedTopicIds.add(topic.id);
-        showToast("Topic pinned!", "success");
+        showToast("Saved topic!", "success");
       }
+
       localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
       updateFavoritesUI();
       renderTopicCards();
+      renderFavoritesList();
     }
 
     function updateFavoritesUI() {
+      var count = favoritedTopicIds.size;
       var badge = document.getElementById("favorites-badge");
-      var list = document.getElementById("saved-topics-list");
-
-      if (badge) {
-        if (favoritedTopicIds.size > 0) {
-          badge.innerText = favoritedTopicIds.size;
-          badge.classList.remove("hidden");
-        } else {
-          badge.classList.add("hidden");
-        }
-      }
-
-      if (!list) return;
-
-      if (favoritedTopicIds.size === 0) {
-        list.innerHTML = '<div class="text-center py-8 text-slate-400 dark:text-slate-500 text-xs">' +
-          '<i class="fa-solid fa-bookmark text-2xl mb-2 opacity-30"></i>' +
-          '<p>' + escapeHtml(t("noSavedEmpty")) + '</p>' +
-          '<p class="text-[10px] mt-0.5">' + escapeHtml(t("noSavedSub")) + '</p>' +
-        "</div>";
-        return;
-      }
-
-      var items = Array.from(favoritedTopicIds).map(function(id) { return topicCache[id]; }).filter(Boolean);
-      list.innerHTML = items.map(function(item) {
-        var catStyle = CATEGORY_STYLES[item.category] || CATEGORY_STYLES["Philosophy"];
-        var localizedText = getTranslatedTopicText(item, currentLanguage);
-        var localizedCat = translateCategoryLabel(item.category);
-        return '<div onclick="loadSavedTopic(\'' + item.id + '\')" class="p-3 rounded-xl bg-slate-100/80 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 cursor-pointer transition-all group">' +
-          '<div class="flex items-center justify-between gap-2 mb-1">' +
-            '<span class="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + '">' + escapeHtml(localizedCat) + "</span>" +
-            '<button onclick="event.stopPropagation(); toggleFavorite(\'' + item.id + '\')" class="text-slate-400 hover:text-red-500 text-xs" title="' + escapeQuotes(t("clearSaved")) + '"><i class="fa-solid fa-xmark"></i></button>' +
-          '</div>' +
-          '<p class="text-xs font-semibold text-slate-800 dark:text-slate-200 line-clamp-2">' + escapeHtml(localizedText) + "</p>" +
-          '<div class="text-[9px] text-indigo-500 dark:text-indigo-400 font-semibold mt-1 opacity-0 group-hover:opacity-100 transition-opacity">' + escapeHtml(t("clickToLoad")) + " →</div>" +
-        "</div>";
-      }).join("");
-    }
-
-    function loadSavedTopic(id) {
-      var topic = topicCache[id];
-      if (!topic) return;
-      clearAllCardTypingTimers();
-      currentTopics = [topic];
-      cardResolvedTexts[0] = getImmediateTranslatedString(topic.text, currentLanguage);
-      cardRevealedStates[0] = true;
-      cardTypingProgress[0] = 0;
-      if (cardCountView !== 1) {
-        cardCountView = 1;
-        updateToggleUI();
-      } else {
-        resetBombTimer(false);
-      }
-      renderTopicCards();
-      translateThenTypeCard(0, topic, false);
-      toggleFavoritesDrawer(false);
-      showToast(t("clickToLoad"), "info");
-    }
-
-    function clearAllFavorites() {
-      favoritedTopicIds.clear();
-      localStorage.removeItem("nellieb_favs");
-      updateFavoritesUI();
-      renderTopicCards();
-      showToast(t("clearSaved"), "info");
+      if (!badge) return;
+      badge.innerText = count;
+      if (count > 0) badge.classList.remove("hidden");
+      else badge.classList.add("hidden");
     }
 
     function toggleFavoritesDrawer(open) {
       var drawer = document.getElementById("favorites-drawer");
       var content = document.getElementById("drawer-content");
       if (!drawer || !content) return;
+
       if (open) {
-        updateFavoritesUI();
-        drawer.classList.remove("pointer-events-none", "opacity-0");
+        renderFavoritesList();
+        drawer.classList.remove("pointer-events-none");
+        drawer.classList.remove("opacity-0");
         content.classList.remove("translate-x-full");
       } else {
-        drawer.classList.add("opacity-0", "pointer-events-none");
         content.classList.add("translate-x-full");
+        drawer.classList.add("opacity-0");
+        setTimeout(function() { drawer.classList.add("pointer-events-none"); }, 300);
       }
+    }
+
+    function renderFavoritesList() {
+      var container = document.getElementById("saved-topics-list");
+      if (!container) return;
+
+      if (favoritedTopicIds.size === 0) {
+        container.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs">' +
+          '<i class="fa-regular fa-bookmark text-2xl mb-2 opacity-50 block"></i>' +
+          escapeHtml(t("noSavedEmpty")) + '<br>' + escapeHtml(t("noSavedSub")) +
+        '</div>';
+        return;
+      }
+
+      container.innerHTML = Array.from(favoritedTopicIds).map(function(id) {
+        var tp = topicCache[id];
+        if (!tp) return "";
+        var catStyle = CATEGORY_STYLES[tp.category] || CATEGORY_STYLES["Philosophy"];
+        var localizedText = getTranslatedTopicText(tp, currentLanguage);
+        var localizedCat = translateCategoryLabel(tp.category);
+        return '<div class="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group">' +
+          '<div class="flex items-center justify-between gap-2 mb-1.5">' +
+            '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ' + catStyle.bg + " " + catStyle.text + " border " + catStyle.border + '">' + escapeHtml(localizedCat) + '</span>' +
+            '<button onclick="removeFavorite(\'' + id + '\')" class="text-slate-400 hover:text-red-500 transition-colors p-0.5" title="Remove saved topic"><i class="fa-solid fa-xmark text-xs"></i></button>' +
+          '</div>' +
+          '<p onclick="loadSavedTopicToFirstCard(\'' + id + '\')" class="text-xs font-medium text-slate-700 dark:text-slate-200 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 leading-relaxed">' + escapeHtml(localizedText) + '</p>' +
+          '<div class="mt-1.5 flex items-center justify-end">' +
+            '<button onclick="loadSavedTopicToFirstCard(\'' + id + '\')" class="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">' + escapeHtml(t("clickToLoad")) + ' &rarr;</button>' +
+          '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    function removeFavorite(id) {
+      favoritedTopicIds.delete(id);
+      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      updateFavoritesUI();
+      renderFavoritesList();
+      renderTopicCards();
+      showToast("Removed from saved topics", "info");
+    }
+
+    function clearAllFavorites() {
+      favoritedTopicIds.clear();
+      localStorage.setItem("nellieb_favs", "[]");
+      updateFavoritesUI();
+      renderFavoritesList();
+      renderTopicCards();
+      showToast("All saved topics cleared", "info");
+    }
+
+    function loadSavedTopicToFirstCard(id) {
+      var tp = topicCache[id];
+      if (!tp) return;
+      clearCardTypingTimer(0);
+      currentTopics[0] = tp;
+      cardResolvedTexts[0] = getImmediateTranslatedString(tp.text, currentLanguage);
+      cardRevealedStates[0] = true;
+      cardTypingProgress[0] = 0;
+      renderTopicCards();
+      translateThenTypeCard(0, tp, true);
+      if (cardCountView === 1) resetBombTimer(false);
+      toggleFavoritesDrawer(false);
+      showToast("Loaded saved topic!", "success");
+    }
+
+    function copyTopicText(text) {
+      var cleanText = text.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cleanText).then(function() {
+          showToast("Copied prompt to clipboard!", "success");
+        }).catch(function() {
+          fallbackCopy(cleanText);
+        });
+      } else {
+        fallbackCopy(cleanText);
+      }
+    }
+
+    function fallbackCopy(text) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showToast("Copied prompt to clipboard!", "success");
+      } catch (e) {
+        showToast("Could not copy text", "error");
+      }
+      document.body.removeChild(ta);
     }
 
     function togglePrivacyModal(open) {
       var modal = document.getElementById("privacy-modal");
       if (!modal) return;
-      if (open) {
-        modal.classList.remove("hidden");
-      } else {
-        modal.classList.add("hidden");
-      }
-    }
-
-    function copyTopicText(text) {
-      if (!navigator.clipboard) {
-        var ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        document.body.removeChild(ta);
-        showToast(t("copyTitle") + "!", "success");
-        return;
-      }
-      navigator.clipboard.writeText(text).then(function() {
-        showToast(t("copyTitle") + "!", "success");
-      }).catch(function() {
-        showToast("Could not copy", "warning");
-      });
+      if (open) modal.classList.remove("hidden");
+      else modal.classList.add("hidden");
     }
 
     function toggleDarkMode() {
@@ -4030,91 +4184,108 @@
         html.classList.add("dark");
         localStorage.setItem("theme", "dark");
       }
-    }
-
-    function initTheme() {
-      var saved = localStorage.getItem("theme");
-      if (saved === "dark") {
-        document.documentElement.classList.add("dark");
-      } else if (saved === "light") {
-        document.documentElement.classList.remove("dark");
-      } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      renderLeaderboardTicker();
     }
 
     function resetToInitial() {
       clearAllCardTypingTimers();
+      cardCountView = 4;
       activePreset = "all";
       selectedCategories = new Set(Object.keys(CATEGORY_STYLES));
-      Object.keys(categoryPointers).forEach(function(k) { categoryPointers[k] = 0; });
-      if (cardCountView === 1) {
-        resetBombTimer(false);
-      }
+      Object.keys(categoryPointers).forEach(function(cat) { categoryPointers[cat] = 0; });
       updateFilterButtonsUI();
+      updateToggleUI();
       renderModePills();
       renderCategoryPills();
       generateTopics();
-      showToast(t("tagline"), "info");
+      showToast("Reset to default view!", "info");
     }
 
     function showToast(msg, type) {
+      if (type === void 0) type = "info";
       var container = document.getElementById("toast-container");
       if (!container) return;
-      var colors = {
-        success: "bg-emerald-600 text-white",
-        warning: "bg-amber-500 text-slate-900",
-        info: "bg-indigo-600 text-white"
-      };
-      var toast = document.createElement("div");
-      toast.className = (colors[type] || colors.info) + " px-4 py-2 rounded-xl shadow-lg text-xs font-bold flex items-center gap-2 transition-all duration-300 transform translate-x-full";
-      toast.innerHTML = '<span>' + escapeHtml(msg) + "</span>";
-      container.appendChild(toast);
 
-      setTimeout(function() { toast.classList.remove("translate-x-full"); }, 10);
+      var toast = document.createElement("div");
+      var bg = "bg-slate-800 text-white border-slate-700";
+      var icon = '<i class="fa-solid fa-circle-info text-sky-400"></i>';
+
+      if (type === "success") {
+        bg = "bg-emerald-950/90 text-emerald-100 border-emerald-700/60";
+        icon = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+      } else if (type === "warning") {
+        bg = "bg-amber-950/90 text-amber-100 border-amber-700/60";
+        icon = '<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>';
+      } else if (type === "error") {
+        bg = "bg-red-950/90 text-red-100 border-red-700/60";
+        icon = '<i class="fa-solid fa-circle-xmark text-red-400"></i>';
+      }
+
+      toast.className = "pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-xl border shadow-xl text-xs font-semibold backdrop-blur-md transition-all duration-300 transform translate-x-2 opacity-0 " + bg;
+      toast.innerHTML = icon + "<span>" + escapeHtml(msg) + "</span>";
+
+      container.appendChild(toast);
+      requestAnimationFrame(function() {
+        toast.classList.remove("translate-x-2", "opacity-0");
+      });
+
       setTimeout(function() {
-        toast.classList.add("translate-x-full", "opacity-0");
+        toast.classList.add("opacity-0", "translate-x-2");
         setTimeout(function() { toast.remove(); }, 300);
-      }, 2400);
+      }, 2800);
     }
 
-    function escapeHtml(str) {
-      return String(str)
+    function escapeHtml(unsafe) {
+      if (!unsafe) return "";
+      return String(unsafe)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
     function escapeQuotes(str) {
-      return String(str)
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/"/g, "&quot;")
-        .replace(/\n/g, " ");
+      if (!str) return "";
+      return String(str).replace(/'/g, "\\'").replace(/"/g, "&quot;");
     }
 
     document.addEventListener("keydown", function(e) {
-      if (e.code === "Space" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+      if (e.code === "Space" && e.target.tagName !== "INPUT" && e.target.tagName !== "TEXTAREA") {
         e.preventDefault();
         generateTopics();
       }
+      if (e.key === "Escape") {
+        togglePrivacyModal(false);
+        toggleFavoritesDrawer(false);
+        toggleScoresModal(false);
+        toggleTutorialModal(false);
+        toggleWelcomeTutorialModal(false);
+        togglePresetsModal(false);
+        toggleCategoriesModal(false);
+        closeRoundWinnerModal();
+        closeWinnerCelebrationModal();
+      }
     });
 
-    document.addEventListener("DOMContentLoaded", async function() {
-      initTheme();
-      currentLanguage = normalizeLangCode(currentLanguage);
-      var selectEl = document.getElementById("language-select");
-      if (selectEl) selectEl.value = currentLanguage;
-      await loadAllQuestionBanks();
-      applyLanguageTranslations();
+    (async function initApp() {
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "light") document.documentElement.classList.remove("dark");
+      else document.documentElement.classList.add("dark");
+
+      var langSelect = document.getElementById("language-select");
+      if (langSelect) langSelect.value = currentLanguage;
+
+      updateFilterButtonsUI();
       updateToggleUI();
-      updateGameModeUI();
-      resetBombTimer(false);
-      updateFavoritesUI();
+      renderModePills();
+      renderCategoryPills();
       renderLeaderboardTicker();
+      updateFavoritesUI();
+      updateBombUI();
+      applyLanguageTranslations();
+
+      await loadAllQuestionBanks();
 
       var initialTopics = [];
       for (var i = 0; i < cardCountView; i++) {
@@ -4125,17 +4296,8 @@
       }
       currentTopics = initialTopics;
       renderTopicCards();
-
       if (normalizeLangCode(currentLanguage) !== "en") {
-        await Promise.all(currentTopics.map(async function(tp, idx) {
-          if (!tp || !tp.text) return;
-          var resolved = await resolveTranslatedTopicText(tp, currentLanguage);
-          cardResolvedTexts[idx] = resolved || tp.text;
-          var el = document.getElementById("typed-question-" + idx);
-          if (el && !cardTypingTimers[idx]) {
-            el.innerHTML = '&quot;' + escapeHtml(cardResolvedTexts[idx]) + '&quot;';
-          }
-        }));
+        refreshVisibleCardTranslations();
       }
 
       if (!localStorage.getItem("nellieb_tutorial_seen")) {
@@ -4143,7 +4305,7 @@
       } else {
         showTutorialFinderNote();
       }
-    });
+    })();
   </script>
 </body>
 </html>
