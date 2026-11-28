@@ -128,11 +128,43 @@
     .glass-card.topic-card-front,
     .dark .glass-card.topic-card-front {
       background:
-        radial-gradient(ellipse at 50% 48%, rgba(240, 249, 255, 0.62) 0%, rgba(191, 219, 254, 0.28) 60%, rgba(29, 78, 216, 0.08) 100%),
-        linear-gradient(125deg, #f0f9ff 0%, #dbeafe 18%, #93c5fd 38%, #60a5fa 56%, #2563eb 78%, #1d4ed8 90%, #bae6fd 100%);
-      background-size: 100% 100%, 280% 280%;
+        radial-gradient(circle at 50% 44%, rgba(125, 211, 252, 0.24), transparent 58%),
+        repeating-linear-gradient(-45deg, rgba(199, 210, 254, 0.13) 0px, rgba(199, 210, 254, 0.13) 8px, transparent 8px, transparent 16px),
+        linear-gradient(135deg, rgba(51, 65, 85, 0.80) 0%, rgba(67, 56, 202, 0.80) 45%, rgba(29, 78, 216, 0.80) 78%, rgba(126, 34, 206, 0.80) 100%);
+      background-size: 100% 100%, 128px 128px, 220% 220%;
       background-clip: padding-box;
-      animation: topic-blue-wave 11s ease-in-out infinite;
+      backdrop-filter: blur(16px);
+      transform: translateY(-3px);
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.82),
+        inset 2px 0 0 rgba(255, 255, 255, 0.65),
+        inset 0 5px 10px rgba(255, 255, 255, 0.15),
+        inset 0 -3px 0 rgba(2, 6, 23, 0.88),
+        inset -3px 0 0 rgba(2, 6, 23, 0.68),
+        inset 0 -8px 14px rgba(2, 6, 23, 0.48),
+        inset 0 0 0 1.5px rgba(255, 255, 255, 0.28),
+        0 1px 0 rgba(255, 255, 255, 0.30),
+        0 6px 0 rgba(15, 23, 42, 0.85),
+        0 16px 32px rgba(0, 0, 0, 0.65),
+        0 0 24px rgba(236, 72, 153, 0.55),
+        0 0 46px rgba(56, 189, 248, 0.42);
+      animation: deck-wave-drift-reverse 18s ease-in-out infinite;
+    }
+
+    .glass-card.topic-card-front::before,
+    .dark .glass-card.topic-card-front::before {
+      inset: -4px;
+      padding: 4px;
+      border-radius: 1.2rem;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+    }
+
+    .glass-card.topic-card-front:hover,
+    .dark .glass-card.topic-card-front:hover {
+      transform: translateY(-4px) scale(1.02);
     }
 
     .glass-card-pinned {
@@ -154,10 +186,11 @@
       transition: transform 0.15s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
     }
+    .topic-card-front .card-action-btn,
     .dark .card-action-btn {
-      border-color: rgba(148, 163, 184, 0.25);
-      background: rgba(15, 23, 42, 0.82);
-      color: #cbd5e1;
+      border-color: rgba(255, 255, 255, 0.24);
+      background: rgba(15, 23, 42, 0.65);
+      color: #e2e8f0;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
     }
     .card-action-btn:hover {
@@ -166,10 +199,11 @@
       border-color: rgba(99, 102, 241, 0.6);
       background: #ffffff;
     }
+    .topic-card-front .card-action-btn:hover,
     .dark .card-action-btn:hover {
       color: #38bdf8;
-      border-color: rgba(56, 189, 248, 0.6);
-      background: rgba(30, 41, 59, 0.95);
+      border-color: rgba(56, 189, 248, 0.65);
+      background: rgba(30, 41, 59, 0.92);
     }
     .card-action-btn:active {
       transform: scale(0.94);
@@ -191,6 +225,12 @@
       0% { background-position: 50% 45%, 0px 0px, 0% 50%; }
       50% { background-position: 50% 45%, 64px 64px, 100% 50%; }
       100% { background-position: 50% 45%, 128px 128px, 0% 50%; }
+    }
+
+    @keyframes deck-wave-drift-reverse {
+      0% { background-position: 50% 45%, 128px 0px, 100% 50%; }
+      50% { background-position: 50% 45%, 64px -64px, 0% 50%; }
+      100% { background-position: 50% 45%, 0px -128px, 100% 50%; }
     }
 
     @keyframes deck-sheen-sweep {
@@ -304,11 +344,11 @@
       height: 1.05em;
       margin-left: 2px;
       vertical-align: -0.1em;
-      background-color: #041126;
+      background-color: #f8fafc;
       animation: typing-cursor-blink 0.75s infinite;
     }
     .dark .typing-caret {
-      background-color: #041126;
+      background-color: #f8fafc;
     }
 
     /* Two-phase true 3D flip across DOM replacement */
@@ -356,8 +396,8 @@
     }
 
     @keyframes flash-red-slow {
-      0%, 100% { color: #ef4444; opacity: 1; text-shadow: 0 0 14px rgba(239, 68, 68, 0.9); }
-      50% { color: #991b1b; opacity: 0.35; text-shadow: 0 0 2px rgba(153, 27, 27, 0.2); }
+      0%, 100% { color: #ff6b81; opacity: 1; text-shadow: 0 0 14px rgba(251, 113, 133, 0.95), 0 1px 4px rgba(2, 6, 23, 0.85); }
+      50% { color: #fda4af; opacity: 0.65; text-shadow: 0 0 6px rgba(251, 113, 133, 0.45), 0 1px 3px rgba(2, 6, 23, 0.7); }
     }
     .flashing-follow-slow { animation: flash-red-slow 2.5s ease-in-out infinite; }
 
@@ -384,13 +424,13 @@
 
     .tiktok-card-text {
       font-family: Arial, sans-serif !important;
-      color: #041126 !important;
-      text-shadow: 0 1px 10px rgba(240, 249, 255, 0.85), 0 0 2px rgba(255, 255, 255, 0.9) !important;
+      color: #f8fafc !important;
+      text-shadow: 0 2px 12px rgba(2, 6, 23, 0.85), 0 1px 2px rgba(0, 0, 0, 0.9) !important;
     }
     .dark .tiktok-card-text {
       font-family: Arial, sans-serif !important;
-      color: #041126 !important;
-      text-shadow: 0 1px 10px rgba(240, 249, 255, 0.85), 0 0 2px rgba(255, 255, 255, 0.9) !important;
+      color: #f8fafc !important;
+      text-shadow: 0 2px 12px rgba(2, 6, 23, 0.85), 0 1px 2px rgba(0, 0, 0, 0.9) !important;
     }
 
     .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
@@ -718,21 +758,174 @@
     .walking-character {
       position: absolute;
       bottom: 6px;
-      left: -120px;
-      width: 96px;
-      height: 98px;
+      left: -390px;
+      width: 294px;
+      height: 100px;
       pointer-events: none;
-      animation: walkAcross 9.5s linear infinite;
+      animation: walkAcross 11.4s linear infinite;
       will-change: left;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
     }
 
     @keyframes walkAcross {
       0% {
-        left: -120px;
+        left: -390px;
       }
       100% {
         left: calc(100% + 28px);
       }
+    }
+
+    /* Final-Round Karen-Style Stacy Cash Heist */
+    .stacy-heist-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    .stacy-karen-walker {
+      position: absolute;
+      bottom: 6px;
+      left: -108px;
+      width: 106px;
+      height: 108px;
+      animation: stacyHeistMarch 8.0s linear infinite;
+      will-change: left;
+    }
+
+    @keyframes stacyHeistMarch {
+      0% { left: -108px; }
+      100% { left: calc(100% + 60px); }
+    }
+
+    .stacy-3d-rig {
+      width: 100px;
+      height: 100px;
+      transform-style: preserve-3d;
+      animation: stacyStrut 0.42s ease-in-out infinite;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 10px rgba(34, 197, 94, 0.4));
+    }
+
+    @keyframes stacyStrut {
+      0%, 100% { transform: translateY(0px) rotate(-2deg); }
+      50% { transform: translateY(-5px) rotate(2.5deg); }
+    }
+
+    .stacy-arm-grab {
+      transform-origin: 60px 46px;
+      animation: stacyGrabWave 0.72s ease-in-out infinite;
+    }
+
+    @keyframes stacyGrabWave {
+      0%, 100% { transform: rotate(-10deg); }
+      50% { transform: rotate(18deg); }
+    }
+
+    .stacy-bag-bounce {
+      transform-origin: 36px 46px;
+      animation: stacyBagSway 0.48s ease-in-out infinite;
+    }
+
+    @keyframes stacyBagSway {
+      0%, 100% { transform: rotate(-4deg) translateY(0px); }
+      50% { transform: rotate(5deg) translateY(-2px); }
+    }
+
+    .stacy-speech-bubble {
+      position: absolute;
+      top: -18px;
+      left: 14px;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #ffffff, #dcfce7);
+      color: #064e3b;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 9.5px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      border: 1.5px solid #22c55e;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5), 0 0 10px rgba(34, 197, 94, 0.6);
+      animation: hostSpeechBounce 1.1s ease-in-out infinite;
+    }
+
+    .stacy-name-badge {
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1px 6px;
+      border-radius: 9999px;
+      background: #be185d;
+      color: #ffffff;
+      border: 1px solid #fbcfe8;
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+    }
+
+    .pet-parade-follower {
+      position: absolute;
+      bottom: 2px;
+      pointer-events: none;
+    }
+
+    .pet-3d-rig {
+      transform-style: preserve-3d;
+      animation: petTrotBob 0.46s ease-in-out infinite;
+      filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 8px rgba(56, 189, 248, 0.25));
+    }
+
+    @keyframes petTrotBob {
+      0%, 100% { transform: translateY(0px) rotate(-2deg); }
+      50% { transform: translateY(-4.5px) rotate(2.5deg); }
+    }
+
+    .pet-floor-shadow {
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 30px;
+      height: 6px;
+      transform: translateX(-50%);
+      border-radius: 9999px;
+      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.68) 0%, rgba(56, 189, 248, 0.22) 60%, transparent 85%);
+      animation: hostShadowPulse 0.46s ease-in-out infinite;
+    }
+
+    .pet-leg-front {
+      transform-box: fill-box;
+      transform-origin: top center;
+      animation: petStrideFront 0.46s ease-in-out infinite;
+    }
+    .pet-leg-back {
+      transform-box: fill-box;
+      transform-origin: top center;
+      animation: petStrideBack 0.46s ease-in-out infinite;
+    }
+    @keyframes petStrideFront {
+      0%, 100% { transform: rotate(-22deg); }
+      50% { transform: rotate(22deg); }
+    }
+    @keyframes petStrideBack {
+      0%, 100% { transform: rotate(22deg); }
+      50% { transform: rotate(-22deg); }
+    }
+
+    .pet-tail-wag {
+      transform-box: fill-box;
+      transform-origin: bottom left;
+      animation: petTailSway 0.42s ease-in-out infinite;
+    }
+    @keyframes petTailSway {
+      0%, 100% { transform: rotate(-14deg); }
+      50% { transform: rotate(16deg); }
     }
 
     .host-3d-rig {
@@ -1296,7 +1489,7 @@
           <span id="header-scores-label" class="hidden sm:inline">Scores</span>
         </button>
 
-        <a href="https://www.tiktok.com/@nellie.b5?" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
+        <a href="https://www.tiktok.com/@nellie_b" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs font-bold shadow-sm" title="Go to My TikTok">
           <i class="fa-brands fa-tiktok text-sm text-pink-400"></i>
           <span id="header-tiktok-desktop" class="hidden sm:inline">Go to My TikTok</span>
           <span id="header-tiktok-mobile" class="sm:hidden">TikTok</span>
@@ -1310,6 +1503,10 @@
         <button onclick="toggleDarkMode()" title="Toggle Theme" class="p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition-all active:scale-95 cursor-pointer">
           <i class="fa-solid fa-sun text-amber-500 dark:hidden text-sm"></i>
           <i class="fa-solid fa-moon hidden dark:block text-indigo-400 text-sm"></i>
+        </button>
+
+        <button id="header-info-btn" onclick="toggleInfoHelpModal(true)" title="About, Privacy & Cache Help" aria-label="About, Privacy and Help" class="p-2 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 hover:bg-indigo-100 dark:hover:bg-slate-700 text-indigo-600 dark:text-cyan-300 transition-all active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-circle-info text-sm"></i>
         </button>
       </div>
     </div>
@@ -1340,16 +1537,17 @@
             </button>
           </div>
 
-          <button id="game-mode-btn" onclick="activateGameModeAndOpenScores()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-md shadow-emerald-500/25 cursor-pointer border border-emerald-300/40" title="Start or configure Game Mode">
-            <i class="fa-solid fa-gamepad text-yellow-200"></i>
-            <span id="game-mode-btn-label">Game Mode</span>
-            <span id="game-mode-status-pill" class="hidden px-1.5 py-0.5 rounded-md bg-black/30 text-[10px] font-black tracking-wide">R1/5</span>
-          </button>
-
-          <button id="party-mode-btn" onclick="switchToPartyMode()" class="hidden px-3 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 text-slate-800 dark:text-slate-100 font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-sm cursor-pointer border border-slate-300 dark:border-slate-700" title="End Game Mode and return to Party Mode">
-            <i class="fa-solid fa-champagne-glasses text-pink-500 dark:text-pink-400"></i>
-            <span id="party-mode-btn-label">Party Mode</span>
-          </button>
+          <div id="mode-toggle-group" class="flex items-center bg-slate-200/90 dark:bg-slate-800/90 p-1 rounded-xl shrink-0 border border-slate-300 dark:border-slate-700 shadow-inner gap-1">
+            <button id="party-mode-btn" onclick="switchToPartyMode()" class="px-3 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer" title="Switch to Party Mode (Free Play)">
+              <i class="fa-solid fa-champagne-glasses text-[11px]"></i>
+              <span id="party-mode-btn-label">Party Mode</span>
+            </button>
+            <button id="game-mode-btn" onclick="activateGameModeAndOpenScores()" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer" title="Start or configure Game Mode">
+              <i class="fa-solid fa-gamepad text-[11px]"></i>
+              <span id="game-mode-btn-label">Game Mode</span>
+              <span id="game-mode-status-pill" class="hidden px-1.5 py-0.5 rounded-md bg-black/30 text-[10px] font-black tracking-wide">R1/5</span>
+            </button>
+          </div>
         </div>
 
         <div id="presets-categories-group" class="flex items-center gap-2 shrink-0">
@@ -1822,6 +2020,11 @@
         </button>
       </div>
 
+      <p id="categories-modal-note" class="text-[11px] font-semibold text-amber-700 dark:text-amber-300 bg-amber-500/10 border border-amber-400/35 rounded-xl px-3 py-2 flex items-center gap-2">
+        <i class="fa-solid fa-circle-info shrink-0"></i>
+        <span id="categories-modal-note-text">Note: You must select at least 1 category to deal questions.</span>
+      </p>
+
       <div id="category-bulk-actions" class="flex items-center gap-2"></div>
       <div id="category-pills" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[55vh] overflow-y-auto custom-scroll pr-1"></div>
 
@@ -1960,6 +2163,23 @@
             </div>
           </div>
         </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-emerald-400/25 dark:border-emerald-500/25">
+          <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+            <input id="game-mode-stacy-checkbox" type="checkbox" onchange="onStacyModeToggleCheckbox(this.checked)" class="w-4 h-4 rounded accent-pink-500 cursor-pointer">
+            <span class="text-xs sm:text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+              <span>💼</span> <span>Activate Stacy Mode</span>
+            </span>
+          </label>
+          <div class="flex items-center gap-2">
+            <span id="stacy-mode-status-badge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              Off (0)
+            </span>
+            <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+              Swipes last place's cash at final round
+            </span>
+          </div>
+        </div>
       </div>
 
       <p id="scores-modal-desc" class="text-xs text-slate-500 dark:text-slate-400">
@@ -2056,20 +2276,25 @@
           </div>
         </div>
 
-        <div id="celebration-identity-wrap" class="flex flex-col items-center gap-1.5 min-w-0 max-w-full">
-          <div class="flex items-center justify-center gap-3 min-w-0 max-w-full">
+        <div id="celebration-identity-wrap" class="flex flex-col items-center gap-2 min-w-0 max-w-full">
+          <div id="celebration-identity-top" class="flex items-center justify-center gap-3 min-w-0 max-w-full">
             <div id="celebration-avatar-ring" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-cyan-400 to-yellow-300 shadow-lg anim-grow-shrink shrink-0">
               <div id="celebration-avatar-inner" class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-3xl select-none overflow-hidden">
                 🏆
               </div>
             </div>
             <div id="celebration-name-block" class="text-left min-w-0">
-              <p id="celebration-congrats-label" class="text-[11px] font-black uppercase tracking-widest text-cyan-300">Congratulations!</p>
-              <h2 id="celebration-winner-name" class="text-2xl sm:text-4xl font-black podium-name-1 tracking-tight leading-tight break-words max-w-full">Champion</h2>
+              <p id="celebration-congrats-label" class="text-[11px] font-black uppercase tracking-widest text-cyan-300 whitespace-nowrap">Congratulations!</p>
+              <h2 id="celebration-winner-name" class="text-2xl sm:text-4xl font-black podium-name-1 tracking-tight leading-tight max-w-full">Champion</h2>
             </div>
           </div>
-          <div id="celebration-points-earned" class="mt-1 px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs sm:text-sm">
-            +100 PTS &bull; Total: 1,100 PTS
+          <div id="celebration-pills-row" class="flex flex-wrap items-center justify-center gap-2 max-w-full">
+            <div id="celebration-points-earned" class="px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs sm:text-sm whitespace-nowrap">
+              +100 PTS &bull; Total: 1,100 PTS
+            </div>
+            <div id="celebration-stacy-heist-pill" class="hidden px-3.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/60 text-emerald-200 font-black text-[11px] sm:text-xs shadow">
+              Stacy swiped last place's stash!
+            </div>
           </div>
         </div>
 
@@ -2094,137 +2319,417 @@
       <!-- 3D Caricature Game-Show Host Walking Across the Bottom Stage -->
       <div id="winner-host-stage" class="winner-host-stage" aria-hidden="true">
         <div class="winner-stage-floor"></div>
+
+        <!-- End-of-Game Stacy (Karen-Style) Money Heist Overlay -->
+        <div id="stacy-heist-layer" class="hidden stacy-heist-layer">
+          <div class="stacy-karen-walker">
+            <div id="stacy-speech-bubble" class="stacy-speech-bubble">Thanks for the $0!</div>
+            <svg class="stacy-3d-rig overflow-visible" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="stacySkin3D" cx="40%" cy="32%" r="68%">
+                  <stop offset="0%" stop-color="#FFE4CC"/>
+                  <stop offset="60%" stop-color="#F6BA8E"/>
+                  <stop offset="100%" stop-color="#C97C4E"/>
+                </radialGradient>
+                <linearGradient id="stacyKarenHair" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FEF9C3"/>
+                  <stop offset="48%" stop-color="#FACC15"/>
+                  <stop offset="100%" stop-color="#A16207"/>
+                </linearGradient>
+                <linearGradient id="stacyBagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#E6C288"/>
+                  <stop offset="55%" stop-color="#B88649"/>
+                  <stop offset="100%" stop-color="#784B1D"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Bulging Bag of Money Slung Behind/Over Shoulder -->
+              <g class="stacy-bag-bounce">
+                <!-- Green Cash Bills Peeking Out of Bag Top -->
+                <rect x="19" y="21" width="9" height="6" rx="1" transform="rotate(-18 23 24)" fill="#22C55E" stroke="#DCFCE7" stroke-width="0.7"/>
+                <rect x="25" y="19" width="9" height="6" rx="1" transform="rotate(8 29 22)" fill="#16A34A" stroke="#DCFCE7" stroke-width="0.7"/>
+                <!-- Tied Sack Neck & Bulging Sack Body -->
+                <path d="M23 26 L30 26 L28.5 31 L24.5 31 Z" fill="url(#stacyBagGrad)" stroke="#78350F" stroke-width="0.7"/>
+                <path d="M16 34 C12 42, 13 55, 24 56 C35 56, 39 45, 34 34 L29 30 L24 30 Z" fill="url(#stacyBagGrad)" stroke="#FEF3C7" stroke-width="0.8"/>
+                <line x1="23.5" y1="30.5" x2="29.5" y2="30.5" stroke="#92400E" stroke-width="2" stroke-linecap="round"/>
+                <text x="25" y="48" text-anchor="middle" fill="#15803D" font-size="13" font-weight="900" font-family="Arial, sans-serif">$</text>
+              </g>
+
+              <!-- Back Arm Holding the Money Bag Strap -->
+              <path d="M40 46 C34 45, 31 40, 29 33" stroke="url(#stacySkin3D)" stroke-width="3.8" stroke-linecap="round"/>
+              <path d="M41 46 C37 45.5, 34.5 43.5, 33 40" stroke="#EC4899" stroke-width="5.2" stroke-linecap="round"/>
+
+              <!-- Articulated Black Slacks + High Heels -->
+              <g class="host-leg-back">
+                <path d="M43 64 L39 84" stroke="#0F172A" stroke-width="5.2" stroke-linecap="round"/>
+                <path d="M36 84 L45 87.5 L36.5 88.5 Z" fill="#EC4899" stroke="#FBCFE8" stroke-width="0.6"/>
+              </g>
+              <g class="host-leg-front">
+                <path d="M53 64 L57 84" stroke="#1E293B" stroke-width="5.2" stroke-linecap="round"/>
+                <path d="M54 84 L64 87.5 L55 88.5 Z" fill="#EC4899" stroke="#FBCFE8" stroke-width="0.6"/>
+              </g>
+
+              <!-- Pink Karen Cardigan & Crisp White Blouse + Pearl Necklace -->
+              <path d="M39 45 H57 L58 66 H38 Z" fill="#DB2777" stroke="#FBCFE8" stroke-width="0.7" stroke-linejoin="round"/>
+              <path d="M45 45 H51 L50 65 H46 Z" fill="#FFFFFF"/>
+              <path d="M43 45.5 Q48 49 53 45.5" stroke="#FEF9C3" stroke-width="1.3" stroke-dasharray="1.8 1.4" fill="none"/>
+
+              <!-- Neck & Head -->
+              <rect x="44.5" y="38" width="7" height="8" fill="url(#stacySkin3D)"/>
+              <circle cx="48" cy="27" r="12" fill="url(#stacySkin3D)"/>
+
+              <!-- Iconic Asymmetric Stacked "Karen" Blonde Bob Haircut -->
+              <path d="M34 26 C33 13, 45 9, 57 14 C62 17, 62 25, 58 29 C56 23, 50 18, 41 21 C38 22, 36 27, 36 33 C33.5 31, 33.5 28, 34 26 Z" fill="url(#stacyKarenHair)" stroke="#92400E" stroke-width="0.65"/>
+              <!-- Spiky Stacked Back Hair Volume -->
+              <path d="M34 21 L29 18 L34 16 L31 12 L38 13" fill="url(#stacyKarenHair)" stroke="#A16207" stroke-width="0.6" stroke-linejoin="round"/>
+              <!-- Swept Side Bang Over Brow -->
+              <path d="M40 16 C48 14, 57 17, 60 22 C54 20, 47 21, 41 23 Z" fill="#FEF08A"/>
+
+              <!-- Oversized Designer Cat-Eye Sunglasses -->
+              <path d="M39 22 L47 23 L46.5 27.5 C43.5 28.5, 40 27.5, 39.5 24.5 Z" fill="#0F172A" stroke="#F59E0B" stroke-width="0.9"/>
+              <path d="M49 23 L59.5 22 L58.5 25 C57.5 27.8, 53 28.5, 49.5 27.5 Z" fill="#0F172A" stroke="#F59E0B" stroke-width="0.9"/>
+              <line x1="47" y1="24" x2="49.5" y2="24" stroke="#F59E0B" stroke-width="1"/>
+              <!-- Sunglass Glare -->
+              <line x1="41" y1="24" x2="44" y2="26.5" stroke="#FFFFFF" stroke-width="0.8" opacity="0.65"/>
+              <line x1="52" y1="24" x2="55" y2="26.5" stroke="#FFFFFF" stroke-width="0.8" opacity="0.65"/>
+
+              <!-- Smug Red-Lipstick Grin + Pearl Earring -->
+              <circle cx="38" cy="30" r="1.5" fill="#FEF9C3" stroke="#E2E8F0" stroke-width="0.5"/>
+              <path d="M45 33 Q49.5 35.5 54 32.2" stroke="#E11D48" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+
+              <!-- Front Grabbing Arm Holding Extra Green Cash Bills -->
+              <g class="stacy-arm-grab">
+                <path d="M56 46 C62 47, 66 44, 69 40" stroke="#DB2777" stroke-width="5.2" stroke-linecap="round"/>
+                <path d="M68 41 C71 39, 73 36.5, 74 34" stroke="url(#stacySkin3D)" stroke-width="3.8" stroke-linecap="round"/>
+                <circle cx="74" cy="33.5" r="3.2" fill="url(#stacySkin3D)"/>
+                <rect x="73" y="25" width="9" height="5.5" rx="1" transform="rotate(-15 77 28)" fill="#22C55E" stroke="#DCFCE7" stroke-width="0.7"/>
+                <rect x="75" y="27" width="9" height="5.5" rx="1" transform="rotate(12 79 30)" fill="#16A34A" stroke="#DCFCE7" stroke-width="0.7"/>
+              </g>
+            </svg>
+            <div class="stacy-name-badge">Stacy</div>
+          </div>
+        </div>
+
         <div class="walking-character">
-          <div id="host-speech-bubble" class="host-speech-bubble">Good Job!</div>
-          <span class="host-sparkle text-amber-300 text-xs" style="top: 8px; left: -6px;">✦</span>
-          <span class="host-sparkle text-pink-400 text-[10px]" style="top: 30px; left: -12px; animation-delay: 0.45s;">★</span>
-          <span class="host-sparkle text-cyan-300 text-[10px]" style="top: 14px; right: 2px; animation-delay: 0.8s;">✧</span>
-          <div class="host-floor-shadow"></div>
-          <svg class="host-3d-rig" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="hostSkin3D" cx="38%" cy="32%" r="68%">
-                <stop offset="0%" stop-color="#FFE3C6"/>
-                <stop offset="55%" stop-color="#F7B787"/>
-                <stop offset="100%" stop-color="#C97344"/>
-              </radialGradient>
-              <linearGradient id="hostSuitBerry" x1="12%" y1="0%" x2="88%" y2="100%">
-                <stop offset="0%" stop-color="#FF47A3"/>
-                <stop offset="50%" stop-color="#D946EF"/>
-                <stop offset="100%" stop-color="#701A75"/>
-              </linearGradient>
-              <linearGradient id="hostPantBerry" x1="20%" y1="0%" x2="80%" y2="100%">
-                <stop offset="0%" stop-color="#EC4899"/>
-                <stop offset="55%" stop-color="#A21CAF"/>
-                <stop offset="100%" stop-color="#4A044E"/>
-              </linearGradient>
-              <linearGradient id="hostLapelGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FEF08A"/>
-                <stop offset="50%" stop-color="#F59E0B"/>
-                <stop offset="100%" stop-color="#B45309"/>
-              </linearGradient>
-              <linearGradient id="hostHeel3D" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FEF08A"/>
-                <stop offset="45%" stop-color="#F59E0B"/>
-                <stop offset="100%" stop-color="#B45309"/>
-              </linearGradient>
-              <radialGradient id="hostMicHead" cx="35%" cy="30%" r="70%">
-                <stop offset="0%" stop-color="#FFFFFF"/>
-                <stop offset="45%" stop-color="#FACC15"/>
-                <stop offset="100%" stop-color="#92400E"/>
-              </radialGradient>
-            </defs>
+          <!-- White & Brown Guinea Pig Follower (Very Rear, behind Tuxedo Cat) -->
+          <div class="pet-parade-follower" style="left: 0px;">
+            <div class="pet-floor-shadow" style="width: 26px; animation-duration: 0.38s; animation-delay: 0.32s;"></div>
+            <svg class="pet-3d-rig w-[42px] h-[30px] overflow-visible" style="animation-duration: 0.38s; animation-delay: 0.32s;" viewBox="0 0 56 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gpBrown3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#C68642"/>
+                  <stop offset="55%" stop-color="#8B4513"/>
+                  <stop offset="100%" stop-color="#5C2D0C"/>
+                </linearGradient>
+              </defs>
+              <!-- Tiny Waddling Feet -->
+              <g class="pet-leg-back" style="animation-duration: 0.38s; animation-delay: 0.16s;">
+                <ellipse cx="16" cy="33.5" rx="3.2" ry="2" fill="#FDA4AF" stroke="#E2E8F0" stroke-width="0.5"/>
+              </g>
+              <g class="pet-leg-front" style="animation-duration: 0.38s; animation-delay: 0.16s;">
+                <ellipse cx="38" cy="33.5" rx="3.2" ry="2" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.5"/>
+              </g>
+              <!-- Plump White Guinea Pig Loaf Body (No Tail!) -->
+              <ellipse cx="26" cy="23.5" rx="16.5" ry="10.5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.7"/>
+              <!-- Warm Brown Dutch Saddle & Rump Patch -->
+              <path d="M10.5 22 C11 13, 21 12.5, 25.5 16.5 C27 19, 25 26, 19 29 C13.5 30, 10 26.5, 10.5 22 Z" fill="url(#gpBrown3D)"/>
+              <!-- Front Foot -->
+              <g class="pet-leg-front" style="animation-duration: 0.38s;">
+                <ellipse cx="24" cy="34" rx="3.1" ry="1.9" fill="#FDA4AF" stroke="#CBD5E1" stroke-width="0.5"/>
+              </g>
+              <!-- Cute Rounded Guinea Pig Head & Brown Cheek/Ear Patch -->
+              <ellipse cx="40.5" cy="21" rx="9.5" ry="8.5" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="0.65"/>
+              <path d="M33 15.5 C36 11.5, 43.5 12, 45.5 16.5 C46 20, 41 23, 36.5 22 C33.5 20.5, 32 18, 33 15.5 Z" fill="url(#gpBrown3D)"/>
+              <!-- Floppy Rounded Guinea Pig Ear -->
+              <ellipse cx="35.5" cy="14.5" rx="3.4" ry="2.4" transform="rotate(-22 35.5 14.5)" fill="#5C2D0C" stroke="#D2B48C" stroke-width="0.6"/>
+              <ellipse cx="35.6" cy="14.8" rx="1.7" ry="1.1" transform="rotate(-22 35.6 14.8)" fill="#FDA4AF"/>
+              <!-- Bright Dark Eye & Catchlight -->
+              <circle cx="42.5" cy="18.2" r="1.8" fill="#0F172A"/>
+              <circle cx="43.1" cy="17.6" r="0.65" fill="#FFFFFF"/>
+              <!-- Cute Pink Nose & Whiskers -->
+              <ellipse cx="49.2" cy="21.8" rx="1.8" ry="1.4" fill="#FB7185"/>
+              <line x1="46.5" y1="22.8" x2="53.5" y2="21.5" stroke="#94A3B8" stroke-width="0.7" stroke-linecap="round"/>
+              <line x1="46.5" y1="24" x2="53" y2="24.5" stroke="#94A3B8" stroke-width="0.7" stroke-linecap="round"/>
+            </svg>
+          </div>
 
-            <!-- Back Waving Arm (Balanced 3/4 Blazer Sleeve + Gold Bangle + Celebration Star Wand) -->
-            <g class="host-arm-wave">
-              <!-- Bare lower forearm -->
-              <path d="M25.5 43.2 C23.5 41, 22 39, 20.5 36" stroke="url(#hostSkin3D)" stroke-width="4" stroke-linecap="round"/>
-              <!-- Tailored 3/4 blazer sleeve -->
-              <path d="M36.5 46.5 C31.5 47.2, 27.8 45.8, 24.8 42.6" stroke="url(#hostSuitBerry)" stroke-width="5.6" stroke-linecap="round"/>
-              <!-- Chic folded gold cuff -->
-              <line x1="23.4" y1="44.2" x2="26.8" y2="41.2" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
-              <!-- Gold wrist bangle -->
-              <line x1="20.2" y1="38.2" x2="23.4" y2="36.2" stroke="#FDE047" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="20" cy="35" r="3.6" fill="url(#hostSkin3D)"/>
-              <!-- Dainty Star Wand -->
-              <line x1="19.5" y1="34.5" x2="15.5" y2="21.5" stroke="#FDE047" stroke-width="1.9" stroke-linecap="round"/>
-              <polygon points="15.5,14.5 17.3,19.2 22.2,19.2 18.3,22 19.7,26.8 15.5,24 11.3,26.8 12.7,22 8.8,19.2 13.7,19.2" fill="#FACC15" stroke="#FFFBEB" stroke-width="0.9"/>
-            </g>
+          <!-- Tuxedo Cat Follower -->
+          <div class="pet-parade-follower" style="left: 48px;">
+            <div class="pet-floor-shadow" style="animation-delay: 0.28s;"></div>
+            <svg class="pet-3d-rig w-[44px] h-[38px] overflow-visible" style="animation-delay: 0.28s;" viewBox="0 0 60 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="tuxFur3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#334155"/>
+                  <stop offset="55%" stop-color="#0F172A"/>
+                  <stop offset="100%" stop-color="#020617"/>
+                </linearGradient>
+              </defs>
+              <!-- Swaying Tuxedo Tail with White Tip -->
+              <g class="pet-tail-wag" style="animation-delay: 0.2s;">
+                <path d="M13 30 C4 26, 4 14, 11 11" stroke="url(#tuxFur3D)" stroke-width="4.5" stroke-linecap="round"/>
+                <circle cx="11.2" cy="11.2" r="2.3" fill="#F8FAFC"/>
+              </g>
+              <!-- Back Leg + White Paw -->
+              <g class="pet-leg-back" style="animation-delay: 0.28s;">
+                <path d="M18 35 L16 45" stroke="url(#tuxFur3D)" stroke-width="4.2" stroke-linecap="round"/>
+                <ellipse cx="16.8" cy="46.2" rx="3.2" ry="2" fill="#FFFFFF"/>
+              </g>
+              <g class="pet-leg-front" style="animation-delay: 0.28s;">
+                <path d="M35 35 L38 45" stroke="url(#tuxFur3D)" stroke-width="4.2" stroke-linecap="round"/>
+                <ellipse cx="38.8" cy="46.2" rx="3.3" ry="2" fill="#FFFFFF"/>
+              </g>
+              <!-- Sleek Black Body & White Tuxedo Chest Bib -->
+              <ellipse cx="26" cy="32" rx="14" ry="9" fill="url(#tuxFur3D)" stroke="#475569" stroke-width="0.6"/>
+              <path d="M34 26 C40 27, 41 35, 35 39 C31 37, 30 30, 34 26 Z" fill="#F8FAFC"/>
+              <!-- Front Leg + White Paw -->
+              <g class="pet-leg-front" style="animation-delay: 0.12s;">
+                <path d="M23 36 L22 46" stroke="#1E293B" stroke-width="4.2" stroke-linecap="round"/>
+                <ellipse cx="22.8" cy="47" rx="3.2" ry="2" fill="#FFFFFF"/>
+              </g>
+              <!-- Tuxedo Cat Head + Ears -->
+              <polygon points="31,14 34,5 39,12" fill="url(#tuxFur3D)" stroke="#475569" stroke-width="0.6"/>
+              <polygon points="33.5,12 34.8,7.5 37.5,11.5" fill="#FDA4AF"/>
+              <polygon points="41,12 46,5 48,15" fill="url(#tuxFur3D)" stroke="#475569" stroke-width="0.6"/>
+              <polygon points="42.5,11.5 45.4,7.5 46.6,12.5" fill="#FDA4AF"/>
+              <circle cx="40.5" cy="19.5" r="9.5" fill="url(#tuxFur3D)" stroke="#475569" stroke-width="0.7"/>
+              <!-- Classic White Tuxedo Muzzle & Blaze -->
+              <path d="M40.5 16 L38.5 21 C35.5 22, 35.5 26.8, 40.5 27.2 C45.5 27, 47.5 22.5, 44 20.5 Z" fill="#FFFFFF"/>
+              <!-- Bright Green-Gold Eyes & Pink Nose -->
+              <circle cx="37.5" cy="18" r="2" fill="#A3E635"/>
+              <circle cx="37.8" cy="18" r="1" fill="#020617"/>
+              <circle cx="44.2" cy="18" r="2" fill="#A3E635"/>
+              <circle cx="44.5" cy="18" r="1" fill="#020617"/>
+              <polygon points="41,22 43,22 42,23.6" fill="#FB7185"/>
+              <!-- Whiskers -->
+              <line x1="34" y1="22.5" x2="29" y2="21.5" stroke="#E2E8F0" stroke-width="0.7" stroke-linecap="round"/>
+              <line x1="34" y1="24" x2="29" y2="24.5" stroke="#E2E8F0" stroke-width="0.7" stroke-linecap="round"/>
+              <line x1="47.5" y1="22.5" x2="52" y2="21.5" stroke="#E2E8F0" stroke-width="0.7" stroke-linecap="round"/>
+              <line x1="47.5" y1="24" x2="52" y2="24.5" stroke="#E2E8F0" stroke-width="0.7" stroke-linecap="round"/>
+            </svg>
+          </div>
 
-            <!-- Back Articulated Trouser Leg + Ankle Peek + Gold Stiletto Pump -->
-            <g class="host-leg-back">
-              <!-- Ankle peek -->
-              <path d="M38.5 79.5 L37.8 84.5" stroke="url(#hostSkin3D)" stroke-width="3.8" stroke-linecap="round"/>
-              <!-- Tailored high-waisted flared trouser leg -->
-              <path d="M38.5 63.5 L44.2 63.5 L42.4 74 L41.2 81.2 L35.2 80.8 L37.2 73 Z" fill="url(#hostPantBerry)" stroke="#FDE047" stroke-width="0.7" stroke-linejoin="round"/>
-              <!-- Crisp trouser crease highlight -->
-              <path d="M40.8 65.5 L38.4 80.2" stroke="#FBCFE8" stroke-width="0.75" stroke-linecap="round" opacity="0.55"/>
-              <!-- Chic Gold Pointed-Toe Pump -->
-              <path d="M35.5 84.4 L35.7 89.1 L37.1 89.1 L38 86.1 C40.6 87.2, 43.4 88.8, 46.5 88.8 C47.4 88.8, 47.2 87.2, 45.4 86.4 L39.8 84.4 Z" fill="url(#hostHeel3D)" stroke="#FFFBEB" stroke-width="0.65" stroke-linejoin="round"/>
-            </g>
+          <!-- Brown Tabby Cat Follower (Middle) -->
+          <div class="pet-parade-follower" style="left: 98px;">
+            <div class="pet-floor-shadow" style="animation-delay: 0.14s;"></div>
+            <svg class="pet-3d-rig w-[44px] h-[38px] overflow-visible" style="animation-delay: 0.14s;" viewBox="0 0 60 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="tabbyFur3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#D2B48C"/>
+                  <stop offset="55%" stop-color="#8B6240"/>
+                  <stop offset="100%" stop-color="#4A321F"/>
+                </linearGradient>
+              </defs>
+              <!-- Striped Swaying Tail -->
+              <g class="pet-tail-wag" style="animation-delay: 0.08s;">
+                <path d="M13 30 C4 26, 4 14, 11 11" stroke="url(#tabbyFur3D)" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M6.5 23 L9.5 21.5 M6 17.5 L9.5 17" stroke="#291A0E" stroke-width="1.5" stroke-linecap="round"/>
+              </g>
+              <!-- Legs -->
+              <g class="pet-leg-back" style="animation-delay: 0.14s;">
+                <path d="M18 35 L16 45" stroke="url(#tabbyFur3D)" stroke-width="4.2" stroke-linecap="round"/>
+                <ellipse cx="16.8" cy="46.2" rx="3.1" ry="1.9" fill="#F5EBD9"/>
+              </g>
+              <g class="pet-leg-front" style="animation-delay: 0.14s;">
+                <path d="M35 35 L38 45" stroke="url(#tabbyFur3D)" stroke-width="4.2" stroke-linecap="round"/>
+                <ellipse cx="38.8" cy="46.2" rx="3.2" ry="1.9" fill="#F5EBD9"/>
+              </g>
+              <!-- Brown Tabby Body & Cream Chest -->
+              <ellipse cx="26" cy="32" rx="14" ry="9" fill="url(#tabbyFur3D)" stroke="#E7D3B8" stroke-width="0.6"/>
+              <!-- Back Tiger Stripes -->
+              <path d="M19 25 Q21 29 19 32" stroke="#291A0E" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+              <path d="M24 23.8 Q26 28.5 24 32" stroke="#291A0E" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+              <path d="M29 24.5 Q31 28.5 29 32" stroke="#291A0E" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+              <path d="M34.5 26.5 C39.5 28, 40 35, 35 38.5 C31.5 36.5, 31 30, 34.5 26.5 Z" fill="#F5EBD9"/>
+              <!-- Front Leg -->
+              <g class="pet-leg-front" style="animation-delay: 0.34s;">
+                <path d="M23 36 L22 46" stroke="#785334" stroke-width="4.2" stroke-linecap="round"/>
+                <ellipse cx="22.8" cy="47" rx="3.1" ry="1.9" fill="#F5EBD9"/>
+              </g>
+              <!-- Brown Tabby Head + Ears + Classic "M" Forehead Mark -->
+              <polygon points="31,14 34,5 39,12" fill="url(#tabbyFur3D)"/>
+              <polygon points="33.5,12 34.8,7.5 37.5,11.5" fill="#E7B8B0"/>
+              <polygon points="41,12 46,5 48,15" fill="url(#tabbyFur3D)"/>
+              <polygon points="42.5,11.5 45.4,7.5 46.6,12.5" fill="#E7B8B0"/>
+              <circle cx="40.5" cy="19.5" r="9.5" fill="url(#tabbyFur3D)" stroke="#E7D3B8" stroke-width="0.65"/>
+              <!-- Forehead Tabby M -->
+              <path d="M37 13.5 L38.8 11.5 L40.5 13.5 L42.2 11.5 L44 13.5" stroke="#291A0E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <!-- Cream Muzzle & Eyes -->
+              <ellipse cx="41.5" cy="24" rx="5.2" ry="3.4" fill="#F5EBD9"/>
+              <circle cx="37.5" cy="18" r="1.9" fill="#84CC16"/>
+              <circle cx="37.8" cy="18" r="0.95" fill="#020617"/>
+              <circle cx="44.2" cy="18" r="1.9" fill="#84CC16"/>
+              <circle cx="44.5" cy="18" r="0.95" fill="#020617"/>
+              <polygon points="41,22 43,22 42,23.6" fill="#E17E8E"/>
+              <line x1="34" y1="22.5" x2="29" y2="21.5" stroke="#F5EBD9" stroke-width="0.7" stroke-linecap="round"/>
+              <line x1="47.5" y1="22.5" x2="52" y2="21.5" stroke="#F5EBD9" stroke-width="0.7" stroke-linecap="round"/>
+            </svg>
+          </div>
 
-            <!-- Front Articulated Trouser Leg + Ankle Peek + Gold Stiletto Pump -->
-            <g class="host-leg-front">
-              <!-- Ankle peek -->
-              <path d="M52 79.5 L53.4 84.5" stroke="url(#hostSkin3D)" stroke-width="4" stroke-linecap="round"/>
-              <!-- Tailored high-waisted flared trouser leg -->
-              <path d="M45.8 63.5 L51.8 63.5 L53.5 73 L55.8 81.2 L49.5 81.4 L48.2 73.5 Z" fill="url(#hostSuitBerry)" stroke="#FDE047" stroke-width="0.75" stroke-linejoin="round"/>
-              <!-- Crisp trouser crease highlight -->
-              <path d="M49 65.5 L52.5 80.5" stroke="#FBCFE8" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/>
-              <!-- Chic Gold Pointed-Toe Pump -->
-              <path d="M51 84.4 L51.2 89.3 L52.7 89.3 L53.7 86.2 C56.6 87.3, 59.8 89, 63 89 C64 89, 63.8 87.3, 61.8 86.5 L55.6 84.4 Z" fill="url(#hostHeel3D)" stroke="#FFFBEB" stroke-width="0.7" stroke-linejoin="round"/>
-            </g>
+          <!-- Miniature Schnauzer Dog Follower (Right Behind Nellie) -->
+          <div class="pet-parade-follower" style="left: 148px;">
+            <div class="pet-floor-shadow" style="animation-delay: 0.05s;"></div>
+            <svg class="pet-3d-rig w-[48px] h-[42px] overflow-visible" style="animation-delay: 0.05s;" viewBox="0 0 60 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="schnauzerCoat3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#94A3B8"/>
+                  <stop offset="55%" stop-color="#64748B"/>
+                  <stop offset="100%" stop-color="#334155"/>
+                </linearGradient>
+              </defs>
+              <!-- Perky Docked Wagging Schnauzer Tail -->
+              <g class="pet-tail-wag">
+                <path d="M13 28 L8 18" stroke="url(#schnauzerCoat3D)" stroke-width="4.2" stroke-linecap="round"/>
+              </g>
+              <!-- Schnauzer Fluffy Furnishings Legs -->
+              <g class="pet-leg-back">
+                <path d="M17 34 L16 46" stroke="#475569" stroke-width="4.6" stroke-linecap="round"/>
+                <path d="M15.5 39 L15.5 46" stroke="#E2E8F0" stroke-width="2" stroke-linecap="round"/>
+              </g>
+              <g class="pet-leg-front">
+                <path d="M35 34 L37 46" stroke="#475569" stroke-width="4.6" stroke-linecap="round"/>
+                <path d="M36 39 L37 46" stroke="#E2E8F0" stroke-width="2" stroke-linecap="round"/>
+              </g>
+              <!-- Stocky Salt & Pepper Body -->
+              <rect x="12" y="24" width="26" height="14" rx="7" fill="url(#schnauzerCoat3D)" stroke="#CBD5E1" stroke-width="0.7"/>
+              <!-- Front Leg -->
+              <g class="pet-leg-front" style="animation-delay: 0.22s;">
+                <path d="M23 35 L22.5 46.5" stroke="#64748B" stroke-width="4.6" stroke-linecap="round"/>
+                <path d="M22.5 40 L22.5 46.5" stroke="#F1F5F9" stroke-width="2.2" stroke-linecap="round"/>
+              </g>
+              <!-- Cute Red Collar + Gold Tag -->
+              <path d="M32 23 L38 30" stroke="#EF4444" stroke-width="2.6" stroke-linecap="round"/>
+              <circle cx="37.5" cy="31.5" r="1.8" fill="#FACC15" stroke="#FFFBEB" stroke-width="0.5"/>
+              <!-- Miniature Schnauzer Head & Perky Folded Ears -->
+              <polygon points="31,15 32,5 37,12" fill="#475569" stroke="#CBD5E1" stroke-width="0.6"/>
+              <polygon points="40,12 43,5 46,15" fill="#475569" stroke="#CBD5E1" stroke-width="0.6"/>
+              <rect x="31" y="12" width="15" height="14" rx="5.5" fill="url(#schnauzerCoat3D)" stroke="#CBD5E1" stroke-width="0.7"/>
+              <!-- Rectangular Schnauzer Snout + Iconic Fluffy White Beard & Mustache -->
+              <path d="M40 19 H52 C53.5 19, 54 22.5, 52.5 25 L49.5 31 L46 28.5 L42.5 31.5 L39.5 26.5 Z" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="0.6" stroke-linejoin="round"/>
+              <!-- Bushy White Eyebrows & Sparkling Dark Eyes -->
+              <path d="M35.5 16 Q38 14 40.5 15.8" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+              <path d="M42.5 15.8 Q45 14 47.5 16" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+              <circle cx="38.2" cy="17.8" r="1.4" fill="#0F172A"/>
+              <circle cx="44.8" cy="17.8" r="1.4" fill="#0F172A"/>
+              <!-- Black Schnauzer Nose -->
+              <ellipse cx="51.2" cy="20.6" rx="2" ry="1.5" fill="#0F172A"/>
+            </svg>
+          </div>
 
-            <!-- High-Waisted Trouser Pelvis / Waistband Join -->
-            <path d="M37.8 57.5 H52.2 L53 65.2 H37 Z" fill="url(#hostPantBerry)"/>
+          <!-- Nellie Host Leading the Parade -->
+          <div class="relative w-[96px] h-[98px] ml-auto shrink-0">
+            <div id="host-speech-bubble" class="host-speech-bubble">Good Job!</div>
+            <span class="host-sparkle text-amber-300 text-xs" style="top: 8px; left: -6px;">✦</span>
+            <span class="host-sparkle text-pink-400 text-[10px]" style="top: 30px; left: -12px; animation-delay: 0.45s;">★</span>
+            <span class="host-sparkle text-cyan-300 text-[10px]" style="top: 14px; right: 2px; animation-delay: 0.8s;">✧</span>
+            <div class="host-floor-shadow"></div>
+            <svg class="host-3d-rig" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="hostSkin3D" cx="38%" cy="32%" r="68%">
+                  <stop offset="0%" stop-color="#FFE3C6"/>
+                  <stop offset="55%" stop-color="#F7B787"/>
+                  <stop offset="100%" stop-color="#C97344"/>
+                </radialGradient>
+                <linearGradient id="hostSuitBerry" x1="12%" y1="0%" x2="88%" y2="100%">
+                  <stop offset="0%" stop-color="#FF47A3"/>
+                  <stop offset="50%" stop-color="#D946EF"/>
+                  <stop offset="100%" stop-color="#701A75"/>
+                </linearGradient>
+                <linearGradient id="hostPantBerry" x1="20%" y1="0%" x2="80%" y2="100%">
+                  <stop offset="0%" stop-color="#EC4899"/>
+                  <stop offset="55%" stop-color="#A21CAF"/>
+                  <stop offset="100%" stop-color="#4A044E"/>
+                </linearGradient>
+                <linearGradient id="hostLapelGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FEF08A"/>
+                  <stop offset="50%" stop-color="#F59E0B"/>
+                  <stop offset="100%" stop-color="#B45309"/>
+                </linearGradient>
+                <linearGradient id="hostHeel3D" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FEF08A"/>
+                  <stop offset="45%" stop-color="#F59E0B"/>
+                  <stop offset="100%" stop-color="#B45309"/>
+                </linearGradient>
+                <radialGradient id="hostMicHead" cx="35%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#FFFFFF"/>
+                  <stop offset="45%" stop-color="#FACC15"/>
+                  <stop offset="100%" stop-color="#92400E"/>
+                </radialGradient>
+              </defs>
 
-            <!-- Delicate Neckline & Skin Base -->
-            <path d="M40 42 H50 L49 50 H41 Z" fill="url(#hostSkin3D)"/>
+              <!-- Back Waving Arm (Balanced 3/4 Blazer Sleeve + Gold Bangle + Celebration Star Wand) -->
+              <g class="host-arm-wave">
+                <path d="M25.5 43.2 C23.5 41, 22 39, 20.5 36" stroke="url(#hostSkin3D)" stroke-width="4" stroke-linecap="round"/>
+                <path d="M36.5 46.5 C31.5 47.2, 27.8 45.8, 24.8 42.6" stroke="url(#hostSuitBerry)" stroke-width="5.6" stroke-linecap="round"/>
+                <line x1="23.4" y1="44.2" x2="26.8" y2="41.2" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
+                <line x1="20.2" y1="38.2" x2="23.4" y2="36.2" stroke="#FDE047" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="20" cy="35" r="3.6" fill="url(#hostSkin3D)"/>
+                <line x1="19.5" y1="34.5" x2="15.5" y2="21.5" stroke="#FDE047" stroke-width="1.9" stroke-linecap="round"/>
+                <polygon points="15.5,14.5 17.3,19.2 22.2,19.2 18.3,22 19.7,26.8 15.5,24 11.3,26.8 12.7,22 8.8,19.2 13.7,19.2" fill="#FACC15" stroke="#FFFBEB" stroke-width="0.9"/>
+              </g>
 
-            <!-- Crisp Ivory Silk Scoop Camisole Underneath -->
-            <path d="M40 46 Q45 48.8 50 46 L49.5 58 H40.5 Z" fill="#FFFDF7"/>
+              <!-- Back Articulated Trouser Leg + Ankle Peek + Gold Stiletto Pump -->
+              <g class="host-leg-back">
+                <path d="M38.5 79.5 L37.8 84.5" stroke="url(#hostSkin3D)" stroke-width="3.8" stroke-linecap="round"/>
+                <path d="M38.5 63.5 L44.2 63.5 L42.4 74 L41.2 81.2 L35.2 80.8 L37.2 73 Z" fill="url(#hostPantBerry)" stroke="#FDE047" stroke-width="0.7" stroke-linejoin="round"/>
+                <path d="M40.8 65.5 L38.4 80.2" stroke="#FBCFE8" stroke-width="0.75" stroke-linecap="round" opacity="0.55"/>
+                <path d="M35.5 84.4 L35.7 89.1 L37.1 89.1 L38 86.1 C40.6 87.2, 43.4 88.8, 46.5 88.8 C47.4 88.8, 47.2 87.2, 45.4 86.4 L39.8 84.4 Z" fill="url(#hostHeel3D)" stroke="#FFFBEB" stroke-width="0.65" stroke-linejoin="round"/>
+              </g>
 
-            <!-- Chic Tailored Women's Blazer (Cinched Waist + Curved Peplum Hem) -->
-            <path d="M35.5 44.5 C35 49, 37 52.5, 38.2 55.8 C37.2 59.2, 36.2 61.8, 35.8 63.8 Q40 65.2 44.4 63.4 L45 56.2 L41.2 44.5 Z" fill="url(#hostSuitBerry)" stroke="#FDE047" stroke-width="0.85" stroke-linejoin="round"/>
-            <path d="M54.5 44.5 C55 49, 53 52.5, 51.8 55.8 C52.8 59.2, 53.8 61.8, 54.2 63.8 Q50 65.2 45.6 63.4 L45 56.2 L48.8 44.5 Z" fill="url(#hostSuitBerry)" stroke="#FDE047" stroke-width="0.85" stroke-linejoin="round"/>
+              <!-- Front Articulated Trouser Leg + Ankle Peek + Gold Stiletto Pump -->
+              <g class="host-leg-front">
+                <path d="M52 79.5 L53.4 84.5" stroke="url(#hostSkin3D)" stroke-width="4" stroke-linecap="round"/>
+                <path d="M45.8 63.5 L51.8 63.5 L53.5 73 L55.8 81.2 L49.5 81.4 L48.2 73.5 Z" fill="url(#hostSuitBerry)" stroke="#FDE047" stroke-width="0.75" stroke-linejoin="round"/>
+                <path d="M49 65.5 L52.5 80.5" stroke="#FBCFE8" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/>
+                <path d="M51 84.4 L51.2 89.3 L52.7 89.3 L53.7 86.2 C56.6 87.3, 59.8 89, 63 89 C64 89, 63.8 87.3, 61.8 86.5 L55.6 84.4 Z" fill="url(#hostHeel3D)" stroke="#FFFBEB" stroke-width="0.7" stroke-linejoin="round"/>
+              </g>
 
-            <!-- Sleek Golden Shawl Lapels -->
-            <path d="M40.8 44.6 L38.6 48.2 L44.2 55.8 L41.4 44.8 Z" fill="url(#hostLapelGold)"/>
-            <path d="M49.2 44.6 L51.4 48.2 L45.8 55.8 L48.6 44.8 Z" fill="url(#hostLapelGold)"/>
+              <!-- High-Waisted Trouser Pelvis / Waistband Join -->
+              <path d="M37.8 57.5 H52.2 L53 65.2 H37 Z" fill="url(#hostPantBerry)"/>
 
-            <!-- Tailored Waist Belt & Sparkling Cyan Statement Buckle -->
-            <rect x="37.8" y="54.8" width="14.4" height="2.4" rx="1.1" fill="url(#hostLapelGold)" stroke="#FFFBEB" stroke-width="0.55"/>
-            <rect x="43.5" y="54.3" width="3" height="3.4" rx="0.8" fill="#00F2FE" stroke="#FFFFFF" stroke-width="0.6"/>
+              <!-- Delicate Neckline & Skin Base -->
+              <path d="M40 42 H50 L49 50 H41 Z" fill="url(#hostSkin3D)"/>
 
-            <!-- Fun Blazer Pocket Trim & Sequin Accents -->
-            <line x1="38.2" y1="60.4" x2="41.4" y2="60.8" stroke="#FEF08A" stroke-width="0.9" stroke-linecap="round"/>
-            <line x1="51.8" y1="60.4" x2="48.6" y2="60.8" stroke="#FEF08A" stroke-width="0.9" stroke-linecap="round"/>
-            <circle cx="51" cy="49.5" r="0.85" fill="#00F2FE" stroke="#FFFFFF" stroke-width="0.4"/>
+              <!-- Crisp Ivory Silk Scoop Camisole Underneath -->
+              <path d="M40 46 Q45 48.8 50 46 L49.5 58 H40.5 Z" fill="#FFFDF7"/>
 
-            <!-- Nellie Head Image Modeled Host Character -->
-            <image href="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" x="20" y="1" width="50" height="45" preserveAspectRatio="xMidYMid meet"/>
+              <!-- Chic Tailored Women's Blazer (Cinched Waist + Curved Peplum Hem) -->
+              <path d="M35.5 44.5 C35 49, 37 52.5, 38.2 55.8 C37.2 59.2, 36.2 61.8, 35.8 63.8 Q40 65.2 44.4 63.4 L45 56.2 L41.2 44.5 Z" fill="url(#hostSuitBerry)" stroke="#FDE047" stroke-width="0.85" stroke-linejoin="round"/>
+              <path d="M54.5 44.5 C55 49, 53 52.5, 51.8 55.8 C52.8 59.2, 53.8 61.8, 54.2 63.8 Q50 65.2 45.6 63.4 L45 56.2 L48.8 44.5 Z" fill="url(#hostSuitBerry)" stroke="#FDE047" stroke-width="0.85" stroke-linejoin="round"/>
 
-            <!-- Delicate Pearl & Cyan Gem Necklace -->
-            <path d="M39.8 44.8 Q45 47.8 50.2 44.8" stroke="#FEF9C3" stroke-width="1.1" stroke-linecap="round" fill="none"/>
-            <circle cx="45" cy="47.1" r="1.45" fill="#00F2FE" stroke="#FFFFFF" stroke-width="0.55"/>
+              <!-- Sleek Golden Shawl Lapels -->
+              <path d="M40.8 44.6 L38.6 48.2 L44.2 55.8 L41.4 44.8 Z" fill="url(#hostLapelGold)"/>
+              <path d="M49.2 44.6 L51.4 48.2 L45.8 55.8 L48.6 44.8 Z" fill="url(#hostLapelGold)"/>
 
-            <!-- Front Mic Arm (Balanced 3/4 Blazer Sleeve + Gold Bangle + Golden Retro Mic) -->
-            <g class="host-arm-mic">
-              <!-- Bare lower forearm -->
-              <path d="M64.8 43.2 C66.6 41.2, 67.8 39.2, 68.5 36.8" stroke="url(#hostSkin3D)" stroke-width="4" stroke-linecap="round"/>
-              <!-- Tailored 3/4 blazer sleeve -->
-              <path d="M53.5 46.5 C58.5 47.2, 62.2 45.8, 65.2 42.6" stroke="url(#hostSuitBerry)" stroke-width="5.6" stroke-linecap="round"/>
-              <!-- Chic folded gold cuff -->
-              <line x1="63.4" y1="41.2" x2="66.8" y2="44.2" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
-              <!-- Gold wrist bangle -->
-              <line x1="65.8" y1="37" x2="69" y2="39" stroke="#FDE047" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="68.8" cy="35.8" r="3.6" fill="url(#hostSkin3D)"/>
-              <!-- Mic Handle & Retro Golden Capsule -->
-              <rect x="68" y="25.5" width="3.6" height="10.5" rx="1.5" transform="rotate(15 69 30.5)" fill="#1E293B" stroke="#CBD5E1" stroke-width="0.8"/>
-              <circle cx="72.4" cy="22.4" r="5.2" fill="url(#hostMicHead)" stroke="#FFFBEB" stroke-width="1.1"/>
-              <line x1="68.6" y1="22.4" x2="76.2" y2="22.4" stroke="#78350F" stroke-width="0.95" opacity="0.7"/>
-              <line x1="69.6" y1="20" x2="75.2" y2="20" stroke="#78350F" stroke-width="0.8" opacity="0.6"/>
-            </g>
-          </svg>
+              <!-- Tailored Waist Belt & Sparkling Cyan Statement Buckle -->
+              <rect x="37.8" y="54.8" width="14.4" height="2.4" rx="1.1" fill="url(#hostLapelGold)" stroke="#FFFBEB" stroke-width="0.55"/>
+              <rect x="43.5" y="54.3" width="3" height="3.4" rx="0.8" fill="#00F2FE" stroke="#FFFFFF" stroke-width="0.6"/>
+
+              <!-- Fun Blazer Pocket Trim & Sequin Accents -->
+              <line x1="38.2" y1="60.4" x2="41.4" y2="60.8" stroke="#FEF08A" stroke-width="0.9" stroke-linecap="round"/>
+              <line x1="51.8" y1="60.4" x2="48.6" y2="60.8" stroke="#FEF08A" stroke-width="0.9" stroke-linecap="round"/>
+              <circle cx="51" cy="49.5" r="0.85" fill="#00F2FE" stroke="#FFFFFF" stroke-width="0.4"/>
+
+              <!-- Nellie Head Image Modeled Host Character -->
+              <image href="https://raw.githubusercontent.com/rbartles102907-cloud/topic-time/main/Nellie_head.png" x="20" y="1" width="50" height="45" preserveAspectRatio="xMidYMid meet"/>
+
+              <!-- Delicate Pearl & Cyan Gem Necklace -->
+              <path d="M39.8 44.8 Q45 47.8 50.2 44.8" stroke="#FEF9C3" stroke-width="1.1" stroke-linecap="round" fill="none"/>
+              <circle cx="45" cy="47.1" r="1.45" fill="#00F2FE" stroke="#FFFFFF" stroke-width="0.55"/>
+
+              <!-- Front Mic Arm (Balanced 3/4 Blazer Sleeve + Gold Bangle + Golden Retro Mic) -->
+              <g class="host-arm-mic">
+                <path d="M64.8 43.2 C66.6 41.2, 67.8 39.2, 68.5 36.8" stroke="url(#hostSkin3D)" stroke-width="4" stroke-linecap="round"/>
+                <path d="M53.5 46.5 C58.5 47.2, 62.2 45.8, 65.2 42.6" stroke="url(#hostSuitBerry)" stroke-width="5.6" stroke-linecap="round"/>
+                <line x1="63.4" y1="41.2" x2="66.8" y2="44.2" stroke="#FDE047" stroke-width="1.8" stroke-linecap="round"/>
+                <line x1="65.8" y1="37" x2="69" y2="39" stroke="#FDE047" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="68.8" cy="35.8" r="3.6" fill="url(#hostSkin3D)"/>
+                <rect x="68" y="25.5" width="3.6" height="10.5" rx="1.5" transform="rotate(15 69 30.5)" fill="#1E293B" stroke="#CBD5E1" stroke-width="0.8"/>
+                <circle cx="72.4" cy="22.4" r="5.2" fill="url(#hostMicHead)" stroke="#FFFBEB" stroke-width="1.1"/>
+                <line x1="68.6" y1="22.4" x2="76.2" y2="22.4" stroke="#78350F" stroke-width="0.95" opacity="0.7"/>
+                <line x1="69.6" y1="20" x2="75.2" y2="20" stroke="#78350F" stroke-width="0.8" opacity="0.6"/>
+              </g>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -2247,6 +2752,48 @@
       </div>
       <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-right">
         <button id="privacy-close-btn" onclick="togglePrivacyModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- About, Privacy & Technical Help Modal -->
+  <div id="info-help-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div onclick="toggleInfoHelpModal(false)" class="absolute inset-0 bg-slate-900/75 backdrop-blur-sm cursor-pointer"></div>
+    <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-cyan-500/40 rounded-2xl p-6 shadow-2xl z-10 text-slate-700 dark:text-slate-300 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <h3 id="info-help-modal-title" class="font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-cyan-500"></i> About, Privacy &amp; Help
+        </h3>
+        <button onclick="toggleInfoHelpModal(false)" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="text-xs space-y-3 max-h-[60vh] overflow-y-auto pr-1 leading-relaxed">
+        <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-400/30 space-y-1">
+          <div id="info-help-privacy-heading" class="font-black text-indigo-700 dark:text-cyan-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved"></i> Privacy &amp; How It Works
+          </div>
+          <p id="info-help-privacy-body">
+            Nellie B - Chatomizer is a 100% browser-based party and conversation game. Just like our <strong>Privacy Policy</strong> at the bottom of the page, no account or sign-in is required and we never collect personal identifying information - your scores, favorites, and settings stay privately in your browser.
+          </p>
+        </div>
+
+        <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-400/35 space-y-1.5">
+          <div id="info-help-cache-heading" class="font-black text-amber-700 dark:text-amber-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+            <i class="fa-solid fa-broom"></i> Experiencing Any Technical Issues?
+          </div>
+          <p id="info-help-cache-body">
+            Because the game runs directly in your browser, if it works for others and something ever looks stuck or wonky for you, try doing a hard refresh or <strong>clearing your browser cache</strong> (press <strong>Ctrl + Shift + R</strong> on Windows or <strong>Cmd + Shift + R</strong> on Mac, or clear cached images &amp; files in your browser settings).
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+        <button id="info-clear-cache-btn" onclick="clearAppCacheAndReload()" class="px-3.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/50 text-amber-700 dark:text-amber-300 font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+          <i class="fa-solid fa-rotate-right"></i> <span>Clear Saved Cache &amp; Reload</span>
+        </button>
+        <button id="info-help-close-btn" onclick="toggleInfoHelpModal(false)" class="px-4 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-500 transition-colors cursor-pointer">Close</button>
       </div>
     </div>
   </div>
@@ -2488,6 +3035,7 @@
     // Game Mode State
     var gameState = JSON.parse(localStorage.getItem("nellieb_game_mode") || JSON.stringify({
       enabled: false,
+      stacyMode: 0,
       totalRounds: 5,
       questionsPerRound: 4,
       pointsPerRound: cardPointValues[0],
@@ -2495,6 +3043,7 @@
       currentQuestionInRound: 1,
       roundStarted: false
     }));
+    gameState.stacyMode = Number(gameState.stacyMode) === 1 ? 1 : 0;
     gameState.totalRounds = Math.max(1, parseInt(gameState.totalRounds) || 5);
     gameState.questionsPerRound = Math.max(1, parseInt(gameState.questionsPerRound) || 4);
     if (CARD_POINT_TIERS.indexOf(Number(gameState.pointsPerRound)) === -1) {
@@ -2522,6 +3071,15 @@
       "Did You Know?": { bg: "bg-rose-100 dark:bg-rose-950/80", text: "text-rose-700 dark:text-rose-200", border: "border-rose-300 dark:border-rose-600" },
       "Music Fun Facts": { bg: "bg-teal-100 dark:bg-teal-950/80", text: "text-teal-700 dark:text-teal-200", border: "border-teal-300 dark:border-teal-600" }
     };
+
+    var GAME_MODE_CATEGORIES = [
+      "Would You Rather",
+      "Philosophy",
+      "Humor/Fun",
+      "Personal Stories",
+      "Deep Questions",
+      "Pop Culture"
+    ];
 
     var PRESET_MODES = [
       { id: "all", name: "Balanced Mix", desc: "All 10 categories in rotation", categories: Object.keys(CATEGORY_STYLES) },
@@ -2634,7 +3192,15 @@
         emptyPodium: "No players yet. Click \"Game Mode\" or \"Scores\" to add up to 10 contenders!",
         noSavedEmpty: "No saved topics yet.",
         noSavedSub: "Tap the heart icon on any card to save it!",
-        clickToLoad: "Click to load topic"
+        clickToLoad: "Click to load topic",
+        categoriesNote: "Note: You must select at least 1 category to deal questions.",
+        gameModePresetName: "Game Mode Mix",
+        infoHelpTitle: "About, Privacy & Help",
+        infoHelpPrivacyHeading: "Privacy & How It Works",
+        infoHelpPrivacyBody: "Nellie B - Chatomizer is a 100% browser-based party and conversation game. Just like our <strong>Privacy Policy</strong> at the bottom of the page, no account or sign-in is required and we never collect personal identifying information - your scores, favorites, and settings stay privately in your browser.",
+        infoHelpCacheHeading: "Experiencing Any Technical Issues?",
+        infoHelpCacheBody: "Because this game runs directly in your browser, if it works for one person it should work for everyone! If anything ever looks stuck or wonky, try doing a hard refresh or <strong>clearing your browser cache</strong> (press <strong>Ctrl + Shift + R</strong> on Windows or <strong>Cmd + Shift + R</strong> on Mac, or clear cached images &amp; files in browser settings).",
+        infoHelpClearBtn: "Clear Saved Cache & Reload"
       },
       es: {
         tagline: "¡A CHARLAR SE HA DICHO!",
@@ -2726,7 +3292,15 @@
         emptyPodium: "Aún no hay jugadores. ¡Haz clic en \"Modo Juego\" o \"Marcador\" para agregar hasta 10!",
         noSavedEmpty: "No hay temas guardados aún.",
         noSavedSub: "¡Toca el ícono de corazón en cualquier carta para guardarlo!",
-        clickToLoad: "Toca para cargar el tema"
+        clickToLoad: "Toca para cargar el tema",
+        categoriesNote: "Nota: Debes seleccionar al menos 1 categoría para repartir preguntas.",
+        gameModePresetName: "Mix Modo Juego",
+        infoHelpTitle: "Información, Privacidad y Ayuda",
+        infoHelpPrivacyHeading: "Privacidad y Cómo Funciona",
+        infoHelpPrivacyBody: "Nellie B - Chatomizer funciona 100% en tu navegador. Tal como indica nuestra <strong>Política de Privacidad</strong> al final de la página, no requiere cuenta ni registro y nunca recopilamos datos personales; tus puntos, favoritos y ajustes permanecen en tu navegador.",
+        infoHelpCacheHeading: "¿Tienes Algún Problema Técnico?",
+        infoHelpCacheBody: "Como el juego funciona directamente en tu navegador, ¡si le funciona a una persona debería funcionarles a todos! Si algo se ve trabado, prueba recargar con fuerza o <strong>borrar la caché de tu navegador</strong> (presiona <strong>Ctrl + Shift + R</strong> en Windows o <strong>Cmd + Shift + R</strong> en Mac).",
+        infoHelpClearBtn: "Borrar Caché y Recargar"
       },
       fr: {
         tagline: "À NOUS LA DISCUSSION !",
@@ -2818,7 +3392,15 @@
         emptyPodium: "Aucun joueur. Cliquez sur « Mode Jeu » ou « Scores » pour en ajouter jusqu'à 10 !",
         noSavedEmpty: "Aucun sujet enregistré.",
         noSavedSub: "Touchez le cœur sur une carte pour le garder !",
-        clickToLoad: "Charger ce sujet"
+        clickToLoad: "Charger ce sujet",
+        categoriesNote: "Note : Vous devez sélectionner au moins 1 catégorie pour tirer des questions.",
+        gameModePresetName: "Mix Mode Jeu",
+        infoHelpTitle: "Infos, Confidentialité et Aide",
+        infoHelpPrivacyHeading: "Confidentialité et Fonctionnement",
+        infoHelpPrivacyBody: "Nellie B - Chatomizer fonctionne 100% dans votre navigateur. Comme indiqué dans notre <strong>Politique de Confidentialité</strong> en bas de page, aucune inscription n'est requise et aucune donnée personnelle n'est collectée.",
+        infoHelpCacheHeading: "Un Problème Technique ?",
+        infoHelpCacheBody: "Comme le jeu s'exécute dans votre navigateur, s'il fonctionne pour l'un il fonctionne pour tous ! En cas d'affichage bloqué, faites une actualisation forcée ou <strong>videz le cache du navigateur</strong> (<strong>Ctrl + Shift + R</strong> / <strong>Cmd + Shift + R</strong>).",
+        infoHelpClearBtn: "Vider le Cache et Recharger"
       },
       de: {
         tagline: "LASST UNS REDEN!",
@@ -2910,7 +3492,15 @@
         emptyPodium: "Noch keine Spieler. Klicke auf \"Spielmodus\" oder \"Punkte\" (max. 10)!",
         noSavedEmpty: "Keine gespeicherten Themen.",
         noSavedSub: "Tippe auf das Herz einer Karte!",
-        clickToLoad: "Thema laden"
+        clickToLoad: "Thema laden",
+        categoriesNote: "Hinweis: Du musst mindestens 1 Kategorie auswählen, um Fragen auszuteilen.",
+        gameModePresetName: "Spielmodus-Mix",
+        infoHelpTitle: "Info, Datenschutz & Hilfe",
+        infoHelpPrivacyHeading: "Datenschutz & Funktionsweise",
+        infoHelpPrivacyBody: "Nellie B - Chatomizer läuft komplett im Browser. Wie in unserer <strong>Datenschutzerklärung</strong> unten beschrieben, ist keine Anmeldung nötig und es werden keine persönlichen Daten gesammelt.",
+        infoHelpCacheHeading: "Technische Probleme?",
+        infoHelpCacheBody: "Da das Spiel direkt im Browser läuft, sollte es für alle funktionieren, wenn es bei einem klappt! Falls etwas hängt, hilft oft ein harter Reload oder das <strong>Leeren des Browser-Caches</strong> (<strong>Strg + Umschalt + R</strong> bzw. <strong>Cmd + Shift + R</strong>).",
+        infoHelpClearBtn: "Cache Leeren & Neu Laden"
       },
       pt: {
         tagline: "BORA CONVERSAR!",
@@ -3002,7 +3592,15 @@
         emptyPodium: "Sem jogadores ainda. Clique em \"Modo Jogo\" ou \"Placar\" para adicionar até 10!",
         noSavedEmpty: "Nenhum tema salvo.",
         noSavedSub: "Toque no coração em qualquer carta!",
-        clickToLoad: "Carregar tema"
+        clickToLoad: "Carregar tema",
+        categoriesNote: "Nota: Você precisa selecionar pelo menos 1 categoria para sortear perguntas.",
+        gameModePresetName: "Mix Modo Jogo",
+        infoHelpTitle: "Sobre, Privacidade e Ajuda",
+        infoHelpPrivacyHeading: "Privacidade e Como Funciona",
+        infoHelpPrivacyBody: "O Nellie B - Chatomizer roda 100% no seu navegador. Assim como nossa <strong>Política de Privacidade</strong> no rodapé, não exige conta nem coleta dados pessoais.",
+        infoHelpCacheHeading: "Algum Problema Técnico?",
+        infoHelpCacheBody: "Como o jogo roda no navegador, se funciona para um, deve funcionar para todos! Se algo travar, faça uma atualização forçada ou <strong>limpe o cache do navegador</strong> (<strong>Ctrl + Shift + R</strong> / <strong>Cmd + Shift + R</strong>).",
+        infoHelpClearBtn: "Limpar Cache e Recarregar"
       },
       it: {
         tagline: "FACCIAMO DUE CHIACCHIERE!",
@@ -3094,7 +3692,15 @@
         emptyPodium: "Nessun giocatore. Clicca \"Modalità Gioco\" o \"Punteggi\" per aggiungerne fino a 10!",
         noSavedEmpty: "Nessun argomento salvato.",
         noSavedSub: "Tocca il cuore su una carta per salvarlo!",
-        clickToLoad: "Carica argomento"
+        clickToLoad: "Carica argomento",
+        categoriesNote: "Nota: Devi selezionare almeno 1 categoria per pescare domande.",
+        gameModePresetName: "Mix Modalità Gioco",
+        infoHelpTitle: "Info, Privacy e Aiuto",
+        infoHelpPrivacyHeading: "Privacy e Funzionamento",
+        infoHelpPrivacyBody: "Nellie B - Chatomizer funziona al 100% nel browser. Come indicato nella nostra <strong>Privacy Policy</strong> in fondo alla pagina, non richiede account e non raccoglie dati personali.",
+        infoHelpCacheHeading: "Problemi Tecnici?",
+        infoHelpCacheBody: "Poiché il gioco gira nel browser, se funziona per uno funziona per tutti! Se qualcosa si blocca, aggiorna forzatamente la pagina o <strong>svuota la cache del browser</strong> (<strong>Ctrl + Shift + R</strong> / <strong>Cmd + Shift + R</strong>).",
+        infoHelpClearBtn: "Svuota Cache e Ricarica"
       }
     };
 
@@ -3255,6 +3861,9 @@
     }
 
     function getPresetDisplay(modeId) {
+      if (modeId === "gamemode") {
+        return { name: t("gameModePresetName"), desc: "6 Game Mode categories" };
+      }
       var lang = normalizeLangCode(currentLanguage);
       var dict = PRESET_I18N[lang] || PRESET_I18N.en;
       if (dict[modeId]) return dict[modeId];
@@ -3495,6 +4104,7 @@
       setHtml("presets-modal-title", '<i class="fa-solid fa-sliders text-indigo-500"></i> ' + t("presetsTitle"));
       setText("presets-modal-subtitle", t("presetsSubtitle"));
       setHtml("categories-modal-title", '<i class="fa-solid fa-layer-group text-pink-500"></i> ' + t("categoriesTitle"));
+      setText("categories-modal-note-text", t("categoriesNote"));
       setText("categories-done-btn", t("doneBtn"));
 
       setHtml("tut-hero-badge", '<i class="fa-solid fa-wand-magic-sparkles mr-1"></i> ' + t("tutHeroBadge"));
@@ -3519,6 +4129,14 @@
       setHtml("privacy-modal-title", '<i class="fa-solid fa-shield-halved text-indigo-500"></i> ' + t("privacyTitle"));
       setHtml("privacy-modal-body", t("privacyBody"));
       setText("privacy-close-btn", t("closeBtn"));
+
+      setHtml("info-help-modal-title", '<i class="fa-solid fa-circle-info text-cyan-500"></i> ' + t("infoHelpTitle"));
+      setHtml("info-help-privacy-heading", '<i class="fa-solid fa-shield-halved"></i> ' + t("infoHelpPrivacyHeading"));
+      setHtml("info-help-privacy-body", t("infoHelpPrivacyBody"));
+      setHtml("info-help-cache-heading", '<i class="fa-solid fa-broom"></i> ' + t("infoHelpCacheHeading"));
+      setHtml("info-help-cache-body", t("infoHelpCacheBody"));
+      setHtml("info-clear-cache-btn", '<i class="fa-solid fa-rotate-right"></i> <span>' + escapeHtml(t("infoHelpClearBtn")) + '</span>');
+      setText("info-help-close-btn", t("closeBtn"));
 
       setText("favorites-drawer-title", t("savedTitle"));
       setText("favorites-drawer-sub", t("savedSub"));
@@ -3582,8 +4200,7 @@
 
     function isLastFlipOfRoundIn4CardView() {
       if (!gameState.enabled || cardCountView !== 4) return false;
-      var flippedCount = getFlippedCardCountIn4CardView();
-      return flippedCount >= gameState.questionsPerRound || flippedCount === 4;
+      return getFlippedCardCountIn4CardView() === 4;
     }
 
     function showProminentFloatingRoundStart(roundNum, totalRounds, ptsPerRound) {
@@ -3607,8 +4224,45 @@
       }, 2200);
     }
 
+    function applyGameModeCategories(refreshUnpinned) {
+      activePreset = "gamemode";
+      selectedCategories = createCompatSet(GAME_MODE_CATEGORIES);
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+
+      if (refreshUnpinned) {
+        for (var i = 0; i < cardCountView; i++) {
+          if (!pinnedCardStates[i] && (!currentTopics[i] || !selectedCategories.has(currentTopics[i].category))) {
+            clearCardTypingTimer(i);
+            currentTopics[i] = generateSequentialTopic();
+            cardResolvedTexts[i] = getImmediateTranslatedString(currentTopics[i].text, currentLanguage);
+            cardTypingProgress[i] = 0;
+          }
+        }
+      }
+    }
+
+    function restorePartyModeCategories(refreshUnpinned) {
+      activePreset = "all";
+      selectedCategories = createCompatSet(Object.keys(CATEGORY_STYLES));
+      updateFilterButtonsUI();
+      renderModePills();
+      renderCategoryPills();
+
+      if (refreshUnpinned && currentTopics && currentTopics.length > 0) {
+        for (var i = 0; i < cardCountView; i++) {
+          if (!pinnedCardStates[i] && !cardRevealedStates[i]) {
+            currentTopics[i] = generateSequentialTopic();
+            cardResolvedTexts[i] = getImmediateTranslatedString(currentTopics[i].text, currentLanguage);
+          }
+        }
+      }
+    }
+
     function activateGameModeAndOpenScores() {
       gameState.enabled = true;
+      applyGameModeCategories(true);
       if (!gameState.currentRound || gameState.currentRound > gameState.totalRounds) {
         gameState.currentRound = 1;
         gameState.currentQuestionInRound = 1;
@@ -3633,6 +4287,7 @@
       gameState.currentQuestionInRound = 1;
       gameState.roundStarted = false;
       saveGameState();
+      restorePartyModeCategories(true);
 
       if (bombModalTimeout) {
         clearTimeout(bombModalTimeout);
@@ -3656,6 +4311,28 @@
       switchToPartyMode();
     }
 
+    function updateStacyModeCheckboxUI() {
+      var stacyCb = document.getElementById("game-mode-stacy-checkbox");
+      var badge = document.getElementById("stacy-mode-status-badge");
+      var isActive = Number(gameState.stacyMode) === 1;
+      if (stacyCb) stacyCb.checked = isActive;
+      if (badge) {
+        if (isActive) {
+          badge.innerText = "Active (1)";
+          badge.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-pink-500 to-emerald-500 text-white uppercase tracking-wider shadow-sm";
+        } else {
+          badge.innerText = "Off (0)";
+          badge.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider";
+        }
+      }
+    }
+
+    function onStacyModeToggleCheckbox(checked) {
+      gameState.stacyMode = checked ? 1 : 0;
+      saveGameState();
+      updateStacyModeCheckboxUI();
+    }
+
     function openScoresModal(focusGameMode) {
       var modal = document.getElementById("scores-modal");
       if (!modal) return;
@@ -3667,6 +4344,7 @@
       if (cb) cb.checked = Boolean(gameState.enabled);
       if (roundsInput) roundsInput.value = gameState.totalRounds;
       if (qprInput) qprInput.value = gameState.questionsPerRound;
+      updateStacyModeCheckboxUI();
 
       populateScoresTable();
       updatePlayerCountBadge();
@@ -3679,6 +4357,11 @@
 
     function onGameModeToggleCheckbox(checked) {
       gameState.enabled = Boolean(checked);
+      if (gameState.enabled) {
+        applyGameModeCategories(true);
+      } else {
+        restorePartyModeCategories(true);
+      }
       if (gameState.enabled && (!gameState.currentRound || gameState.currentRound < 1)) {
         gameState.currentRound = 1;
         gameState.currentQuestionInRound = 1;
@@ -3718,10 +4401,14 @@
       var readyToEnd4 = isLastFlipOfRoundIn4CardView();
 
       if (gameState.enabled) {
-        if (btn) {
-          btn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-pink-600 to-purple-600 hover:from-amber-400 hover:via-pink-500 hover:to-purple-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-lg shadow-pink-500/30 cursor-pointer border border-amber-300/60";
+        if (partyBtn) {
+          partyBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer text-slate-500 dark:text-slate-400 opacity-70 hover:opacity-100 hover:bg-white/50 dark:hover:bg-slate-700/50";
+          partyBtn.setAttribute("aria-pressed", "false");
         }
-        if (partyBtn) partyBtn.classList.remove("hidden");
+        if (btn) {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer bg-gradient-to-r from-amber-500 via-pink-600 to-purple-600 hover:from-amber-400 hover:via-pink-500 hover:to-purple-500 text-white shadow-md shadow-pink-500/35 ring-1 ring-amber-300/75";
+          btn.setAttribute("aria-pressed", "true");
+        }
         if (statusPill) {
           statusPill.classList.remove("hidden");
           statusPill.innerText = "R" + gameState.currentRound + "/" + gameState.totalRounds + " • +" + Number(gameState.pointsPerRound).toLocaleString();
@@ -3752,10 +4439,14 @@
           }
         }
       } else {
-        if (btn) {
-          btn.className = "px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-500 text-white font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-md shadow-emerald-500/25 cursor-pointer border border-emerald-300/40";
+        if (partyBtn) {
+          partyBtn.className = "px-3 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white shadow-md shadow-indigo-500/30 ring-1 ring-indigo-300/60";
+          partyBtn.setAttribute("aria-pressed", "true");
         }
-        if (partyBtn) partyBtn.classList.add("hidden");
+        if (btn) {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer text-slate-500 dark:text-slate-400 opacity-70 hover:opacity-100 hover:bg-white/50 dark:hover:bg-slate-700/50";
+          btn.setAttribute("aria-pressed", "false");
+        }
         if (statusPill) statusPill.classList.add("hidden");
         if (roundBadge) roundBadge.classList.add("hidden");
         if (endRoundBtn) endRoundBtn.classList.add("hidden");
@@ -4008,13 +4699,41 @@
       var ptsAwarded = Number(gameState.pointsPerRound) || 0;
       player.points = (parseInt(player.points) || 0) + ptsAwarded;
       sessionScores.sort(function(a, b) { return b.points - a.points; });
+
+      var completedRoundNum = gameState.currentRound;
+      var wasFinalRound = completedRoundNum >= gameState.totalRounds;
+      var stacyHeist = null;
+
+      if (wasFinalRound && Number(gameState.stacyMode) === 1) {
+        var lastIdx = sessionScores.length - 1;
+        var victim = (lastIdx >= 0) ? sessionScores[lastIdx] : null;
+        if (victim === player && sessionScores.length >= 2) {
+          victim = sessionScores[sessionScores.length - 2];
+        }
+        if (victim && victim !== player) {
+          var stolenAmt = Math.max(0, parseInt(victim.points) || 0);
+          victim.points = 0;
+          player.points = (parseInt(player.points) || 0) + stolenAmt;
+          sessionScores.sort(function(a, b) { return b.points - a.points; });
+          stacyHeist = {
+            victimName: victim.name,
+            stolenAmount: stolenAmt,
+            winnerName: player.name
+          };
+        } else {
+          stacyHeist = {
+            victimName: victim ? victim.name : "Last Place",
+            stolenAmount: 0,
+            winnerName: player.name
+          };
+        }
+      }
+
       localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
 
       var newRank = sessionScores.findIndex(function(p) {
         return p.name === player.name && p.points === player.points;
       });
-      var completedRoundNum = gameState.currentRound;
-      var wasFinalRound = completedRoundNum >= gameState.totalRounds;
 
       var modal = document.getElementById("round-winner-modal");
       if (modal) modal.classList.add("hidden");
@@ -4029,6 +4748,7 @@
         roundNumber: completedRoundNum,
         totalRounds: gameState.totalRounds,
         isFinalRound: wasFinalRound,
+        stacyHeist: stacyHeist,
         avatar: getFunWinnerAvatar(player.name, newRank >= 0 ? newRank : 0)
       };
       openWinnerCelebrationModal(pendingWinnerCelebrationData);
@@ -4043,12 +4763,17 @@
       var trophyBox = document.getElementById("celebration-trophy-box");
       var trophyIcon = document.getElementById("celebration-trophy-icon");
       var identityWrap = document.getElementById("celebration-identity-wrap");
+      var identityTop = document.getElementById("celebration-identity-top");
+      var pillsRow = document.getElementById("celebration-pills-row");
       var avatarRing = document.getElementById("celebration-avatar-ring");
       var badgeEl = document.getElementById("celebration-round-badge");
       var avatarEl = document.getElementById("celebration-avatar-inner");
       var congratsEl = document.getElementById("celebration-congrats-label");
       var nameEl = document.getElementById("celebration-winner-name");
       var ptsEl = document.getElementById("celebration-points-earned");
+      var stacyPillEl = document.getElementById("celebration-stacy-heist-pill");
+      var stacyLayerEl = document.getElementById("stacy-heist-layer");
+      var stacySpeechEl = document.getElementById("stacy-speech-bubble");
       var actionsWrap = document.getElementById("celebration-actions-wrap");
       var continueBtn = document.getElementById("celebration-continue-btn");
       var finalActions = document.getElementById("celebration-final-round-actions");
@@ -4067,10 +4792,12 @@
           if (isFinal) fanfareStrip.classList.remove("hidden");
           else fanfareStrip.classList.add("hidden");
         }
-        if (mainLayout) mainLayout.className = "relative z-10 flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap items-center justify-between gap-4 w-full";
+        if (mainLayout) mainLayout.className = "relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 w-full";
         if (trophyBox) trophyBox.className = "trophy-3d-spinning w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center";
         if (trophyIcon) trophyIcon.className = "fa-solid fa-trophy text-2xl sm:text-3xl text-slate-950 drop-shadow-[0_2px_2px_rgba(255,255,255,0.75)]";
-        if (identityWrap) identityWrap.className = "flex flex-wrap sm:flex-nowrap items-center justify-center md:justify-start gap-3 min-w-0 flex-1 max-w-full";
+        if (identityWrap) identityWrap.className = "flex flex-col items-center md:items-start gap-2 min-w-0 flex-1 max-w-full";
+        if (identityTop) identityTop.className = "flex items-center justify-center md:justify-start gap-3 min-w-0 max-w-full";
+        if (pillsRow) pillsRow.className = "flex flex-wrap items-center justify-center md:justify-start gap-2 max-w-full";
         if (avatarRing) avatarRing.className = "w-12 h-12 sm:w-14 sm:h-14 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-cyan-400 to-yellow-300 shadow-lg anim-grow-shrink shrink-0";
         if (badgeEl) {
           badgeEl.innerText = isFinal
@@ -4078,12 +4805,12 @@
             : "ROUND " + data.roundNumber + " WINNER";
         }
         if (congratsEl) {
-          congratsEl.className = "text-[10px] font-black uppercase tracking-widest text-cyan-300";
+          congratsEl.className = "text-[10px] font-black uppercase tracking-widest text-cyan-300 whitespace-nowrap";
           congratsEl.innerText = isFinal ? "Final Round Winner!" : "Congratulations!";
         }
-        if (nameEl) nameEl.className = "text-xl sm:text-2xl font-black podium-name-1 tracking-tight leading-tight break-words max-w-full";
+        if (nameEl) nameEl.className = "text-xl sm:text-3xl font-black podium-name-1 tracking-tight leading-tight max-w-full";
         if (ptsEl) ptsEl.className = "px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-[11px] sm:text-xs whitespace-nowrap shrink-0";
-        if (actionsWrap) actionsWrap.className = "w-full lg:w-auto flex flex-col sm:flex-row items-center justify-center md:justify-end gap-2 shrink-0 max-w-full";
+        if (actionsWrap) actionsWrap.className = "w-full md:w-auto flex flex-col sm:flex-row items-center justify-center md:justify-end gap-2 shrink-0 max-w-full";
         if (hostSpeechEl) hostSpeechEl.innerText = hostGoodJobText;
         if (isFinal) {
           if (continueBtn) continueBtn.classList.add("hidden");
@@ -4106,15 +4833,17 @@
         if (mainLayout) mainLayout.className = "relative z-10 flex flex-col items-center justify-center gap-4 w-full";
         if (trophyBox) trophyBox.className = "trophy-3d-spinning w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-200 via-amber-400 to-orange-600 p-1 border-2 border-white/80 flex items-center justify-center";
         if (trophyIcon) trophyIcon.className = "fa-solid fa-trophy text-5xl text-slate-950 drop-shadow-[0_2px_2px_rgba(255,255,255,0.75)]";
-        if (identityWrap) identityWrap.className = "flex flex-col items-center gap-1.5 min-w-0 max-w-full";
+        if (identityWrap) identityWrap.className = "flex flex-col items-center gap-2 min-w-0 max-w-full";
+        if (identityTop) identityTop.className = "flex items-center justify-center gap-3 min-w-0 max-w-full";
+        if (pillsRow) pillsRow.className = "flex flex-wrap items-center justify-center gap-2 max-w-full";
         if (avatarRing) avatarRing.className = "w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-pink-500 via-cyan-400 to-yellow-300 shadow-lg anim-grow-shrink shrink-0";
         if (badgeEl) badgeEl.innerText = "ROUND " + data.roundNumber + " WINNER";
         if (congratsEl) {
-          congratsEl.className = "text-[11px] font-black uppercase tracking-widest text-cyan-300";
+          congratsEl.className = "text-[11px] font-black uppercase tracking-widest text-cyan-300 whitespace-nowrap";
           congratsEl.innerText = "Congratulations!";
         }
-        if (nameEl) nameEl.className = "text-2xl sm:text-4xl font-black podium-name-1 tracking-tight leading-tight break-words max-w-full";
-        if (ptsEl) ptsEl.className = "mt-1 px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs sm:text-sm";
+        if (nameEl) nameEl.className = "text-2xl sm:text-4xl font-black podium-name-1 tracking-tight leading-tight max-w-full";
+        if (ptsEl) ptsEl.className = "px-4 py-1 rounded-full bg-amber-400/20 border border-amber-300/50 text-amber-200 font-black text-xs sm:text-sm whitespace-nowrap";
         if (actionsWrap) actionsWrap.className = "w-full flex flex-col items-center gap-2 shrink-0 max-w-full";
         if (continueBtn) {
           continueBtn.className = "w-full py-2.5 px-5 rounded-xl bg-gradient-to-r from-amber-400 via-pink-500 to-indigo-600 hover:from-amber-300 hover:via-pink-400 hover:to-indigo-500 text-slate-950 font-black text-sm shadow-lg transition-all cursor-pointer";
@@ -4123,6 +4852,26 @@
         if (finalActions) finalActions.classList.add("hidden");
         if (hostSpeechEl) hostSpeechEl.innerText = hostGoodJobText;
         playVictoryFanfare();
+      }
+
+      if (isFinal && Number(gameState.stacyMode) === 1 && data.stacyHeist) {
+        var victimLabel = String(data.stacyHeist.victimName || "").trim();
+        var amtFormatted = Number(data.stacyHeist.stolenAmount || 0).toLocaleString();
+        if (stacySpeechEl) {
+          stacySpeechEl.innerText = victimLabel
+            ? ("Thanks for the $" + amtFormatted + " " + victimLabel + "!")
+            : ("Thanks for the $" + amtFormatted + "!");
+        }
+        if (stacyLayerEl) stacyLayerEl.classList.remove("hidden");
+        if (stacyPillEl) {
+          stacyPillEl.innerText = data.stacyHeist.stolenAmount > 0
+            ? ("💼 Stacy grabbed $" + amtFormatted + " from " + victimLabel + " & added it to " + data.stacyHeist.winnerName + "!")
+            : ("💼 Stacy raided " + (victimLabel || "last place") + " and walked off with her cash bag!");
+          stacyPillEl.classList.remove("hidden");
+        }
+      } else {
+        if (stacyLayerEl) stacyLayerEl.classList.add("hidden");
+        if (stacyPillEl) stacyPillEl.classList.add("hidden");
       }
 
       if (avatarEl) avatarEl.innerText = data.avatar || "👑";
@@ -6453,7 +7202,7 @@
           '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card topic-card-front ' + (isPinned ? "glass-card-pinned " : "") + 'rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
               '<div class="flex items-center gap-1.5 min-w-0">' +
-                '<span class="text-xs font-extrabold tracking-tight text-slate-900 bg-white/60 px-2.5 py-0.5 rounded-full backdrop-blur-sm truncate shadow-sm">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</span>' +
+                '<span class="text-xs font-extrabold tracking-tight text-white/95 bg-white/15 border border-white/25 px-2.5 py-0.5 rounded-full backdrop-blur-sm truncate shadow-sm">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</span>' +
                 '<span id="pin-badge-' + index + '" class="' + (isPinned ? "" : "hidden ") + 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-300/95 border border-amber-500 text-slate-950 text-[9px] font-black uppercase tracking-wider shrink-0 shadow-sm"><i class="fa-solid fa-thumbtack text-[9px]"></i> ' + escapeHtml(t("pinnedBadge")) + '</span>' +
               '</div>' +
               middleBountySlot +
@@ -6599,10 +7348,14 @@
       localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
 
       var cb = document.getElementById("game-mode-enabled-checkbox");
+      var stacyCb = document.getElementById("game-mode-stacy-checkbox");
       var roundsInput = document.getElementById("game-rounds-input");
       var qprInput = document.getElementById("game-qpr-input");
 
       gameState.enabled = cb ? Boolean(cb.checked) : gameState.enabled;
+      if (stacyCb) {
+        gameState.stacyMode = stacyCb.checked ? 1 : 0;
+      }
       gameState.totalRounds = Math.max(1, parseInt(roundsInput && roundsInput.value) || 5);
       gameState.questionsPerRound = Math.max(1, parseInt(qprInput && qprInput.value) || 4);
       if (gameState.currentRound > gameState.totalRounds) {
@@ -6889,6 +7642,31 @@
       else modal.classList.add("hidden");
     }
 
+    function toggleInfoHelpModal(open) {
+      var modal = document.getElementById("info-help-modal");
+      if (!modal) return;
+      if (open) modal.classList.remove("hidden");
+      else modal.classList.add("hidden");
+    }
+
+    function clearAppCacheAndReload() {
+      try {
+        localStorage.removeItem("nellieb_cache");
+        localStorage.removeItem("nellieb_tx_cache");
+      } catch (err) {}
+      if (window.caches && typeof window.caches.keys === "function") {
+        window.caches.keys().then(function(keys) {
+          return Promise.all(keys.map(function(k) { return window.caches.delete(k); }));
+        }).then(function() {
+          window.location.reload();
+        }, function() {
+          window.location.reload();
+        });
+      } else {
+        window.location.reload();
+      }
+    }
+
     function showToast(message, type) {
       var container = document.getElementById("toast-container");
       if (!container) return;
@@ -6948,9 +7726,22 @@
     }
 
     document.addEventListener("keydown", function(e) {
+      var key = e.key || "";
+      if (key === "Escape" || e.keyCode === 27) {
+        var infoModal = document.getElementById("info-help-modal");
+        if (infoModal && !infoModal.classList.contains("hidden")) {
+          toggleInfoHelpModal(false);
+          return;
+        }
+        var privModal = document.getElementById("privacy-modal");
+        if (privModal && !privModal.classList.contains("hidden")) {
+          togglePrivacyModal(false);
+          return;
+        }
+      }
+
       var tutorialModal = document.getElementById("tutorial-modal");
       if (tutorialModal && !tutorialModal.classList.contains("hidden")) {
-        var key = e.key || "";
         if (key === "Escape" || e.keyCode === 27) {
           toggleTutorialModal(false);
           return;
@@ -6994,6 +7785,10 @@
       var selectEl = document.getElementById("language-select");
       if (selectEl) {
         selectEl.value = currentLanguage;
+      }
+
+      if (gameState.enabled) {
+        applyGameModeCategories(false);
       }
 
       applyLanguageTranslations();
