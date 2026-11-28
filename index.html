@@ -870,6 +870,25 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
     }
 
+    @keyframes stacyTeaseWiggle {
+      0%, 48%, 100% { transform: translateX(0) rotate(0deg) scale(1); }
+      54% { transform: translateX(-3px) rotate(-6deg) scale(1.07); }
+      60% { transform: translateX(3px) rotate(6deg) scale(1.07); }
+      66% { transform: translateX(-3px) rotate(-5deg) scale(1.05); }
+      72% { transform: translateX(2.5px) rotate(5deg) scale(1.05); }
+      78% { transform: translateX(-1.5px) rotate(-2deg) scale(1.02); }
+      84% { transform: translateX(0) rotate(0deg) scale(1); }
+    }
+
+    .stacy-toggle-tease {
+      animation: stacyTeaseWiggle 2.2s ease-in-out infinite;
+      box-shadow: 0 0 14px rgba(236, 72, 153, 0.55), 0 0 22px rgba(250, 204, 21, 0.35);
+    }
+
+    .stacy-toggle-active-glow {
+      box-shadow: 0 0 16px rgba(236, 72, 153, 0.65), 0 0 24px rgba(16, 185, 129, 0.5);
+    }
+
     .pet-parade-follower {
       position: absolute;
       bottom: 2px;
@@ -1428,7 +1447,8 @@
       .coqui-sound-wave,
       .coqui-callout-bubble,
       .end-round-nudge,
-      .end-round-urgent-shake {
+      .end-round-urgent-shake,
+      .stacy-toggle-tease {
         animation: none !important;
       }
       .tut-spotlight-ring,
@@ -1991,7 +2011,7 @@
   </div>
 
   <!-- Presets Selection Modal -->
-  <div id="presets-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="presets-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
     <div onclick="togglePresetsModal(false)" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm cursor-pointer"></div>
     <div class="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-indigo-500/40 rounded-2xl p-5 shadow-2xl z-10 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
@@ -2008,7 +2028,7 @@
   </div>
 
   <!-- Categories Selection Modal -->
-  <div id="categories-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="categories-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
     <div onclick="toggleCategoriesModal(false)" class="absolute inset-0 bg-slate-950/75 backdrop-blur-sm cursor-pointer"></div>
     <div class="relative w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-pink-500/40 rounded-2xl p-5 shadow-2xl z-10 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
@@ -2080,9 +2100,9 @@
       <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-950/90 p-2 border-b border-slate-200 dark:border-slate-800 shrink-0">
         <button id="tut-track-game" onclick="setTutorialStep(0)" class="py-2 px-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-gamepad"></i>
-          <span id="tut-track-game-label">Game Mode (1, 2, 3)</span>
+          <span id="tut-track-game-label">Game Mode (1, 2, 3, 4)</span>
         </button>
-        <button id="tut-track-party" onclick="setTutorialStep(3)" class="py-2 px-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+        <button id="tut-track-party" onclick="setTutorialStep(4)" class="py-2 px-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-champagne-glasses"></i>
           <span id="tut-track-party-label">Party Mode (1, 2, 3)</span>
         </button>
@@ -2164,21 +2184,47 @@
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-emerald-400/25 dark:border-emerald-500/25">
-          <label class="inline-flex items-center gap-2 cursor-pointer select-none">
-            <input id="game-mode-stacy-checkbox" type="checkbox" onchange="onStacyModeToggleCheckbox(this.checked)" class="w-4 h-4 rounded accent-pink-500 cursor-pointer">
-            <span class="text-xs sm:text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-              <span>💼</span> <span>Activate Stacy Mode</span>
+        <div class="pt-2.5 border-t border-emerald-400/25 dark:border-emerald-500/25 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <button type="button" onclick="togglePresetsModal(true)" class="w-full min-h-[44px] px-3 py-2 rounded-xl bg-indigo-600/15 dark:bg-indigo-500/20 hover:bg-indigo-600/25 dark:hover:bg-indigo-500/30 border border-indigo-400/50 dark:border-indigo-400/40 text-indigo-700 dark:text-indigo-200 font-bold text-xs flex items-center justify-between gap-2 transition-all active:scale-95 shadow-sm cursor-pointer touch-manipulation">
+            <span class="flex items-center gap-1.5 min-w-0 truncate">
+              <i class="fa-solid fa-sliders text-indigo-500 dark:text-indigo-300 shrink-0"></i>
+              <span id="gm-presets-prefix-label">Presets:</span>
+              <span id="gm-active-preset-label" class="font-extrabold text-slate-900 dark:text-white truncate">Balanced Mix</span>
             </span>
-          </label>
-          <div class="flex items-center gap-2">
-            <span id="stacy-mode-status-badge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-              Off (0)
+            <i class="fa-solid fa-chevron-right text-[10px] opacity-70 shrink-0"></i>
+          </button>
+
+          <button type="button" onclick="toggleCategoriesModal(true)" class="w-full min-h-[44px] px-3 py-2 rounded-xl bg-pink-600/15 dark:bg-pink-500/20 hover:bg-pink-600/25 dark:hover:bg-pink-500/30 border border-pink-400/50 dark:border-pink-400/40 text-pink-700 dark:text-pink-200 font-bold text-xs flex items-center justify-between gap-2 transition-all active:scale-95 shadow-sm cursor-pointer touch-manipulation">
+            <span class="flex items-center gap-1.5 min-w-0">
+              <i class="fa-solid fa-layer-group text-pink-500 dark:text-pink-300 shrink-0"></i>
+              <span id="gm-categories-btn-label" class="truncate">Categories</span>
             </span>
-            <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
-              Swipes last place's cash at final round
+            <span id="gm-active-categories-badge" class="px-2 py-0.5 rounded-full bg-pink-600 text-white text-[10px] font-black leading-none shrink-0">10/10</span>
+          </button>
+        </div>
+
+        <div class="pt-2.5 border-t border-emerald-400/25 dark:border-emerald-500/25">
+          <button type="button" id="game-mode-stacy-toggle" role="switch" aria-checked="false" onclick="toggleStacyMode()" class="w-full min-h-[52px] px-3 py-2 rounded-xl bg-white/75 dark:bg-slate-900/75 hover:bg-white dark:hover:bg-slate-800/90 border border-pink-400/45 dark:border-pink-500/45 flex items-center justify-between gap-3 cursor-pointer select-none transition-all active:scale-[0.99] touch-manipulation text-left shadow-sm">
+            <div class="flex flex-col min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs sm:text-sm font-black text-slate-900 dark:text-white flex items-center gap-1.5">
+                  <span>💼</span> <span>Activate Stacy Mode</span>
+                </span>
+                <span id="stacy-mode-status-badge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  Off (0)
+                </span>
+              </div>
+              <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
+                Dare to flip it? Swipes last place's cash at final round
+              </span>
+            </div>
+
+            <span id="stacy-switch-track" class="stacy-toggle-tease relative inline-flex items-center w-14 h-8 rounded-full px-1 bg-slate-300 dark:bg-slate-700 border-2 border-pink-400/75 transition-colors duration-200 shrink-0">
+              <span id="stacy-switch-thumb" class="w-6 h-6 rounded-full bg-white shadow-md transform translate-x-0 transition-transform duration-200 flex items-center justify-center text-[11px]">
+                💼
+              </span>
             </span>
-          </div>
+          </button>
         </div>
       </div>
 
@@ -3151,7 +3197,7 @@
         doneBtn: "Done",
         tutHeroBadge: "Interactive Spotlight Tour",
         tutHeroTitlePrefix: "Quick Guide to ",
-        tutTrackGame: "Game Mode (1, 2, 3)",
+        tutTrackGame: "Game Mode (1, 2, 3, 4)",
         tutTrackParty: "Party Mode (1, 2, 3)",
         tutLookHere: "Highlighted Control",
         tutStepLabel: "Step",
@@ -3251,7 +3297,7 @@
         doneBtn: "Listo",
         tutHeroBadge: "Tour Interactivo en Vivo",
         tutHeroTitlePrefix: "Guía Rápida de ",
-        tutTrackGame: "Modo Juego (1, 2, 3)",
+        tutTrackGame: "Modo Juego (1, 2, 3, 4)",
         tutTrackParty: "Modo Fiesta (1, 2, 3)",
         tutLookHere: "Área Destacada",
         tutStepLabel: "Paso",
@@ -3351,7 +3397,7 @@
         doneBtn: "Terminer",
         tutHeroBadge: "Visite Guidée Interactive",
         tutHeroTitlePrefix: "Guide Rapide ",
-        tutTrackGame: "Mode Jeu (1, 2, 3)",
+        tutTrackGame: "Mode Jeu (1, 2, 3, 4)",
         tutTrackParty: "Mode Fête (1, 2, 3)",
         tutLookHere: "Zone Mise en Avant",
         tutStepLabel: "Étape",
@@ -3451,7 +3497,7 @@
         doneBtn: "Fertig",
         tutHeroBadge: "Interaktive Spotlight-Tour",
         tutHeroTitlePrefix: "Kurzanleitung für ",
-        tutTrackGame: "Spielmodus (1, 2, 3)",
+        tutTrackGame: "Spielmodus (1, 2, 3, 4)",
         tutTrackParty: "Partymodus (1, 2, 3)",
         tutLookHere: "Hervorgehobener Bereich",
         tutStepLabel: "Schritt",
@@ -3551,7 +3597,7 @@
         doneBtn: "Pronto",
         tutHeroBadge: "Tour Interativo em Destaque",
         tutHeroTitlePrefix: "Guia Rápido do ",
-        tutTrackGame: "Modo Jogo (1, 2, 3)",
+        tutTrackGame: "Modo Jogo (1, 2, 3, 4)",
         tutTrackParty: "Modo Festa (1, 2, 3)",
         tutLookHere: "Controle em Destaque",
         tutStepLabel: "Passo",
@@ -3651,7 +3697,7 @@
         doneBtn: "Fatto",
         tutHeroBadge: "Tour Guidato Interattivo",
         tutHeroTitlePrefix: "Guida Rapida a ",
-        tutTrackGame: "Modalità Gioco (1, 2, 3)",
+        tutTrackGame: "Modalità Gioco (1, 2, 3, 4)",
         tutTrackParty: "Modalità Festa (1, 2, 3)",
         tutLookHere: "Area Evidenziata",
         tutStepLabel: "Passo",
@@ -4080,6 +4126,8 @@
       setText("view-label-4", t("fourCards"));
       setText("presets-prefix-label", t("presetsPrefix"));
       setText("categories-btn-label", t("categoriesBtn"));
+      setText("gm-presets-prefix-label", t("presetsPrefix"));
+      setText("gm-categories-btn-label", t("categoriesBtn"));
 
       setHtml(
         "tutorial-note-text",
@@ -4312,10 +4360,24 @@
     }
 
     function updateStacyModeCheckboxUI() {
-      var stacyCb = document.getElementById("game-mode-stacy-checkbox");
+      var stacyToggle = document.getElementById("game-mode-stacy-toggle");
+      var track = document.getElementById("stacy-switch-track");
+      var thumb = document.getElementById("stacy-switch-thumb");
       var badge = document.getElementById("stacy-mode-status-badge");
       var isActive = Number(gameState.stacyMode) === 1;
-      if (stacyCb) stacyCb.checked = isActive;
+      if (stacyToggle) {
+        stacyToggle.setAttribute("aria-checked", isActive ? "true" : "false");
+      }
+      if (track) {
+        track.className = isActive
+          ? "relative inline-flex items-center w-14 h-8 rounded-full px-1 bg-gradient-to-r from-pink-500 to-emerald-500 border-2 border-emerald-300 transition-colors duration-200 shrink-0 stacy-toggle-active-glow"
+          : "stacy-toggle-tease relative inline-flex items-center w-14 h-8 rounded-full px-1 bg-slate-300 dark:bg-slate-700 border-2 border-pink-400/75 transition-colors duration-200 shrink-0";
+      }
+      if (thumb) {
+        thumb.className = isActive
+          ? "w-6 h-6 rounded-full bg-white shadow-md transform translate-x-5 transition-transform duration-200 flex items-center justify-center text-[11px]"
+          : "w-6 h-6 rounded-full bg-white shadow-md transform translate-x-0 transition-transform duration-200 flex items-center justify-center text-[11px]";
+      }
       if (badge) {
         if (isActive) {
           badge.innerText = "Active (1)";
@@ -4327,8 +4389,8 @@
       }
     }
 
-    function onStacyModeToggleCheckbox(checked) {
-      gameState.stacyMode = checked ? 1 : 0;
+    function toggleStacyMode() {
+      gameState.stacyMode = Number(gameState.stacyMode) === 1 ? 0 : 1;
       saveGameState();
       updateStacyModeCheckboxUI();
     }
@@ -4992,20 +5054,27 @@
     function updateFilterButtonsUI() {
       var presetLabelEl = document.getElementById("active-preset-label");
       var catBadgeEl = document.getElementById("active-categories-badge");
+      var gmPresetLabelEl = document.getElementById("gm-active-preset-label");
+      var gmCatBadgeEl = document.getElementById("gm-active-categories-badge");
       var totalCats = Object.keys(CATEGORY_STYLES).length;
+      var presetName = getPresetDisplay(activePreset).name;
+      var catCountText = selectedCategories.size + "/" + totalCats;
 
-      if (presetLabelEl) presetLabelEl.innerText = getPresetDisplay(activePreset).name;
-      if (catBadgeEl) catBadgeEl.innerText = selectedCategories.size + "/" + totalCats;
+      if (presetLabelEl) presetLabelEl.innerText = presetName;
+      if (catBadgeEl) catBadgeEl.innerText = catCountText;
+      if (gmPresetLabelEl) gmPresetLabelEl.innerText = presetName;
+      if (gmCatBadgeEl) gmCatBadgeEl.innerText = catCountText;
     }
 
     var currentTutorialStep = 0;
     var TUTORIAL_STEP_TARGETS = [
-      { mode: "game", trackStep: 1, targets: ["#game-mode-btn", "#game-party-controls-group"] },
-      { mode: "game", trackStep: 2, targets: ["#view-toggle-group"] },
-      { mode: "game", trackStep: 3, targets: ["#topics-grid", "#header-scores-btn"] },
-      { mode: "party", trackStep: 1, targets: ["#party-mode-btn", "#game-party-controls-group", "#game-mode-btn"] },
-      { mode: "party", trackStep: 2, targets: ["#presets-categories-group"] },
-      { mode: "party", trackStep: 3, targets: ["#topics-grid"] }
+      { mode: "game", trackStep: 1, trackTotal: 4, targets: ["#game-mode-btn", "#game-party-controls-group"] },
+      { mode: "game", trackStep: 2, trackTotal: 4, targets: ["#view-toggle-group"] },
+      { mode: "game", trackStep: 3, trackTotal: 4, targets: ["#topics-grid", "#header-scores-btn"] },
+      { mode: "game", trackStep: 4, trackTotal: 4, targets: ["#game-mode-btn", "#header-scores-btn"] },
+      { mode: "party", trackStep: 1, trackTotal: 3, targets: ["#party-mode-btn", "#game-party-controls-group", "#game-mode-btn"] },
+      { mode: "party", trackStep: 2, trackTotal: 3, targets: ["#presets-categories-group"] },
+      { mode: "party", trackStep: 3, trackTotal: 3, targets: ["#topics-grid"] }
     ];
 
     var TUTORIAL_SPOTLIGHT_DATA = {
@@ -5038,6 +5107,16 @@
             "Round ends automatically when the <strong>1-Card clock explodes</strong>, or click <strong>End Round</strong>.",
             "Pick a winner from your leaderboard to award the <strong>Round Points</strong>.",
             "Complete the final round to unlock the <strong>Grand Champion</strong> party fanfare!"
+          ]
+        },
+        {
+          modeLabel: "Game Mode",
+          pointerLabel: "Try Stacy Mode Twist!",
+          title: "4 - Activate Stacy Mode!",
+          steps: [
+            "Inside <strong>Game Mode</strong>, flip the wiggling <strong>💼 Activate Stacy Mode</strong> toggle.",
+            "Play normally - Stacy stays hidden until the final round finishes.",
+            "On the <strong>Final Round</strong>, Stacy swipes <strong>last place's money</strong> and gives it to the <strong>winner</strong>!"
           ]
         },
         {
@@ -5103,6 +5182,16 @@
           ]
         },
         {
+          modeLabel: "Modo Juego",
+          pointerLabel: "¡Prueba el Modo Stacy!",
+          title: "4 - ¡Activa el Modo Stacy!",
+          steps: [
+            "En <strong>Modo Juego</strong>, activa el interruptor animado <strong>💼 Activate Stacy Mode</strong>.",
+            "Juega normal - Stacy permanece oculta hasta terminar la última ronda.",
+            "En la <strong>Ronda Final</strong>, Stacy toma el <strong>dinero del último lugar</strong> y se lo da al <strong>ganador</strong>!"
+          ]
+        },
+        {
           modeLabel: "Modo Fiesta",
           pointerLabel: "Control de Juego Libre",
           title: "1, 2, 3 - Modo Fiesta Sin Presión",
@@ -5162,6 +5251,16 @@
             "La manche se termine quand <strong>l'horloge explose</strong> ou via <strong>Fin Manche</strong>.",
             "Désignez le vainqueur pour lui attribuer les <strong>Points</strong>.",
             "Terminez la dernière manche pour la grande fanfare du <strong>Champion</strong> !"
+          ]
+        },
+        {
+          modeLabel: "Mode Jeu",
+          pointerLabel: "Tentez le Mode Stacy !",
+          title: "4 - Activer le Mode Stacy !",
+          steps: [
+            "Dans <strong>Mode Jeu</strong>, activez l'interrupteur animé <strong>💼 Activate Stacy Mode</strong>.",
+            "Jouez normalement - Stacy reste cachée jusqu'à la fin de la dernière manche.",
+            "À la <strong>Manche Finale</strong>, Stacy prend <strong>l'argent du dernier</strong> et le donne au <strong>gagnant</strong> !"
           ]
         },
         {
@@ -5227,6 +5326,16 @@
           ]
         },
         {
+          modeLabel: "Spielmodus",
+          pointerLabel: "Stacy-Modus testen!",
+          title: "4 - Stacy-Modus Aktivieren!",
+          steps: [
+            "Lege im <strong>Spielmodus</strong> den wackelnden Schalter <strong>💼 Activate Stacy Mode</strong> um.",
+            "Spiele normal weiter - Stacy bleibt bis zum Ende der letzten Runde verborgen.",
+            "In der <strong>Finalrunde</strong> schnappt sich Stacy das <strong>Geld vom letzten Platz</strong> und gibt es dem <strong>Sieger</strong>!"
+          ]
+        },
+        {
           modeLabel: "Partymodus",
           pointerLabel: "Freies Spiel Steuern",
           title: "1, 2, 3 - Lockerer Partymodus",
@@ -5289,6 +5398,16 @@
           ]
         },
         {
+          modeLabel: "Modo Jogo",
+          pointerLabel: "Experimente o Modo Stacy!",
+          title: "4 - Ativar o Modo Stacy!",
+          steps: [
+            "No <strong>Modo Jogo</strong>, toque na chave animada <strong>💼 Activate Stacy Mode</strong>.",
+            "Jogue normalmente - Stacy fica escondida até o fim da rodada final.",
+            "Na <strong>Rodada Final</strong>, Stacy pega o <strong>dinheiro do último lugar</strong> e entrega ao <strong>vencedor</strong>!"
+          ]
+        },
+        {
           modeLabel: "Modo Festa",
           pointerLabel: "Controle de Jogo Livre",
           title: "1, 2, 3 - Modo Festa Sem Pressa",
@@ -5348,6 +5467,16 @@
             "Il turno finisce quando <strong>esplode la sveglia</strong> o cliccando <strong>Fine Turno</strong>.",
             "Seleziona il vincitore del turno per assegnare i <strong>Punti</strong>.",
             "Completa l'ultimo turno per la festa del <strong>Campione</strong>!"
+          ]
+        },
+        {
+          modeLabel: "Modalità Gioco",
+          pointerLabel: "Prova la Modalità Stacy!",
+          title: "4 - Attiva Modalità Stacy!",
+          steps: [
+            "In <strong>Modalità Gioco</strong>, attiva l'interruttore animato <strong>💼 Activate Stacy Mode</strong>.",
+            "Gioca normalmente - Stacy resta nascosta fino alla fine dell'ultimo turno.",
+            "Nel <strong>Turno Finale</strong>, Stacy prende i <strong>soldi dell'ultimo</strong> e li dà al <strong>vincitore</strong>!"
           ]
         },
         {
@@ -5579,7 +5708,7 @@
         bodyEl.innerHTML =
           '<div class="flex items-center justify-between gap-2">' +
             '<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg border text-[10px] font-black uppercase tracking-wider ' + badgeColor + '">' +
-              escapeHtml(step.modeLabel) + ' &bull; ' + escapeHtml(t("tutStepLabel")) + ' ' + meta.trackStep + ' ' + escapeHtml(t("tutOfLabel")) + ' 3' +
+              escapeHtml(step.modeLabel) + ' &bull; ' + escapeHtml(t("tutStepLabel")) + ' ' + meta.trackStep + ' ' + escapeHtml(t("tutOfLabel")) + ' ' + (meta.trackTotal || 3) +
             '</span>' +
           '</div>' +
           '<h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-snug">' + escapeHtml(step.title) + '</h3>' +
@@ -5587,9 +5716,10 @@
       }
 
       if (dotsEl) {
-        var trackStart = isPartyTrack ? 3 : 0;
+        var trackStart = isPartyTrack ? 4 : 0;
+        var trackLen = meta.trackTotal || (isPartyTrack ? 3 : 4);
         var dotsHtml = "";
-        for (var d = 0; d < 3; d++) {
+        for (var d = 0; d < trackLen; d++) {
           var stepIdx = trackStart + d;
           var activeDotColor = isPartyTrack ? "w-6 bg-pink-500" : "w-6 bg-emerald-500";
           dotsHtml += '<button onclick="setTutorialStep(' + stepIdx + ')" class="h-2 rounded-full transition-all cursor-pointer ' +
@@ -7348,13 +7478,13 @@
       localStorage.setItem("nellieb_scores", JSON.stringify(sessionScores));
 
       var cb = document.getElementById("game-mode-enabled-checkbox");
-      var stacyCb = document.getElementById("game-mode-stacy-checkbox");
+      var stacyToggle = document.getElementById("game-mode-stacy-toggle");
       var roundsInput = document.getElementById("game-rounds-input");
       var qprInput = document.getElementById("game-qpr-input");
 
       gameState.enabled = cb ? Boolean(cb.checked) : gameState.enabled;
-      if (stacyCb) {
-        gameState.stacyMode = stacyCb.checked ? 1 : 0;
+      if (stacyToggle) {
+        gameState.stacyMode = stacyToggle.getAttribute("aria-checked") === "true" ? 1 : 0;
       }
       gameState.totalRounds = Math.max(1, parseInt(roundsInput && roundsInput.value) || 5);
       gameState.questionsPerRound = Math.max(1, parseInt(qprInput && qprInput.value) || 4);
