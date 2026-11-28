@@ -167,10 +167,6 @@
       transform: translateY(-4px) scale(1.02);
     }
 
-    .glass-card-pinned {
-      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.85), 0 0 26px rgba(245, 158, 11, 0.45), 0 14px 32px rgba(0, 0, 0, 0.55) !important;
-    }
-
     /* Upper-right Card Action Buttons */
     .card-action-btn {
       width: 2rem;
@@ -207,12 +203,6 @@
     }
     .card-action-btn:active {
       transform: scale(0.94);
-    }
-    .card-action-pin-active {
-      background: linear-gradient(135deg, #f59e0b, #d97706) !important;
-      color: #ffffff !important;
-      border-color: #fde68a !important;
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.55) !important;
     }
     .card-action-heart-active {
       background: linear-gradient(135deg, #ec4899, #e11d48) !important;
@@ -3038,7 +3028,6 @@
     var selectedCategories = createCompatSet(Object.keys(CATEGORY_FILES));
     var currentTopics = [];
     var cardRevealedStates = [false, false, false, false];
-    var pinnedCardStates = [false, false, false, false];
     var cardFlipTimers = [null, null, null, null];
     var cardFlipInTimers = [null, null, null, null];
     var cardTypingTimers = [null, null, null, null];
@@ -3046,8 +3035,18 @@
     var cardRevealToken = [0, 0, 0, 0];
     var cardResolvedTexts = ["", "", "", ""];
     var languageSwitchSeq = 0;
-    var topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}");
-    var favoritedTopicIds = createCompatSet(JSON.parse(localStorage.getItem("nellieb_favs") || "[]"));
+    var topicCache = {};
+    try { topicCache = JSON.parse(localStorage.getItem("nellieb_cache") || "{}") || {}; } catch (e) { topicCache = {}; }
+    var savedTopicsData = {};
+    try { savedTopicsData = JSON.parse(localStorage.getItem("nellieb_saved_topics") || "{}") || {}; } catch (e) { savedTopicsData = {}; }
+    var favoritedTopicIds = createCompatSet([]);
+    try {
+      var rawFavList = JSON.parse(localStorage.getItem("nellieb_favs") || "[]");
+      if (Array.isArray(rawFavList)) favoritedTopicIds = createCompatSet(rawFavList);
+    } catch (e) {
+      favoritedTopicIds = createCompatSet([]);
+    }
+    var questionBanksLoaded = false;
 
     var CARD_POINT_TIERS = [100, 1000, 2500, 5000, 7500, 10000];
 
@@ -3065,15 +3064,13 @@
     function assignRandomCardPoints(onlyIndices) {
       if (Array.isArray(onlyIndices)) {
         onlyIndices.forEach(function(idx) {
-          if (idx >= 0 && idx < 4 && !pinnedCardStates[idx]) {
+          if (idx >= 0 && idx < 4) {
             cardPointValues[idx] = pickRandomCardPoints();
           }
         });
       } else {
         for (var i = 0; i < 4; i++) {
-          if (!pinnedCardStates[i]) {
-            cardPointValues[i] = pickRandomCardPoints();
-          }
+          cardPointValues[i] = pickRandomCardPoints();
         }
       }
     }
@@ -3229,9 +3226,6 @@
         flipBackHint: "Tap to Flip Back",
         changeCardHint: "Tap to Change",
         refreshTitle: "Refresh this question",
-        pinTitle: "Pin card in place",
-        unpinTitle: "Unpin card",
-        pinnedBadge: "Pinned",
         bookmarkTitle: "Save topic to favorites",
         copyTitle: "Copy Prompt",
         ptsSuffix: "PTS",
@@ -3329,9 +3323,6 @@
         flipBackHint: "Toca para voltear",
         changeCardHint: "Toca para cambiar",
         refreshTitle: "Cambiar esta pregunta",
-        pinTitle: "Fijar carta en su lugar",
-        unpinTitle: "Soltar carta fijada",
-        pinnedBadge: "Fijada",
         bookmarkTitle: "Guardar tema en favoritos",
         copyTitle: "Copiar pregunta",
         ptsSuffix: "PTS",
@@ -3429,9 +3420,6 @@
         flipBackHint: "Touchez pour retourner",
         changeCardHint: "Touchez pour changer",
         refreshTitle: "Changer la question",
-        pinTitle: "Épingler la carte",
-        unpinTitle: "Détacher la carte",
-        pinnedBadge: "Épinglée",
         bookmarkTitle: "Enregistrer aux favoris",
         copyTitle: "Copier le sujet",
         ptsSuffix: "PTS",
@@ -3529,9 +3517,6 @@
         flipBackHint: "Zum Umdrehen tippen",
         changeCardHint: "Tippen zum Wechseln",
         refreshTitle: "Frage erneuern",
-        pinTitle: "Karte anheften",
-        unpinTitle: "Karte lösen",
-        pinnedBadge: "Angeheftet",
         bookmarkTitle: "Als Favorit speichern",
         copyTitle: "Frage kopieren",
         ptsSuffix: "PKT",
@@ -3629,9 +3614,6 @@
         flipBackHint: "Toque para desvirar",
         changeCardHint: "Toque para trocar",
         refreshTitle: "Trocar esta pergunta",
-        pinTitle: "Fixar carta",
-        unpinTitle: "Desafixar carta",
-        pinnedBadge: "Fixada",
         bookmarkTitle: "Salvar nos favoritos",
         copyTitle: "Copiar pergunta",
         ptsSuffix: "PTS",
@@ -3729,9 +3711,6 @@
         flipBackHint: "Tocca per rigirare",
         changeCardHint: "Tocca per cambiare",
         refreshTitle: "Cambia domanda",
-        pinTitle: "Fissa carta",
-        unpinTitle: "Sblocca carta",
-        pinnedBadge: "Fissata",
         bookmarkTitle: "Salva nei preferiti",
         copyTitle: "Copia domanda",
         ptsSuffix: "PT",
@@ -4272,16 +4251,16 @@
       }, 2200);
     }
 
-    function applyGameModeCategories(refreshUnpinned) {
+    function applyGameModeCategories(refreshCards) {
       activePreset = "gamemode";
       selectedCategories = createCompatSet(GAME_MODE_CATEGORIES);
       updateFilterButtonsUI();
       renderModePills();
       renderCategoryPills();
 
-      if (refreshUnpinned) {
+      if (refreshCards) {
         for (var i = 0; i < cardCountView; i++) {
-          if (!pinnedCardStates[i] && (!currentTopics[i] || !selectedCategories.has(currentTopics[i].category))) {
+          if (!currentTopics[i] || !selectedCategories.has(currentTopics[i].category)) {
             clearCardTypingTimer(i);
             currentTopics[i] = generateSequentialTopic();
             cardResolvedTexts[i] = getImmediateTranslatedString(currentTopics[i].text, currentLanguage);
@@ -4291,16 +4270,16 @@
       }
     }
 
-    function restorePartyModeCategories(refreshUnpinned) {
+    function restorePartyModeCategories(refreshCards) {
       activePreset = "all";
       selectedCategories = createCompatSet(Object.keys(CATEGORY_STYLES));
       updateFilterButtonsUI();
       renderModePills();
       renderCategoryPills();
 
-      if (refreshUnpinned && currentTopics && currentTopics.length > 0) {
+      if (refreshCards && currentTopics && currentTopics.length > 0) {
         for (var i = 0; i < cardCountView; i++) {
-          if (!pinnedCardStates[i] && !cardRevealedStates[i]) {
+          if (!cardRevealedStates[i]) {
             currentTopics[i] = generateSequentialTopic();
             cardResolvedTexts[i] = getImmediateTranslatedString(currentTopics[i].text, currentLanguage);
           }
@@ -6785,7 +6764,6 @@
 
     function getDeckBackMarkup(topic, index, catStyle) {
       var categoryLabel = translateCategoryLabel(topic && topic.category ? topic.category : "");
-      var isPinned = Boolean(pinnedCardStates[index]);
       var coquiSvg =
         '<div class="coqui-badge-float relative inline-block mr-10 mb-0.5 pointer-events-none select-none shrink-0" title="Coquí PR">' +
           '<svg width="48" height="42" viewBox="6 6 54 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
@@ -6845,7 +6823,6 @@
         '<div class="deck-back-sheen"></div>' +
         '<div class="relative z-10 flex items-center justify-between w-full gap-2 text-[10px] font-black uppercase tracking-widest text-amber-300">' +
           getBountyBadgeMarkup(true, index) +
-          (isPinned ? '<span class="px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[9px] uppercase tracking-wider"><i class="fa-solid fa-thumbtack mr-1"></i>' + escapeHtml(t("pinnedBadge")) + '</span>' : '') +
           '<span class="ml-auto">' + escapeHtml(t("tapToFlip")) + '</span>' +
         '</div>' +
         '<div class="relative z-10 my-1 flex flex-col items-center justify-center gap-2.5">' +
@@ -6875,7 +6852,6 @@
     function setLayoutView(count) {
       clearAllCardTypingTimers();
       if (count !== 1) resetBombTimer(false);
-      pinnedCardStates = [false, false, false, false];
       cardCountView = count;
       updateToggleUI();
       generateTopics();
@@ -7082,15 +7058,8 @@
 
       var indicesToFlip = [];
       for (var i = 0; i < cardCountView; i++) {
-        if (!pinnedCardStates[i] || !currentTopics[i]) {
-          indicesToFlip.push(i);
-          clearCardTypingTimer(i);
-        }
-      }
-
-      if (indicesToFlip.length === 0) {
-        showToast("All cards are pinned! Unpin a card to deal new topics.", "warning");
-        return;
+        indicesToFlip.push(i);
+        clearCardTypingTimer(i);
       }
 
       var genIcon = document.getElementById("generate-icon");
@@ -7103,15 +7072,11 @@
         var shouldHideInitially = (cardCountView === 4) || (cardCountView === 1 && gameState.enabled && !gameState.roundStarted);
         var nextTopics = [];
         for (var i = 0; i < cardCountView; i++) {
-          if (pinnedCardStates[i] && currentTopics[i]) {
-            nextTopics[i] = currentTopics[i];
-          } else {
-            nextTopics[i] = generateSequentialTopic();
-            cardPointValues[i] = pickRandomCardPoints();
-            cardResolvedTexts[i] = getImmediateTranslatedString(nextTopics[i].text, currentLanguage);
-            cardRevealedStates[i] = !shouldHideInitially;
-            cardTypingProgress[i] = 0;
-          }
+          nextTopics[i] = generateSequentialTopic();
+          cardPointValues[i] = pickRandomCardPoints();
+          cardResolvedTexts[i] = getImmediateTranslatedString(nextTopics[i].text, currentLanguage);
+          cardRevealedStates[i] = !shouldHideInitially;
+          cardTypingProgress[i] = 0;
         }
         currentTopics = nextTopics;
         if (cardCountView === 1 || !gameState.roundStarted) {
@@ -7249,33 +7214,6 @@
       }, 200);
     }
 
-    function togglePinCard(index) {
-      pinnedCardStates[index] = !pinnedCardStates[index];
-      var isPinned = pinnedCardStates[index];
-      var cardEl = document.getElementById("card-inner-" + index);
-      var pinBtn = document.getElementById("pin-btn-" + index);
-      var pinIcon = document.getElementById("pin-icon-" + index);
-      var pinBadge = document.getElementById("pin-badge-" + index);
-
-      if (cardEl) {
-        cardEl.classList.toggle("glass-card-pinned", isPinned);
-      }
-      if (pinBtn) {
-        pinBtn.title = isPinned ? t("unpinTitle") : t("pinTitle");
-        pinBtn.setAttribute("aria-pressed", isPinned ? "true" : "false");
-        pinBtn.className = "card-action-btn" + (isPinned ? " card-action-pin-active" : "");
-      }
-      if (pinIcon) {
-        pinIcon.className = "fa-solid fa-thumbtack text-sm transition-transform " + (isPinned ? "rotate-45" : "");
-      }
-      if (pinBadge) {
-        if (isPinned) pinBadge.classList.remove("hidden");
-        else pinBadge.classList.add("hidden");
-      }
-
-      showToast(isPinned ? "Card pinned in place!" : "Card unpinned", isPinned ? "success" : "info");
-    }
-
     function renderTopicCards() {
       var grid = document.getElementById("topics-grid");
       if (!grid) return;
@@ -7293,7 +7231,6 @@
         if (!topic) return "";
 
         var isFav = favoritedTopicIds.has(topic.id);
-        var isPinned = Boolean(pinnedCardStates[index]);
         var catStyle = CATEGORY_STYLES[topic.category] || CATEGORY_STYLES["Philosophy"];
         var isFaceDown = !cardRevealedStates[index];
         var displayCat = translateCategoryLabel(topic.category);
@@ -7303,7 +7240,7 @@
 
         if (isFaceDown) {
           return '<div class="card-container h-full w-full min-h-[185px]">' +
-            '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card ' + (isPinned ? "glass-card-pinned " : "") + 'rounded-2xl p-1.5 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+            '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card rounded-2xl p-1.5 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
               getDeckBackMarkup(topic, index, catStyle) +
             '</div>' +
           '</div>';
@@ -7329,17 +7266,13 @@
             : '';
 
         return '<div class="card-container h-full w-full min-h-[185px]">' +
-          '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card topic-card-front ' + (isPinned ? "glass-card-pinned " : "") + 'rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
+          '<div id="card-inner-' + index + '" onclick="handleCardTap(event, ' + index + ')" class="glass-card topic-card-front rounded-2xl p-5 sm:p-6 flex flex-col justify-between relative group h-full w-full cursor-pointer select-none">' +
             '<div class="flex items-center justify-between gap-2 mb-1 relative">' +
               '<div class="flex items-center gap-1.5 min-w-0">' +
                 '<span class="text-xs font-extrabold tracking-tight text-white/95 bg-white/15 border border-white/25 px-2.5 py-0.5 rounded-full backdrop-blur-sm truncate shadow-sm">' + escapeHtml(cardCountView === 4 ? t("flipBackHint") : t("changeCardHint")) + '</span>' +
-                '<span id="pin-badge-' + index + '" class="' + (isPinned ? "" : "hidden ") + 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-300/95 border border-amber-500 text-slate-950 text-[9px] font-black uppercase tracking-wider shrink-0 shadow-sm"><i class="fa-solid fa-thumbtack text-[9px]"></i> ' + escapeHtml(t("pinnedBadge")) + '</span>' +
               '</div>' +
               middleBountySlot +
               '<div class="flex items-center gap-1.5 relative z-20 shrink-0 ml-auto">' +
-                '<button type="button" id="pin-btn-' + index + '" onclick="event.stopPropagation(); togglePinCard(' + index + ')" title="' + escapeQuotes(isPinned ? t("unpinTitle") : t("pinTitle")) + '" aria-label="' + escapeQuotes(isPinned ? t("unpinTitle") : t("pinTitle")) + '" aria-pressed="' + (isPinned ? "true" : "false") + '" class="card-action-btn' + (isPinned ? " card-action-pin-active" : "") + '">' +
-                  '<i id="pin-icon-' + index + '" class="fa-solid fa-thumbtack text-sm transition-transform ' + (isPinned ? "rotate-45" : "") + '"></i>' +
-                '</button>' +
                 '<button type="button" id="heart-btn-' + index + '" onclick="event.stopPropagation(); toggleFavorite(\'' + escapeQuotes(topic.id) + '\', ' + index + ')" title="' + escapeQuotes(t("bookmarkTitle")) + '" aria-label="' + escapeQuotes(t("bookmarkTitle")) + '" aria-pressed="' + (isFav ? "true" : "false") + '" class="card-action-btn' + (isFav ? " card-action-heart-active" : "") + '">' +
                   '<i id="heart-icon-' + index + '" class="' + (isFav ? "fa-solid" : "fa-regular") + ' fa-heart text-sm"></i>' +
                 '</button>' +
@@ -7498,7 +7431,6 @@
         gameState.roundStarted = false;
         gameState.currentQuestionInRound = 1;
         clearAllCardTypingTimers();
-        pinnedCardStates = [false, false, false, false];
         for (var ci = 0; ci < cardCountView; ci++) {
           currentTopics[ci] = generateSequentialTopic();
           cardPointValues[ci] = pickRandomCardPoints();
@@ -7597,43 +7529,137 @@
       tickers.forEach(function(el) { el.innerHTML = loopHtml; });
     }
 
-    function toggleFavorite(topicId, index) {
-      var topic = currentTopics[index] || topicCache[topicId];
-      if (!topic) return;
-      topicCache[topic.id] = topic;
-      localStorage.setItem("nellieb_cache", JSON.stringify(topicCache));
+    function persistFavoritesState() {
+      try {
+        localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+        localStorage.setItem("nellieb_saved_topics", JSON.stringify(savedTopicsData));
+      } catch (err) {}
+    }
 
-      var isNowFav = false;
-      if (favoritedTopicIds.has(topic.id)) {
-        favoritedTopicIds.delete(topic.id);
-        isNowFav = false;
-        showToast("Removed from saved topics", "info");
-      } else {
-        favoritedTopicIds.add(topic.id);
-        isNowFav = true;
-        showToast("Saved topic!", "success");
+    function resolveSavedTopicById(id) {
+      if (!id) return null;
+      if (savedTopicsData[id] && savedTopicsData[id].text && savedTopicsData[id].category) {
+        return savedTopicsData[id];
       }
+      if (topicCache[id] && topicCache[id].text && topicCache[id].category) {
+        savedTopicsData[id] = {
+          id: topicCache[id].id || id,
+          category: topicCache[id].category,
+          text: topicCache[id].text
+        };
+        return savedTopicsData[id];
+      }
+      for (var ci = 0; ci < currentTopics.length; ci++) {
+        if (currentTopics[ci] && currentTopics[ci].id === id) {
+          savedTopicsData[id] = {
+            id: currentTopics[ci].id,
+            category: currentTopics[ci].category,
+            text: currentTopics[ci].text
+          };
+          return savedTopicsData[id];
+        }
+      }
+      var catKeys = Object.keys(CATEGORY_FILES);
+      for (var k = 0; k < catKeys.length; k++) {
+        var cat = catKeys[k];
+        var slug = "topic-" + cat.replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase() + "-";
+        if (id.indexOf(slug) === 0) {
+          var targetNum = id.slice(slug.length);
+          var list = QUESTION_BANKS[cat] || [];
+          for (var qi = 0; qi < list.length; qi++) {
+            var qText = list[qi];
+            if (typeof qText !== "string") continue;
+            var numMatch = qText.match(/^(\d+)\./);
+            var qNum = numMatch ? numMatch[1] : String(qi + 1);
+            if (String(qNum) === targetNum) {
+              var recovered = { id: id, category: cat, text: qText };
+              savedTopicsData[id] = recovered;
+              topicCache[id] = recovered;
+              return recovered;
+            }
+          }
+        }
+      }
+      return null;
+    }
 
-      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
-      updateFavoritesUI();
-      renderFavoritesList();
-
-      var heartBtn = document.getElementById("heart-btn-" + index);
-      var heartIcon = document.getElementById("heart-icon-" + index);
-      if (heartBtn && heartIcon) {
-        heartBtn.className = "card-action-btn" + (isNowFav ? " card-action-heart-active" : "");
-        heartBtn.setAttribute("aria-pressed", isNowFav ? "true" : "false");
-        heartIcon.className = (isNowFav ? "fa-solid" : "fa-regular") + " fa-heart text-sm";
-      } else {
-        renderTopicCards();
+    function reconcileSavedFavorites(pruneMissing) {
+      var changed = false;
+      var ids = Array.from(favoritedTopicIds);
+      for (var i = 0; i < ids.length; i++) {
+        var id = ids[i];
+        var resolved = resolveSavedTopicById(id);
+        if (!resolved && pruneMissing) {
+          favoritedTopicIds.delete(id);
+          delete savedTopicsData[id];
+          changed = true;
+        }
+      }
+      Object.keys(savedTopicsData).forEach(function(savedId) {
+        if (!favoritedTopicIds.has(savedId)) {
+          delete savedTopicsData[savedId];
+          changed = true;
+        }
+      });
+      if (changed || ids.length > 0) {
+        persistFavoritesState();
       }
     }
 
+    function getValidSavedTopics() {
+      var items = [];
+      Array.from(favoritedTopicIds).forEach(function(id) {
+        var tp = resolveSavedTopicById(id);
+        if (tp) items.push(tp);
+      });
+      return items;
+    }
+
+    function syncCardHeartButtons() {
+      for (var i = 0; i < currentTopics.length; i++) {
+        var tp = currentTopics[i];
+        if (!tp) continue;
+        var isFav = favoritedTopicIds.has(tp.id);
+        var heartBtn = document.getElementById("heart-btn-" + i);
+        var heartIcon = document.getElementById("heart-icon-" + i);
+        if (heartBtn && heartIcon) {
+          heartBtn.className = "card-action-btn" + (isFav ? " card-action-heart-active" : "");
+          heartBtn.setAttribute("aria-pressed", isFav ? "true" : "false");
+          heartIcon.className = (isFav ? "fa-solid" : "fa-regular") + " fa-heart text-sm";
+        }
+      }
+    }
+
+    function toggleFavorite(topicId, index) {
+      var topic = (typeof index === "number" && currentTopics[index]) ? currentTopics[index] : resolveSavedTopicById(topicId);
+      var targetId = topic ? topic.id : topicId;
+      if (!targetId) return;
+
+      if (favoritedTopicIds.has(targetId)) {
+        favoritedTopicIds.delete(targetId);
+        delete savedTopicsData[targetId];
+        showToast("Removed from saved topics", "info");
+      } else {
+        if (!topic) return;
+        var storedTopic = { id: topic.id, category: topic.category, text: topic.text };
+        savedTopicsData[topic.id] = storedTopic;
+        topicCache[topic.id] = storedTopic;
+        try { localStorage.setItem("nellieb_cache", JSON.stringify(topicCache)); } catch (e) {}
+        favoritedTopicIds.add(topic.id);
+        showToast("Saved topic!", "success");
+      }
+
+      persistFavoritesState();
+      updateFavoritesUI();
+      renderFavoritesList();
+      syncCardHeartButtons();
+    }
+
     function updateFavoritesUI() {
-      var count = favoritedTopicIds.size;
+      var count = getValidSavedTopics().length;
       var badge = document.getElementById("favorites-badge");
       if (!badge) return;
-      badge.innerText = count;
+      badge.innerText = String(count);
       if (count > 0) badge.classList.remove("hidden");
       else badge.classList.add("hidden");
     }
@@ -7644,6 +7670,8 @@
       if (!drawer || !content) return;
 
       if (open) {
+        if (questionBanksLoaded) reconcileSavedFavorites(true);
+        updateFavoritesUI();
         renderFavoritesList();
         drawer.classList.remove("pointer-events-none");
         drawer.classList.remove("opacity-0");
@@ -7659,7 +7687,8 @@
       var container = document.getElementById("saved-topics-list");
       if (!container) return;
 
-      if (favoritedTopicIds.size === 0) {
+      var savedItems = getValidSavedTopics();
+      if (savedItems.length === 0) {
         container.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs">' +
           '<i class="fa-regular fa-heart text-2xl mb-2 opacity-50 block"></i>' +
           escapeHtml(t("noSavedEmpty")) + '<br>' + escapeHtml(t("noSavedSub")) +
@@ -7667,9 +7696,8 @@
         return;
       }
 
-      container.innerHTML = Array.from(favoritedTopicIds).map(function(id) {
-        var tp = topicCache[id];
-        if (!tp) return "";
+      container.innerHTML = savedItems.map(function(tp) {
+        var id = tp.id;
         var catStyle = CATEGORY_STYLES[tp.category] || CATEGORY_STYLES["Philosophy"];
         var localizedText = getTranslatedTopicText(tp, currentLanguage);
         var localizedCat = translateCategoryLabel(tp.category);
@@ -7688,23 +7716,25 @@
 
     function removeFavorite(id) {
       favoritedTopicIds.delete(id);
-      localStorage.setItem("nellieb_favs", JSON.stringify(Array.from(favoritedTopicIds)));
+      delete savedTopicsData[id];
+      persistFavoritesState();
       updateFavoritesUI();
       renderFavoritesList();
-      renderTopicCards();
+      syncCardHeartButtons();
     }
 
     function clearAllFavorites() {
       favoritedTopicIds.clear();
-      localStorage.setItem("nellieb_favs", JSON.stringify([]));
+      savedTopicsData = {};
+      persistFavoritesState();
       updateFavoritesUI();
       renderFavoritesList();
-      renderTopicCards();
+      syncCardHeartButtons();
       showToast("Cleared saved topics", "info");
     }
 
     function loadSavedTopicToFirstCard(id) {
-      var tp = topicCache[id];
+      var tp = resolveSavedTopicById(id);
       if (!tp) return;
       clearCardTypingTimer(0);
       currentTopics[0] = { id: tp.id, category: tp.category, text: tp.text };
@@ -7781,6 +7811,7 @@
 
     function clearAppCacheAndReload() {
       try {
+        reconcileSavedFavorites(false);
         localStorage.removeItem("nellieb_cache");
         localStorage.removeItem("nellieb_tx_cache");
       } catch (err) {}
@@ -7844,7 +7875,6 @@
 
     function resetToInitial() {
       clearAllCardTypingTimers();
-      pinnedCardStates = [false, false, false, false];
       activePreset = "all";
       selectedCategories = createCompatSet(Object.keys(CATEGORY_STYLES));
       Object.keys(categoryPointers).forEach(function(k) { categoryPointers[k] = 0; });
@@ -7924,6 +7954,8 @@
       applyLanguageTranslations();
 
       function finishStartup() {
+        questionBanksLoaded = true;
+        reconcileSavedFavorites(true);
         var shouldHideInitially = (cardCountView === 4) || (cardCountView === 1 && gameState.enabled && !gameState.roundStarted);
         currentTopics = [];
         for (var i = 0; i < cardCountView; i++) {
@@ -7947,6 +7979,7 @@
         }
         renderLeaderboardTicker();
         updateFavoritesUI();
+        renderFavoritesList();
         updateBombUI();
 
         if (!localStorage.getItem("nellieb_tutorial_seen")) {
